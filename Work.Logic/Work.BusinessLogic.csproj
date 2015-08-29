@@ -74,104 +74,92 @@
   <ItemGroup>
     <Compile Include="Base.cs" />
     <Compile Include="DB0\AspNetRoles.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\AspNetUserClaims.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\AspNetUserLogins.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\AspNetUsers.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB0\C431505_Mami520.Context.cs">
+    <Compile Include="DB0\C43A0_Mani520.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>C431505_Mami520.Context.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB0\C431505_Mami520.cs">
+    <Compile Include="DB0\C43A0_Mani520.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB0\C431505_Mami520.Designer.cs">
+    <Compile Include="DB0\C43A0_Mani520.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
+      <DependentUpon>C43A0_Mani520.edmx</DependentUpon>
     </Compile>
     <Compile Include="DB0\Customer.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\DBPart.cs" />
     <Compile Include="DB0\Department.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_Currency.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_IDX.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_Lang.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_Parm.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_SN.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_UserLoginLog.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\Menu.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_AspNetRoles.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_AspNetUserClaims.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_AspNetUserLogins.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_AspNetUsers.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Customer.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Department.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_Currency.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_IDX.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_Lang.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_Parm.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_SN.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_UserLoginLog.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Menu.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Product.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\Product.cs">
-      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="LogicCenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -180,12 +168,12 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="DB0\C431505_Mami520.edmx">
+    <EntityDeploy Include="DB0\C43A0_Mani520.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>C431505_Mami520.Designer.cs</LastGenOutput>
+      <LastGenOutput>C43A0_Mani520.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DB0\C431505_Mami520.edmx.diagram">
-      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
+    <None Include="DB0\C43A0_Mani520.edmx.diagram">
+      <DependentUpon>C43A0_Mani520.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -193,15 +181,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DB0\C431505_Mami520.Context.tt">
+    <Content Include="DB0\C43A0_Mani520.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
-      <LastGenOutput>C431505_Mami520.Context.cs</LastGenOutput>
+      <DependentUpon>C43A0_Mani520.edmx</DependentUpon>
+      <LastGenOutput>C43A0_Mani520.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DB0\C431505_Mami520.tt">
+    <Content Include="DB0\C43A0_Mani520.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
-      <LastGenOutput>C431505_Mami520.cs</LastGenOutput>
+      <DependentUpon>C43A0_Mani520.edmx</DependentUpon>
+      <LastGenOutput>C43A0_Mani520.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -17,8 +17,6 @@ namespace ProcCore.Business.DB0
     {
         public AspNetUsers()
         {
-            this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
-            this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
         }
     
@@ -39,9 +37,7 @@ namespace ProcCore.Business.DB0
         public int sort { get; set; }
     
     	[JsonIgnore]
-        public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual Department Department { get; set; }
     	[JsonIgnore]
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
     }
