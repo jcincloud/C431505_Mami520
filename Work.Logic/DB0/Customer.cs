@@ -15,14 +15,6 @@ namespace ProcCore.Business.DB0
     using Newtonsoft.Json;
     public partial class Customer : BaseEntityTable
     {
-        public Customer()
-        {
-            this.StockDetailQty = new HashSet<StockDetailQty>();
-            this.VisitDetail = new HashSet<VisitDetail>();
-            this.VisitDetailProduct = new HashSet<VisitDetailProduct>();
-            this.VisitTimeRecorder = new HashSet<VisitTimeRecorder>();
-        }
-    
         public int customer_id { get; set; }
         public string customer_sn { get; set; }
         public string customer_name { get; set; }
@@ -61,16 +53,5 @@ namespace ProcCore.Business.DB0
         public Nullable<int> i_UpdateDeptID { get; set; }
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
-    
-    	[JsonIgnore]
-        public virtual Area Area { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<StockDetailQty> StockDetailQty { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<VisitDetail> VisitDetail { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<VisitDetailProduct> VisitDetailProduct { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<VisitTimeRecorder> VisitTimeRecorder { get; set; }
     }
 }

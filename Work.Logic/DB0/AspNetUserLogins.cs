@@ -13,20 +13,12 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class MapSalesArea : BaseEntityTable
+    public partial class AspNetUserLogins : BaseEntityTable
     {
-        public string users_id { get; set; }
-        public int area_id { get; set; }
-        public string i_InsertUserID { get; set; }
-        public Nullable<int> i_InsertDeptID { get; set; }
-        public Nullable<System.DateTime> i_InsertDateTime { get; set; }
-        public string i_UpdateUserID { get; set; }
-        public Nullable<int> i_UpdateDeptID { get; set; }
-        public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
-        public string i_Lang { get; set; }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
+        public string UserId { get; set; }
     
-    	[JsonIgnore]
-        public virtual Area Area { get; set; }
     	[JsonIgnore]
         public virtual AspNetUsers AspNetUsers { get; set; }
     }

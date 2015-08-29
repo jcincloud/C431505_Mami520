@@ -191,20 +191,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\Active\Controllers\AgentController.cs" />
-    <Compile Include="Areas\Active\Controllers\MapCustomeAgent.cs" />
-    <Compile Include="Areas\Active\Controllers\ProductBrandController.cs" />
-    <Compile Include="Areas\Active\Controllers\ReportController.cs" />
-    <Compile Include="Areas\Active\Controllers\MapSalesProduct.cs" />
-    <Compile Include="Areas\Active\Controllers\MapCustomerSales.cs" />
-    <Compile Include="Areas\Active\Controllers\ProductCategoryController.cs" />
-    <Compile Include="Areas\Active\Controllers\TabletController.cs" />
-    <Compile Include="Areas\Active\Controllers\StockController.cs" />
-    <Compile Include="Areas\Active\Controllers\VisitController.cs" />
-    <Compile Include="Areas\Active\Controllers\ProductController.cs" />
-    <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
-    <Compile Include="Areas\Base\Controllers\ExcelReportController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
     <Content Include="Areas\Active\Views\Product\Main.cshtml" />
@@ -245,18 +232,9 @@
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
-    <Compile Include="Controllers\Api\ProductBrandController.cs" />
     <Compile Include="Controllers\Api\RolesController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
-    <Compile Include="Controllers\Api\AgentController.cs" />
-    <Compile Include="Controllers\Api\MapSalesProductController.cs" />
-    <Compile Include="Controllers\Api\ProductCategoryController.cs" />
-    <Compile Include="Controllers\Api\StockDetailController.cs" />
-    <Compile Include="Controllers\Api\StockController.cs" />
-    <Compile Include="Controllers\Api\VisitController.cs" />
-    <Compile Include="Controllers\Api\ProductController.cs" />
     <Compile Include="Controllers\Api\GetActionController.cs" />
-    <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\SalesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1061,6 +1039,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Active\Controllers\" />
     <Folder Include="Areas\Active\Views\Shared\" />
     <Folder Include="Areas\Base\Views\Shared\" />
     <Folder Include="Content\sass\vendor\" />

@@ -13,6 +13,7 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     public partial class m_AspNetUsers :BaseEntityTable {
     public string Id { get; set; }
+    public int department_id { get; set; }
     public string Email { get; set; }
     public bool EmailConfirmed { get; set; }
     public string PasswordHash { get; set; }
@@ -24,7 +25,6 @@ namespace ProcCore.Business.DB0
     public bool LockoutEnabled { get; set; }
     public int AccessFailedCount { get; set; }
     public string UserName { get; set; }
-    public int department_id { get; set; }
     public string user_name_c { get; set; }
     public int sort { get; set; }
     }

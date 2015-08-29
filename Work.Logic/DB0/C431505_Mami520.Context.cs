@@ -13,10 +13,10 @@ namespace ProcCore.Business.DB0
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class C40M0_MilleniaEntities : DbContext
+    public partial class C43A0_Mani520Entities : DbContext
     {
-        public C40M0_MilleniaEntities()
-            : base("name=C40M0_MilleniaEntities")
+        public C43A0_Mani520Entities()
+            : base("name=C43A0_Mani520Entities")
         {
         }
     
@@ -26,30 +26,18 @@ namespace ProcCore.Business.DB0
         }
     
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Department> Department { get; set; }
+        public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<i_Currency> i_Currency { get; set; }
         public virtual DbSet<i_IDX> i_IDX { get; set; }
         public virtual DbSet<i_Lang> i_Lang { get; set; }
         public virtual DbSet<i_Parm> i_Parm { get; set; }
         public virtual DbSet<i_SN> i_SN { get; set; }
         public virtual DbSet<i_UserLoginLog> i_UserLoginLog { get; set; }
-        public virtual DbSet<Visit> Visit { get; set; }
-        public virtual DbSet<VisitDetailProduct> VisitDetailProduct { get; set; }
-        public virtual DbSet<MapCustomerAgnet> MapCustomerAgnet { get; set; }
-        public virtual DbSet<MapSalesProduct> MapSalesProduct { get; set; }
-        public virtual DbSet<Area> Area { get; set; }
-        public virtual DbSet<MapSalesArea> MapSalesArea { get; set; }
         public virtual DbSet<Menu> Menu { get; set; }
         public virtual DbSet<Product> Product { get; set; }
-        public virtual DbSet<ProductBrand> ProductBrand { get; set; }
-        public virtual DbSet<ProductCategory> ProductCategory { get; set; }
-        public virtual DbSet<VisitTimeRecorder> VisitTimeRecorder { get; set; }
-        public virtual DbSet<Stock> Stock { get; set; }
-        public virtual DbSet<VisitDetail> VisitDetail { get; set; }
-        public virtual DbSet<StockDetail> StockDetail { get; set; }
-        public virtual DbSet<StockDetailQty> StockDetailQty { get; set; }
-        public virtual DbSet<Agent> Agent { get; set; }
-        public virtual DbSet<Customer> Customer { get; set; }
+        public virtual DbSet<Department> Department { get; set; }
     }
 }

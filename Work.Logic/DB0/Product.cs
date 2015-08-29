@@ -15,13 +15,6 @@ namespace ProcCore.Business.DB0
     using Newtonsoft.Json;
     public partial class Product : BaseEntityTable
     {
-        public Product()
-        {
-            this.MapSalesProduct = new HashSet<MapSalesProduct>();
-            this.VisitDetailProduct = new HashSet<VisitDetailProduct>();
-            this.StockDetail = new HashSet<StockDetail>();
-        }
-    
         public int product_id { get; set; }
         public string product_sn { get; set; }
         public string product_name { get; set; }
@@ -39,16 +32,6 @@ namespace ProcCore.Business.DB0
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
         public string category { get; set; }
-    
-    	[JsonIgnore]
-        public virtual ICollection<MapSalesProduct> MapSalesProduct { get; set; }
-    	[JsonIgnore]
-        public virtual ProductBrand ProductBrand { get; set; }
-    	[JsonIgnore]
-        public virtual ProductCategory ProductCategory { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<VisitDetailProduct> VisitDetailProduct { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<StockDetail> StockDetail { get; set; }
     }
 }
+

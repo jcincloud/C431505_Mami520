@@ -23,7 +23,7 @@ namespace DotWeb.Api
         protected string UserId; //指的是廠商登錄帳號
         protected string LoginUserFlag = string.Empty;
 
-        protected C40M0_MilleniaEntities db0;
+        protected C43A0_Mani520Entities db0;
 
 
         protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
@@ -57,7 +57,7 @@ namespace DotWeb.Api
         {
             return System.Globalization.CultureInfo.CurrentCulture.Name;
         }
-        protected static C40M0_MilleniaEntities getDB0()
+        protected static C43A0_Mani520Entities getDB0()
         {
             LogicCenter.SetDB0EntityString(CommSetup.CommWebSetup.DB0_CodeString);
             return LogicCenter.getDB0;

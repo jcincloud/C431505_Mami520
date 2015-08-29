@@ -31,3 +31,4 @@ namespace ProcCore.Business.DB0
     public string category { get; set; }
     }
 }
+

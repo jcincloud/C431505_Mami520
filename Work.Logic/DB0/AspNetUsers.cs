@@ -17,13 +17,13 @@ namespace ProcCore.Business.DB0
     {
         public AspNetUsers()
         {
+            this.AspNetUserClaims = new HashSet<AspNetUserClaims>();
+            this.AspNetUserLogins = new HashSet<AspNetUserLogins>();
             this.AspNetRoles = new HashSet<AspNetRoles>();
-            this.MapSalesProduct = new HashSet<MapSalesProduct>();
-            this.MapSalesArea = new HashSet<MapSalesArea>();
-            this.Stock = new HashSet<Stock>();
         }
     
         public string Id { get; set; }
+        public int department_id { get; set; }
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
@@ -35,19 +35,14 @@ namespace ProcCore.Business.DB0
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
         public string UserName { get; set; }
-        public int department_id { get; set; }
         public string user_name_c { get; set; }
         public int sort { get; set; }
     
     	[JsonIgnore]
-        public virtual Department Department { get; set; }
+        public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
     	[JsonIgnore]
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<MapSalesProduct> MapSalesProduct { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<MapSalesArea> MapSalesArea { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<Stock> Stock { get; set; }
     }
 }

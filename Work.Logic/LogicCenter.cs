@@ -54,9 +54,9 @@ namespace ProcCore.Business.LogicConect
     public class LogicCenter
     {
         private static string db0_connectionstring;
-        protected C40M0_MilleniaEntities db0;
+        protected C43A0_Mani520Entities db0;
         protected TransactionScope tx;
-        private const string DatabaseName = "C40M0_Millenia";
+        private const string DatabaseName = "C43A0_Mani520";
         public int DepartmentId { get; set; }
         public string Lang { get; set; }
         public string IP { get; set; }
@@ -99,11 +99,11 @@ namespace ProcCore.Business.LogicConect
             db0_connectionstring = LogicCenter.GetDB0EntityString(db0_configstring);
         }
 
-        public static C40M0_MilleniaEntities getDB0
+        public static C43A0_Mani520Entities getDB0
         {
             get
             {
-                return new C40M0_MilleniaEntities(db0_connectionstring);
+                return new C43A0_Mani520Entities(db0_connectionstring);
             }
         }
         public int GetNewId(ProcCore.Business.CodeTable tab)

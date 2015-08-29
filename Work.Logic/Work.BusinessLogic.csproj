@@ -73,177 +73,105 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base.cs" />
-    <Compile Include="DB0\Agent.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\Area.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
     <Compile Include="DB0\AspNetRoles.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\AspNetUserClaims.cs">
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\AspNetUserLogins.cs">
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\AspNetUsers.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB0\C40M0_Millenia.Context.cs">
+    <Compile Include="DB0\C431505_Mami520.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>C40M0_Millenia.Context.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB0\C40M0_Millenia.cs">
+    <Compile Include="DB0\C431505_Mami520.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB0\C40M0_Millenia.Designer.cs">
+    <Compile Include="DB0\C431505_Mami520.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>C40M0_Millenia.edmx</DependentUpon>
+      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
     </Compile>
     <Compile Include="DB0\Customer.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\DBPart.cs" />
     <Compile Include="DB0\Department.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_Currency.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_IDX.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_Lang.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_Parm.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_SN.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\i_UserLoginLog.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\MapCustomerAgnet.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\MapSalesArea.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\MapSalesProduct.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\Menu.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_Agent.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_Area.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_AspNetRoles.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_AspNetUserClaims.cs">
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_AspNetUserLogins.cs">
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_AspNetUsers.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Customer.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Department.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_Currency.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_IDX.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_Lang.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_Parm.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_SN.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_UserLoginLog.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_MapCustomerAgnet.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_MapSalesArea.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_MapSalesProduct.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Menu.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Product.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_ProductBrand.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_ProductCategory.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_Stock.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_StockDetail.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_StockDetailQty.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_Visit.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_VisitDetail.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_VisitDetailProduct.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\m_VisitTimeRecorder.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\Product.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\ProductBrand.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\ProductCategory.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\Stock.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\StockDetail.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\StockDetailQty.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\Visit.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\VisitDetail.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\VisitDetailProduct.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DB0\VisitTimeRecorder.cs">
-      <DependentUpon>C40M0_Millenia.tt</DependentUpon>
+      <DependentUpon>C431505_Mami520.tt</DependentUpon>
     </Compile>
     <Compile Include="LogicCenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -252,27 +180,29 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-    <EntityDeploy Include="DB0\C40M0_Millenia.edmx">
+    <EntityDeploy Include="DB0\C431505_Mami520.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>C40M0_Millenia.Designer.cs</LastGenOutput>
+      <LastGenOutput>C431505_Mami520.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="DB0\C40M0_Millenia.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>C40M0_Millenia.edmx</DependentUpon>
-      <LastGenOutput>C40M0_Millenia.Context.cs</LastGenOutput>
-    </None>
-    <None Include="DB0\C40M0_Millenia.edmx.diagram">
-      <DependentUpon>C40M0_Millenia.edmx</DependentUpon>
-    </None>
-    <None Include="DB0\C40M0_Millenia.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>C40M0_Millenia.edmx</DependentUpon>
-      <LastGenOutput>C40M0_Millenia.cs</LastGenOutput>
+    <None Include="DB0\C431505_Mami520.edmx.diagram">
+      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DB0\C431505_Mami520.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
+      <LastGenOutput>C431505_Mami520.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DB0\C431505_Mami520.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>C431505_Mami520.edmx</DependentUpon>
+      <LastGenOutput>C431505_Mami520.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
