@@ -638,7 +638,7 @@ var TwAddress = React.createClass({
 								}
 						</select>
 					</div>
-					<div className="col-xs-6">
+					<div className="col-xs-5">
 						<input 	type="text" 
 								className="form-control"	
 								value={this.props.address_value}

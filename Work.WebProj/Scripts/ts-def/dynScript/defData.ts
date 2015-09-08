@@ -484,37 +484,12 @@
         { id: 4, label: '暫停', className: 'label label-danger', code: 'pause' }
     ];
     export var CustomerType = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: '店家', className: 'label label-default', code: 'store' },
-        { id: 2, label: '直客', className: 'label label-default', code: 'straght' }
+        { id: 1, label: '自有客戶', className: 'label label-default', code: 'store' },
+        { id: 2, label: '醫院', className: 'label label-default', code: 'straght' },
+        { id: 3, label: '月子中心', className: 'label label-default', code: 'straght' },
+        { id: 4, label: '轉介', className: 'label label-default', code: 'straght' }
     ];
-    export var ChannelType = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: '即飲', className: 'label label-default', code: '' },
-        { id: 2, label: '外帶', className: 'label label-default', code: '' }
-    ];
-    export var StoreType = [
-        { id: 0, label: 'None', className: 'label label-default', code: 'none' },
-        { id: 1, label: 'LS', className: 'label label-default', code: '' },
-        { id: 2, label: 'Beer Store', className: 'label label-default', code: '' },
-        { id: 3, label: 'Dancing', className: 'label label-default', code: '' },
-        { id: 4, label: 'Bar', className: 'label label-default', code: '' },
-        { id: 5, label: 'Cafe', className: 'label label-default', code: '' },
-        { id: 6, label: 'Bistro', className: 'label label-default', code: '' },
-        { id: 7, label: 'Restaurant', className: 'label label-default', code: '' }
-    ]
-    export var StoreLevel = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: 'G', className: 'label label-default', code: '' },
-        { id: 2, label: 'S', className: 'label label-default', code: '' },
-        { id: 3, label: 'B', className: 'label label-default', code: '' }
-    ]
-    export var Evaluate = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: 'A', className: 'label label-default', code: '' },
-        { id: 2, label: 'B', className: 'label label-default', code: '' },
-        { id: 3, label: 'C', className: 'label label-default', code: '' }
-    ]
+
     export var MonthsData = [
         { id: 1, label: '1月' },
         { id: 2, label: '2月' },

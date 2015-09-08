@@ -149,16 +149,28 @@ function jqDelete(url: string, data: any): JQueryXHR {
     });
 }
 function tosMessage(title: string, message: string, type: emToastrType) {
-    if (type == emToastrType.success)
+    //if (type == emToastrType.success)
+    //    toastr.success(message, title);
+
+    //if (type == emToastrType.error)
+    //    toastr.error(message, title);
+
+    //if (type == emToastrType.warning)
+    //    toastr.warning(message, title);
+
+    //if (type == emToastrType.info)
+    //    toastr.info(message, title);
+
+    if (type == 1)
         toastr.success(message, title);
 
-    if (type == emToastrType.error)
+    if (type == 3)
         toastr.error(message, title);
 
-    if (type == emToastrType.warning)
+    if (type == 2)
         toastr.warning(message, title);
 
-    if (type == emToastrType.info)
+    if (type == 0)
         toastr.info(message, title);
 }
 function formatFileSize(byte_size: number): string {
@@ -203,3 +215,55 @@ function getBrower() {
 }
 
 var replace_br: RegExp = /(?:\\[rn]|[\r\n]+)+/g; //將換行碼換成<br/>的樣板
+
+function checkTelReg(tel: string) {
+  /*
+    Autohr:Ajoe
+    Date:2015/9/8
+    Description:檢查電話格式
+  */
+    if (tel != undefined && tel != '') {
+        if (tel.indexOf('-') != -1 || tel.indexOf(' ') != -1 || tel.indexOf('　') != -1) {//檢查電話是否含有空白或「-」
+            return { result: false, errMsg: '電話請勿輸入「空白」或「-」！！' };
+        }
+        if (tel.charAt(0) != '0') {
+            return { result: false, errMsg: '電話前面請輸入區域號碼！！' };
+        }
+
+    }
+    return { result: true };
+}
+function checkTwID(id) {
+  /*
+    Autohr:Ajoe
+    Date:2015/9/8
+    Description:台灣身份證檢查簡
+  */
+    if (id != null && id != "") {
+        //建立字母分數陣列(A~Z)
+        var city = new Array(
+            1, 10, 19, 28, 37, 46, 55, 64, 39, 73, 82, 2, 11,
+            20, 48, 29, 38, 47, 56, 65, 74, 83, 21, 3, 12, 30
+            )
+        id = id.toUpperCase();
+        // 使用「正規表達式」檢驗格式
+        if (id.search(/^[A-Z](1|2)\d{8}$/i) == -1) {
+            //alert('基本格式錯誤');
+            return false;
+        } else {
+            //將字串分割為陣列(IE必需這麼做才不會出錯)
+            id = id.split('');
+            //計算總分
+            var total = city[id[0].charCodeAt(0) - 65];
+            for (var i = 1; i <= 8; i++) {
+                total += eval(id[i]) * (9 - i);
+            }
+            //補上檢查碼(最後一碼)
+            total += eval(id[9]);
+            //檢查比對碼(餘數應為0);
+            return ((total % 10 == 0));
+        }
+    } else {
+        return true;
+    }
+}

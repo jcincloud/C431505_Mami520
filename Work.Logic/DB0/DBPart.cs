@@ -364,12 +364,11 @@ namespace ProcCore.Business.DB0
         public string i_InsertUserID { get; set; }
         public DateTime? i_InsertDateTime { get; set; }
         public string customer_name { get; set; }
-        public bool? mark_err { get; set; }
         public string city { get; set; }
         public string country { get; set; }
-        public int? area { get; set; }
         public string address { get; set; }
         public string tel { get; set; }
+        public int? customer_type { get; set; }
     }
     public class q_Visit : QueryBase
     {

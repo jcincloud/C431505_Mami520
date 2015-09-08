@@ -27,7 +27,6 @@ namespace ProcCore.Business.DB0
     
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<i_Currency> i_Currency { get; set; }
         public virtual DbSet<i_IDX> i_IDX { get; set; }
@@ -37,5 +36,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<i_UserLoginLog> i_UserLoginLog { get; set; }
         public virtual DbSet<Menu> Menu { get; set; }
         public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Customer> Customer { get; set; }
     }
 }

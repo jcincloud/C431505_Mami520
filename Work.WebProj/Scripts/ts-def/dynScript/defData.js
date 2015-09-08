@@ -484,36 +484,10 @@ var CommData;
         { id: 4, label: '暫停', className: 'label label-danger', code: 'pause' }
     ];
     CommData.CustomerType = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: '店家', className: 'label label-default', code: 'store' },
-        { id: 2, label: '直客', className: 'label label-default', code: 'straght' }
-    ];
-    CommData.ChannelType = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: '即飲', className: 'label label-default', code: '' },
-        { id: 2, label: '外帶', className: 'label label-default', code: '' }
-    ];
-    CommData.StoreType = [
-        { id: 0, label: 'None', className: 'label label-default', code: 'none' },
-        { id: 1, label: 'LS', className: 'label label-default', code: '' },
-        { id: 2, label: 'Beer Store', className: 'label label-default', code: '' },
-        { id: 3, label: 'Dancing', className: 'label label-default', code: '' },
-        { id: 4, label: 'Bar', className: 'label label-default', code: '' },
-        { id: 5, label: 'Cafe', className: 'label label-default', code: '' },
-        { id: 6, label: 'Bistro', className: 'label label-default', code: '' },
-        { id: 7, label: 'Restaurant', className: 'label label-default', code: '' }
-    ];
-    CommData.StoreLevel = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: 'G', className: 'label label-default', code: '' },
-        { id: 2, label: 'S', className: 'label label-default', code: '' },
-        { id: 3, label: 'B', className: 'label label-default', code: '' }
-    ];
-    CommData.Evaluate = [
-        { id: 0, label: '無', className: 'label label-default', code: 'none' },
-        { id: 1, label: 'A', className: 'label label-default', code: '' },
-        { id: 2, label: 'B', className: 'label label-default', code: '' },
-        { id: 3, label: 'C', className: 'label label-default', code: '' }
+        { id: 1, label: '自有客戶', className: 'label label-default', code: 'store' },
+        { id: 2, label: '醫院', className: 'label label-default', code: 'straght' },
+        { id: 3, label: '月子中心', className: 'label label-default', code: 'straght' },
+        { id: 4, label: '轉介', className: 'label label-default', code: 'straght' }
     ];
     CommData.MonthsData = [
         { id: 1, label: '1月' },

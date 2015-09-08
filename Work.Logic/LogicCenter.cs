@@ -14,11 +14,11 @@ namespace ProcCore.Business
 {
     public enum CodeTable
     {
-        Base, News, VisitTimeRecorder
+        Base, Customer,News, VisitTimeRecorder
     }
     public enum SNType
     {
-        Orders, Product, Receiver, Import, Stock, Export, StockAdj
+        Orders, Product, Receiver, Import, Stock, Export, StockAdj,
     }
     /// <summary>
     /// 客戶類別

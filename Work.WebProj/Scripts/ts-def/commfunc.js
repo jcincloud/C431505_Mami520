@@ -28,7 +28,9 @@ function isValidJSONDate(value, userFormat) {
                 y = date[i];
         }
         ;
-        return (m > 0 && m < 13 && y && y.length === 4 && d > 0 && d <= (new Date(y, m, 0)).getDate());
+        return (m > 0 && m < 13 &&
+            y && y.length === 4 &&
+            d > 0 && d <= (new Date(y, m, 0)).getDate());
     };
     return isDate(theDate, theFormat);
 }
@@ -137,13 +139,15 @@ function jqDelete(url, data) {
     });
 }
 function tosMessage(title, message, type) {
-    if (type == 1 /* success */)
+    //if (type == emToastrType.success)
+    //    toastr.success(message, title);
+    if (type == 1)
         toastr.success(message, title);
-    if (type == 3 /* error */)
+    if (type == 3)
         toastr.error(message, title);
-    if (type == 2 /* warning */)
+    if (type == 2)
         toastr.warning(message, title);
-    if (type == 0 /* info */)
+    if (type == 0)
         toastr.info(message, title);
 }
 function formatFileSize(byte_size) {
@@ -176,7 +180,12 @@ function getBrower() {
     var Sys = {};
     var ua = navigator.userAgent.toLowerCase();
     var s;
-    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] : (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] : (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] : (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] : (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] : (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] :
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+            (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                    (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
     if (Sys.ie)
         return ('IE: ' + Sys.ie);
     if (Sys.firefox)
@@ -189,3 +198,35 @@ function getBrower() {
         return ('Safari: ' + Sys.safari);
 }
 var replace_br = /(?:\\[rn]|[\r\n]+)+/g;
+function checkTelReg(tel) {
+    if (tel != undefined && tel != '') {
+        if (tel.indexOf('-') != -1 || tel.indexOf(' ') != -1 || tel.indexOf('　') != -1) {
+            return { result: false, errMsg: '電話請勿輸入「空白」或「-」！！' };
+        }
+        if (tel.charAt(0) != '0') {
+            return { result: false, errMsg: '電話前面請輸入區域號碼！！' };
+        }
+    }
+    return { result: true };
+}
+function checkTwID(id) {
+    if (id != null && id != "") {
+        var city = new Array(1, 10, 19, 28, 37, 46, 55, 64, 39, 73, 82, 2, 11, 20, 48, 29, 38, 47, 56, 65, 74, 83, 21, 3, 12, 30);
+        id = id.toUpperCase();
+        if (id.search(/^[A-Z](1|2)\d{8}$/i) == -1) {
+            return false;
+        }
+        else {
+            id = id.split('');
+            var total = city[id[0].charCodeAt(0) - 65];
+            for (var i = 1; i <= 8; i++) {
+                total += eval(id[i]) * (9 - i);
+            }
+            total += eval(id[9]);
+            return ((total % 10 == 0));
+        }
+    }
+    else {
+        return true;
+    }
+}

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="C43A0_Mani520Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="C43A0_Mani520Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -44,37 +44,26 @@
           <Key>
             <PropertyRef Name="customer_id" />
           </Key>
-          <Property Name="customer_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="customer_sn" Type="varchar" MaxLength="16" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="customer_sn" Type="varchar" MaxLength="16" Nullable="false" />
           <Property Name="customer_name" Type="nvarchar" MaxLength="64" Nullable="false" />
-          <Property Name="customer_all_name" Type="nvarchar" MaxLength="128" />
-          <Property Name="tw_zip" Type="varchar" MaxLength="5" />
-          <Property Name="tw_city" Type="nvarchar" MaxLength="5" />
-          <Property Name="tw_country" Type="nvarchar" MaxLength="5" />
-          <Property Name="tw_address" Type="nvarchar" MaxLength="128" />
-          <Property Name="contact_1" Type="nvarchar" MaxLength="64" />
-          <Property Name="birthday_1" Type="smalldatetime" />
-          <Property Name="contact_2" Type="nvarchar" MaxLength="16" />
-          <Property Name="birthday_2" Type="smalldatetime" />
-          <Property Name="tel" Type="varchar" MaxLength="16" />
-          <Property Name="fax" Type="varchar" MaxLength="16" />
-          <Property Name="mobile" Type="varchar" MaxLength="16" />
-          <Property Name="sno" Type="char" MaxLength="8" />
-          <Property Name="opening_time_1" Type="varchar" MaxLength="16" />
-          <Property Name="opening_time_2" Type="varchar" MaxLength="16" />
-          <Property Name="email" Type="varchar" MaxLength="128" />
-          <Property Name="customer_type" Type="tinyint" Nullable="false" />
-          <Property Name="channel_type" Type="tinyint" Nullable="false" />
-          <Property Name="evaluate" Type="tinyint" />
-          <Property Name="store_level" Type="tinyint" Nullable="false" />
-          <Property Name="store_type" Type="tinyint" Nullable="false" />
-          <Property Name="state" Type="tinyint" />
-          <Property Name="area_id" Type="int" Nullable="false" />
-          <Property Name="level_type" Type="tinyint" />
-          <Property Name="memo" Type="nvarchar" MaxLength="256" />
-          <Property Name="mark_err" Type="bit" Nullable="false" />
-          <Property Name="owner_name" Type="nvarchar" MaxLength="16" />
-          <Property Name="sort" Type="int" Nullable="false" />
+          <Property Name="customer_type" Type="int" Nullable="false" />
+          <Property Name="sno" Type="char" MaxLength="10" />
+          <Property Name="birthday" Type="smalldatetime" />
+          <Property Name="tel_1" Type="nvarchar" MaxLength="16" />
+          <Property Name="tel_2" Type="nvarchar" MaxLength="16" />
+          <Property Name="tw_zip_1" Type="varchar" MaxLength="5" />
+          <Property Name="tw_city_1" Type="nvarchar" MaxLength="5" />
+          <Property Name="tw_country_1" Type="nvarchar" MaxLength="5" />
+          <Property Name="tw_address_1" Type="nvarchar" MaxLength="256" />
+          <Property Name="tw_zip_2" Type="varchar" MaxLength="5" />
+          <Property Name="tw_city_2" Type="nvarchar" MaxLength="5" />
+          <Property Name="tw_country_2" Type="nvarchar" MaxLength="5" />
+          <Property Name="tw_address_2" Type="nvarchar" MaxLength="256" />
+          <Property Name="memo" Type="nvarchar" MaxLength="300" />
+          <Property Name="account" Type="nvarchar" MaxLength="50" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="i_InsertDeptID" Type="int" />
           <Property Name="i_InsertDateTime" Type="datetime" />
@@ -301,8 +290,7 @@
             <End Role="MenuRole" EntitySet="MenuRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="C43A0_Mani520Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -336,49 +324,6 @@
           <Property Name="sort" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Department" Relationship="Self.FK_AspNetUsers_Department" FromRole="AspNetUsers" ToRole="Department" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-        </EntityType>
-        <EntityType Name="Customer">
-          <Key>
-            <PropertyRef Name="customer_id" />
-          </Key>
-          <Property Name="customer_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="customer_sn" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="customer_name" Type="String" MaxLength="64" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="customer_all_name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="tw_zip" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="tw_city" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="tw_country" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
-          <Property Name="tw_address" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="contact_1" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="birthday_1" Type="DateTime" Precision="0" />
-          <Property Name="contact_2" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
-          <Property Name="birthday_2" Type="DateTime" Precision="0" />
-          <Property Name="tel" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="fax" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="mobile" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="sno" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
-          <Property Name="opening_time_1" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="opening_time_2" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="customer_type" Type="Byte" Nullable="false" />
-          <Property Name="channel_type" Type="Byte" Nullable="false" />
-          <Property Name="evaluate" Type="Byte" />
-          <Property Name="store_level" Type="Byte" Nullable="false" />
-          <Property Name="store_type" Type="Byte" Nullable="false" />
-          <Property Name="state" Type="Byte" />
-          <Property Name="area_id" Type="Int32" Nullable="false" />
-          <Property Name="level_type" Type="Byte" />
-          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="mark_err" Type="Boolean" Nullable="false" />
-          <Property Name="owner_name" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
-          <Property Name="sort" Type="Int32" Nullable="false" />
-          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_InsertDeptID" Type="Int32" />
-          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_UpdateDeptID" Type="Int32" />
-          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_Lang" Type="String" MaxLength="5" FixedLength="true" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -515,7 +460,6 @@
         <EntityContainer Name="C43A0_Mani520Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
-          <EntitySet Name="Customer" EntityType="Self.Customer" />
           <EntitySet Name="Department" EntityType="Self.Department" />
           <EntitySet Name="i_Currency" EntityType="Self.i_Currency" />
           <EntitySet Name="i_IDX" EntityType="Self.i_IDX" />
@@ -537,7 +481,40 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="Menu" EntitySet="Menu" />
           </AssociationSet>
+          <EntitySet Name="Customer" EntityType="C43A0_Mani520Model.Customer" />
         </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+          </Key>
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="customer_type" Type="Int32" Nullable="false" />
+          <Property Name="sno" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="birthday" Type="DateTime" Precision="0" />
+          <Property Name="tel_1" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="tel_2" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="tw_zip_1" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="tw_city_1" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="tw_country_1" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="tw_address_1" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="tw_zip_2" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="tw_city_2" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="tw_country_2" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="tw_address_2" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="memo" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="customer_sn" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -570,50 +547,6 @@
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="user_name_c" ColumnName="user_name_c" />
                 <ScalarProperty Name="sort" ColumnName="sort" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Customer">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.Customer">
-              <MappingFragment StoreEntitySet="Customer">
-                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-                <ScalarProperty Name="customer_sn" ColumnName="customer_sn" />
-                <ScalarProperty Name="customer_name" ColumnName="customer_name" />
-                <ScalarProperty Name="customer_all_name" ColumnName="customer_all_name" />
-                <ScalarProperty Name="tw_zip" ColumnName="tw_zip" />
-                <ScalarProperty Name="tw_city" ColumnName="tw_city" />
-                <ScalarProperty Name="tw_country" ColumnName="tw_country" />
-                <ScalarProperty Name="tw_address" ColumnName="tw_address" />
-                <ScalarProperty Name="contact_1" ColumnName="contact_1" />
-                <ScalarProperty Name="birthday_1" ColumnName="birthday_1" />
-                <ScalarProperty Name="contact_2" ColumnName="contact_2" />
-                <ScalarProperty Name="birthday_2" ColumnName="birthday_2" />
-                <ScalarProperty Name="tel" ColumnName="tel" />
-                <ScalarProperty Name="fax" ColumnName="fax" />
-                <ScalarProperty Name="mobile" ColumnName="mobile" />
-                <ScalarProperty Name="sno" ColumnName="sno" />
-                <ScalarProperty Name="opening_time_1" ColumnName="opening_time_1" />
-                <ScalarProperty Name="opening_time_2" ColumnName="opening_time_2" />
-                <ScalarProperty Name="email" ColumnName="email" />
-                <ScalarProperty Name="customer_type" ColumnName="customer_type" />
-                <ScalarProperty Name="channel_type" ColumnName="channel_type" />
-                <ScalarProperty Name="evaluate" ColumnName="evaluate" />
-                <ScalarProperty Name="store_level" ColumnName="store_level" />
-                <ScalarProperty Name="store_type" ColumnName="store_type" />
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="area_id" ColumnName="area_id" />
-                <ScalarProperty Name="level_type" ColumnName="level_type" />
-                <ScalarProperty Name="memo" ColumnName="memo" />
-                <ScalarProperty Name="mark_err" ColumnName="mark_err" />
-                <ScalarProperty Name="owner_name" ColumnName="owner_name" />
-                <ScalarProperty Name="sort" ColumnName="sort" />
-                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
-                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
-                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
-                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
-                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
-                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
-                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -752,6 +685,39 @@
               <ScalarProperty Name="menu_id" ColumnName="menu_id" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="customer_sn" ColumnName="customer_sn" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="tw_address_2" ColumnName="tw_address_2" />
+                <ScalarProperty Name="tw_country_2" ColumnName="tw_country_2" />
+                <ScalarProperty Name="tw_city_2" ColumnName="tw_city_2" />
+                <ScalarProperty Name="tw_zip_2" ColumnName="tw_zip_2" />
+                <ScalarProperty Name="tw_address_1" ColumnName="tw_address_1" />
+                <ScalarProperty Name="tw_country_1" ColumnName="tw_country_1" />
+                <ScalarProperty Name="tw_city_1" ColumnName="tw_city_1" />
+                <ScalarProperty Name="tw_zip_1" ColumnName="tw_zip_1" />
+                <ScalarProperty Name="tel_2" ColumnName="tel_2" />
+                <ScalarProperty Name="tel_1" ColumnName="tel_1" />
+                <ScalarProperty Name="birthday" ColumnName="birthday" />
+                <ScalarProperty Name="sno" ColumnName="sno" />
+                <ScalarProperty Name="customer_type" ColumnName="customer_type" />
+                <ScalarProperty Name="customer_name" ColumnName="customer_name" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

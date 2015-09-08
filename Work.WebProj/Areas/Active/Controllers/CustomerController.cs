@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace DotWeb.Areas.Active.Controllers
 {
-    public class VisitController : AdminController
+    public class CustomerController : AdminController
     {
         #region Action and function section
         public ActionResult Main()

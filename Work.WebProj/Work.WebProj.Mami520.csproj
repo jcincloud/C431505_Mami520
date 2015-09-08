@@ -192,6 +192,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
+    <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
     <Content Include="Areas\Active\Views\Product\Main.cshtml" />
@@ -232,6 +233,7 @@
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
+    <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\Api\RolesController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\Api\GetActionController.cs" />
@@ -345,8 +347,10 @@
     <Content Include="Content\bootstrap\sass\_bootstrap-compass.scss" />
     <Content Include="Content\bootstrap\sass\_bootstrap-mincer.scss" />
     <Content Include="Content\bootstrap\sass\_bootstrap-sprockets.scss" />
+    <Content Include="Content\css\bootstrap-datetimepicker-build.css" />
     <Content Include="Content\css\index.css" />
     <Content Include="Content\css\swiper.min.css" />
+    <Content Include="Content\css\toastr.css" />
     <Content Include="Content\font\MElleHK.otf" />
     <Content Include="Content\font\MElleHK.ttf" />
     <Content Include="Content\font\MElleHK.woff" />
@@ -1039,7 +1043,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Active\Controllers\" />
     <Folder Include="Areas\Active\Views\Shared\" />
     <Folder Include="Areas\Base\Views\Shared\" />
     <Folder Include="Content\sass\vendor\" />
