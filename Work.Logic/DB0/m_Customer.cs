@@ -13,6 +13,7 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     public partial class m_Customer :BaseEntityTable {
     public int customer_id { get; set; }
+    public string customer_sn { get; set; }
     public string customer_name { get; set; }
     public int customer_type { get; set; }
     public string sno { get; set; }
@@ -28,8 +29,8 @@ namespace ProcCore.Business.DB0
     public string tw_country_2 { get; set; }
     public string tw_address_2 { get; set; }
     public string memo { get; set; }
-    public string account { get; set; }
-    public string password { get; set; }
+    public string app_account { get; set; }
+    public string app_password { get; set; }
     public bool i_Hide { get; set; }
     public string i_InsertUserID { get; set; }
     public Nullable<int> i_InsertDeptID { get; set; }
@@ -38,6 +39,5 @@ namespace ProcCore.Business.DB0
     public Nullable<int> i_UpdateDeptID { get; set; }
     public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
     public string i_Lang { get; set; }
-    public string customer_sn { get; set; }
     }
 }

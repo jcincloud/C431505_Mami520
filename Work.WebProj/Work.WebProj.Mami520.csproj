@@ -192,6 +192,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
+    <Compile Include="Areas\Active\Controllers\MealIDController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
@@ -218,6 +219,7 @@
     <Content Include="Areas\Active\Views\Stock\Main2.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main3.cshtml" />
     <Content Include="Areas\Active\Views\MapCustomerAgent\Main2.cshtml" />
+    <Content Include="Areas\Active\Views\MealID\Main.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -233,6 +235,7 @@
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
+    <Compile Include="Controllers\Api\MealIDController.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\Api\RolesController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
@@ -669,14 +672,12 @@
     <Content Include="Scripts\app\swipe.js" />
     <Content Include="Scripts\app\toastr.min.js" />
     <Content Include="Scripts\build\comminc.js" />
-    <Content Include="Scripts\build\func\c-Comm.js" />
     <Content Include="Scripts\build\func\inc\c-Comm.js" />
     <Content Include="Scripts\build\func\inc\c-ImgFileSort.js" />
     <Content Include="Scripts\build\func\m-Agent.js" />
     <Content Include="Scripts\build\func\m-ChangePassword.js" />
     <Content Include="Scripts\build\func\m-Customer.js" />
     <Content Include="Scripts\build\func\m-CustomerAgent.js" />
-    <Content Include="Scripts\build\func\m-CustomerSales.js" />
     <Content Include="Scripts\build\func\m-login.js" />
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductBrand.js" />
@@ -692,14 +693,6 @@
     <Content Include="Scripts\build\func\m-Stock.js" />
     <Content Include="Scripts\build\func\m-Stock_view.js" />
     <Content Include="Scripts\build\func\m-Users.js" />
-    <Content Include="Scripts\build\func\t-Customer.js" />
-    <Content Include="Scripts\build\func\t-login.js" />
-    <Content Include="Scripts\build\func\t-New.js" />
-    <Content Include="Scripts\build\func\t-Schedule.js" />
-    <Content Include="Scripts\build\func\t-VisitView.js" />
-    <Content Include="Scripts\build\func\t-Visit_content.js" />
-    <Content Include="Scripts\build\func\t-Visit_list.js" />
-    <Content Include="Scripts\build\func\w-index.js" />
     <Content Include="Scripts\build\ts\commangular.js" />
     <Content Include="Scripts\build\ts\commfunc.js" />
     <Content Include="Scripts\build\ts\commupload.js" />
@@ -832,12 +825,7 @@
     <Content Include="Views\Sales\Schedule.cshtml" />
     <Content Include="Views\Sales\Visit_content.cshtml" />
     <Content Include="Views\Sales\Visit_list.cshtml" />
-    <Content Include="Scripts\src\jsx\t-login.jsx" />
-    <Content Include="Scripts\src\jsx\t-New.jsx" />
     <Content Include="Views\Shared\Manage\RLayout.tablet.cshtml" />
-    <Content Include="Scripts\src\jsx\t-Schedule.jsx" />
-    <Content Include="Scripts\src\jsx\t-Visit_list.jsx" />
-    <Content Include="Scripts\src\jsx\t-Visit_content.jsx" />
     <Content Include="Scripts\src\jsx\m-SalesProduct.jsx" />
     <Content Include="Scripts\src\jsx\m-SalesArea.jsx" />
     <Content Include="_Code\Ashx\ValidateCodeB.ashx" />
@@ -951,9 +939,8 @@
     <Content Include="Scripts\src\jsx\m-Report05_CustomerAgent.jsx" />
     <Content Include="Scripts\src\jsx\m-Report04_ProductCustomer.jsx" />
     <Content Include="Scripts\src\jsx\m-ProductBrand.jsx" />
-    <Content Include="Scripts\src\jsx\w-index.jsx" />
-    <Content Include="Scripts\src\jsx\t-VisitView.jsx" />
     <Content Include="Scripts\src\jsx\m-Stock_view.jsx" />
+    <Content Include="Scripts\src\jsx\m-MealID.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1097,6 +1084,7 @@
     <Content Include="Areas\Active\Views\ProductCategory\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Report\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\ProductBrand\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\MealID\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="_Code\RPTFile\MemeberLabel.rdlc" />
   </ItemGroup>
   <PropertyGroup>

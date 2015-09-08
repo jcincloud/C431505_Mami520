@@ -119,6 +119,9 @@
     <Compile Include="DB0\i_UserLoginLog.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB0\MealID.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB0\Menu.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
@@ -150,6 +153,9 @@
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_UserLoginLog.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_MealID.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Menu.cs">

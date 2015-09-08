@@ -340,24 +340,10 @@ namespace ProcCore.Business.DB0
         public string UserName { set; get; }
 
     }
-    public class q_OtherUnit : QueryBase
-    {
-        public string name { get; set; }
-        public int? category { get; set; }
-        public bool? state { get; set; }
-        public int? hot { get; set; }
-
-    }
     public class q_Product : QueryBase
     {
         public string product_name { get; set; }
         public int? product_category_id { get; set; }
-    }
-    public class q_ProductCategory : QueryBase
-    {
-    }
-    public class q_ProductBrand : QueryBase
-    {
     }
     public class q_Customer : QueryBase
     {
@@ -370,27 +356,13 @@ namespace ProcCore.Business.DB0
         public string tel { get; set; }
         public int? customer_type { get; set; }
     }
-    public class q_Visit : QueryBase
+    public class q_MealID : QueryBase
     {
-        public string i_InsertUserID { get; set; }
-        public DateTime? i_InsertDateTime { get; set; }
+        public string meal_id { get; set; }
+        public bool? i_Use { get; set; }
+        public bool? i_Hide { get; set; }
     }
-    public class q_MapSalesProduct : QueryBase
-    {
-    }
-    public class q_Agent : QueryBase
-    {
-        public string agent_name { get; set; }
-    }
-    public class q_Stock : QueryBase
-    {
-        public int? year { get; set; }
-        public int? month { get; set; }
-    }
-    public class q_StockDetail : QueryBase
-    {
-        public int stock_id { get; set; }
-    }
+
     #endregion
 
     #region c_Model_Define

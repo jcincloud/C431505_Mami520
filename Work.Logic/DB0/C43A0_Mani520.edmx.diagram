@@ -19,6 +19,7 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_AspNetUsers_Department" ManuallyRouted="false" />
         <AssociationConnector Association="C43A0_Mani520Model.AspNetUserRoles" ManuallyRouted="false" />
         <AssociationConnector Association="C43A0_Mani520Model.MenuRole" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MealID" Width="1.5" PointX="12.375" PointY="0.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Customer" Width="1.5" PointX="5.375" PointY="10.75" />
       </Diagram>
     </edmx:Diagrams>

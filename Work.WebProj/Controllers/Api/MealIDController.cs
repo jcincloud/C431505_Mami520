@@ -12,74 +12,53 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class CustomerController : ajaxApi<Customer, q_Customer>
+    public class MealIDController : ajaxApi<MealID, q_MealID>
     {
-        public async Task<IHttpActionResult> Get(int id)
+        public async Task<IHttpActionResult> Get(string id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.Customer.FindAsync(id);
-                r = new ResultInfo<Customer>() { data = item };
+                item = await db0.MealID.FindAsync(id);
+                r = new ResultInfo<MealID>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_Customer q)
+        public async Task<IHttpActionResult> Get([FromUri]q_MealID q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.Customer
-                    .OrderByDescending(x => x.customer_id).AsQueryable();
+                var qr = db0.MealID
+                    .OrderBy(x => x.meal_id).AsQueryable();
 
-                if (q.customer_name != null)
+                if (q.meal_id != null)
                 {
-                    qr = qr.Where(x => x.customer_name.Contains(q.customer_name));
+                    qr = qr.Where(x => x.meal_id.Contains(q.meal_id));
                 }
 
-                if (q.tel != null)
+                if (q.i_Use != null)
                 {
-                    qr = qr.Where(x => x.tel_1.Contains(q.tel));
+                    qr = qr.Where(x => x.i_Use == q.i_Use);
                 }
-                if (q.customer_type != null)
+                if (q.i_Hide != null)
                 {
-                    qr = qr.Where(x => x.customer_type==q.customer_type);
-                }
-
-                if (q.address != null)
-                {
-                    qr = qr.Where(x => x.tw_address_1.Contains(q.address));
+                    qr = qr.Where(x => x.i_Hide == q.i_Hide);
                 }
 
-                if (q.city != null)
+                var result = qr.Select(x => new m_MealID()
                 {
-                    qr = qr.Where(x => x.tw_city_1 == q.city);
-                }
-
-                if (q.country != null)
-                {
-                    qr = qr.Where(x => x.tw_country_1 == q.country);
-                }
-
-                var result = qr.Select(x => new m_Customer()
-                {
-                    customer_id = x.customer_id,
-                    customer_sn=x.customer_sn,
-                    customer_name = x.customer_name,
-                    customer_type = x.customer_type,
-                    tw_city_1 = x.tw_city_1,
-                    tw_country_1 = x.tw_country_1,
-                    tw_address_1 = x.tw_address_1,
-                    tel_1 = x.tel_1,
-                    tel_2 = x.tel_2
+                    meal_id = x.meal_id,
+                    i_Hide = x.i_Hide,
+                    i_Use = x.i_Use
                 });
 
                 int page = (q.page == null ? 1 : (int)q.page);
                 int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
                 var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
 
-                return Ok<GridInfo<m_Customer>>(new GridInfo<m_Customer>()
+                return Ok<GridInfo<m_MealID>>(new GridInfo<m_MealID>()
                 {
                     rows = segment,
                     total = PageCount.TotalPage,
@@ -91,7 +70,7 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]Customer md)
+        public async Task<IHttpActionResult> Put([FromBody]MealID md)
         {
             ResultInfo r = new ResultInfo();
 
@@ -99,33 +78,15 @@ namespace DotWeb.Api
             {
                 db0 = getDB0();
 
-                item = await db0.Customer.FindAsync(md.customer_id);
-                item.customer_name = md.customer_name;
-                item.customer_type = md.customer_type;
-                item.sno = md.sno;
-                item.birthday = md.birthday;
-                item.tel_1 = md.tel_1;
-                item.tel_2 = md.tel_2;
-                item.tw_zip_1 = md.tw_zip_1;
-                item.tw_zip_2 = md.tw_zip_2;
-                item.tw_city_1 = md.tw_city_1;
-                item.tw_city_2 = md.tw_city_2;
-                item.tw_country_1 = md.tw_country_1;
-                item.tw_country_2 = md.tw_country_2;
-                item.tw_address_1 = md.tw_address_1;
-                item.tw_address_2 = md.tw_address_2;
+                item = await db0.MealID.FindAsync(md.meal_id);
+                item.meal_id = md.meal_id;
+                item.i_Hide = md.i_Hide;
+                item.i_Use = md.i_Use;
                 item.memo = md.memo;
-                item.app_account = md.app_account;
-                item.app_password = md.app_password;
-
-                item.i_UpdateUserID = this.UserId;
-                item.i_UpdateDateTime = DateTime.Now;
-                item.i_UpdateDeptID = this.departmentId;
-
 
                 await db0.SaveChangesAsync();
                 r.result = true;
-                r.id = md.customer_id;
+                r.aspnetid = md.meal_id;//暫時用aspnetid
             }
             catch (Exception ex)
             {
@@ -138,12 +99,12 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]Customer md)
+        public async Task<IHttpActionResult> Post([FromBody]MealID md)
         {
             ResultInfo r = new ResultInfo();
 
-            md.customer_id = GetNewId(ProcCore.Business.CodeTable.Customer);
-            md.customer_sn = md.customer_id.ToString();
+            //md.customer_id = GetNewId(ProcCore.Business.CodeTable.Customer);
+
             if (!ModelState.IsValid)
             {
                 r.message = ModelStateErrorPack();
@@ -155,16 +116,18 @@ namespace DotWeb.Api
                 #region working a
                 db0 = getDB0();
 
+                if (db0.MealID.Any(x => x.meal_id == md.meal_id))
+                {
+                    r.message = "此用餐編號已存在!";
+                    r.result = false;
+                    return Ok(r);
+                }
 
-                md.i_InsertUserID = this.UserId;
-                md.i_InsertDateTime = DateTime.Now;
-                md.i_InsertDeptID = this.departmentId;
-                md.i_Lang = "zh-TW";
-                db0.Customer.Add(md);
+                db0.MealID.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.customer_id;
+                r.aspnetid = md.meal_id;
                 return Ok(r);
                 #endregion
             }
@@ -194,7 +157,7 @@ namespace DotWeb.Api
                 //tx.Dispose();
             }
         }
-        public async Task<IHttpActionResult> Delete([FromUri]int[] ids)
+        public async Task<IHttpActionResult> Delete([FromUri]string[] ids)
         {
             ResultInfo r = new ResultInfo();
             try
@@ -203,9 +166,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new Customer() { customer_id = id };
-                    db0.Customer.Attach(item);
-                    db0.Customer.Remove(item);
+                    item = new MealID() { meal_id = id };
+                    db0.MealID.Attach(item);
+                    db0.MealID.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();

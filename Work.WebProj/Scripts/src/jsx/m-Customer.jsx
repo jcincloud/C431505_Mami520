@@ -405,6 +405,7 @@ var GirdForm = React.createClass({
 					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
 				</ul>
 				<h4 className="title">{this.props.Caption}</h4>
+				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
 				<div className="col-xs-8">
 					<div className="form-group">
@@ -534,9 +535,6 @@ var GirdForm = React.createClass({
 					<div className="form-action text-center">
 						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
 						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
-					</div>
-					<div className="alert alert-warning">
-						<p><strong className="text-danger">紅色標題</strong> 為必填欄位。</p>
 					</div>
 				</div>
 				</form>

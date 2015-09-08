@@ -61,8 +61,8 @@
           <Property Name="tw_country_2" Type="nvarchar" MaxLength="5" />
           <Property Name="tw_address_2" Type="nvarchar" MaxLength="256" />
           <Property Name="memo" Type="nvarchar" MaxLength="300" />
-          <Property Name="account" Type="nvarchar" MaxLength="50" />
-          <Property Name="password" Type="nvarchar" MaxLength="50" />
+          <Property Name="app_account" Type="nvarchar" MaxLength="50" />
+          <Property Name="app_password" Type="nvarchar" MaxLength="50" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="i_InsertDeptID" Type="int" />
@@ -141,6 +141,15 @@
           <Property Name="account" Type="varchar" MaxLength="24" Nullable="false" />
           <Property Name="logintime" Type="datetime" Nullable="false" />
           <Property Name="browers" Type="varchar" MaxLength="2048" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MealID">
+          <Key>
+            <PropertyRef Name="meal_id" />
+          </Key>
+          <Property Name="meal_id" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="memo" Type="nvarchar" MaxLength="256" />
+          <Property Name="i_Use" Type="bit" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Menu">
           <Key>
@@ -266,6 +275,7 @@
           <EntitySet Name="i_Parm" EntityType="Self.i_Parm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_SN" EntityType="Self.i_SN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_UserLoginLog" EntityType="Self.i_UserLoginLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MealID" EntityType="Self.MealID" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuRole" EntityType="Self.MenuRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
@@ -481,13 +491,24 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="Menu" EntitySet="Menu" />
           </AssociationSet>
+          <EntitySet Name="MealID" EntityType="C43A0_Mani520Model.MealID" />
           <EntitySet Name="Customer" EntityType="C43A0_Mani520Model.Customer" />
         </EntityContainer>
+        <EntityType Name="MealID">
+          <Key>
+            <PropertyRef Name="meal_id" />
+          </Key>
+          <Property Name="meal_id" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="i_Use" Type="Boolean" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="customer_id" />
           </Key>
           <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_sn" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
           <Property Name="customer_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="customer_type" Type="Int32" Nullable="false" />
           <Property Name="sno" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
@@ -503,8 +524,8 @@
           <Property Name="tw_country_2" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="tw_address_2" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="memo" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="app_account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="app_password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="i_Hide" Type="Boolean" Nullable="false" />
           <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="i_InsertDeptID" Type="Int32" />
@@ -513,7 +534,6 @@
           <Property Name="i_UpdateDeptID" Type="Int32" />
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-          <Property Name="customer_sn" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -685,10 +705,19 @@
               <ScalarProperty Name="menu_id" ColumnName="menu_id" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="MealID">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.MealID">
+              <MappingFragment StoreEntitySet="MealID">
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="i_Use" ColumnName="i_Use" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Customer">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.Customer">
               <MappingFragment StoreEntitySet="Customer">
-                <ScalarProperty Name="customer_sn" ColumnName="customer_sn" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -697,8 +726,8 @@
                 <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
                 <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
                 <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="app_password" ColumnName="app_password" />
+                <ScalarProperty Name="app_account" ColumnName="app_account" />
                 <ScalarProperty Name="memo" ColumnName="memo" />
                 <ScalarProperty Name="tw_address_2" ColumnName="tw_address_2" />
                 <ScalarProperty Name="tw_country_2" ColumnName="tw_country_2" />
@@ -714,6 +743,7 @@
                 <ScalarProperty Name="sno" ColumnName="sno" />
                 <ScalarProperty Name="customer_type" ColumnName="customer_type" />
                 <ScalarProperty Name="customer_name" ColumnName="customer_name" />
+                <ScalarProperty Name="customer_sn" ColumnName="customer_sn" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
               </MappingFragment>
             </EntityTypeMapping>
