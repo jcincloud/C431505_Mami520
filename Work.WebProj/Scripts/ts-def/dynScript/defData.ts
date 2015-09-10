@@ -485,9 +485,28 @@
     ];
     export var CustomerType = [
         { id: 1, label: '自有客戶', className: 'label label-default', code: 'store' },
-        { id: 2, label: '醫院', className: 'label label-default', code: 'straght' },
-        { id: 3, label: '月子中心', className: 'label label-default', code: 'straght' },
+        { id: 2, label: '醫院', className: 'label label-success', code: 'straght' },
+        { id: 3, label: '月子中心', className: 'label label-success', code: 'straght' },
         { id: 4, label: '轉介', className: 'label label-default', code: 'straght' }
+    ];
+    export var ProductType = [
+        { id: 1, label: '試吃', className: 'label label-default', code: 'store' },
+        { id: 2, label: '月子餐', className: 'label label-success', code: 'straght' },
+        { id: 3, label: '一般產品', className: 'label label-primary', code: 'straght' },
+        { id: 4, label: '折扣&退款', className: 'label label-danger', code: 'straght' }
+    ];
+
+    export var BornType = [
+        { id: 0, label: '未知', className: 'label label-warning', code: 'store' },
+        { id: 1, label: '自然產', className: 'label label-success', code: 'store' },
+        { id: 2, label: '剖腹產', className: 'label label-primary', code: 'straght' },
+        { id: 3, label: '小產', className: 'label label-default', code: 'straght' }
+    ];
+
+    export var SexType = [
+        { id: null, label: '未知', className: 'label label-default', code: 'store' },
+        { id: true, label: '男', className: 'label label-primary', code: 'straght' },
+        { id: false, label: '女', className: 'label label-danger', code: 'straght' }
     ];
 
     export var MonthsData = [
@@ -503,12 +522,5 @@
         { id: 10, label: '10月' },
         { id: 11, label: '11月' },
         { id: 12, label: '12月' }
-    ]
-    export var AreasData = [
-        { id: 1, label: '北一區' },
-        { id: 2, label: '北二區' },
-        { id: 3, label: '中區' },
-        { id: 4, label: '南區' },
-        { id: 5, label: '花東區' }
     ]
 }

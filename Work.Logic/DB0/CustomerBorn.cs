@@ -13,17 +13,12 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class Customer : BaseEntityTable
+    public partial class CustomerBorn : BaseEntityTable
     {
-        public Customer()
-        {
-            this.CustomerBorn = new HashSet<CustomerBorn>();
-        }
-    
+        public int born_id { get; set; }
         public int customer_id { get; set; }
-        public string customer_sn { get; set; }
-        public string customer_name { get; set; }
-        public int customer_type { get; set; }
+        public string meal_id { get; set; }
+        public string mom_name { get; set; }
         public string sno { get; set; }
         public Nullable<System.DateTime> birthday { get; set; }
         public string tel_1 { get; set; }
@@ -36,9 +31,15 @@ namespace ProcCore.Business.DB0
         public string tw_city_2 { get; set; }
         public string tw_country_2 { get; set; }
         public string tw_address_2 { get; set; }
+        public string born_frequency { get; set; }
+        public Nullable<bool> baby_sex { get; set; }
+        public Nullable<System.DateTime> born_day { get; set; }
+        public Nullable<System.DateTime> expected_born_day { get; set; }
+        public Nullable<int> born_type { get; set; }
+        public string checkup_hospital { get; set; }
+        public string born_hospital { get; set; }
         public string memo { get; set; }
-        public string app_account { get; set; }
-        public string app_password { get; set; }
+        public bool is_close { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -49,6 +50,6 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual ICollection<CustomerBorn> CustomerBorn { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

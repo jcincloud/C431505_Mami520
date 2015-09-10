@@ -197,9 +197,9 @@ namespace ProcCore.Business.DB0
     }
 
     #region Model Expand
-    public partial class Area
+    public partial class m_Customer
     {
-        public bool is_take { get; set; }
+        public int born_times { get; set; }
     }
     public partial class Agent
     {
@@ -323,7 +323,8 @@ namespace ProcCore.Business.DB0
         public int m { get; set; }
         public DateTime? inester_datetime { get; set; }
     }
-    public class ExcelCustomerProduct : CustomerProduct {
+    public class ExcelCustomerProduct : CustomerProduct
+    {
         public List<decimal> p_qtys { get; set; }
         public bool is_hide { get; set; }
     }
@@ -343,18 +344,20 @@ namespace ProcCore.Business.DB0
     public class q_Product : QueryBase
     {
         public string product_name { get; set; }
-        public int? product_category_id { get; set; }
+        public int? product_type { get; set; }
     }
     public class q_Customer : QueryBase
     {
-        public string i_InsertUserID { get; set; }
-        public DateTime? i_InsertDateTime { get; set; }
         public string customer_name { get; set; }
         public string city { get; set; }
         public string country { get; set; }
         public string address { get; set; }
         public string tel { get; set; }
         public int? customer_type { get; set; }
+    }
+    public class q_CustomerBorn : QueryBase
+    {
+        public int? main_id { get; set; }
     }
     public class q_MealID : QueryBase
     {

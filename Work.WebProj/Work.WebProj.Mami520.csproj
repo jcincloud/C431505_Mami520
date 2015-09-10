@@ -192,8 +192,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
+    <Compile Include="Areas\Active\Controllers\CustomerBornController.cs" />
     <Compile Include="Areas\Active\Controllers\MealIDController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
+    <Compile Include="Areas\Active\Controllers\ProductController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
     <Content Include="Areas\Active\Views\Product\Main.cshtml" />
@@ -203,10 +205,7 @@
     <Content Include="Areas\Active\Views\Tablet\Schedule.cshtml" />
     <Content Include="Areas\Active\Views\Tablet\Visit_list.cshtml" />
     <Content Include="Areas\Active\Views\Tablet\Visit_content.cshtml" />
-    <Content Include="Areas\Active\Views\MapCustomerSales\Main.cshtml" />
-    <Content Include="Areas\Active\Views\MapSalesProduct\Main.cshtml" />
     <Content Include="Areas\Active\Views\Agent\Main.cshtml" />
-    <Content Include="Areas\Active\Views\MapCustomerAgent\Main.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main.cshtml" />
     <Content Include="Areas\Active\Views\ProductCategory\Main.cshtml" />
     <Content Include="Areas\Active\Views\Report\CustomerVisit.cshtml" />
@@ -218,8 +217,8 @@
     <Content Include="Areas\Active\Views\ProductBrand\Main.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main2.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main3.cshtml" />
-    <Content Include="Areas\Active\Views\MapCustomerAgent\Main2.cshtml" />
     <Content Include="Areas\Active\Views\MealID\Main.cshtml" />
+    <Content Include="Areas\Active\Views\CustomerBorn\Main.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -235,8 +234,10 @@
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
+    <Compile Include="Controllers\Api\CustomerBornController.cs" />
     <Compile Include="Controllers\Api\MealIDController.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
+    <Compile Include="Controllers\Api\ProductController.cs" />
     <Compile Include="Controllers\Api\RolesController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\Api\GetActionController.cs" />
@@ -831,7 +832,7 @@
     <Content Include="_Code\Ashx\ValidateCodeB.ashx" />
     <Content Include="Scripts\src\jsx\m-Agent.jsx" />
     <Content Include="Scripts\src\jsx\m-Users.jsx" />
-    <None Include="Scripts\src\jsx\m-CustomerAgent.jsx" />
+    <Content Include="Scripts\src\jsx\m-CustomerBorn.jsx" />
     <Content Include="Scripts\src\jsx\m-Stock.jsx" />
     <Content Include="Scripts\src\jsx\m-ProductCategory.jsx" />
     <Content Include="Scripts\src\jsx\m-Roles.jsx" />
@@ -1076,15 +1077,13 @@
   <ItemGroup>
     <Content Include="Areas\Active\Views\Product\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Visit\App_LocalResources\Main.cshtml.resx" />
-    <Content Include="Areas\Active\Views\MapCustomerSales\App_LocalResources\Main.cshtml.resx" />
-    <Content Include="Areas\Active\Views\MapSalesProduct\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Agent\App_LocalResources\Main.cshtml.resx" />
-    <Content Include="Areas\Active\Views\MapCustomerAgent\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Stock\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\ProductCategory\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Report\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\ProductBrand\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\MealID\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\CustomerBorn\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="_Code\RPTFile\MemeberLabel.rdlc" />
   </ItemGroup>
   <PropertyGroup>

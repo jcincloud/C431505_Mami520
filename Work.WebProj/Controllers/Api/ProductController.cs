@@ -30,7 +30,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.Product
-                    .OrderByDescending(x => x.product_id).AsQueryable();
+                    .OrderByDescending(x => x.sort).AsQueryable();
 
 
                 if (q.product_name != null)
@@ -38,18 +38,18 @@ namespace DotWeb.Api
                     qr = qr.Where(x => x.product_name.Contains(q.product_name));
                 }
 
-                if (q.product_category_id != null)
+                if (q.product_type != null)
                 {
-                    qr = qr.Where(x => x.product_category_id == q.product_category_id);
+                    qr = qr.Where(x => x.product_type==q.product_type);
                 }
 
                 var result = qr.Select(x => new m_Product()
                 {
                     product_id = x.product_id,
-                    product_sn = x.product_sn,
                     product_name = x.product_name,
-                    product_name_c = x.product_name_c,
-                    product_category_name = x.ProductCategory.product_category_name
+                    product_type = x.product_type,
+                    price = x.price,
+                    standard = x.standard
                 });
 
 
@@ -77,13 +77,13 @@ namespace DotWeb.Api
                 db0 = getDB0();
 
                 item = await db0.Product.FindAsync(md.product_id);
-                item.product_sn = md.product_sn;
                 item.product_name = md.product_name;
-                item.product_name_c = md.product_name_c;
-                item.product_category_id = md.product_category_id;
-                item.product_brand_id = md.product_brand_id;
-                //item.brand = md.brand; 欄位改成用product_brand_id
+                item.product_type = md.product_type;
+                item.price = md.price;
                 item.standard = md.standard;
+                item.sort = md.sort;
+                item.memo = md.memo;
+
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
@@ -105,7 +105,7 @@ namespace DotWeb.Api
         }
         public async Task<IHttpActionResult> Post([FromBody]Product md)
         {
-            md.product_id = GetNewId(ProcCore.Business.CodeTable.Base);
+            md.product_id = GetNewId(ProcCore.Business.CodeTable.Product);
             ResultInfo r = new ResultInfo();
             if (!ModelState.IsValid)
             {

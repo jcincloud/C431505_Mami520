@@ -12,91 +12,44 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class CustomerController : ajaxApi<Customer, q_Customer>
+    public class CustomerBornController : ajaxApi<CustomerBorn, q_CustomerBorn>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.Customer.FindAsync(id);
-                r = new ResultInfo<Customer>() { data = item };
+                item = await db0.CustomerBorn.FindAsync(id);
+                r = new ResultInfo<CustomerBorn>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_Customer q)
+        public async Task<IHttpActionResult> Get([FromUri]q_CustomerBorn q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.Customer
-                    .OrderByDescending(x => x.customer_id).AsQueryable();
+                var items = (from x in db0.CustomerBorn
+                             orderby x.born_day descending
+                             where x.customer_id == q.main_id
+                             select new m_CustomerBorn()
+                             {
+                                 customer_id = x.customer_id,
+                                 born_id = x.born_id,
+                                 born_day = x.born_day,
+                                 meal_id = x.meal_id,
+                                 mom_name = x.mom_name,
+                                 baby_sex = x.baby_sex,
+                                 born_type = x.born_type,
+                                 is_close = x.is_close
+                             });
 
-                if (q.customer_name != null)
-                {
-                    qr = qr.Where(x => x.customer_name.Contains(q.customer_name));
-                }
-
-                if (q.tel != null)
-                {
-                    qr = qr.Where(x => x.tel_1.Contains(q.tel));
-                }
-                if (q.customer_type != null)
-                {
-                    qr = qr.Where(x => x.customer_type == q.customer_type);
-                }
-
-                if (q.address != null)
-                {
-                    qr = qr.Where(x => x.tw_address_1.Contains(q.address));
-                }
-
-                if (q.city != null)
-                {
-                    qr = qr.Where(x => x.tw_city_1 == q.city);
-                }
-
-                if (q.country != null)
-                {
-                    qr = qr.Where(x => x.tw_country_1 == q.country);
-                }
-
-                var result = qr.Select(x => new m_Customer()
-                {
-                    customer_id = x.customer_id,
-                    customer_sn = x.customer_sn,
-                    customer_name = x.customer_name,
-                    customer_type = x.customer_type,
-                    tw_city_1 = x.tw_city_1,
-                    tw_country_1 = x.tw_country_1,
-                    tw_address_1 = x.tw_address_1,
-                    tel_1 = x.tel_1,
-                    tel_2 = x.tel_2,
-                    born_times = 0
-                });
-
-                int page = (q.page == null ? 1 : (int)q.page);
-                int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
-                var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
-                foreach (var item in segment)
-                {
-                    int count = db0.CustomerBorn.Where(x => x.customer_id == item.customer_id).Count();
-                    item.born_times = count;
-                }
-                return Ok<GridInfo<m_Customer>>(new GridInfo<m_Customer>()
-                {
-                    rows = segment,
-                    total = PageCount.TotalPage,
-                    page = PageCount.Page,
-                    records = PageCount.RecordCount,
-                    startcount = PageCount.StartCount,
-                    endcount = PageCount.EndCount
-                });
+                return Ok(items.ToList());
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]Customer md)
+        public async Task<IHttpActionResult> Put([FromBody]CustomerBorn md)
         {
             ResultInfo r = new ResultInfo();
 
@@ -104,9 +57,9 @@ namespace DotWeb.Api
             {
                 db0 = getDB0();
 
-                item = await db0.Customer.FindAsync(md.customer_id);
-                item.customer_name = md.customer_name;
-                item.customer_type = md.customer_type;
+                item = await db0.CustomerBorn.FindAsync(md.born_id);
+                item.mom_name = md.mom_name;
+                item.meal_id = md.meal_id;
                 item.sno = md.sno;
                 item.birthday = md.birthday;
                 item.tel_1 = md.tel_1;
@@ -120,8 +73,13 @@ namespace DotWeb.Api
                 item.tw_address_1 = md.tw_address_1;
                 item.tw_address_2 = md.tw_address_2;
                 item.memo = md.memo;
-                item.app_account = md.app_account;
-                item.app_password = md.app_password;
+                item.born_frequency = md.born_frequency;
+                item.baby_sex = md.baby_sex;
+                item.born_day = md.born_day;
+                item.expected_born_day = md.expected_born_day;
+                item.born_type = md.born_type;
+                item.checkup_hospital = md.checkup_hospital;
+                item.born_hospital = md.born_hospital;
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
@@ -143,12 +101,12 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]Customer md)
+        public async Task<IHttpActionResult> Post([FromBody]CustomerBorn md)
         {
             ResultInfo r = new ResultInfo();
 
-            md.customer_id = GetNewId(ProcCore.Business.CodeTable.Customer);
-            md.customer_sn = md.customer_id.ToString();
+            md.born_id = GetNewId(ProcCore.Business.CodeTable.CustomerBorn);
+
             if (!ModelState.IsValid)
             {
                 r.message = ModelStateErrorPack();
@@ -165,11 +123,11 @@ namespace DotWeb.Api
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
                 md.i_Lang = "zh-TW";
-                db0.Customer.Add(md);
+                db0.CustomerBorn.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.customer_id;
+                r.id = md.born_id;
                 return Ok(r);
                 #endregion
             }
@@ -208,9 +166,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new Customer() { customer_id = id };
-                    db0.Customer.Attach(item);
-                    db0.Customer.Remove(item);
+                    item = new CustomerBorn() { born_id = id };
+                    db0.CustomerBorn.Attach(item);
+                    db0.CustomerBorn.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();

@@ -1,4 +1,4 @@
-﻿var GridRow = React.createClass({
+var GridRow = React.createClass({
 	mixins: [React.addons.LinkedStateMixin], 
 	getInitialState: function() {  
 		return { 
@@ -14,12 +14,14 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					{/*<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>*/}
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
-					<td>{this.props.itemData.product_name}</td>
-					<td><StateForGrid stateData={CommData.ProductType} id={this.props.itemData.product_type} /></td>
-					<td>{this.props.itemData.price}</td>
-					<td>{this.props.itemData.standard}</td>
+					<td>{this.props.itemData.customer_sn}</td>
+					<td>{this.props.itemData.customer_name}</td>
+					<td><StateForGrid stateData={CommData.CustomerType} id={this.props.itemData.customer_type} /></td>
+					<td>{this.props.itemData.tw_city_1+this.props.itemData.tw_country_1+this.props.itemData.tw_address_1}</td>
+					<td>{this.props.itemData.born_times}</td>
+					<td>{this.props.itemData.tel_1}</td>
 				</tr>
 			);
 		}
@@ -36,14 +38,15 @@ var GirdForm = React.createClass({
 			edit_type:0,
 			checkAll:false,
 			country_list:[],
-			next_id:null
+			details:[]
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
 			fdName:'fieldData',
 			gdName:'searchData',
-			apiPathName:gb_approot+'api/Product'
+			apiPathName:gb_approot+'api/Customer',
+			apiSubPathName:gb_approot+'api/CustomerBorn'
 		};
 	},	
 	componentDidMount:function(){
@@ -55,6 +58,35 @@ var GirdForm = React.createClass({
 	handleSubmit: function(e) {
 
 		e.preventDefault();
+
+			//檢查電話格式
+		   var check_tel_1=checkTelReg(this.state.fieldData['tel_1']);
+		   var check_tel_2=checkTelReg(this.state.fieldData['tel_2']);
+		   if(!check_tel_1.result){
+		   	tosMessage(gb_title_from_invalid,'連絡電話1-'+check_tel_1.errMsg,3);
+		   	return;
+		   }
+		   if(!check_tel_2.result){
+		   	tosMessage(gb_title_from_invalid,'連絡電話1-'+check_tel_2.errMsg,3);
+		   	return;
+		   }
+
+		   //檢查身分證字號
+		   if(!checkTwID(this.state.fieldData['sno'])){
+		   	tosMessage(gb_title_from_invalid,'身分證字號格式錯誤!!',3);
+		   	return;
+		   }
+		   //檢查地址
+		   	if(
+				this.state.fieldData['tw_city_1'] == undefined || this.state.fieldData['tw_city_1'] == '' ||
+				this.state.fieldData['tw_country_1'] == undefined || this.state.fieldData['tw_country_1'] == '' ||
+				this.state.fieldData['tw_address_1'] == undefined || this.state.fieldData['tw_address_1'] == ''
+				){
+
+				tosMessage(gb_title_from_invalid,'送餐地址需填寫完整',3);
+				return;
+			}
+
 
 		if(this.state.edit_type==1){
 			jqPost(this.props.apiPathName,this.state.fieldData)
@@ -102,7 +134,7 @@ var GirdForm = React.createClass({
 		var ids = [];
 		for(var i in this.state.gridData.rows){
 			if(this.state.gridData.rows[i].check_del){
-				ids.push('ids='+this.state.gridData.rows[i].product_id);
+				ids.push('ids='+this.state.gridData.rows[i].customer_id);
 			}
 		}
 
@@ -170,12 +202,28 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{product_type:1}});
+		this.setState({
+			edit_type:1,
+			fieldData:{customer_type:1,tw_city_1:'桃園市',tw_country_1:'中壢區'},
+			details:[]
+		});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:2,fieldData:data.data});
+
+			jqGet(this.props.apiSubPathName,{main_id:id})
+			.done(function(detail_data, textStatus, jqXHRdata) {
+				this.setState({
+					edit_type:2,
+					fieldData:data.data,
+					details:detail_data
+				});
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
@@ -235,9 +283,9 @@ var GirdForm = React.createClass({
 			}
 		}
 	},
-	onProductTypeChange:function(e){
+	onCustomerTypeChange:function(e){
 		var obj = this.state.searchData;
-		obj['product_type'] = e.target.value;
+		obj['customer_type'] = e.target.value;
 		this.setState({searchData:obj});
 	},
 	render: function() {
@@ -263,25 +311,54 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">產品名稱</label> { }
+										<label className="sr-only">客戶名稱</label> { }
 										<input type="text" className="form-control" 
-										value={searchData.product_name}
-										onChange={this.changeGDValue.bind(this,'product_name')}
-										placeholder="產品名稱..." /> { }
+										value={searchData.customer_name}
+										onChange={this.changeGDValue.bind(this,'customer_name')}
+										placeholder="客戶名稱..." /> { }
 
-										<label className="sr-only">產品分類</label> { }
+										<label className="sr-only">tel</label> { }
+										<input type="text" className="form-control" 
+										value={searchData.tel}
+										onChange={this.changeGDValue.bind(this,'tel')}
+										placeholder="電話..." /> { }
+
+										<label className="sr-only">客戶分類</label> { }
 										<select className="form-control" 
-												value={searchData.product_type}
-												onChange={this.onProductTypeChange}>
+												value={searchData.customer_type}
+												onChange={this.onCustomerTypeChange}>
 											<option value="">選擇分類</option>
 										{
-											CommData.ProductType.map(function(itemData,i) {
+											CommData.CustomerType.map(function(itemData,i) {
 												return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
 											})
 										}
 										</select> { }
 
+										<label className="sr-only">縣市</label> { }
+										<select className="form-control" 
+											value={searchData.city}
+											onChange={this.onCityChange}
+										>
+										<option value="">選擇縣市</option>
+										{
+											CommData.twDistrict.map(function(itemData,i) {
+												return <option key={itemData.city} value={itemData.city}>{itemData.city}</option>;
+											})
+										}
+										</select> { }
 
+										<label className="sr-only">鄉鎮市區</label> { }
+										<select className="form-control" 
+												value={searchData.country}
+												onChange={this.onCountryChange}>
+											<option value="">選擇鄉鎮市區</option>
+											{
+												this.state.country_list.map(function(itemData,i) {
+													return <option key={itemData.county} value={itemData.county}>{itemData.county}</option>;
+												})
+											}
+										</select>
 										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
@@ -290,17 +367,19 @@ var GirdForm = React.createClass({
 						<table>
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
+									{/*<th className="col-xs-1 text-center">
 										<label className="cbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
 											<i className="fa-check"></i>
 										</label>
-									</th>
+									</th>*/}
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">產品名稱</th>
-									<th className="col-xs-1">產品分類</th>
-									<th className="col-xs-1">售價</th>
-									<th className="col-xs-3">規格</th>
+									<th className="col-xs-1">編號</th>
+									<th className="col-xs-2">客戶名稱</th>
+									<th className="col-xs-1">客戶分類</th>
+									<th className="col-xs-4">送餐地址</th>
+									<th className="col-xs-1">生產紀錄筆數</th>
+									<th className="col-xs-1">電話1</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -309,7 +388,7 @@ var GirdForm = React.createClass({
 								return <GridRow 
 								key={i}
 								ikey={i}
-								primKey={itemData.product_id} 
+								primKey={itemData.customer_id} 
 								itemData={itemData} 
 								delCheck={this.delCheck}
 								updateType={this.updateType}								
@@ -328,6 +407,8 @@ var GirdForm = React.createClass({
 					onQueryGridData={this.queryGridData}
 					InsertType={this.insertType}
 					deleteSubmit={this.deleteSubmit}
+					showAdd={false}
+					showDelete={false}
 					/>
 				</form>
 			</div>
@@ -342,84 +423,96 @@ var GirdForm = React.createClass({
 				<ul className="breadcrumb">
 					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
 				</ul>
-				<h4 className="title">{this.props.Caption}</h4>
-				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
+				<h4 className="title">{this.props.Caption}</h4>		
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-				<div className="col-xs-8">
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">產品分類</label>
-						<div className="col-xs-10">
+						<label className="col-xs-1 control-label">客戶編號</label>
+						<div className="col-xs-2">
+							<input type="text" 
+							className="form-control"	
+							value={fieldData.customer_sn}
+							onChange={this.changeFDValue.bind(this,'customer_sn')}
+							placeholder="系統自動產生"
+							disabled={true}
+							 />
+						</div>
+
+						<label className="col-xs-1 control-label">客戶名稱</label>
+						<div className="col-xs-2">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.customer_name}
+							onChange={this.changeFDValue.bind(this,'customer_name')}
+							maxLength="64"
+							required 
+							disabled={true}/>
+						</div>
+
+						<label className="col-xs-1 control-label">客戶類別</label>
+						<div className="col-xs-2">
 							<select className="form-control" 
-							value={fieldData.product_type}
-							onChange={this.changeFDValue.bind(this,'product_type')}>
+							value={fieldData.customer_type}
+							onChange={this.changeFDValue.bind(this,'customer_type')}
+							disabled={true}>
 							{
-								CommData.ProductType.map(function(itemData,i) {
-									return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+								CommData.CustomerType.map(function(itemData,i) {
+									return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
 								})
 							}
 							</select>
 						</div>
-					</div>
-
-					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">產品名稱</label>
-						<div className="col-xs-4">
-							<input type="text" 							
-							className="form-control"	
-							value={fieldData.product_name}
-							onChange={this.changeFDValue.bind(this,'product_name')}
-							maxLength="64"
-							required />
-						</div>
-						<label className="col-xs-2 control-label text-danger">產品規格</label>
-						<div className="col-xs-4">
-							<input type="text" 							
-							className="form-control"	
-							value={fieldData.standard}
-							onChange={this.changeFDValue.bind(this,'standard')}
-							maxLength="64"
-							required />
-						</div>
-					</div>
-
-					<div className="form-group">
-						<label className="col-xs-2 control-label">售價</label>
-						<div className="col-xs-4">
-							<input type="number" 
-							className="form-control"	
-							value={fieldData.price}
-							onChange={this.changeFDValue.bind(this,'price')}
-							 />
-						</div>
-						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-4">
-							<input type="number" 
-							className="form-control"	
-							value={fieldData.sort}
-							onChange={this.changeFDValue.bind(this,'sort')}
-							 />
-						</div>
-					</div>
-
-					<div className="form-group">
-						<label className="col-xs-2 control-label">備註</label>
-						<div className="col-xs-10">
-							<textarea col="30" row="2" className="form-control"
-							value={fieldData.memo}
-							onChange={this.changeFDValue.bind(this,'memo')}
-							maxLength="256"></textarea>
-						</div>
-					</div>
-
-				</div>
-
-				<div className="col-xs-8">
-					<div className="form-action text-center">
-						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
-					</div>
-				</div>
+					</div>		
 				</form>
+				{/*---生產紀錄版面start---*/}
+				<div>
+					<hr className="expanded" />
+					<h4 className="title">
+						生產紀錄 { }
+						<button type="button" onClick={this.addDetail} className="btn-link text-success"><i className="fa-plus-circle"></i> 新增生產紀錄</button>
+					</h4>
+					<table>
+						<tbody>
+							<tr>
+								<th className="col-xs-1 text-center">編輯</th>
+								<th className="col-xs-1">生產日期</th>
+								<th className="col-xs-1">用餐編號</th>
+								<th className="col-xs-1">媽媽姓名</th>
+								<th className="col-xs-1">寶寶性別</th>
+								<th className="col-xs-1">生產方式</th>
+								<th className="col-xs-1">是否結案</th>
+							</tr>
+							{
+								this.state.details.map(function(itemData,i) {
+									var out_sub_button=null;
+									if(itemData.is_close){//結案後僅能檢視生產紀錄
+										out_sub_button=											
+										    <td className="text-center">
+												<button className="btn-link btn-lg" type="button"><i className="fa-search-plus"></i></button>
+											</td>;
+									}else{
+										out_sub_button=											
+										    <td className="text-center">
+												<button className="btn-link btn-lg" type="button"><i className="fa-pencil"></i></button>
+												<button className="btn-link btn-lg text-danger"><i className="fa-trash-o"></i></button>
+											</td>;
+									}
+									var out_sub_html = 
+										<tr key={i}>
+											{out_sub_button}
+											<td>{itemData.born_day}</td>
+											<td>{itemData.meal_id}</td>
+											<td>{itemData.mom_name}</td>
+											<td><StateForGrid stateData={CommData.SexType} id={itemData.baby_sex} /></td>
+											<td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>
+											<td>{itemData.is_close? <span className="label label-primary">結案</span>:<span className="label label-danger">未結案</span>}</td>			
+										</tr>;
+									return out_sub_html;
+								}.bind(this))
+							}
+						</tbody>
+					</table>
+				</div>
+				{/*---生產紀錄版面end---*/}
 			</div>
 			);
 		}else{

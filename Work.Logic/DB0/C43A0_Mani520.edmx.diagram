@@ -15,12 +15,14 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.i_SN" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.i_UserLoginLog" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Menu" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_AspNetUsers_Department" ManuallyRouted="false" />
         <AssociationConnector Association="C43A0_Mani520Model.AspNetUserRoles" ManuallyRouted="false" />
         <AssociationConnector Association="C43A0_Mani520Model.MenuRole" ManuallyRouted="false" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.MealID" Width="1.5" PointX="12.375" PointY="0.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Customer" Width="1.5" PointX="5.375" PointY="10.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.CustomerBorn" Width="1.5" PointX="7.625" PointY="12.125" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerBorn_Customer" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="10.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
