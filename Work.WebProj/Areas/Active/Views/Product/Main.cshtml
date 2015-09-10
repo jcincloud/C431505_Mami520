@@ -13,7 +13,7 @@
     <script src="~/Scripts/build/func/m-Product.js"></script>
     <script>
         var getRootDOM = document.getElementById('content');
-        var rootParm = { MenuName: '@ViewBag.MenuName', Caption: '@ViewBag.Caption' };
+        var rootParm = { MenuName: '@ViewBag.MenuName', Caption: '@ViewBag.Caption', IconClass: 'fa-list-alt' };
         var compObject = React.render(React.createElement(GirdForm, rootParm), getRootDOM);
     </script>
 }

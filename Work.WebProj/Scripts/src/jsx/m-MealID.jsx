@@ -261,7 +261,7 @@ var GirdForm = React.createClass({
             (
             <div>
                 <ul className="breadcrumb">
-                    <li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
+                    <li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
                 </ul>
                 <h3 className="title">
                     {this.props.Caption}
@@ -355,7 +355,7 @@ var GirdForm = React.createClass({
             outHtml=(
             <div>
                 <ul className="breadcrumb">
-                    <li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
+                    <li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
                 </ul>
                 <h4 className="title">{this.props.Caption} 資料維護</h4>
                 <div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
