@@ -66,7 +66,7 @@ var GirdForm = React.createClass({
 		   	return;
 		   }
 		   if(!check_tel_2.result){
-		   	tosMessage(gb_title_from_invalid,'連絡電話1-'+check_tel_2.errMsg,3);
+		   	tosMessage(gb_title_from_invalid,'連絡電話2-'+check_tel_2.errMsg,3);
 		   	return;
 		   }
 

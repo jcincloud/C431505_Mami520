@@ -232,7 +232,9 @@ var InputDate = React.createClass({
 		return{	
 			value:null,
 			onChange:null,
-			field_name:null
+			field_name:null,
+			required:false,
+			disabled:false
 		};
 	},
 	componentDidMount:function(){
@@ -265,7 +267,8 @@ var InputDate = React.createClass({
 					name={this.props.field_name}
 					value={this.props.value!=undefined ? moment(this.props.value).format('YYYY-MM-DD'):''}
 					onChange={this.onChange}
-					required={false} />
+					required={this.props.required}
+					disabled={this.props.disabled} />
 					<i className="fa-calendar form-control-feedback"></i>
 			</div>
 			);
@@ -542,7 +545,8 @@ var TwAddress = React.createClass({
 			address_value:null,address_field:null,
 			setFDValue:null,
 			ver:1,
-			label_name:'地址'
+			label_name:'地址',
+			disabled:false
 		};
 	},
 	componentDidMount:function(){
@@ -617,7 +621,8 @@ var TwAddress = React.createClass({
 					<div className="col-xs-2">
 						<select className="form-control" 
 								value={this.props.city_value}
-								onChange={this.onCityChange}>
+								onChange={this.onCityChange}
+								disabled={this.props.disabled}>
 								<option value=""></option>
 								{
 									CommData.twDistrict.map(function(itemData,i) {
@@ -629,7 +634,8 @@ var TwAddress = React.createClass({
 					<div className="col-xs-2">
 						<select className="form-control" 
 								value={this.props.country_value}
-								onChange={this.onCountryChange}>
+								onChange={this.onCountryChange}
+								disabled={this.props.disabled}>
 								<option value=""></option>
 								{
 									this.state.country_list.map(function(itemData,i) {
@@ -644,7 +650,7 @@ var TwAddress = React.createClass({
 								value={this.props.address_value}
 								onChange={this.valueChange.bind(this,this.props.address_field)}
 								maxLength="128"
-								 />
+								disabled={this.props.disabled} />
 					</div>
 				</div>
 			);
@@ -668,64 +674,8 @@ var TwAddress = React.createClass({
 						<div className="col-xs-3">
 							<select className="form-control" 
 									value={this.props.city_value}
-									onChange={this.onCityChange}>
-									<option value=""></option>
-									{
-										CommData.twDistrict.map(function(itemData,i) {
-											return <option key={itemData.city} value={itemData.city}>{itemData.city}</option>;
-										})
-									}
-							</select>
-						</div>
-						<div className="col-xs-4">
-							<select className="form-control" 
-									value={this.props.country_value}
-									onChange={this.onCountryChange}>
-									<option value=""></option>
-									{
-										this.state.country_list.map(function(itemData,i) {
-											return <option key={itemData.county} value={itemData.county}>{itemData.county}</option>;
-										})
-									}
-							</select>
-						</div>
-				</div>
-				<div className="form-group">
-			        <div className="col-xs-10 col-xs-offset-2">
-							<input 	type="text" 
-									className="form-control"	
-									value={this.props.address_value}
-									onChange={this.valueChange.bind(this,this.props.address_field)}
-									maxLength="128"
-									required={this.props.required}
-									 />
-			        </div>
-			    </div>
-			</div>
-			);
-
-			return outHtml;
-		}
-
-		if(this.props.ver==3){
-			outHtml=(
-			<div>
-				<div className="form-group">
-						<label for="" className="control-label col-xs-2 text-danger">{this.props.label_name}</label>
-						<div className="col-xs-3">
-							<input 	type="text" 
-									className="form-control"	
-									value={this.props.zip_value}
-									onChange={this.valueChange.bind(this,this.props.zip_field)}
-									maxLength="5"
-									required={this.props.required}
-									disabled />
-						</div>
-						<div className="col-xs-3">
-							<select className="form-control" 
-									value={this.props.city_value}
 									onChange={this.onCityChange}
-									disabled>
+									disabled={this.props.disabled}>
 									<option value=""></option>
 									{
 										CommData.twDistrict.map(function(itemData,i) {
@@ -738,7 +688,7 @@ var TwAddress = React.createClass({
 							<select className="form-control" 
 									value={this.props.country_value}
 									onChange={this.onCountryChange}
-									disabled>
+									disabled={this.props.disabled}>
 									<option value=""></option>
 									{
 										this.state.country_list.map(function(itemData,i) {
@@ -756,7 +706,7 @@ var TwAddress = React.createClass({
 									onChange={this.valueChange.bind(this,this.props.address_field)}
 									maxLength="128"
 									required={this.props.required}
-									disabled />
+									disabled={this.props.disabled} />
 			        </div>
 			    </div>
 			</div>
@@ -764,8 +714,6 @@ var TwAddress = React.createClass({
 
 			return outHtml;
 		}
-
-
 	}
 });
 
@@ -1120,6 +1068,16 @@ var StateForGrid = React.createClass({
 			id:null
 		};
 	},
+    componentWillReceiveProps:function(nextProps){
+        //當元件收到新的 props 時被執行，這個方法在初始化時並不會被執行。使用的時機是在我們使用 setState() 並且呼叫 render() 之前您可以比對 props，舊的值在 this.props，而新值就從 nextProps 來。
+    	for(var i in this.props.stateData){
+			var item = this.props.stateData[i];
+			if(item.id==nextProps.id){
+				this.setState({setClass:item.className,label:item.label});
+				break;
+			}
+		}
+    },
 	componentDidMount:function(){
 		for(var i in this.props.stateData){
 			var item = this.props.stateData[i];
