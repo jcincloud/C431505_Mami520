@@ -365,6 +365,18 @@ namespace ProcCore.Business.DB0
         public bool? i_Use { get; set; }
         public bool? i_Hide { get; set; }
     }
+    public class q_All_Category_L1 : QueryBase
+    {
+        public int? l1_id { get; set; }
+        public string title { get; set; }
+    }
+    public class q_All_Category_L2 : QueryBase
+    {
+        public string l2_name { get; set; }
+        public int? l1_id { get; set; }
+        public int? l2_id { get; set; }
+
+    }
 
     #endregion
 

@@ -5,6 +5,41 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="C43A0_Mani520Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="All_Category_L1">
+          <Key>
+            <PropertyRef Name="all_category_l1_id" />
+          </Key>
+          <Property Name="all_category_l1_id" Type="int" Nullable="false" />
+          <Property Name="l1_name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="sort" Type="real" />
+          <Property Name="memo" Type="nvarchar" MaxLength="255" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="All_Category_L2">
+          <Key>
+            <PropertyRef Name="all_category_l2_id" />
+          </Key>
+          <Property Name="all_category_l2_id" Type="int" Nullable="false" />
+          <Property Name="all_category_l1_id" Type="int" Nullable="false" />
+          <Property Name="l2_name" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="sort" Type="real" />
+          <Property Name="memo" Type="nvarchar" MaxLength="255" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -235,6 +270,18 @@
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
         </EntityType>
+        <Association Name="FK_All_Category_L2_All_Category_L1">
+          <End Role="All_Category_L1" Type="Self.All_Category_L1" Multiplicity="1" />
+          <End Role="All_Category_L2" Type="Self.All_Category_L2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="All_Category_L1">
+              <PropertyRef Name="all_category_l1_id" />
+            </Principal>
+            <Dependent Role="All_Category_L2">
+              <PropertyRef Name="all_category_l1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_AspNetUsers_Department">
           <End Role="Department" Type="Self.Department" Multiplicity="1" />
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
@@ -312,6 +359,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="C43A0_Mani520ModelStoreContainer">
+          <EntitySet Name="All_Category_L1" EntityType="Self.All_Category_L1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="All_Category_L2" EntityType="Self.All_Category_L2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
@@ -328,6 +377,10 @@
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuRole" EntityType="Self.MenuRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_All_Category_L2_All_Category_L1" Association="Self.FK_All_Category_L2_All_Category_L1">
+            <End Role="All_Category_L1" EntitySet="All_Category_L1" />
+            <End Role="All_Category_L2" EntitySet="All_Category_L2" />
+          </AssociationSet>
           <AssociationSet Name="FK_AspNetUsers_Department" Association="Self.FK_AspNetUsers_Department">
             <End Role="Department" EntitySet="Department" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -529,6 +582,12 @@
             <End Role="CustomerBorn" EntitySet="CustomerBorn" />
           </AssociationSet>
           <EntitySet Name="Product" EntityType="C43A0_Mani520Model.Product" />
+          <EntitySet Name="All_Category_L1" EntityType="C43A0_Mani520Model.All_Category_L1" />
+          <EntitySet Name="All_Category_L2" EntityType="C43A0_Mani520Model.All_Category_L2" />
+          <AssociationSet Name="FK_All_Category_L2_All_Category_L1" Association="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1">
+            <End Role="All_Category_L1" EntitySet="All_Category_L1" />
+            <End Role="All_Category_L2" EntitySet="All_Category_L2" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="MealID">
           <Key>
@@ -643,6 +702,55 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
         </EntityType>
+        <EntityType Name="All_Category_L1">
+          <Key>
+            <PropertyRef Name="all_category_l1_id" />
+          </Key>
+          <Property Name="all_category_l1_id" Type="Int32" Nullable="false" />
+          <Property Name="l1_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="sort" Type="Single" />
+          <Property Name="memo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" FromRole="All_Category_L1" ToRole="All_Category_L2" />
+        </EntityType>
+        <EntityType Name="All_Category_L2">
+          <Key>
+            <PropertyRef Name="all_category_l2_id" />
+          </Key>
+          <Property Name="all_category_l2_id" Type="Int32" Nullable="false" />
+          <Property Name="all_category_l1_id" Type="Int32" Nullable="false" />
+          <Property Name="l2_name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="sort" Type="Single" />
+          <Property Name="memo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="All_Category_L1" Relationship="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" FromRole="All_Category_L2" ToRole="All_Category_L1" />
+        </EntityType>
+        <Association Name="FK_All_Category_L2_All_Category_L1">
+          <End Type="C43A0_Mani520Model.All_Category_L1" Role="All_Category_L1" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.All_Category_L2" Role="All_Category_L2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="All_Category_L1">
+              <PropertyRef Name="all_category_l1_id" />
+            </Principal>
+            <Dependent Role="All_Category_L2">
+              <PropertyRef Name="all_category_l1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -890,6 +998,43 @@
                 <ScalarProperty Name="product_name" ColumnName="product_name" />
                 <ScalarProperty Name="product_type" ColumnName="product_type" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="All_Category_L1">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.All_Category_L1">
+              <MappingFragment StoreEntitySet="All_Category_L1">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="l1_name" ColumnName="l1_name" />
+                <ScalarProperty Name="all_category_l1_id" ColumnName="all_category_l1_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="All_Category_L2">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.All_Category_L2">
+              <MappingFragment StoreEntitySet="All_Category_L2">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="l2_name" ColumnName="l2_name" />
+                <ScalarProperty Name="all_category_l1_id" ColumnName="all_category_l1_id" />
+                <ScalarProperty Name="all_category_l2_id" ColumnName="all_category_l2_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

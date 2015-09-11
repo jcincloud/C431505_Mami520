@@ -14,7 +14,7 @@ namespace ProcCore.Business
 {
     public enum CodeTable
     {
-        Base, Customer, CustomerBorn, Product, News, VisitTimeRecorder
+        Base, Customer, CustomerBorn, Product, All_Category_L1, All_Category_L2
     }
     public enum SNType
     {
