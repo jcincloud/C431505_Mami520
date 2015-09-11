@@ -23,6 +23,9 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.CustomerBorn" Width="1.5" PointX="7.625" PointY="12.125" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerBorn_Customer" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="10.375" PointY="6.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.All_Category_L1" Width="1.5" PointX="10.375" PointY="12.125" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.All_Category_L2" Width="1.5" PointX="12.625" PointY="12" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

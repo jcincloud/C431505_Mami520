@@ -192,6 +192,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
+    <Compile Include="Areas\Active\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerBornController.cs" />
     <Compile Include="Areas\Active\Controllers\MealIDController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
@@ -205,7 +206,6 @@
     <Content Include="Areas\Active\Views\Tablet\Schedule.cshtml" />
     <Content Include="Areas\Active\Views\Tablet\Visit_list.cshtml" />
     <Content Include="Areas\Active\Views\Tablet\Visit_content.cshtml" />
-    <Content Include="Areas\Active\Views\Agent\Main.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main.cshtml" />
     <Content Include="Areas\Active\Views\ProductCategory\Main.cshtml" />
     <Content Include="Areas\Active\Views\Report\CustomerVisit.cshtml" />
@@ -219,6 +219,7 @@
     <Content Include="Areas\Active\Views\Stock\Main3.cshtml" />
     <Content Include="Areas\Active\Views\MealID\Main.cshtml" />
     <Content Include="Areas\Active\Views\CustomerBorn\Main.cshtml" />
+    <Content Include="Areas\Active\Views\Category\Main.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -234,6 +235,8 @@
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
+    <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
+    <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
     <Compile Include="Controllers\Api\CustomerBornController.cs" />
     <Compile Include="Controllers\Api\MealIDController.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
@@ -962,6 +965,7 @@
     <Content Include="Views\Fake\Dishes4.cshtml" />
     <Content Include="Views\Fake\Index.cshtml" />
     <Content Include="_Code\CSS\fonts\fontAwesome\fontawesome-webfont.woff2" />
+    <Content Include="Scripts\src\jsx\m-Category.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1097,13 +1101,13 @@
   <ItemGroup>
     <Content Include="Areas\Active\Views\Product\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Visit\App_LocalResources\Main.cshtml.resx" />
-    <Content Include="Areas\Active\Views\Agent\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Stock\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\ProductCategory\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Report\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\ProductBrand\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\MealID\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\CustomerBorn\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\Category\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="_Code\RPTFile\MemeberLabel.rdlc" />
   </ItemGroup>
   <PropertyGroup>
