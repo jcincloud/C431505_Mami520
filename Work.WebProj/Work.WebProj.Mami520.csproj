@@ -727,6 +727,9 @@
     <Content Include="Scripts\app\toastr.js" />
     <Content Include="Scripts\react\react.min.js" />
     <Content Include="Scripts\require.js" />
+    <Content Include="Views\Fake\Birth.cshtml" />
+    <Content Include="Views\Fake\Birth2.cshtml" />
+    <Content Include="Views\Fake\Sell2.cshtml" />
     <Content Include="Views\Index\Index.cshtml" />
     <Content Include="Scripts\src\ts-controller\tmp\modalEditFuel.html" />
     <Content Include="Scripts\src\ts-controller\tmp\modalQueryEquipment.html" />
@@ -822,10 +825,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Shared\Manage\Menu.tablet.bak.cshtml" />
-    <Content Include="Views\Fake\Birth.cshtml" />
-    <Content Include="Views\Fake\Birth2.cshtml" />
     <Content Include="Views\Fake\Sell.cshtml" />
-    <Content Include="Views\Fake\Sell2.cshtml" />
     <Content Include="Views\Fake\Require.cshtml" />
     <Content Include="Views\Shared\Manage\RLayout.tablet.cshtml" />
     <Content Include="Scripts\src\jsx\m-SalesProduct.jsx" />
