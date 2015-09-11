@@ -60,14 +60,6 @@
                     <li><a href=""><i class="fa-home"></i> @Resources.Res.System_Name</a></li>
                     @RenderSection("breadCrumb", required: false)
                     <li>@ViewBag.Title</li>
-                    <li class="nav-search">
-                        <div class="nav-search-form">
-                            <input type="text" class="form-control" placeholder="全站搜尋...">
-                            <span class="input-group-btn">
-                                <button type="button"><i class="fa-search"></i></button>
-                            </span>
-                        </div>
-                    </li>
                 </ul>
 
                 @RenderBody()
@@ -210,41 +202,11 @@
     <script src="~/Scripts/jquery/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/app/bootstrap.min.js"></script>
     <script>
-
-        $(window).scroll(function () {
-            if ($(this).scrollTop() > 100) {
-                $(".goTop").addClass("show");
-            } else {
-                $(".goTop").removeClass("show");
-            }
-        });  //goTop按鈕顯示
-
-        $(".goTop").click(function () {
-            $("html, body").animate({
-                scrollTop: $($.attr(this, "href")).offset().top - 108 // fix for fixed header
-            }, 500);
-            return false;
-        });  //goTop按鈕點選滑動至頂端
-
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();  //BS提示訊息
-
-        $(".file-upload input[type='file']").change(function() {
-            var file_name = $(this).val().replace(/C:\\fakepath\\/i, '');
-            $(this).siblings(".form-control").find("input[type='text']").val(file_name);
-        });  //檔案上傳按鈕: 顯示檔名 (去除Chrome和IE會出現的fakepath字樣) (測試中)
-
-        $(".modal.fit-window").on("show.bs.modal", function() {
-            var height = $(window).height() - 200;
-            $(this).find(".modal-body").css("max-height", height);
-        });
-
         var ch = $('body').attr('class').match(/\d+/);
         $("#submenu-"+ch).addClass('in').prev('.panel-heading').children('.panel-title').removeClass('collapsed');
         var p = $('body').attr('class').match(/\d+$/);
         $("#submenu-"+ch).find('.panel-body li:nth-child('+p+') a').addClass('current');
         //左選單的當前頁標示
-
     </script>
 
     @RenderSection("Scripts", required: false)

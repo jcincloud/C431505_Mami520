@@ -956,6 +956,10 @@
     <Content Include="Views\Fake\Tel3.cshtml" />
     <Content Include="Views\Fake\Tel4.cshtml" />
     <Content Include="Views\Fake\Tel5.cshtml" />
+    <Content Include="Views\Fake\Birth3.cshtml" />
+    <Content Include="Views\Fake\Dishes4.cshtml" />
+    <Content Include="Views\Fake\Index.cshtml" />
+    <Content Include="_Code\CSS\fonts\fontAwesome\fontawesome-webfont.woff2" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

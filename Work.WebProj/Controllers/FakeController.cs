@@ -16,7 +16,7 @@ namespace DotWeb.Controllers
     {
         public ActionResult Index()
         {
-            return View("Birth");
+            return View("Index");
         }
 
         public ActionResult Birth()
@@ -26,6 +26,10 @@ namespace DotWeb.Controllers
         public ActionResult Birth2()
         {
             return View("Birth2");
+        }
+        public ActionResult Birth3()
+        {
+            return View("Birth3");
         }
 
         public ActionResult Sell()
@@ -62,6 +66,10 @@ namespace DotWeb.Controllers
         public ActionResult Dishes3()
         {
             return View("Dishes3");
+        }
+        public ActionResult Dishes4()
+        {
+            return View("Dishes4");
         }
 
         public ActionResult Gift()
