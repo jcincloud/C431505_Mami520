@@ -1,77 +1,253 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-TW">
+<!-- saved from url=(0014)about:internet -->
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    @* <meta name="keywords" content="@Resources.ResWeb.keywords">
-    <meta name="description" content="@Resources.ResWeb.description"> *@
     <title>@Resources.Res.System_Name:@ViewBag.Title</title>
-    <!--[if lt IE 9]>
-    <script src="//ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
-    <![endif]-->
-    <script src="~/Scripts/BrowerInfo.js"></script>
-    <script>
-        var gb_approot = '@Url.Content("~")';
-    </script>
-    <link href="~/Content/css/swiper.min.css" rel="stylesheet">
-    @if (ViewBag.IsFirstPage)
-    {
-        <link href="~/Content/css/index.css" rel="stylesheet">
-    } else {
-        <link href="~/Content/css/page.css" rel="stylesheet">
-    }
-    @RenderSection("css", false)
+    @RenderSection("CSS", required: false)
+    <link rel="stylesheet" href="~/_Code/css/css/page.css">
+    <!--[if IE 9]><link rel="stylesheet" href="@Url.Content("~/_Code/css/css/ie9-page.css")"><![endif]-->
 </head>
-
 <body class="@ViewBag.BodyClass">
 
-<div id="wrapper">
+    <div id="container">
 
-    <section id="header">
-        <div class="wrap">
-            <h1 onclick="location.href='@Url.Content("~/index")'" title="回首頁">OLEC富利源企業有限公司</h1>
-            <nav id="menu">
-                <a href="~/index">HOME</a>
-                <a href="~/AboutUs">公司簡介</a>
-                <a href="~/Products">產品介紹</a>
-                <a href="~/News">最新消息</a>
-                <a href="~/ContactUs">聯絡我們</a>
-            </nav>
-            <nav class="top-nav">
-                <a href="@Url.Action("SetLanguage")?L=zh-TW&A=index">::繁體中文</a>
-                <a href="@Url.Action("SetLanguage")?L=en-US&A=index">::English</a>
-            </nav>
-        </div><!-- wrap //-->
-        <div id="banner">
-            @if (ViewBag.IsFirstPage)
-            {
-                <header>ENVIRONMENTAL PROTECTION</header>
-                <h2>致力於接著劑(膠)及綠能遮光材料開發與製造加工<br>並以ＯＬＥＣ品牌銷售世界30餘國</h2>
+        @if (ViewBag.IsFirstPage) {}
+        else {
+        <div id="header">
+            <div class="wrap">
+                
+                <h1><a href="">@Resources.Res.System_Name</a></h1>
+
+                <div id="menu">
+                    <ul class="menu">
+                        <li class="dropdown user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa-user"></i>登入身分: manager
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="~/Base/Users/ChangePassword" tabindex="-1">
+                                        <i class="fa-lock"></i> 修改密碼
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown activity">
+                            <a href="#" class="dropdown-toggle"><i class="fa-power-off"></i>登出</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div><!-- header //-->
+        }
+
+        <div id="main">
+
+            @if (ViewBag.IsFirstPage) {
+                @RenderBody()
             }
-            else
-            { }
-        </div><!-- banner //-->
-    </section><!-- header //-->
+            
+            else {
 
-    <main>
-        @RenderBody()
-    </main>
+            <div id="content">
 
-</div><!-- wrapper //-->
+                <ul class="breadcrumb">
+                    <li><a href=""><i class="fa-home"></i> @Resources.Res.System_Name</a></li>
+                    @RenderSection("breadCrumb", required: false)
+                    <li>@ViewBag.Title</li>
+                    <li class="nav-search">
+                        <div class="nav-search-form">
+                            <input type="text" class="form-control" placeholder="全站搜尋...">
+                            <span class="input-group-btn">
+                                <button type="button"><i class="fa-search"></i></button>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
 
-<section id="footer">
-    <ul class="list-inline">
-        <li>桃園市龍潭區高楊北路452巷28號</li>
-        <li><em>TEL:</em>+886 3-411-7500<br><em>FAX:</em>+886 3-411-7963</li>
-        <li><em>Mail:</em><a href="mailto:super@olecgroup.com">super@olecgroup.com</a></li>
-    </ul>
-    <div class="copyright"><span>OLEC</span>&copy; 2015 富利源企業有限公司 86597773</div>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1810.3706362840921!2d121.20784130000001!3d24.838520100000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34683c48d5c20e31%3A0x72e8b31495e66ceb!2zMzI15qGD5ZyS5biC6b6N5r2t5Y2A6auY5qWK5YyX6LevMjjomZ8!5e0!3m2!1szh-TW!2stw!4v1440400062208" width="620" height="200" frameborder="0" style="border:0" allowfullscreen></iframe>
-</section><!-- footer -->
+                @RenderBody()
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="~/Content/js/swiper/swiper.min.js"></script>
-@RenderSection("Scripts", required: false)
+            </div><!-- content //-->
+
+            <div id="sidebar">
+                <h3 class="title">
+                    <span class="icon">
+                        <i class="fa-square text-success"></i>
+                        <i class="fa-square text-info"></i>
+                        <i class="fa-square text-warning"></i>
+                        <i class="fa-square text-danger"></i>
+                    </span>
+                    功能選單 MENU
+                </h3>
+
+                <div id="submenu">
+                    <ul class="panel">
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-1">
+                                <i class="fa-list-alt"></i> 生產紀錄
+                            </a>
+                        </li>
+                        <li id="submenu-1" class="panel-collapse collapse">
+                            <ul class="panel-body">
+                                <li><a href="~/Fake/Birth"><i class="fa-caret-right"></i>客戶基本資料 管理</a></li>
+                                <li><a href="~/Fake/Birth2"><i class="fa-caret-right"></i>客戶生產紀錄 管理</a></li>
+                                <li><a href="~/Fake/Birth3"><i class="fa-caret-right"></i>用餐編號 管理</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-2">
+                                <i class="fa-list-alt"></i> 銷售紀錄
+                            </a>
+                        </li>
+                        <li id="submenu-2" class="panel-collapse collapse">
+                            <ul class="panel-body">
+                                <li><a href="~/Fake/Sell"><i class="fa-caret-right"></i>產品基本資料 管理</a></li>
+                                <li><a href="~/Fake/Sell2"><i class="fa-caret-right"></i>產品銷售資料 管理</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-3">
+                                <i class="fa-list-alt"></i> 需求表
+                            </a>
+                        </li>
+                        <li id="submenu-3" class="panel-collapse collapse">
+                            <ul class="panel-body">
+                                <li><a href="~/Fake/Require"><i class="fa-caret-right"></i>需求元素 管理</a></li>
+                                <li><a href="~/Fake/Require2"><i class="fa-caret-right"></i>客戶需求 管理</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed"  href="~/Fake/Schedule">
+                                <i class="fa-list-alt"></i> 用餐紀錄 管理
+                            </a>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-5">
+                                <i class="fa-list-alt"></i> 菜單管理
+                            </a>
+                        </li>
+                        <li id="submenu-5" class="panel-collapse collapse">
+                            <ul class="panel-body">
+                                <li><a href="~/Fake/Dishes"><i class="fa-caret-right"></i>基礎菜單 管理</a></li>
+                                <li><a href="~/Fake/Dishes2"><i class="fa-caret-right"></i>基礎菜單分類 管理</a></li>
+                                <li><a href="~/Fake/Dishes3"><i class="fa-caret-right"></i>組合菜單 管理</a></li>
+                                <li><a href="~/Fake/Dishes3"><i class="fa-caret-right"></i>每日菜單 管理</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-6">
+                                <i class="fa-list-alt"></i> 禮品發放
+                            </a>
+                        </li>
+                        <li id="submenu-6" class="panel-collapse collapse">
+                            <ul class="panel-body">
+                                <li><a href="~/Fake/Dishes"><i class="fa-caret-right"></i>活動基本資料 管理</a></li>
+                                <li><a href="~/Fake/Dishes2"><i class="fa-caret-right"></i>禮品贈送紀錄 管理</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-7">
+                                <i class="fa-list-alt"></i> 通訊系統
+                            </a>
+                        </li>
+                        <li id="submenu-7" class="panel-collapse collapse">
+                            <ul class="panel-body">
+                                <li><a href="~/Fake/Tel"><i class="fa-caret-right"></i>每日電訪名單 管理</a></li>
+                                <li><a href="~/Fake/Tel2"><i class="fa-caret-right"></i>電訪名單 管理</a></li>
+                                <li><a href="~/Fake/Tel3"><i class="fa-caret-right"></i>發送訊息 管理</a></li>
+                                <li><a href="~/Fake/Tel4"><i class="fa-caret-right"></i>發送條件 管理</a></li>
+                                <li><a href="~/Fake/Tel5"><i class="fa-caret-right"></i>文案內容 管理</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed"  href="~/Fake/Schedule">
+                                <i class="fa-list-alt"></i> 結帳作業
+                            </a>
+                        </li>
+
+                        <li class="panel-heading">
+                            <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-9">
+                                <i class="fa-list-alt"></i> 報表列印作業
+                            </a>
+                        </li>
+                        <li id="submenu-9" class="panel-collapse collapse">
+                            <ul class="panel-body">
+                                <li><a href="~/Fake/Report"><i class="fa-caret-right"></i>每日菜單報表</a></li>
+                                <li><a href="~/Fake/Report2"><i class="fa-caret-right"></i>產品銷售報表</a></li>
+                                <li><a href="~/Fake/Report3"><i class="fa-caret-right"></i>應收帳款明細</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div><!-- sidebar //-->
+
+            }
+
+        </div><!-- main //-->
+
+    </div><!-- container //-->
+
+    <div id="footer">
+
+        <a href="#content" class="goTop"><i class="fa-angle-double-up"></i></a>
+
+    </div><!-- footer //-->
+
+    <script src="~/Scripts/jquery/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/app/bootstrap.min.js"></script>
+    <script>
+
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $(".goTop").addClass("show");
+            } else {
+                $(".goTop").removeClass("show");
+            }
+        });  //goTop按鈕顯示
+
+        $(".goTop").click(function () {
+            $("html, body").animate({
+                scrollTop: $($.attr(this, "href")).offset().top - 108 // fix for fixed header
+            }, 500);
+            return false;
+        });  //goTop按鈕點選滑動至頂端
+
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();  //BS提示訊息
+
+        $(".file-upload input[type='file']").change(function() {
+            var file_name = $(this).val().replace(/C:\\fakepath\\/i, '');
+            $(this).siblings(".form-control").find("input[type='text']").val(file_name);
+        });  //檔案上傳按鈕: 顯示檔名 (去除Chrome和IE會出現的fakepath字樣) (測試中)
+
+        $(".modal.fit-window").on("show.bs.modal", function() {
+            var height = $(window).height() - 200;
+            $(this).find(".modal-body").css("max-height", height);
+        });
+
+        var ch = $('body').attr('class').match(/\d+/);
+        $("#submenu-"+ch).addClass('in').prev('.panel-heading').children('.panel-title').removeClass('collapsed');
+        var p = $('body').attr('class').match(/\d+$/);
+        $("#submenu-"+ch).find('.panel-body li:nth-child('+p+') a').addClass('current');
+        //左選單的當前頁標示
+
+    </script>
+
+    @RenderSection("Scripts", required: false)
 
 </body>
 </html>

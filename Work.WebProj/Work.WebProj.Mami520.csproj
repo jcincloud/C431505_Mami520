@@ -242,7 +242,7 @@
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Controllers\Api\GetActionController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
-    <Compile Include="Controllers\SalesController.cs" />
+    <Compile Include="Controllers\FakeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -822,12 +822,11 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\Shared\Manage\Menu.tablet.bak.cshtml" />
-    <Content Include="Views\Sales\Login.cshtml" />
-    <Content Include="Views\Sales\Menu.cshtml" />
-    <Content Include="Views\Sales\New.cshtml" />
-    <Content Include="Views\Sales\Schedule.cshtml" />
-    <Content Include="Views\Sales\Visit_content.cshtml" />
-    <Content Include="Views\Sales\Visit_list.cshtml" />
+    <Content Include="Views\Fake\Birth.cshtml" />
+    <Content Include="Views\Fake\Birth2.cshtml" />
+    <Content Include="Views\Fake\Sell.cshtml" />
+    <Content Include="Views\Fake\Sell2.cshtml" />
+    <Content Include="Views\Fake\Require.cshtml" />
     <Content Include="Views\Shared\Manage\RLayout.tablet.cshtml" />
     <Content Include="Scripts\src\jsx\m-SalesProduct.jsx" />
     <Content Include="Scripts\src\jsx\m-SalesArea.jsx" />
@@ -943,6 +942,22 @@
     <Content Include="Scripts\src\jsx\m-ProductBrand.jsx" />
     <Content Include="Scripts\src\jsx\m-Stock_view.jsx" />
     <Content Include="Scripts\src\jsx\m-MealID.jsx" />
+    <Content Include="Views\Fake\Check.cshtml" />
+    <Content Include="Views\Fake\Dishes.cshtml" />
+    <Content Include="Views\Fake\Dishes2.cshtml" />
+    <Content Include="Views\Fake\Dishes3.cshtml" />
+    <Content Include="Views\Fake\Gift.cshtml" />
+    <Content Include="Views\Fake\Gift2.cshtml" />
+    <Content Include="Views\Fake\Report.cshtml" />
+    <Content Include="Views\Fake\Report2.cshtml" />
+    <Content Include="Views\Fake\Report3.cshtml" />
+    <Content Include="Views\Fake\Require2.cshtml" />
+    <Content Include="Views\Fake\Schedule.cshtml" />
+    <Content Include="Views\Fake\Tel.cshtml" />
+    <Content Include="Views\Fake\Tel2.cshtml" />
+    <Content Include="Views\Fake\Tel3.cshtml" />
+    <Content Include="Views\Fake\Tel4.cshtml" />
+    <Content Include="Views\Fake\Tel5.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
