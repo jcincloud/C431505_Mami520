@@ -448,7 +448,10 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
-					</div>		
+						<div className="col-xs-1 pull-right">
+							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+						</div>	
+					</div>
 				</form>
 				{/*---生產紀錄版面---*/}
 				<GirdSubForm 
@@ -836,16 +839,16 @@ var GirdSubForm = React.createClass({
 			}
 		if(this.state.isShowCustomerBornEdit){
 			customer_born_out_html = 					
-					<MdoaleditCustomerBorn bsSize="large" onRequestHide={this.closeEditDetail}>
-						<div className="modal-header light">
+					<MdoaleditCustomerBorn bsSize="large" title="編輯  生產紀錄" onRequestHide={this.closeEditDetail}>
+						{/*<div className="modal-header light">
 							<div className="pull-right">
 								<button onClick={this.closeEditDetail} type="button"><i className="fa-times"></i></button>
 							</div>
 							<h4 className="modal-title">編輯 { } 生產紀錄</h4>
-						</div>
+						</div>*/}
 						<div className="modal-body">
 								{mealid_select_out_html}
-							<form className="form-horizontal" onSubmit={this.detailHandleSubmit} id="form2">
+							<form className="form-horizontal"  onSubmit={this.detailHandleSubmit} id="form2">
 								
 									<div className="form-group">
 										<label className="col-xs-2 control-label text-danger">用餐編號</label>
@@ -1044,9 +1047,12 @@ var GirdSubForm = React.createClass({
 									</div>
 
 						<div className="modal-footer">
-							<button type="submit" form="form2" className="btn-success"><i className="fa-check"></i> { } 確認送出</button> { }
-							<button onClick={this.closeEditDetail} type="button"><i className="fa-times"></i> { } 關閉</button>
-						</div>														
+							<div className="col-xs-4 col-xs-offset-3">
+		        				<button  type="submit" form="form2" className="btn-primary"><i className="fa-check"></i> 儲存</button>
+		       					<button className="col-xs-offset-1" type="button" onClick={this.closeEditDetail}><i className="fa-times"></i>關閉</button>
+		   					</div>
+						</div>
+
 							</form>
 
 						</div>

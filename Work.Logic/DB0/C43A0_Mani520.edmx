@@ -153,6 +153,24 @@
           <Property Name="department_name" Type="nvarchar" MaxLength="16" Nullable="false" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="ElementFood">
+          <Key>
+            <PropertyRef Name="element_id" />
+          </Key>
+          <Property Name="element_id" Type="int" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+          <Property Name="element_name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="sort" Type="int" />
+          <Property Name="memo" Type="nvarchar" MaxLength="256" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="i_Currency">
           <Key>
             <PropertyRef Name="id" />
@@ -334,6 +352,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ElementFood_All_Category_L2">
+          <End Role="All_Category_L2" Type="Self.All_Category_L2" Multiplicity="1" />
+          <End Role="ElementFood" Type="Self.ElementFood" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="All_Category_L2">
+              <PropertyRef Name="all_category_l2_id" />
+            </Principal>
+            <Dependent Role="ElementFood">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MenuRole_AspNetRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
           <End Role="MenuRole" Type="Self.MenuRole" Multiplicity="*" />
@@ -367,6 +397,7 @@
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerBorn" EntityType="Self.CustomerBorn" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ElementFood" EntityType="Self.ElementFood" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_Currency" EntityType="Self.i_Currency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_IDX" EntityType="Self.i_IDX" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_Lang" EntityType="Self.i_Lang" Schema="dbo" store:Type="Tables" />
@@ -396,6 +427,10 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ElementFood_All_Category_L2" Association="Self.FK_ElementFood_All_Category_L2">
+            <End Role="All_Category_L2" EntitySet="All_Category_L2" />
+            <End Role="ElementFood" EntitySet="ElementFood" />
           </AssociationSet>
           <AssociationSet Name="FK_MenuRole_AspNetRoles" Association="Self.FK_MenuRole_AspNetRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
@@ -588,6 +623,11 @@
             <End Role="All_Category_L1" EntitySet="All_Category_L1" />
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
           </AssociationSet>
+          <EntitySet Name="ElementFood" EntityType="C43A0_Mani520Model.ElementFood" />
+          <AssociationSet Name="FK_ElementFood_All_Category_L2" Association="C43A0_Mani520Model.FK_ElementFood_All_Category_L2">
+            <End Role="All_Category_L2" EntitySet="All_Category_L2" />
+            <End Role="ElementFood" EntitySet="ElementFood" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="MealID">
           <Key>
@@ -738,6 +778,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="All_Category_L1" Relationship="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" FromRole="All_Category_L2" ToRole="All_Category_L1" />
+          <NavigationProperty Name="ElementFood" Relationship="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" FromRole="All_Category_L2" ToRole="ElementFood" />
         </EntityType>
         <Association Name="FK_All_Category_L2_All_Category_L1">
           <End Type="C43A0_Mani520Model.All_Category_L1" Role="All_Category_L1" Multiplicity="1" />
@@ -748,6 +789,37 @@
             </Principal>
             <Dependent Role="All_Category_L2">
               <PropertyRef Name="all_category_l1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ElementFood">
+          <Key>
+            <PropertyRef Name="element_id" />
+          </Key>
+          <Property Name="element_id" Type="Int32" Nullable="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="element_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="sort" Type="Int32" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" FromRole="ElementFood" ToRole="All_Category_L2" />
+        </EntityType>
+        <Association Name="FK_ElementFood_All_Category_L2">
+          <End Type="C43A0_Mani520Model.All_Category_L2" Role="All_Category_L2" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.ElementFood" Role="ElementFood" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="All_Category_L2">
+              <PropertyRef Name="all_category_l2_id" />
+            </Principal>
+            <Dependent Role="ElementFood">
+              <PropertyRef Name="category_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1035,6 +1107,25 @@
                 <ScalarProperty Name="l2_name" ColumnName="l2_name" />
                 <ScalarProperty Name="all_category_l1_id" ColumnName="all_category_l1_id" />
                 <ScalarProperty Name="all_category_l2_id" ColumnName="all_category_l2_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ElementFood">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.ElementFood">
+              <MappingFragment StoreEntitySet="ElementFood">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="element_name" ColumnName="element_name" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="element_id" ColumnName="element_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

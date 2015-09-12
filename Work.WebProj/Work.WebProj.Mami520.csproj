@@ -196,6 +196,7 @@
     <Compile Include="Areas\Active\Controllers\CustomerBornController.cs" />
     <Compile Include="Areas\Active\Controllers\MealIDController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
+    <Compile Include="Areas\Active\Controllers\FoodController.cs" />
     <Compile Include="Areas\Active\Controllers\ProductController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
@@ -220,6 +221,8 @@
     <Content Include="Areas\Active\Views\MealID\Main.cshtml" />
     <Content Include="Areas\Active\Views\CustomerBorn\Main.cshtml" />
     <Content Include="Areas\Active\Views\Category\Main.cshtml" />
+    <Content Include="Areas\Active\Views\Food\Main.cshtml" />
+    <Content Include="Areas\Active\Views\Food\ElementFood.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -240,6 +243,7 @@
     <Compile Include="Controllers\Api\CustomerBornController.cs" />
     <Compile Include="Controllers\Api\MealIDController.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
+    <Compile Include="Controllers\Api\ElementFoodController.cs" />
     <Compile Include="Controllers\Api\ProductController.cs" />
     <Compile Include="Controllers\Api\RolesController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
@@ -838,7 +842,6 @@
     <Content Include="Scripts\src\jsx\m-Users.jsx" />
     <Content Include="Scripts\src\jsx\m-CustomerBorn.jsx" />
     <Content Include="Scripts\src\jsx\m-Stock.jsx" />
-    <Content Include="Scripts\src\jsx\m-ProductCategory.jsx" />
     <Content Include="Scripts\src\jsx\m-Roles.jsx" />
     <Content Include="_Code\CSS\sass\bs\bootstrap.scss" />
     <Content Include="_Code\CSS\sass\bs\mixins\_alerts.scss" />
@@ -937,12 +940,6 @@
     <Content Include="_Code\CSS\sass\_scripts.scss" />
     <Content Include="_Code\CSS\sass\_variables.scss" />
     <Content Include="Scripts\src\jsx\m-ChangePassword.jsx" />
-    <Content Include="Scripts\src\jsx\m-Report01_CustomerVisit.jsx" />
-    <Content Include="Scripts\src\jsx\m-Report02_VisitProduct.jsx" />
-    <Content Include="Scripts\src\jsx\m-Report03_CustomerProduct.jsx" />
-    <Content Include="Scripts\src\jsx\m-Report05_CustomerAgent.jsx" />
-    <Content Include="Scripts\src\jsx\m-Report04_ProductCustomer.jsx" />
-    <Content Include="Scripts\src\jsx\m-ProductBrand.jsx" />
     <Content Include="Scripts\src\jsx\m-Stock_view.jsx" />
     <Content Include="Scripts\src\jsx\m-MealID.jsx" />
     <Content Include="Views\Fake\Check.cshtml" />
@@ -966,6 +963,7 @@
     <Content Include="Views\Fake\Index.cshtml" />
     <Content Include="_Code\CSS\fonts\fontAwesome\fontawesome-webfont.woff2" />
     <Content Include="Scripts\src\jsx\m-Category.jsx" />
+    <Content Include="Scripts\src\jsx\m-ElementFood.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1108,6 +1106,7 @@
     <Content Include="Areas\Active\Views\MealID\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\CustomerBorn\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Category\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\Food\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="_Code\RPTFile\MemeberLabel.rdlc" />
   </ItemGroup>
   <PropertyGroup>

@@ -26,6 +26,8 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.All_Category_L1" Width="1.5" PointX="10.375" PointY="12.125" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.All_Category_L2" Width="1.5" PointX="12.625" PointY="12" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.ElementFood" Width="1.5" PointX="14.875" PointY="12.125" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

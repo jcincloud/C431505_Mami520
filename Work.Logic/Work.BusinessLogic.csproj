@@ -110,6 +110,9 @@
     <Compile Include="DB0\Department.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB0\ElementFood.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB0\i_Currency.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
@@ -153,6 +156,9 @@
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Department.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_ElementFood.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_i_Currency.cs">
