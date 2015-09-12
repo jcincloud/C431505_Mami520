@@ -22,7 +22,11 @@ namespace DotWeb.Areas.Active.Controllers
             ActionRun();
             return View();
         }
-
+        public ActionResult ConstituteFood()
+        {
+            ActionRun();
+            return View();
+        }
         #endregion
 
         #region ajax call section
@@ -44,6 +48,16 @@ namespace DotWeb.Areas.Active.Controllers
                 return defJSON(new
                 {
                     options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ElementFood & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
+                });
+            }
+        }
+        public string constitute_food_Init()
+        {
+            using (var db0 = getDB0())
+            {
+                return defJSON(new
+                {
+                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ConstituteFood & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
                 });
             }
         }

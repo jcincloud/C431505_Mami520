@@ -199,6 +199,7 @@ namespace ProcCore.Business.DB0
     public static class CategoryType
     {
         public static int ElementFood = 1;//(可變動)
+        public static int ConstituteFood = 2;//(可變動)
     }
     #endregion
     #region Model Expand
@@ -268,6 +269,12 @@ namespace ProcCore.Business.DB0
     public class q_ElementFood : QueryBase
     {
         public string element_name { get; set; }
+        public int? category_id { get; set; }
+        public bool? i_Hide { get; set; }
+    }
+    public class q_ConstituteFood : QueryBase
+    {
+        public string constitute_name { get; set; }
         public int? category_id { get; set; }
         public bool? i_Hide { get; set; }
     }

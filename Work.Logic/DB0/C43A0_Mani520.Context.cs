@@ -42,5 +42,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<All_Category_L1> All_Category_L1 { get; set; }
         public virtual DbSet<All_Category_L2> All_Category_L2 { get; set; }
         public virtual DbSet<ElementFood> ElementFood { get; set; }
+        public virtual DbSet<ConstituteFood> ConstituteFood { get; set; }
     }
 }
