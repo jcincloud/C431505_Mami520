@@ -837,13 +837,10 @@
     <Content Include="Views\Fake\Sell.cshtml" />
     <Content Include="Views\Fake\Require.cshtml" />
     <Content Include="Views\Shared\Manage\RLayout.tablet.cshtml" />
-    <Content Include="Scripts\src\jsx\m-SalesProduct.jsx" />
-    <Content Include="Scripts\src\jsx\m-SalesArea.jsx" />
     <Content Include="_Code\Ashx\ValidateCodeB.ashx" />
     <Content Include="Scripts\src\jsx\m-Agent.jsx" />
     <Content Include="Scripts\src\jsx\m-Users.jsx" />
     <Content Include="Scripts\src\jsx\m-CustomerBorn.jsx" />
-    <Content Include="Scripts\src\jsx\m-Stock.jsx" />
     <Content Include="Scripts\src\jsx\m-Roles.jsx" />
     <Content Include="_Code\CSS\sass\bs\bootstrap.scss" />
     <Content Include="_Code\CSS\sass\bs\mixins\_alerts.scss" />
@@ -942,7 +939,6 @@
     <Content Include="_Code\CSS\sass\_scripts.scss" />
     <Content Include="_Code\CSS\sass\_variables.scss" />
     <Content Include="Scripts\src\jsx\m-ChangePassword.jsx" />
-    <Content Include="Scripts\src\jsx\m-Stock_view.jsx" />
     <Content Include="Scripts\src\jsx\m-MealID.jsx" />
     <Content Include="Views\Fake\Check.cshtml" />
     <Content Include="Views\Fake\Dishes.cshtml" />
