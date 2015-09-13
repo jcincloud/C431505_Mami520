@@ -44,5 +44,7 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<ElementFood> ElementFood { get; set; }
         public virtual DbSet<ConstituteFood> ConstituteFood { get; set; }
         public virtual DbSet<ConstituteOfElement> ConstituteOfElement { get; set; }
+        public virtual DbSet<DailyMenu> DailyMenu { get; set; }
+        public virtual DbSet<DailyMenuOfConstitute> DailyMenuOfConstitute { get; set; }
     }
 }

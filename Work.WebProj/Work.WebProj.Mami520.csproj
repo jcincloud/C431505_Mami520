@@ -224,6 +224,7 @@
     <Content Include="Areas\Active\Views\Food\Main.cshtml" />
     <Content Include="Areas\Active\Views\Food\ElementFood.cshtml" />
     <Content Include="Areas\Active\Views\Food\ConstituteFood.cshtml" />
+    <Content Include="Areas\Active\Views\Food\DailyMenu.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -241,6 +242,7 @@
     <None Include="Content\bootstrap\js\npm.js" />
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
+    <Compile Include="Controllers\Api\DailyMenuController.cs" />
     <Compile Include="Controllers\Api\CustomerBornController.cs" />
     <Compile Include="Controllers\Api\ConstituteFoodController.cs" />
     <Compile Include="Controllers\Api\MealIDController.cs" />
@@ -958,6 +960,7 @@
     <Content Include="Scripts\src\jsx\m-Category.jsx" />
     <Content Include="Scripts\src\jsx\m-ElementFood.jsx" />
     <Content Include="Scripts\src\jsx\m-ConstituteFood.jsx" />
+    <Content Include="Scripts\src\jsx\m-DailyMenu.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

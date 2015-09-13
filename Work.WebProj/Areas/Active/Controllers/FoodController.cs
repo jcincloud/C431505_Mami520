@@ -27,6 +27,11 @@ namespace DotWeb.Areas.Active.Controllers
             ActionRun();
             return View();
         }
+        public ActionResult DailyMenu()
+        {
+            ActionRun();
+            return View();
+        }
         #endregion
 
         #region ajax call section
@@ -47,7 +52,7 @@ namespace DotWeb.Areas.Active.Controllers
             {
                 return defJSON(new
                 {
-                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ElementFood & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
+                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ElementFood).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
                 });
             }
         }
@@ -57,7 +62,7 @@ namespace DotWeb.Areas.Active.Controllers
             {
                 return defJSON(new
                 {
-                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ConstituteFood & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
+                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ConstituteFood).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
                 });
             }
         }

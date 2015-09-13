@@ -278,6 +278,12 @@ namespace ProcCore.Business.DB0
         public int? category_id { get; set; }
         public bool? i_Hide { get; set; }
     }
+    public class q_DailyMenu : QueryBase
+    {
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
+        public int? meal_type { get; set; }
+    }
 
     #endregion
 

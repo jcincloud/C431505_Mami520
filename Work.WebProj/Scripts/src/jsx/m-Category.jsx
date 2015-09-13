@@ -51,7 +51,7 @@ var GridSubRow = React.createClass({
 					<td className="text-center"><GridButtonPopupWindow modify={this.modify} MainId={this.props.MainId}/></td>
 					<td>{this.props.itemData.l2_name}</td>
 					<td>{this.props.itemData.sort}</td>
-					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
+					{/*<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>*/}
 				</tr>
 			);
 		}
@@ -294,7 +294,7 @@ var GridSubForm = React.createClass({
 	                                        <th className="col-xs-1 text-center">修改</th>
                                             <th className="col-xs-5">項目</th>
                                             <th className="col-xs-2">排序</th>
-                                            <th className="col-xs-2">狀態</th>
+                                            {/*<th className="col-xs-2">狀態</th>*/}
                                         </tr>
                                     </thead>
                                     <tbody ref="SortTbody">
@@ -363,7 +363,7 @@ var GridSubForm = React.createClass({
 										<small className="col-xs-4 help-inline">數字越大越前面</small>
 									</div>
 									
-									<div className="form-group">
+									{/*<div className="form-group">
 										<label className="col-xs-2 control-label">狀態</label>
 										<div className="col-xs-3">
 											<div className="radio-inline">
@@ -387,7 +387,7 @@ var GridSubForm = React.createClass({
 												</label>
 											</div>
 										</div>				
-									</div>
+									</div>*/}
 
         						</div>
 	        					<div className="modal-footer">

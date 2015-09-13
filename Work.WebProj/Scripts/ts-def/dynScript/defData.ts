@@ -508,6 +508,11 @@
         { id: true, label: '男', className: 'label label-primary', code: 'straght' },
         { id: false, label: '女', className: 'label label-danger', code: 'straght' }
     ];
+    export var MealType = [
+        { id: 1, label: '早餐', className: 'label label-success', code: 'store' },
+        { id: 2, label: '午餐', className: 'label label-primary', code: 'straght' },
+        { id: 3, label: '晚餐', className: 'label label-default', code: 'straght' }
+    ];
 
     export var MonthsData = [
         { id: 1, label: '1月' },

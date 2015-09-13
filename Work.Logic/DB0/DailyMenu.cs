@@ -13,19 +13,16 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class ConstituteFood : BaseEntityTable
+    public partial class DailyMenu : BaseEntityTable
     {
-        public ConstituteFood()
+        public DailyMenu()
         {
-            this.ConstituteOfElement = new HashSet<ConstituteOfElement>();
             this.DailyMenuOfConstitute = new HashSet<DailyMenuOfConstitute>();
         }
     
-        public int constitute_id { get; set; }
-        public int category_id { get; set; }
-        public string constitute_name { get; set; }
-        public Nullable<int> sort { get; set; }
-        public string memo { get; set; }
+        public int dail_menu_id { get; set; }
+        public System.DateTime day { get; set; }
+        public int meal_type { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -35,10 +32,6 @@ namespace ProcCore.Business.DB0
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
     
-    	[JsonIgnore]
-        public virtual All_Category_L2 All_Category_L2 { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<ConstituteOfElement> ConstituteOfElement { get; set; }
     	[JsonIgnore]
         public virtual ICollection<DailyMenuOfConstitute> DailyMenuOfConstitute { get; set; }
     }

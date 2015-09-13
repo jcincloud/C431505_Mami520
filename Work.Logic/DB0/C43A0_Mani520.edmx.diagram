@@ -33,6 +33,10 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.ConstituteOfElement" Width="1.5" PointX="17.125" PointY="15" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ConstituteOfElement_ConstituteFood" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMenu" Width="1.5" PointX="14.875" PointY="22.625" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMenuOfConstitute" Width="1.5" PointX="17.125" PointY="19.625" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMenuOfConstitute_ConstituteFood" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMenuOfConstitute_DailyMenu" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
