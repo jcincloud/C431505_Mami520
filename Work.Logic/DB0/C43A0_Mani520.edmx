@@ -93,6 +93,22 @@
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
         </EntityType>
+        <EntityType Name="ConstituteOfElement">
+          <Key>
+            <PropertyRef Name="element_id" />
+            <PropertyRef Name="constitute_id" />
+          </Key>
+          <Property Name="element_id" Type="int" Nullable="false" />
+          <Property Name="constitute_id" Type="int" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="customer_id" />
@@ -342,6 +358,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ConstituteOfElement_ConstituteFood">
+          <End Role="ConstituteFood" Type="Self.ConstituteFood" Multiplicity="1" />
+          <End Role="ConstituteOfElement" Type="Self.ConstituteOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConstituteFood">
+              <PropertyRef Name="constitute_id" />
+            </Principal>
+            <Dependent Role="ConstituteOfElement">
+              <PropertyRef Name="constitute_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConstituteOfElement_ElementFood">
+          <End Role="ElementFood" Type="Self.ElementFood" Multiplicity="1" />
+          <End Role="ConstituteOfElement" Type="Self.ConstituteOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElementFood">
+              <PropertyRef Name="element_id" />
+            </Principal>
+            <Dependent Role="ConstituteOfElement">
+              <PropertyRef Name="element_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CustomerBorn_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
           <End Role="CustomerBorn" Type="Self.CustomerBorn" Multiplicity="*" />
@@ -425,6 +465,7 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConstituteFood" EntityType="Self.ConstituteFood" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConstituteOfElement" EntityType="Self.ConstituteOfElement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerBorn" EntityType="Self.CustomerBorn" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
@@ -450,6 +491,14 @@
           <AssociationSet Name="FK_ConstituteFood_All_Category_L2" Association="Self.FK_ConstituteFood_All_Category_L2">
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
             <End Role="ConstituteFood" EntitySet="ConstituteFood" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConstituteOfElement_ConstituteFood" Association="Self.FK_ConstituteOfElement_ConstituteFood">
+            <End Role="ConstituteFood" EntitySet="ConstituteFood" />
+            <End Role="ConstituteOfElement" EntitySet="ConstituteOfElement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConstituteOfElement_ElementFood" Association="Self.FK_ConstituteOfElement_ElementFood">
+            <End Role="ElementFood" EntitySet="ElementFood" />
+            <End Role="ConstituteOfElement" EntitySet="ConstituteOfElement" />
           </AssociationSet>
           <AssociationSet Name="FK_CustomerBorn_Customer" Association="Self.FK_CustomerBorn_Customer">
             <End Role="Customer" EntitySet="Customer" />
@@ -668,6 +717,15 @@
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
             <End Role="ConstituteFood" EntitySet="ConstituteFood" />
           </AssociationSet>
+          <EntitySet Name="ConstituteOfElement" EntityType="C43A0_Mani520Model.ConstituteOfElement" />
+          <AssociationSet Name="FK_ConstituteOfElement_ConstituteFood" Association="C43A0_Mani520Model.FK_ConstituteOfElement_ConstituteFood">
+            <End Role="ConstituteFood" EntitySet="ConstituteFood" />
+            <End Role="ConstituteOfElement" EntitySet="ConstituteOfElement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ConstituteOfElement_ElementFood" Association="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood">
+            <End Role="ElementFood" EntitySet="ElementFood" />
+            <End Role="ConstituteOfElement" EntitySet="ConstituteOfElement" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="MealID">
           <Key>
@@ -851,6 +909,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" FromRole="ElementFood" ToRole="All_Category_L2" />
+          <NavigationProperty Name="ConstituteOfElement" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood" FromRole="ElementFood" ToRole="ConstituteOfElement" />
         </EntityType>
         <Association Name="FK_ElementFood_All_Category_L2">
           <End Type="C43A0_Mani520Model.All_Category_L2" Role="All_Category_L2" Multiplicity="1" />
@@ -882,6 +941,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_ConstituteFood_All_Category_L2" FromRole="ConstituteFood" ToRole="All_Category_L2" />
+          <NavigationProperty Name="ConstituteOfElement" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ConstituteFood" FromRole="ConstituteFood" ToRole="ConstituteOfElement" />
         </EntityType>
         <Association Name="FK_ConstituteFood_All_Category_L2">
           <End Type="C43A0_Mani520Model.All_Category_L2" Role="All_Category_L2" Multiplicity="1" />
@@ -892,6 +952,48 @@
             </Principal>
             <Dependent Role="ConstituteFood">
               <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ConstituteOfElement">
+          <Key>
+            <PropertyRef Name="element_id" />
+            <PropertyRef Name="constitute_id" />
+          </Key>
+          <Property Name="element_id" Type="Int32" Nullable="false" />
+          <Property Name="constitute_id" Type="Int32" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="ConstituteFood" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ConstituteFood" FromRole="ConstituteOfElement" ToRole="ConstituteFood" />
+          <NavigationProperty Name="ElementFood" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood" FromRole="ConstituteOfElement" ToRole="ElementFood" />
+        </EntityType>
+        <Association Name="FK_ConstituteOfElement_ConstituteFood">
+          <End Type="C43A0_Mani520Model.ConstituteFood" Role="ConstituteFood" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.ConstituteOfElement" Role="ConstituteOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConstituteFood">
+              <PropertyRef Name="constitute_id" />
+            </Principal>
+            <Dependent Role="ConstituteOfElement">
+              <PropertyRef Name="constitute_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ConstituteOfElement_ElementFood">
+          <End Type="C43A0_Mani520Model.ElementFood" Role="ElementFood" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.ConstituteOfElement" Role="ConstituteOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElementFood">
+              <PropertyRef Name="element_id" />
+            </Principal>
+            <Dependent Role="ConstituteOfElement">
+              <PropertyRef Name="element_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1217,6 +1319,22 @@
                 <ScalarProperty Name="constitute_name" ColumnName="constitute_name" />
                 <ScalarProperty Name="category_id" ColumnName="category_id" />
                 <ScalarProperty Name="constitute_id" ColumnName="constitute_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConstituteOfElement">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.ConstituteOfElement">
+              <MappingFragment StoreEntitySet="ConstituteOfElement">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="constitute_id" ColumnName="constitute_id" />
+                <ScalarProperty Name="element_id" ColumnName="element_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

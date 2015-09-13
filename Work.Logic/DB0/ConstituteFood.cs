@@ -15,6 +15,11 @@ namespace ProcCore.Business.DB0
     using Newtonsoft.Json;
     public partial class ConstituteFood : BaseEntityTable
     {
+        public ConstituteFood()
+        {
+            this.ConstituteOfElement = new HashSet<ConstituteOfElement>();
+        }
+    
         public int constitute_id { get; set; }
         public int category_id { get; set; }
         public string constitute_name { get; set; }
@@ -31,5 +36,7 @@ namespace ProcCore.Business.DB0
     
     	[JsonIgnore]
         public virtual All_Category_L2 All_Category_L2 { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<ConstituteOfElement> ConstituteOfElement { get; set; }
     }
 }

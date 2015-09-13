@@ -390,13 +390,14 @@ var GirdForm = React.createClass({
 
 					<div className="form-group">
 						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-10">
+						<div className="col-xs-7">
 							<input type="number" 
 							className="form-control"	
 							value={fieldData.sort}
 							onChange={this.changeFDValue.bind(this,'sort')}
 							 />
 						</div>
+						<small className="col-xs-3 help-inline">數字越大越前面</small>
 					</div>
 
 					<div className="form-group">
@@ -437,19 +438,217 @@ var GirdForm = React.createClass({
 					</div>
 
 				</div>
-
-				<div className="col-xs-8">
-					<div className="form-action text-center">
+				<div className="col-xs-12"></div>
+				<div className="col-xs-5">
+					<div className="text-right">
 						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
 						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
 					</div>
 				</div>
 				</form>
+				<GirdCofE main_id={fieldData.constitute_id} main_name={fieldData.constitute_name}/>
 			</div>
 			);
 		}else{
 			outHtml=(<span>No Page</span>);
 		}
+
+		return outHtml;
+	}
+});
+
+//主表單
+var GirdCofE = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			gridData:{rows:[],page:1},
+			fieldData:{},
+			searchData:{constitute_id:this.props.main_id,name:null,category_id:null},
+			edit_type:0,
+			checkAll:false,
+			grid_right_element:[],
+			grid_left_element:[],
+			category_element:[]
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldData',
+			gdName:'searchData',
+			apiPathName:gb_approot+'api/Product',
+			initPathName:gb_approot+'Active/Food/element_food_Init'
+
+		};
+	},	
+	componentDidMount:function(){
+		this.getAjaxInitData();//載入init資料
+		this.queryLeftElement();
+		this.queryRightElement();
+	},
+	getAjaxInitData:function(){
+		jqGet(this.props.initPathName)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({category_element:data.options_category});
+			//載入下拉是選單內容
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	queryLeftElement:function(){
+			jqGet(gb_approot + 'api/GetAction/GetLeftElement',this.state.searchData)
+			.done(function(data, textStatus, jqXHRdata) {
+				this.setState({grid_left_element:data});
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+	},	
+	queryRightElement:function(){
+			jqGet(gb_approot + 'api/GetAction/GetRightElement',{constitute_id:this.props.main_id})
+			.done(function(data, textStatus, jqXHRdata) {
+				this.setState({grid_right_element:data});
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+	},
+	queryChangeElementParam:function(name,e){
+		var obj = this.state.searchData;
+		obj[name] = e.target.value;
+		this.setState({searchData:obj});
+		this.queryLeftElement();			
+	},
+	addElement:function(element_id){
+			jqPost(gb_approot + 'api/GetAction/PostConstituteOfElement',{constitute_id:this.props.main_id,element_id:element_id})
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					this.queryLeftElement();
+					this.queryRightElement();
+				}else{
+					alert(data.message);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});		
+	},
+	removeElement:function(element_id){
+			jqDelete(gb_approot + 'api/GetAction/DeleteConstituteOfElement',{constitute_id:this.props.main_id,element_id:element_id})
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					this.queryLeftElement();
+					this.queryRightElement();
+				}else{
+					alert(data.message);
+				}
+
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});	
+	},
+	Filter:function(value,CName){
+		var val="";
+		this.state[CName].forEach(function(object, i){
+        	if(value==object.val){
+  				val=object.Lname;
+        	}
+    	})
+		return val;
+	},
+	render: function() {
+		var outHtml = null;
+		var fieldData = {};
+		var searchData=this.state.searchData;
+
+		outHtml =(
+			<div className="col-xs-12">
+			<hr className="expanded" />
+				<div className="row">
+					<div className="col-xs-6">
+						<div className="table-responsive">
+							<table className="table-condensed">
+								<caption>
+								    <div className="form-inline break pull-right">
+				                        <div className="form-group">
+				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
+				                           	value={searchData.name} 
+	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
+				                            <select name="" id="" className="form-control input-sm"
+				                            onChange={this.queryChangeElementParam.bind(this,'category_id')}
+											value={searchData.category_id}> { }
+				                                <option value="">分類</option>
+											{
+												this.state.category_element.map(function(itemData,i) {
+													return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
+												})
+											}
+				                            </select> { }			             
+
+				                        </div>
+				                    </div>
+				                    全部食材
+								</caption>
+								<tbody>
+									<tr>
+										<th>分類</th>
+										<th>名稱</th>
+					                	<th className="text-center">加入</th>
+									</tr>
+									{
+										this.state.grid_left_element.map(function(itemData,i) {
+											var out_sub_html =                     
+												<tr key={itemData.element_id}>
+													<td>{this.Filter(itemData.category_id,'category_element')}</td>
+							                        <td>{itemData.element_name}</td>
+				                        			<td className="text-center">
+														<button className="btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.element_id)}>
+															<i className="fa-plus"></i>
+														</button>
+							                        </td>
+												</tr>;
+											return out_sub_html;
+										}.bind(this))
+									}
+								</tbody>
+	        				</table>
+	        			</div>
+        			</div>
+					<div className="col-xs-6">
+						<div className="table-responsive">
+							<table className="table-condensed">
+								<caption>食材已加入:{this.props.main_name}</caption>
+								<tbody>
+									<tr>
+										<th>分類</th>
+										<th>名稱</th>
+					                	<th className="text-center">刪除</th>
+									</tr>
+									{
+										this.state.grid_right_element.map(function(itemData,i) {
+											var out_sub_html =                     
+												<tr key={itemData.element_id}>
+													<td>{this.Filter(itemData.category_id,'category_element')}</td>
+							                        <td>{itemData.element_name}</td>
+				                        			<td className="text-center">
+														<button className="btn-link text-danger" type="button" onClick={this.removeElement.bind(this,itemData.element_id)}>
+															<i className="fa-times"></i>
+														</button>
+							                        </td>
+												</tr>;
+											return out_sub_html;
+										}.bind(this))
+									}
+								</tbody>
+	        				</table>
+        				</div>
+        			</div>
+				</div>
+			</div>
+
+		);
 
 		return outHtml;
 	}

@@ -30,6 +30,9 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.ConstituteFood" Width="1.5" PointX="14.875" PointY="17.25" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ConstituteFood_All_Category_L2" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.ConstituteOfElement" Width="1.5" PointX="17.125" PointY="15" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_ConstituteOfElement_ConstituteFood" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -392,13 +392,14 @@ var GirdForm = React.createClass({
 							 />
 						</div>
 						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-4">
+						<div className="col-xs-2">
 							<input type="number" 
 							className="form-control"	
 							value={fieldData.sort}
 							onChange={this.changeFDValue.bind(this,'sort')}
 							 />
 						</div>
+						<small className="col-xs-2 help-inline">數字越大越前面</small>
 					</div>
 
 					<div className="form-group">
