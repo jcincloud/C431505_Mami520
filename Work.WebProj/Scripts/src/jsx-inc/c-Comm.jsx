@@ -29,7 +29,60 @@ var GridButtonView = React.createClass({
 			);
 	}
 });
-
+//popup window 修改按鈕
+var GridButtonPopupWindow = React.createClass({
+	getInitialState: function() {  
+		return { 
+		};  
+	},
+	onClick:function(e){
+		this.props.modify();
+	},
+	render:function(){
+		return (
+			<button type="button" className="btn-link btn-lg" data-toggle="modal" data-target={'#myModal-'+this.props.MainId} onClick={this.onClick}><i className="fa-pencil"></i></button>
+			);
+	}
+});
+//縮放子類別按鈕
+var GridButtonSub = React.createClass({
+	getInitialState: function() {  
+		return { 
+			subHtml:'fa-plus'
+		};  
+	},
+	componentWillReceiveProps:function(nextProps){
+		//當元件收到新的 props 時被執行，這個方法在初始化時並不會被執行。使用的時機是在我們使用 setState() 並且呼叫 render() 之前您可以比對 props，舊的值在 this.props，而新值就從 nextProps 來。
+		if(nextProps.chd){
+			this.setState({subHtml:'fa-minus'});//展開
+		}else{
+			this.setState({subHtml:'fa-plus'});//合起
+		}
+	},
+	onClick:function(e){
+		this.props.subCheck(this.props.iKey,this.props.chd);
+		this.props.chd=!this.props.chd;
+		if(this.props.chd){
+			this.setState({subHtml:'fa-minus'});//展開
+		}else{
+			this.setState({subHtml:'fa-plus'});//合起
+		}
+	},
+	onChange:function(e){
+		this.props.subCheck(this.props.iKey,this.props.chd);
+		this.props.chd=!this.props.chd;
+		if(this.props.chd){
+			this.setState({subHtml:'fa-minus'});//展開
+		}else{
+			this.setState({subHtml:'fa-plus'});//合起
+		}
+	},
+	render:function(){
+		return (
+			<button type="button" className="btn-link btn-lg" onClick={this.onClick}><i className={this.state.subHtml}></i></button>
+			);
+	}
+});
 var GridCheckDel = React.createClass({
 	getInitialState: function() {  
 		return { 
@@ -220,6 +273,110 @@ var GridNavPageOnlyView = React.createClass({
 	}
 });
 
+//新增按鈕為popup window
+var GridNavPageUsePopup = React.createClass({
+	getInitialState: function() {  
+		return {
+		};  
+	},
+	getDefaultProps:function(){
+		return{
+			gridData:null,
+			onQueryGridData:null,
+			InsertType:0,
+			UpdateType:null,
+			deleteSubmit:null,
+			showAdd:true,
+			showDelete:true
+		};
+	},
+	firstPage:function(){
+		this.props.onQueryGridData(1);
+	},
+	lastPage:function(){
+		this.props.onQueryGridData(this.props.TotalPage);
+	},
+	nextPage:function(){
+		if(this.props.NowPage < this.props.TotalPage){
+			this.props.onQueryGridData(this.props.NowPage + 1);
+		}
+	},
+	prvePage:function(){
+		if(this.props.NowPage > 1){
+			this.props.onQueryGridData(this.props.NowPage - 1);
+		}
+	},
+	jumpPage:function(){
+
+	},
+	render:function(){
+
+		var setAddButton = null,setDeleteButton=null;
+		if(this.props.showAdd){
+			setAddButton = <button className="btn-link text-success"
+			                type="button"
+			                data-toggle="modal"
+			                data-target={'#myModal-'+this.props.MainId}
+			                onClick={this.props.InsertType}>
+			            	<i className="fa-plus-circle"></i> 新增
+			        		</button>;			        		
+		}
+
+		if(this.props.showDelete){
+			setDeleteButton = 	<button className="btn-link text-danger" type="button"
+			                		onClick={this.props.deleteSubmit}>
+			            			<i className="fa-trash-o"></i> 刪除
+			        			</button>;
+
+		}
+		var oper = null;
+
+		oper = (
+			<div className="table-footer">
+			    <div className="pull-left">
+			        {setAddButton}
+			        {setDeleteButton}
+			    </div>
+			    <small className="pull-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+
+			    <ul className="pager">
+			        <li>
+			            <a href="#" title="移至第一頁" tabIndex="-1" onClick={this.firstPage}>
+			                <i className="fa-angle-double-left"></i>
+			            </a>
+			        </li> { } 
+			        <li>
+			            <a href="#" title="上一頁" tabIndex="-1" onClick={this.prvePage}>
+			                <i className="fa-angle-left"></i>
+			            </a>
+			        </li> { } 
+			        <li className="form-inline">
+			            <div className="form-group">
+			                <label>第</label>
+			                {' '}
+			                <input className="form-control" type="number" min="1" tabIndex="-1" value={this.props.NowPage}
+			                       onChange={this.jumpPage} />
+			                {' '}
+			                <label>頁，共{this.props.TotalPage}頁</label>
+			            </div>
+			        </li> { } 
+			        <li>
+			            <a href="#" title="@Resources.Res.NextPage" tabIndex="-1" onClick={this.nextPage}>
+			                <i className="fa-angle-right"></i>
+			            </a>
+			        </li> { } 
+			        <li>
+			            <a href="#" title="移至最後一頁" tabIndex="-1" onClick={this.lastPage}>
+			                <i className="fa-angle-double-right"></i>
+			            </a>
+			        </li>
+			    </ul>
+			</div>
+		);
+
+		return oper;
+	}
+});
 
 //日期輸入元件
 var InputDate = React.createClass({
@@ -232,7 +389,9 @@ var InputDate = React.createClass({
 		return{	
 			value:null,
 			onChange:null,
-			field_name:null
+			field_name:null,
+			required:false,
+			disabled:false
 		};
 	},
 	componentDidMount:function(){
@@ -265,7 +424,8 @@ var InputDate = React.createClass({
 					name={this.props.field_name}
 					value={this.props.value!=undefined ? moment(this.props.value).format('YYYY-MM-DD'):''}
 					onChange={this.onChange}
-					required={false} />
+					required={this.props.required}
+					disabled={this.props.disabled} />
 					<i className="fa-calendar form-control-feedback"></i>
 			</div>
 			);
@@ -542,7 +702,8 @@ var TwAddress = React.createClass({
 			address_value:null,address_field:null,
 			setFDValue:null,
 			ver:1,
-			label_name:'地址'
+			label_name:'地址',
+			disabled:false
 		};
 	},
 	componentDidMount:function(){
@@ -617,7 +778,8 @@ var TwAddress = React.createClass({
 					<div className="col-xs-2">
 						<select className="form-control" 
 								value={this.props.city_value}
-								onChange={this.onCityChange}>
+								onChange={this.onCityChange}
+								disabled={this.props.disabled}>
 								<option value=""></option>
 								{
 									CommData.twDistrict.map(function(itemData,i) {
@@ -629,7 +791,8 @@ var TwAddress = React.createClass({
 					<div className="col-xs-2">
 						<select className="form-control" 
 								value={this.props.country_value}
-								onChange={this.onCountryChange}>
+								onChange={this.onCountryChange}
+								disabled={this.props.disabled}>
 								<option value=""></option>
 								{
 									this.state.country_list.map(function(itemData,i) {
@@ -644,7 +807,7 @@ var TwAddress = React.createClass({
 								value={this.props.address_value}
 								onChange={this.valueChange.bind(this,this.props.address_field)}
 								maxLength="128"
-								 />
+								disabled={this.props.disabled} />
 					</div>
 				</div>
 			);
@@ -668,64 +831,8 @@ var TwAddress = React.createClass({
 						<div className="col-xs-3">
 							<select className="form-control" 
 									value={this.props.city_value}
-									onChange={this.onCityChange}>
-									<option value=""></option>
-									{
-										CommData.twDistrict.map(function(itemData,i) {
-											return <option key={itemData.city} value={itemData.city}>{itemData.city}</option>;
-										})
-									}
-							</select>
-						</div>
-						<div className="col-xs-4">
-							<select className="form-control" 
-									value={this.props.country_value}
-									onChange={this.onCountryChange}>
-									<option value=""></option>
-									{
-										this.state.country_list.map(function(itemData,i) {
-											return <option key={itemData.county} value={itemData.county}>{itemData.county}</option>;
-										})
-									}
-							</select>
-						</div>
-				</div>
-				<div className="form-group">
-			        <div className="col-xs-10 col-xs-offset-2">
-							<input 	type="text" 
-									className="form-control"	
-									value={this.props.address_value}
-									onChange={this.valueChange.bind(this,this.props.address_field)}
-									maxLength="128"
-									required={this.props.required}
-									 />
-			        </div>
-			    </div>
-			</div>
-			);
-
-			return outHtml;
-		}
-
-		if(this.props.ver==3){
-			outHtml=(
-			<div>
-				<div className="form-group">
-						<label for="" className="control-label col-xs-2 text-danger">{this.props.label_name}</label>
-						<div className="col-xs-3">
-							<input 	type="text" 
-									className="form-control"	
-									value={this.props.zip_value}
-									onChange={this.valueChange.bind(this,this.props.zip_field)}
-									maxLength="5"
-									required={this.props.required}
-									disabled />
-						</div>
-						<div className="col-xs-3">
-							<select className="form-control" 
-									value={this.props.city_value}
 									onChange={this.onCityChange}
-									disabled>
+									disabled={this.props.disabled}>
 									<option value=""></option>
 									{
 										CommData.twDistrict.map(function(itemData,i) {
@@ -738,7 +845,7 @@ var TwAddress = React.createClass({
 							<select className="form-control" 
 									value={this.props.country_value}
 									onChange={this.onCountryChange}
-									disabled>
+									disabled={this.props.disabled}>
 									<option value=""></option>
 									{
 										this.state.country_list.map(function(itemData,i) {
@@ -756,7 +863,7 @@ var TwAddress = React.createClass({
 									onChange={this.valueChange.bind(this,this.props.address_field)}
 									maxLength="128"
 									required={this.props.required}
-									disabled />
+									disabled={this.props.disabled} />
 			        </div>
 			    </div>
 			</div>
@@ -764,8 +871,6 @@ var TwAddress = React.createClass({
 
 			return outHtml;
 		}
-
-
 	}
 });
 
@@ -1120,6 +1225,16 @@ var StateForGrid = React.createClass({
 			id:null
 		};
 	},
+    componentWillReceiveProps:function(nextProps){
+        //當元件收到新的 props 時被執行，這個方法在初始化時並不會被執行。使用的時機是在我們使用 setState() 並且呼叫 render() 之前您可以比對 props，舊的值在 this.props，而新值就從 nextProps 來。
+    	for(var i in this.props.stateData){
+			var item = this.props.stateData[i];
+			if(item.id==nextProps.id){
+				this.setState({setClass:item.className,label:item.label});
+				break;
+			}
+		}
+    },
 	componentDidMount:function(){
 		for(var i in this.props.stateData){
 			var item = this.props.stateData[i];

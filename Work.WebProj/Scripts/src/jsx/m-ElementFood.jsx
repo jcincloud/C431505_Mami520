@@ -1,4 +1,4 @@
-var GridRow = React.createClass({
+﻿var GridRow = React.createClass({
 	mixins: [React.addons.LinkedStateMixin], 
 	getInitialState: function() {  
 		return { 
@@ -10,14 +10,24 @@ var GridRow = React.createClass({
 	modify:function(){
 		this.props.updateType(this.props.primKey);
 	},
+	Filter:function(value,CName){
+		var val="";
+		this.props[CName].forEach(function(object, i){
+        	if(value==object.val){
+  				val=object.Lname;
+        	}
+    	})
+		return val;
+	},
 	render:function(){
 		return (
 
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
-					<td>{this.props.itemData.product_brand_name}</td>
-					<td>{this.props.itemData.sort}</td>
+					<td>{this.Filter(this.props.itemData.category_id,'category')}</td>
+					<td>{this.props.itemData.element_name}</td>
+					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
 				</tr>
 			);
 		}
@@ -32,33 +42,51 @@ var GirdForm = React.createClass({
 			fieldData:{},
 			searchData:{title:null},
 			edit_type:0,
-			checkAll:false
+			checkAll:false,
+			category:[]
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
 			fdName:'fieldData',
 			gdName:'searchData',
-			apiPathName:gb_approot+'api/ProductBrand'
+			apiPathName:gb_approot+'api/ElementFood',
+			initPathName:gb_approot+'Active/Food/element_food_Init'
 		};
 	},	
 	componentDidMount:function(){
 		this.queryGridData(1);
+		this.getAjaxInitData();//載入init資料
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
 	},
+	getAjaxInitData:function(){
+		jqGet(this.props.initPathName)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({category:data.options_category});
+			//載入下拉是選單內容
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
 	handleSubmit: function(e) {
 
 		e.preventDefault();
+
 		if(this.state.edit_type==1){
 			jqPost(this.props.apiPathName,this.state.fieldData)
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
-					tosMessage(null,'新增完成',1);
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
 					this.updateType(data.id);
 				}else{
-					alert(data.message);
+					tosMessage(null,data.message,3);
 				}
 			}.bind(this))
 			.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -69,9 +97,13 @@ var GirdForm = React.createClass({
 			jqPut(this.props.apiPathName,this.state.fieldData)
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
-					tosMessage(null,'修改完成',1);
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
 				}else{
-					alert(data.message);
+					tosMessage(null,data.message,3);
 				}
 			}.bind(this))
 			.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -89,7 +121,7 @@ var GirdForm = React.createClass({
 		var ids = [];
 		for(var i in this.state.gridData.rows){
 			if(this.state.gridData.rows[i].check_del){
-				ids.push('ids='+this.state.gridData.rows[i].product_brand_id);
+				ids.push('ids='+this.state.gridData.rows[i].element_id);
 			}
 		}
 
@@ -104,7 +136,7 @@ var GirdForm = React.createClass({
 				tosMessage(null,'刪除完成',1);
 				this.queryGridData(0);
 			}else{
-				alert(data.message);
+				tosMessage(null,data.message,3);
 			}
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -157,7 +189,8 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{}});
+		var defaultC=this.state.category;
+		this.setState({edit_type:1,fieldData:{category_id:defaultC[0].val}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -201,6 +234,16 @@ var GirdForm = React.createClass({
 		}
 		this.setState({fieldData:obj});
 	},
+	onCategoryChange:function(e){
+		var obj = this.state.searchData;
+		obj['category_id'] = e.target.value;
+		this.setState({searchData:obj});
+	},
+	onHideChange:function(e){
+		var obj = this.state.searchData;
+		obj['i_Hide'] = e.target.value;
+		this.setState({searchData:obj});
+	},
 	render: function() {
 		var outHtml = null;
 
@@ -212,21 +255,52 @@ var GirdForm = React.createClass({
 			(
 			<div>
 				<ul className="breadcrumb">
-					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
+					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
 				</ul>
 				<h3 className="title">
 					{this.props.Caption}
 				</h3>
 				<form onSubmit={this.handleSearch}>
 					<div className="table-responsive">
-						{/*<div className="table-header">
+						<div className="table-header">
 							<div className="table-filter">
 								<div className="form-inline">
 									<div className="form-group">
+
+										<label className="sr-only">基礎菜單名稱</label> { }
+										<input type="text" className="form-control" 
+										value={searchData.element_name}
+										onChange={this.changeGDValue.bind(this,'element_name')}
+										placeholder="基礎菜單名稱..." /> { }
+
+										<label className="sr-only">分類</label> { }
+										<select className="form-control" 
+												value={searchData.category_id}
+												onChange={this.onCategoryChange}>
+											<option value="">選擇分類</option>
+										{
+											this.state.category.map(function(itemData,i) {
+												return <option key={i} value={itemData.val}>{itemData.Lname}</option>
+											})
+										}
+										</select> { }
+
+										<label className="sr-only">狀態</label> { }
+										<select className="form-control" 
+												value={searchData.i_Hide}
+												onChange={this.onHideChange}>
+											<option value="">選擇狀態</option>
+											<option value="true">隱藏</option>
+											<option value="false">顯示</option>
+
+										</select> { }
+
+
+										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
-						</div>*/}
+						</div>
 						<table>
 							<thead>
 								<tr>
@@ -237,8 +311,9 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-8">名稱</th>
-									<th className="col-xs-2">排序</th>
+									<th className="col-xs-1">分類</th>
+									<th className="col-xs-2">基礎菜單名稱</th>
+									<th className="col-xs-1">狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -247,10 +322,11 @@ var GirdForm = React.createClass({
 								return <GridRow 
 								key={i}
 								ikey={i}
-								primKey={itemData.product_brand_id} 
+								primKey={itemData.element_id} 
 								itemData={itemData} 
 								delCheck={this.delCheck}
-								updateType={this.updateType}								
+								updateType={this.updateType}
+								category={this.state.category}								
 								/>;
 								}.bind(this))
 								}
@@ -278,43 +354,96 @@ var GirdForm = React.createClass({
 			outHtml=(
 			<div>
 				<ul className="breadcrumb">
-					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
+					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
 				</ul>
-				<h4 className="title">{this.props.Caption} 基本資料維護</h4>
+				<h4 className="title">{this.props.Caption}</h4>
+				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-					<div className="col-xs-6">
-						<div className="alert alert-warning">
-							<p>以下皆為 <strong className="text-danger">必填欄位</strong>。</p>
+				<div className="col-xs-2"></div>
+				<div className="col-xs-4">
+					<div className="form-group">
+						<label className="col-xs-2 control-label text-danger">分類</label>
+						<div className="col-xs-10">
+							<select className="form-control" 
+							value={fieldData.category_id}
+							onChange={this.changeFDValue.bind(this,'category_id')}>
+							{
+								this.state.category.map(function(itemData,i) {
+									return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
+								})
+							}
+							</select>
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label ">分類名稱</label>
-							<div className="col-xs-10">
-								<input type="text" 							
-								className="form-control"	
-								value={fieldData.product_brand_name}
-								onChange={this.changeFDValue.bind(this,'product_brand_name')}
-								maxLength="64"
-								required />
+					</div>
+
+					<div className="form-group">
+						<label className="col-xs-2 control-label text-danger">名稱</label>
+						<div className="col-xs-10">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.element_name}
+							onChange={this.changeFDValue.bind(this,'element_name')}
+							maxLength="64"
+							required />
+						</div>
+					</div>
+
+					<div className="form-group">
+						<label className="col-xs-2 control-label">排序</label>
+						<div className="col-xs-10">
+							<input type="number" 
+							className="form-control"	
+							value={fieldData.sort}
+							onChange={this.changeFDValue.bind(this,'sort')}
+							 />
+						</div>
+					</div>
+
+					<div className="form-group">
+						<label className="col-xs-2 control-label">狀態</label>
+						<div className="col-xs-10">
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="i_Hide"
+											value={true}
+											checked={fieldData.i_Hide===true} 
+											onChange={this.changeFDValue.bind(this,'i_Hide')}
+									/>
+									<span>隱藏</span>
+								</label>
 							</div>
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">排序</label>
-							<div className="col-xs-10">
-								<input type="number" 
-								className="form-control"	
-								value={fieldData.sort}
-								onChange={this.changeFDValue.bind(this,'sort')}
-								required
-								 />
-							</div>
-						</div>
-						<div className="form-action">
-							<div className="col-xs-10 col-xs-offset-2">
-								<button type="submit" className="btn-primary"><i className="fa-check"></i> 儲存</button> { }
-								<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="i_Hide"
+											value={false}
+											checked={fieldData.i_Hide===false} 
+											onChange={this.changeFDValue.bind(this,'i_Hide')}
+											/>
+									<span>顯示</span>
+								</label>
 							</div>
 						</div>
 					</div>
+					<div className="form-group">
+						<label className="col-xs-2 control-label">備註</label>
+						<div className="col-xs-10">
+							<textarea col="30" row="2" className="form-control"
+							value={fieldData.memo}
+							onChange={this.changeFDValue.bind(this,'memo')}
+							maxLength="256"></textarea>
+						</div>
+					</div>
+
+				</div>
+
+				<div className="col-xs-8">
+					<div className="form-action text-center">
+						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+					</div>
+				</div>
 				</form>
 			</div>
 			);

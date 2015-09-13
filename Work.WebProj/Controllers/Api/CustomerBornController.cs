@@ -163,7 +163,16 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new CustomerBorn() { born_id = id };
+                    item = db0.CustomerBorn.Find(id);
+
+                    //刪除生產紀錄要自動釋放用餐編號
+                    bool check_mealid = db0.MealID.Any(x => x.meal_id == item.meal_id);
+                    if (check_mealid)
+                    {
+                        var getMealid = db0.MealID.Find(item.meal_id);
+                        getMealid.i_Use = false;
+                    }
+
                     db0.CustomerBorn.Attach(item);
                     db0.CustomerBorn.Remove(item);
                 }

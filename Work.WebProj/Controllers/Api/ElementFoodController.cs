@@ -11,46 +11,57 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class AgentController : ajaxApi<Agent, q_Agent>
+    public class ElementFoodController : ajaxApi<ElementFood, q_ElementFood>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.Agent.FindAsync(id);
-                r = new ResultInfo<Agent>() { data = item };
+                item = await db0.ElementFood.FindAsync(id);
+                r = new ResultInfo<ElementFood>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_Agent q)
+        public async Task<IHttpActionResult> Get([FromUri]q_ElementFood q)
         {
-            #region Working
+            #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.Agent
-                    .OrderBy(x => x.agent_id).AsQueryable(); ;
+                var qr = db0.ElementFood
+                    .OrderByDescending(x => x.sort).AsQueryable();
 
-                if (q.agent_name != null)
+
+                if (q.element_name != null)
                 {
-                    qr = qr.Where(x => x.agent_name.Contains(q.agent_name));
+                    qr = qr.Where(x => x.element_name.Contains(q.element_name));
                 }
 
-                var result = qr.Select(x => new m_Agent()
+                if (q.category_id != null)
                 {
-                    agent_id = x.agent_id,
-                    agent_name = x.agent_name,
-                    tel = x.tel,
-                    address = x.address
+                    qr = qr.Where(x => x.category_id == q.category_id);
+                }
+                if (q.i_Hide != null)
+                {
+                    qr = qr.Where(x => x.i_Hide == q.i_Hide);
+                }
+
+                var result = qr.Select(x => new m_ElementFood()
+                {
+                    element_id = x.element_id,
+                    element_name = x.element_name,
+                    category_id = x.category_id,
+                    sort = x.sort,
+                    i_Hide = x.i_Hide
                 });
 
 
                 int page = (q.page == null ? 1 : (int)q.page);
-                int position = PageCount.PageInfo(page, this.defPageSize, result.Count());
+                int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
                 var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
 
-                return Ok<GridInfo<m_Agent>>(new GridInfo<m_Agent>()
+                return Ok<GridInfo<m_ElementFood>>(new GridInfo<m_ElementFood>()
                 {
                     rows = segment,
                     total = PageCount.TotalPage,
@@ -62,20 +73,19 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]Agent md)
+        public async Task<IHttpActionResult> Put([FromBody]ElementFood md)
         {
-            ResultInfo rAjaxResult = new ResultInfo();
+            ResultInfo r = new ResultInfo();
             try
             {
                 db0 = getDB0();
 
-                item = await db0.Agent.FindAsync(md.agent_id);
-
-                item.sno = md.sno;
-
-                item.tel = md.tel;
-                item.fax = md.fax;
+                item = await db0.ElementFood.FindAsync(md.element_id);
+                item.element_name = md.element_name;
+                item.category_id = md.category_id;
+                item.i_Hide = md.i_Hide;
                 item.sort = md.sort;
+                item.memo = md.memo;
 
 
                 item.i_UpdateUserID = this.UserId;
@@ -83,52 +93,53 @@ namespace DotWeb.Api
                 item.i_UpdateDeptID = this.departmentId;
 
                 await db0.SaveChangesAsync();
-                rAjaxResult.result = true;
+                r.result = true;
             }
             catch (Exception ex)
             {
-                rAjaxResult.result = false;
-                rAjaxResult.message = ex.ToString();
+                r.result = false;
+                r.message = ex.ToString();
             }
             finally
             {
                 db0.Dispose();
             }
-            return Ok(rAjaxResult);
+            return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]Agent md)
+        public async Task<IHttpActionResult> Post([FromBody]ElementFood md)
         {
-            md.agent_id = GetNewId(ProcCore.Business.CodeTable.Base);
-            ResultInfo rAjaxResult = new ResultInfo();
+            md.element_id = GetNewId(ProcCore.Business.CodeTable.ElementFood);
+            ResultInfo r = new ResultInfo();
             if (!ModelState.IsValid)
             {
-                rAjaxResult.message = ModelStateErrorPack();
-                rAjaxResult.result = false;
-                return Ok(rAjaxResult);
+                r.message = ModelStateErrorPack();
+                r.result = false;
+                return Ok(r);
             }
 
             try
             {
                 #region working a
                 db0 = getDB0();
-                md.agent_id = GetNewId();
+
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
                 md.i_Lang = "zh-TW";
-                db0.Agent.Add(md);
+
+                db0.ElementFood.Add(md);
                 await db0.SaveChangesAsync();
 
-                rAjaxResult.result = true;
-                rAjaxResult.id = md.agent_id;
-                return Ok(rAjaxResult);
+                r.result = true;
+                r.id = md.element_id;
+                return Ok(r);
                 #endregion
             }
             catch (Exception ex)
             {
-                rAjaxResult.result = false;
-                rAjaxResult.message = ex.Message;
-                return Ok(rAjaxResult);
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
             }
             finally
             {
@@ -144,9 +155,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new Agent() { agent_id = id };
-                    db0.Agent.Attach(item);
-                    db0.Agent.Remove(item);
+                    item = new ElementFood() { element_id = id };
+                    db0.ElementFood.Attach(item);
+                    db0.ElementFood.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();
