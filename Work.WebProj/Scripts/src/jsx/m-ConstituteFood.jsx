@@ -271,7 +271,7 @@ var GirdForm = React.createClass({
 										<input type="text" className="form-control" 
 										value={searchData.constitute_name}
 										onChange={this.changeGDValue.bind(this,'constitute_name')}
-										placeholder="基礎菜單名稱..." /> { }
+										placeholder="組合菜單名稱..." /> { }
 
 										<label className="sr-only">分類</label> { }
 										<select className="form-control" 
@@ -401,14 +401,14 @@ var GirdForm = React.createClass({
 
 					<div className="form-group">
 						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-7">
+						<div className="col-xs-6">
 							<input type="number" 
 							className="form-control"	
 							value={fieldData.sort}
 							onChange={this.changeFDValue.bind(this,'sort')}
 							 />
 						</div>
-						<small className="col-xs-3 help-inline">數字越大越前面</small>
+						<small className="col-xs-4 help-inline">數字越大越前面</small>
 					</div>
 
 					<div className="form-group">
@@ -476,12 +476,13 @@ var GirdCofE = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
-			searchData:{constitute_id:this.props.main_id,name:null,category_id:null},
+			searchData:{main_id:this.props.main_id,name:null,category_id:null},
 			edit_type:0,
 			checkAll:false,
 			grid_right_element:[],
-			grid_left_element:[],
-			category_element:[]
+			grid_left_element:{rows:[]},
+			category_element:[],
+			LeftGridPageIndex:1//左邊元素換頁用參數
 		};  
 	},
 	getDefaultProps:function(){
@@ -509,7 +510,13 @@ var GirdCofE = React.createClass({
 		});
 	},
 	queryLeftElement:function(){
-			jqGet(gb_approot + 'api/GetAction/GetLeftElement',this.state.searchData)
+		var parms = {
+			page:this.state.LeftGridPageIndex
+		};
+
+		$.extend(parms, this.state.searchData);
+
+			jqGet(gb_approot + 'api/GetAction/GetLeftElement',parms)
 			.done(function(data, textStatus, jqXHRdata) {
 				this.setState({grid_left_element:data});
 			}.bind(this))
@@ -518,7 +525,7 @@ var GirdCofE = React.createClass({
 			});
 	},	
 	queryRightElement:function(){
-			jqGet(gb_approot + 'api/GetAction/GetRightElement',{constitute_id:this.props.main_id})
+			jqGet(gb_approot + 'api/GetAction/GetRightElement',{main_id:this.props.main_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				this.setState({grid_right_element:data});
 			}.bind(this))
@@ -570,6 +577,18 @@ var GirdCofE = React.createClass({
     	})
 		return val;
 	},
+	LeftGridPrev:function(){
+		if(this.state.LeftGridPageIndex>1){
+			this.state.LeftGridPageIndex --;
+			this.queryLeftElement();
+		}
+	},
+	LeftGridNext:function() {
+		if(this.state.LeftGridPageIndex < this.state.grid_left_element.total){
+			this.state.LeftGridPageIndex ++;
+			this.queryLeftElement();
+		}
+	},
 	render: function() {
 		var outHtml = null;
 		var fieldData = {};
@@ -610,7 +629,7 @@ var GirdCofE = React.createClass({
 					                	<th className="text-center">加入</th>
 									</tr>
 									{
-										this.state.grid_left_element.map(function(itemData,i) {
+										this.state.grid_left_element.rows.map(function(itemData,i) {
 											var out_sub_html =                     
 												<tr key={itemData.element_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
@@ -626,6 +645,13 @@ var GirdCofE = React.createClass({
 									}
 								</tbody>
 	        				</table>
+	        				<div className="form-inline text-center">
+								<ul className="pager list-inline list-unstyled">
+									<li><a href="#" onClick={this.LeftGridPrev}><i className="glyphicon glyphicon-arrow-left"></i> 上一頁</a></li>
+									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
+									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="glyphicon glyphicon-arrow-right"></i></a></li>
+								</ul>
+							</div>
 	        			</div>
         			</div>
 					<div className="col-xs-6">

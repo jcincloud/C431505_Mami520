@@ -13,19 +13,10 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class ElementFood : BaseEntityTable
+    public partial class DietaryNeedOfElement : BaseEntityTable
     {
-        public ElementFood()
-        {
-            this.ConstituteOfElement = new HashSet<ConstituteOfElement>();
-            this.DietaryNeedOfElement = new HashSet<DietaryNeedOfElement>();
-        }
-    
         public int element_id { get; set; }
-        public int category_id { get; set; }
-        public string element_name { get; set; }
-        public Nullable<int> sort { get; set; }
-        public string memo { get; set; }
+        public int dietary_need_id { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -36,10 +27,8 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual All_Category_L2 All_Category_L2 { get; set; }
+        public virtual DietaryNeed DietaryNeed { get; set; }
     	[JsonIgnore]
-        public virtual ICollection<ConstituteOfElement> ConstituteOfElement { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<DietaryNeedOfElement> DietaryNeedOfElement { get; set; }
+        public virtual ElementFood ElementFood { get; set; }
     }
 }
