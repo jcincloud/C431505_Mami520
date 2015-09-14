@@ -17,7 +17,7 @@ namespace DotWeb.Api
 {
     public class GetActionController : BaseApiController
     {
-
+        #region 用餐編號
         public IHttpActionResult GetAllMealID()
         {
             db0 = getDB0();
@@ -101,14 +101,16 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
+        #endregion
         #region 組合菜單對應基礎菜單
-        public IHttpActionResult GetLeftElement([FromUri]ParmGetLeftElement parm)
+        public async Task<IHttpActionResult> GetLeftElement([FromUri]ParmGetLeftElement parm)
         {
             db0 = getDB0();
             try
             {
+                int page_size = 10;
                 var element_id = db0.ConstituteOfElement
-                    .Where(x => x.constitute_id == parm.constitute_id)
+                    .Where(x => x.constitute_id == parm.main_id)
                     .Select(x => x.element_id);
 
                 //設定未啟用i_hide=true的不顯示
@@ -123,21 +125,34 @@ namespace DotWeb.Api
                 {
                     items = items.Where(x => x.category_id == parm.category_id);
                 }
-                return Ok(items.ToList());
+
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
             }
             finally
             {
                 db0.Dispose();
             }
         }
-        public IHttpActionResult GetRightElement(int? constitute_id)
+        public IHttpActionResult GetRightElement(int? main_id)
         {
             db0 = getDB0();
             try
             {
                 var items = from x in db0.ConstituteOfElement
                             join y in db0.ElementFood on x.element_id equals y.element_id
-                            where x.constitute_id == constitute_id
+                            where x.constitute_id == main_id
                             select new { x.element_id, y.category_id, y.element_name };
 
                 return Ok(items.ToList());
@@ -227,13 +242,14 @@ namespace DotWeb.Api
         }
         #endregion
         #region 每日菜單對應組合菜單
-        public IHttpActionResult GetLeftConstitute([FromUri]ParmGetLeftConstitute parm)
+        public async Task<IHttpActionResult> GetLeftConstitute([FromUri]ParmGetLeftConstitute parm)
         {
             db0 = getDB0();
             try
             {
+                int page_size = 10;
                 var constitute_id = db0.DailyMenuOfConstitute
-                    .Where(x => x.dail_menu_id == parm.dail_menu_id)
+                    .Where(x => x.dail_menu_id == parm.main_id)
                     .Select(x => x.constitute_id);
 
                 //設定未啟用i_hide=true的不顯示
@@ -248,21 +264,33 @@ namespace DotWeb.Api
                 {
                     items = items.Where(x => x.category_id == parm.category_id);
                 }
-                return Ok(items.ToList());
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
             }
             finally
             {
                 db0.Dispose();
             }
         }
-        public IHttpActionResult GetRightConstitute(int? dail_menu_id)
+        public IHttpActionResult GetRightConstitute(int? main_id)
         {
             db0 = getDB0();
             try
             {
                 var items = from x in db0.DailyMenuOfConstitute
                             join y in db0.ConstituteFood on x.constitute_id equals y.constitute_id
-                            where x.dail_menu_id == dail_menu_id
+                            where x.dail_menu_id == main_id
                             select new { x.constitute_id, y.category_id, y.constitute_name };
 
                 return Ok(items.ToList());
@@ -287,7 +315,7 @@ namespace DotWeb.Api
                     item = new DailyMenuOfConstitute()
                     {
                         constitute_id = parm.constitute_id,
-                         dail_menu_id= parm.dail_menu_id,
+                        dail_menu_id = parm.dail_menu_id,
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
@@ -323,7 +351,7 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
-                var item = await db0.DailyMenuOfConstitute.FindAsync(parm.constitute_id,parm.dail_menu_id);
+                var item = await db0.DailyMenuOfConstitute.FindAsync(parm.constitute_id, parm.dail_menu_id);
                 if (item != null)
                 {
                     db0.DailyMenuOfConstitute.Remove(item);
@@ -351,6 +379,145 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        #region 需求元素對應基礎菜單
+        public async Task<IHttpActionResult> GetLeftElement_byNeed([FromUri]ParmGetLeftElement parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                int page_size = 10;
+                var element_id = db0.DietaryNeedOfElement
+                    .Where(x => x.dietary_need_id == parm.main_id)
+                    .Select(x => x.element_id);
+
+                //設定未啟用i_hide=true的不顯示
+                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
+
+
+                if (parm.name != null)
+                {
+                    items = items.Where(x => x.element_name.Contains(parm.name));
+                }
+                if (parm.category_id != null)
+                {
+                    items = items.Where(x => x.category_id == parm.category_id);
+                }
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        public IHttpActionResult GetRightElement_byNeed(int? main_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                var items = from x in db0.DietaryNeedOfElement
+                            join y in db0.ElementFood on x.element_id equals y.element_id
+                            where x.dietary_need_id == main_id
+                            select new { x.element_id, y.category_id, y.element_name };
+
+                return Ok(items.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> PostDietaryNeedOfElement([FromBody]ParmDietaryNeedOfElement parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = db0.DietaryNeedOfElement.Where(x => x.dietary_need_id == parm.dietary_need_id && x.element_id == parm.element_id).FirstOrDefault();
+                if (item == null)
+                {
+                    item = new DietaryNeedOfElement()
+                    {
+                        dietary_need_id = parm.dietary_need_id,
+                        element_id = parm.element_id,
+                        i_InsertUserID = this.UserId,
+                        i_InsertDateTime = DateTime.Now,
+                        i_InsertDeptID = this.departmentId,
+                        i_Lang = "zh-TW"
+                    };
+                    db0.DietaryNeedOfElement.Add(item);
+                }
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = item.dietary_need_id;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteDietaryNeedOfElement([FromBody]ParmDietaryNeedOfElement parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = await db0.DietaryNeedOfElement.FindAsync(parm.element_id, parm.dietary_need_id);
+                if (item != null)
+                {
+                    db0.DietaryNeedOfElement.Remove(item);
+                    await db0.SaveChangesAsync();
+                }
+                else
+                {
+                    r.result = false;
+                    r.message = "未刪除";
+                    return Ok(r);
+                }
+                r.result = true;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
+
     }
     #region Parm
     public class ParmChangeMealID
@@ -365,9 +532,10 @@ namespace DotWeb.Api
     }
     public class ParmGetLeftElement
     {
-        public int? constitute_id { get; set; }
+        public int? main_id { get; set; }
         public string name { get; set; }
         public int? category_id { get; set; }
+        public int page { get; set; }
 
     }
     public class ParmConstituteOfElement
@@ -375,16 +543,18 @@ namespace DotWeb.Api
         public int constitute_id { get; set; }
         public int element_id { get; set; }
     }
-    public class ParmGetLeftConstitute
+    public class ParmGetLeftConstitute: ParmGetLeftElement
     {
-        public int? dail_menu_id { get; set; }
-        public string name { get; set; }
-        public int? category_id { get; set; }
     }
     public class ParmDailyMenuOfConstitute
     {
         public int constitute_id { get; set; }
         public int dail_menu_id { get; set; }
+    }
+    public class ParmDietaryNeedOfElement
+    {
+        public int dietary_need_id { get; set; }
+        public int element_id { get; set; }
     }
     #endregion
 }

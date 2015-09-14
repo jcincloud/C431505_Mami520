@@ -16,8 +16,9 @@
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
-					<td>{moment(this.props.itemData.day).format('YYYY/MM/DD')}</td>
-                    <td><StateForGrid stateData={CommData.MealType} id={this.props.itemData.meal_type} /></td>
+					<td>{this.props.itemData.name}</td>
+					<td>{this.props.itemData.short_name}</td>
+					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
 				</tr>
 			);
 		}
@@ -40,7 +41,7 @@ var GirdForm = React.createClass({
 		return{	
 			fdName:'fieldData',
 			gdName:'searchData',
-			apiPathName: gb_approot + 'api/DailyMenu',
+			apiPathName: gb_approot + 'api/DietaryNeed',
 			initPathName: gb_approot + 'Active/Food/constitute_food_Init'
 		};
 	},	
@@ -111,7 +112,7 @@ var GirdForm = React.createClass({
 		var ids = [];
 		for(var i in this.state.gridData.rows){
 			if(this.state.gridData.rows[i].check_del){
-			    ids.push('ids=' + this.state.gridData.rows[i].dail_menu_id);
+			    ids.push('ids=' + this.state.gridData.rows[i].dietary_need_id);
 			}
 		}
 
@@ -179,7 +180,7 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{meal_type:1}});
+		this.setState({edit_type:1,fieldData:{}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -223,10 +224,20 @@ var GirdForm = React.createClass({
 		}
 		this.setState({fieldData:obj});
 	},
-	onCategoryChange:function(e){
+	onHideChange:function(e){
 		var obj = this.state.searchData;
-		obj['meal_type'] = e.target.value;
+		obj['i_Hide'] = e.target.value;
 		this.setState({searchData:obj});
+	},
+	onMealChange:function(name,e){
+		var obj = this.state.fieldData;
+		if(e.target.checked){
+			obj[name]=true;
+			
+		}else{
+			obj[name]=false;
+		}
+		this.setState({fieldData:obj});
 	},
 	render: function() {
 		var outHtml = null;
@@ -251,32 +262,22 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label>日期區間</label> { }										
-											<span className="has-feedback">
-												<InputDate id="start_date" 
-												onChange={this.changeGDValue} 
-												field_name="start_date" 
-												value={searchData.start_date} />
-											</span> { }
-										<label>~</label> { }
-											<span className="has-feedback">
-												<InputDate id="end_date" 
-												onChange={this.changeGDValue} 
-												field_name="end_date" 
-												value={searchData.end_date} />
-											</span> { }
+										<label className="sr-only">需求元素名稱</label> { }
+										<input type="text" className="form-control" 
+										value={searchData.name}
+										onChange={this.changeGDValue.bind(this,'name')}
+										placeholder="需求元素名稱..." /> { }
 
-										<label className="sr-only">餐別</label> { }
+										<label className="sr-only">狀態</label> { }
 										<select className="form-control" 
-												value={searchData.meal_type}
-												onChange={this.onCategoryChange}>
-											<option value="">選擇餐別</option>
-										{
-											CommData.MealType.map(function(itemData,i) {
-												return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-											})
-										}
+												value={searchData.i_Hide}
+												onChange={this.onHideChange}>
+											<option value="">選擇狀態</option>
+											<option value="true">隱藏</option>
+											<option value="false">顯示</option>
+
 										</select> { }
+
 
 										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
@@ -293,8 +294,9 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">日期</th>
-									<th className="col-xs-2">餐別</th>
+									<th className="col-xs-1">需求元素名稱</th>
+									<th className="col-xs-1">需求元素簡稱</th>
+									<th className="col-xs-1">狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -303,11 +305,10 @@ var GirdForm = React.createClass({
 								return <GridRow 
 								key={i}
 								ikey={i}
-								primKey={itemData.dail_menu_id} 
+								primKey={itemData.dietary_need_id} 
 								itemData={itemData} 
 								delCheck={this.delCheck}
-								updateType={this.updateType}
-								category={this.state.category}								
+								updateType={this.updateType}							
 								/>;
 								}.bind(this))
 								}
@@ -333,7 +334,7 @@ var GirdForm = React.createClass({
 			var fieldData = this.state.fieldData;
 			var map_out_html=null;
 			if(this.state.edit_type==2){//只在修改時顯示下方對應程式
-				map_out_html=(<GirdDofC main_id={fieldData.dail_menu_id} main_name={fieldData.meal_type} />);
+				map_out_html=(<GirdCofE main_id={fieldData.dietary_need_id} main_name={fieldData.constitute_name}/>);
 			}else{
 				map_out_html=(
 					<div className="col-xs-12">
@@ -351,37 +352,146 @@ var GirdForm = React.createClass({
 				<h4 className="title">{this.props.Caption}</h4>
 				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<div className="col-xs-8">
 					<div className="form-group">
-						<label className="col-xs-1 control-label text-danger">選擇日期</label>
-						<div className="col-xs-2">
-							<span className="has-feedback">
-								<InputDate id="day" 
-								onChange={this.changeFDValue} 
-								field_name="day" 
-								value={fieldData.day} />
-							</span>
+						<label className="col-xs-2 control-label text-danger">名稱</label>
+						<div className="col-xs-4">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.name}
+							onChange={this.changeFDValue.bind(this,'name')}
+							maxLength="128"
+							required />
 						</div>
-
-						<label className="col-xs-1 control-label text-danger">選擇餐別</label>
-						<div className="col-xs-2">
-							<select className="form-control" 
-							value={fieldData.meal_type}
-							onChange={this.changeFDValue.bind(this,'meal_type')}
-							required>
-							{
-								CommData.MealType.map(function(itemData,i) {
-									return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-								})
-							}
-							</select>
+						<label className="col-xs-2 control-label text-danger">簡稱</label>
+						<div className="col-xs-4">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.short_name}
+							onChange={this.changeFDValue.bind(this,'short_name')}
+							maxLength="64"
+							required />
 						</div>
-						<div className="col-xs-4 pull-right">
-							<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
-						</div>	
 					</div>
+
+					<div className="form-group">
+						<label className="col-xs-2 control-label">元素對應</label>
+						<div className="col-xs-4">
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="is_correspond"
+											value={true}
+											checked={fieldData.is_correspond===true} 
+											onChange={this.changeFDValue.bind(this,'is_correspond')}
+									/>
+									<span>須對應</span>
+								</label>
+							</div>
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="is_correspond"
+											value={false}
+											checked={fieldData.is_correspond===false} 
+											onChange={this.changeFDValue.bind(this,'is_correspond')}
+											/>
+									<span>不須對應</span>
+								</label>
+							</div>
+						</div>
+						<label className="col-xs-2 control-label">適用餐別</label>
+						<div className="col-xs-4">
+							<div className="checkbox-inline">
+								<label>
+									<input type="checkbox" 
+											id="is_breakfast"
+											checked={fieldData.is_breakfast}
+											onChange={this.onMealChange.bind(this,'is_breakfast')}
+									/>
+									<span>早餐</span>
+								</label>
+							</div>
+							<div className="checkbox-inline">
+								<label>
+									<input type="checkbox" 
+											id="is_lunch"
+											checked={fieldData.is_lunch}
+											onChange={this.onMealChange.bind(this,'is_lunch')}
+											/>
+									<span>午餐</span>
+								</label>
+							</div>
+							<div className="checkbox-inline">
+								<label>
+									<input type="checkbox" 
+											id="is_dinner"
+											checked={fieldData.is_dinner}
+											onChange={this.onMealChange.bind(this,'is_dinner')}
+											/>
+									<span>晚餐</span>
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div className="form-group">
+						<label className="col-xs-2 control-label">排序</label>
+						<div className="col-xs-2">
+							<input type="number" 
+							className="form-control"	
+							value={fieldData.sort}
+							onChange={this.changeFDValue.bind(this,'sort')}
+							 />
+						</div>
+						<small className="col-xs-2 help-inline">數字越大越前面</small>
+						<label className="col-xs-2 control-label">狀態</label>
+						<div className="col-xs-3">
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="i_Hide"
+											value={true}
+											checked={fieldData.i_Hide===true} 
+											onChange={this.changeFDValue.bind(this,'i_Hide')}
+									/>
+									<span>隱藏</span>
+								</label>
+							</div>
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="i_Hide"
+											value={false}
+											checked={fieldData.i_Hide===false} 
+											onChange={this.changeFDValue.bind(this,'i_Hide')}
+											/>
+									<span>顯示</span>
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div className="form-group">
+						<label className="col-xs-2 control-label">備註</label>
+						<div className="col-xs-10">
+							<textarea col="30" row="2" className="form-control"
+							value={fieldData.memo}
+							onChange={this.changeFDValue.bind(this,'memo')}
+							maxLength="256"></textarea>
+						</div>
+					</div>
+
+				</div>
+				<div className="col-xs-12"></div>
+				<div className="col-xs-5">
+					<div className="text-right">
+						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+					</div>
+				</div>
 				</form>
-			{/* 每日菜單對應的組合菜單 */}
+			{/* 組合菜單對應的基礎元素 */}
 				{map_out_html}
 			</div>
 			);
@@ -394,7 +504,7 @@ var GirdForm = React.createClass({
 });
 
 //主表單
-var GirdDofC = React.createClass({
+var GirdCofE = React.createClass({
 	mixins: [React.addons.LinkedStateMixin], 
 	getInitialState: function() {  
 		return {
@@ -403,10 +513,10 @@ var GirdDofC = React.createClass({
 			searchData:{main_id:this.props.main_id,name:null,category_id:null},
 			edit_type:0,
 			checkAll:false,
-			grid_right_constitute:[],
-			grid_left_constitute:{rows:[]},
+			grid_right_element:[],
+			grid_left_element:{rows:[]},
 			category_element:[],
-			LeftGridPageIndex:1//左邊換頁用參數
+			LeftGridPageIndex:1//左邊元素換頁用參數
 		};  
 	},
 	getDefaultProps:function(){
@@ -414,14 +524,14 @@ var GirdDofC = React.createClass({
 			fdName:'fieldData',
 			gdName:'searchData',
 			apiPathName:gb_approot+'api/Product',
-			initPathName:gb_approot+'Active/Food/constitute_food_Init'
+			initPathName:gb_approot+'Active/Food/element_food_Init'
 
 		};
 	},	
 	componentDidMount:function(){
 		this.getAjaxInitData();//載入init資料
-		this.queryLeftConstitute();
-		this.queryRightConstitute();
+		this.queryLeftElement();
+		this.queryRightElement();
 	},
 	getAjaxInitData:function(){
 		jqGet(this.props.initPathName)
@@ -433,42 +543,41 @@ var GirdDofC = React.createClass({
 			showAjaxError(errorThrown);
 		});
 	},
-	queryLeftConstitute:function(){
+	queryLeftElement:function(){
 		var parms = {
 			page:this.state.LeftGridPageIndex
 		};
 
 		$.extend(parms, this.state.searchData);
-
-			jqGet(gb_approot + 'api/GetAction/GetLeftConstitute',parms)
+			jqGet(gb_approot + 'api/GetAction/GetLeftElement_byNeed',parms)
 			.done(function(data, textStatus, jqXHRdata) {
-				this.setState({grid_left_constitute:data});
+				this.setState({grid_left_element:data});
 			}.bind(this))
 			.fail(function( jqXHR, textStatus, errorThrown ) {
 				showAjaxError(errorThrown);
 			});
 	},	
-	queryRightConstitute:function(){
-			jqGet(gb_approot + 'api/GetAction/GetRightConstitute',{main_id:this.props.main_id})
+	queryRightElement:function(){
+			jqGet(gb_approot + 'api/GetAction/GetRightElement_byNeed',{main_id:this.props.main_id})
 			.done(function(data, textStatus, jqXHRdata) {
-				this.setState({grid_right_constitute:data});
+				this.setState({grid_right_element:data});
 			}.bind(this))
 			.fail(function( jqXHR, textStatus, errorThrown ) {
 				showAjaxError(errorThrown);
 			});
 	},
-	queryChangeConstituteParam:function(name,e){
+	queryChangeElementParam:function(name,e){
 		var obj = this.state.searchData;
 		obj[name] = e.target.value;
 		this.setState({searchData:obj});
-		this.queryLeftConstitute();			
+		this.queryLeftElement();			
 	},
-	addConstitute:function(constitute_id){
-			jqPost(gb_approot + 'api/GetAction/PostDailyMenuOfConstitute',{dail_menu_id:this.props.main_id,constitute_id:constitute_id})
+	addElement:function(element_id){
+			jqPost(gb_approot + 'api/GetAction/PostDietaryNeedOfElement',{dietary_need_id:this.props.main_id,element_id:element_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
-					this.queryLeftConstitute();
-					this.queryRightConstitute();
+					this.queryLeftElement();
+					this.queryRightElement();
 				}else{
 					alert(data.message);
 				}
@@ -477,12 +586,12 @@ var GirdDofC = React.createClass({
 				showAjaxError(errorThrown);
 			});		
 	},
-	removeConstitute:function(constitute_id){
-			jqDelete(gb_approot + 'api/GetAction/DeleteDailyMenuOfConstitute',{dail_menu_id:this.props.main_id,constitute_id:constitute_id})
+	removeElement:function(element_id){
+			jqDelete(gb_approot + 'api/GetAction/DeleteDietaryNeedOfElement',{dietary_need_id:this.props.main_id,element_id:element_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
-					this.queryLeftConstitute();
-					this.queryRightConstitute();
+					this.queryLeftElement();
+					this.queryRightElement();
 				}else{
 					alert(data.message);
 				}
@@ -501,25 +610,16 @@ var GirdDofC = React.createClass({
     	})
 		return val;
 	},
-	FilterCommData:function(value,CName){
-		var val="";
-		CommData[CName].forEach(function(object, i){
-        	if(value==object.id){
-  				val=object.label;
-        	}
-    	})
-		return val;
-	},
 	LeftGridPrev:function(){
 		if(this.state.LeftGridPageIndex>1){
 			this.state.LeftGridPageIndex --;
-			this.queryLeftConstitute();
+			this.queryLeftElement();
 		}
 	},
 	LeftGridNext:function() {
-		if(this.state.LeftGridPageIndex < this.state.grid_left_constitute.total){
+		if(this.state.LeftGridPageIndex < this.state.grid_left_element.total){
 			this.state.LeftGridPageIndex ++;
-			this.queryLeftConstitute();
+			this.queryLeftElement();
 		}
 	},
 	render: function() {
@@ -539,9 +639,9 @@ var GirdDofC = React.createClass({
 				                        <div className="form-group">
 				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
 				                           	value={searchData.name} 
-	                						onChange={this.queryChangeConstituteParam.bind(this,'name')} /> { }
+	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
 				                            <select name="" id="" className="form-control input-sm"
-				                            onChange={this.queryChangeConstituteParam.bind(this,'category_id')}
+				                            onChange={this.queryChangeElementParam.bind(this,'category_id')}
 											value={searchData.category_id}> { }
 				                                <option value="">分類</option>
 											{
@@ -553,7 +653,7 @@ var GirdDofC = React.createClass({
 
 				                        </div>
 				                    </div>
-				                    全部菜單
+				                    全部食材
 								</caption>
 								<tbody>
 									<tr>
@@ -562,13 +662,13 @@ var GirdDofC = React.createClass({
 					                	<th className="text-center">加入</th>
 									</tr>
 									{
-										this.state.grid_left_constitute.rows.map(function(itemData,i) {
+										this.state.grid_left_element.rows.map(function(itemData,i) {
 											var out_sub_html =                     
-												<tr key={itemData.constitute_id}>
+												<tr key={itemData.element_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
-							                        <td>{itemData.constitute_name}</td>
+							                        <td>{itemData.element_name}</td>
 				                        			<td className="text-center">
-														<button className="btn-link text-success" type="button" onClick={this.addConstitute.bind(this,itemData.constitute_id)}>
+														<button className="btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.element_id)}>
 															<i className="fa-plus"></i>
 														</button>
 							                        </td>
@@ -581,7 +681,7 @@ var GirdDofC = React.createClass({
 	        				<div className="form-inline text-center">
 								<ul className="pager list-inline list-unstyled">
 									<li><a href="#" onClick={this.LeftGridPrev}><i className="glyphicon glyphicon-arrow-left"></i> 上一頁</a></li>
-									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_constitute.total}</li>
+									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
 									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="glyphicon glyphicon-arrow-right"></i></a></li>
 								</ul>
 							</div>
@@ -590,7 +690,7 @@ var GirdDofC = React.createClass({
 					<div className="col-xs-6">
 						<div className="table-responsive">
 							<table className="table-condensed">
-								<caption>已排入今日菜單:{this.FilterCommData(this.props.main_name,'MealType')}</caption>
+								<caption>食材已加入:{this.props.main_name}</caption>
 								<tbody>
 									<tr>
 										<th>分類</th>
@@ -598,13 +698,13 @@ var GirdDofC = React.createClass({
 					                	<th className="text-center">刪除</th>
 									</tr>
 									{
-										this.state.grid_right_constitute.map(function(itemData,i) {
+										this.state.grid_right_element.map(function(itemData,i) {
 											var out_sub_html =                     
-												<tr key={itemData.constitute_id}>
+												<tr key={itemData.element_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
-							                        <td>{itemData.constitute_name}</td>
+							                        <td>{itemData.element_name}</td>
 				                        			<td className="text-center">
-														<button className="btn-link text-danger" type="button" onClick={this.removeConstitute.bind(this,itemData.constitute_id)}>
+														<button className="btn-link text-danger" type="button" onClick={this.removeElement.bind(this,itemData.element_id)}>
 															<i className="fa-times"></i>
 														</button>
 							                        </td>

@@ -284,7 +284,11 @@ namespace ProcCore.Business.DB0
         public DateTime? end_date { get; set; }
         public int? meal_type { get; set; }
     }
-
+    public class q_DietaryNeed : QueryBase
+    {
+        public string name { get; set; }
+        public bool? i_Hide { get; set; }
+    }
     #endregion
 
     #region c_Model_Define

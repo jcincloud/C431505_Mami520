@@ -122,6 +122,12 @@
     <Compile Include="DB0\Department.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB0\DietaryNeed.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\DietaryNeedOfElement.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB0\ElementFood.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
@@ -180,6 +186,12 @@
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Department.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_DietaryNeed.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_DietaryNeedOfElement.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_ElementFood.cs">

@@ -219,6 +219,44 @@
           <Property Name="department_name" Type="nvarchar" MaxLength="16" Nullable="false" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="DietaryNeed">
+          <Key>
+            <PropertyRef Name="dietary_need_id" />
+          </Key>
+          <Property Name="dietary_need_id" Type="int" Nullable="false" />
+          <Property Name="short_name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="is_correspond" Type="bit" Nullable="false" />
+          <Property Name="sort" Type="int" />
+          <Property Name="memo" Type="nvarchar" MaxLength="256" />
+          <Property Name="is_breakfast" Type="bit" Nullable="false" />
+          <Property Name="is_lunch" Type="bit" Nullable="false" />
+          <Property Name="is_dinner" Type="bit" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DietaryNeedOfElement">
+          <Key>
+            <PropertyRef Name="element_id" />
+            <PropertyRef Name="dietary_need_id" />
+          </Key>
+          <Property Name="element_id" Type="int" Nullable="false" />
+          <Property Name="dietary_need_id" Type="int" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="ElementFood">
           <Key>
             <PropertyRef Name="element_id" />
@@ -478,6 +516,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DietaryNeedOfElement_DietaryNeed">
+          <End Role="DietaryNeed" Type="Self.DietaryNeed" Multiplicity="1" />
+          <End Role="DietaryNeedOfElement" Type="Self.DietaryNeedOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DietaryNeed">
+              <PropertyRef Name="dietary_need_id" />
+            </Principal>
+            <Dependent Role="DietaryNeedOfElement">
+              <PropertyRef Name="dietary_need_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DietaryNeedOfElement_ElementFood">
+          <End Role="ElementFood" Type="Self.ElementFood" Multiplicity="1" />
+          <End Role="DietaryNeedOfElement" Type="Self.DietaryNeedOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElementFood">
+              <PropertyRef Name="element_id" />
+            </Principal>
+            <Dependent Role="DietaryNeedOfElement">
+              <PropertyRef Name="element_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ElementFood_All_Category_L2">
           <End Role="All_Category_L2" Type="Self.All_Category_L2" Multiplicity="1" />
           <End Role="ElementFood" Type="Self.ElementFood" Multiplicity="*" />
@@ -527,6 +589,8 @@
           <EntitySet Name="DailyMenu" EntityType="Self.DailyMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyMenuOfConstitute" EntityType="Self.DailyMenuOfConstitute" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DietaryNeed" EntityType="Self.DietaryNeed" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DietaryNeedOfElement" EntityType="Self.DietaryNeedOfElement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ElementFood" EntityType="Self.ElementFood" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_Currency" EntityType="Self.i_Currency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_IDX" EntityType="Self.i_IDX" Schema="dbo" store:Type="Tables" />
@@ -577,6 +641,14 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DietaryNeedOfElement_DietaryNeed" Association="Self.FK_DietaryNeedOfElement_DietaryNeed">
+            <End Role="DietaryNeed" EntitySet="DietaryNeed" />
+            <End Role="DietaryNeedOfElement" EntitySet="DietaryNeedOfElement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DietaryNeedOfElement_ElementFood" Association="Self.FK_DietaryNeedOfElement_ElementFood">
+            <End Role="ElementFood" EntitySet="ElementFood" />
+            <End Role="DietaryNeedOfElement" EntitySet="DietaryNeedOfElement" />
           </AssociationSet>
           <AssociationSet Name="FK_ElementFood_All_Category_L2" Association="Self.FK_ElementFood_All_Category_L2">
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
@@ -802,6 +874,16 @@
             <End Role="DailyMenu" EntitySet="DailyMenu" />
             <End Role="DailyMenuOfConstitute" EntitySet="DailyMenuOfConstitute" />
           </AssociationSet>
+          <EntitySet Name="DietaryNeed" EntityType="C43A0_Mani520Model.DietaryNeed" />
+          <EntitySet Name="DietaryNeedOfElement" EntityType="C43A0_Mani520Model.DietaryNeedOfElement" />
+          <AssociationSet Name="FK_DietaryNeedOfElement_DietaryNeed" Association="C43A0_Mani520Model.FK_DietaryNeedOfElement_DietaryNeed">
+            <End Role="DietaryNeed" EntitySet="DietaryNeed" />
+            <End Role="DietaryNeedOfElement" EntitySet="DietaryNeedOfElement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DietaryNeedOfElement_ElementFood" Association="C43A0_Mani520Model.FK_DietaryNeedOfElement_ElementFood">
+            <End Role="ElementFood" EntitySet="ElementFood" />
+            <End Role="DietaryNeedOfElement" EntitySet="DietaryNeedOfElement" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="MealID">
           <Key>
@@ -986,6 +1068,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" FromRole="ElementFood" ToRole="All_Category_L2" />
           <NavigationProperty Name="ConstituteOfElement" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood" FromRole="ElementFood" ToRole="ConstituteOfElement" />
+          <NavigationProperty Name="DietaryNeedOfElement" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_ElementFood" FromRole="ElementFood" ToRole="DietaryNeedOfElement" />
         </EntityType>
         <Association Name="FK_ElementFood_All_Category_L2">
           <End Type="C43A0_Mani520Model.All_Category_L2" Role="All_Category_L2" Multiplicity="1" />
@@ -1130,6 +1213,71 @@
             </Principal>
             <Dependent Role="DailyMenuOfConstitute">
               <PropertyRef Name="dail_menu_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DietaryNeed">
+          <Key>
+            <PropertyRef Name="dietary_need_id" />
+          </Key>
+          <Property Name="dietary_need_id" Type="Int32" Nullable="false" />
+          <Property Name="short_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="is_correspond" Type="Boolean" Nullable="false" />
+          <Property Name="sort" Type="Int32" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="is_breakfast" Type="Boolean" Nullable="false" />
+          <Property Name="is_lunch" Type="Boolean" Nullable="false" />
+          <Property Name="is_dinner" Type="Boolean" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="DietaryNeedOfElement" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_DietaryNeed" FromRole="DietaryNeed" ToRole="DietaryNeedOfElement" />
+        </EntityType>
+        <EntityType Name="DietaryNeedOfElement">
+          <Key>
+            <PropertyRef Name="element_id" />
+            <PropertyRef Name="dietary_need_id" />
+          </Key>
+          <Property Name="element_id" Type="Int32" Nullable="false" />
+          <Property Name="dietary_need_id" Type="Int32" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="DietaryNeed" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_DietaryNeed" FromRole="DietaryNeedOfElement" ToRole="DietaryNeed" />
+          <NavigationProperty Name="ElementFood" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_ElementFood" FromRole="DietaryNeedOfElement" ToRole="ElementFood" />
+        </EntityType>
+        <Association Name="FK_DietaryNeedOfElement_DietaryNeed">
+          <End Type="C43A0_Mani520Model.DietaryNeed" Role="DietaryNeed" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.DietaryNeedOfElement" Role="DietaryNeedOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DietaryNeed">
+              <PropertyRef Name="dietary_need_id" />
+            </Principal>
+            <Dependent Role="DietaryNeedOfElement">
+              <PropertyRef Name="dietary_need_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DietaryNeedOfElement_ElementFood">
+          <End Type="C43A0_Mani520Model.ElementFood" Role="ElementFood" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.DietaryNeedOfElement" Role="DietaryNeedOfElement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ElementFood">
+              <PropertyRef Name="element_id" />
+            </Principal>
+            <Dependent Role="DietaryNeedOfElement">
+              <PropertyRef Name="element_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1504,6 +1652,45 @@
                 <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
                 <ScalarProperty Name="dail_menu_id" ColumnName="dail_menu_id" />
                 <ScalarProperty Name="constitute_id" ColumnName="constitute_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DietaryNeed">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.DietaryNeed">
+              <MappingFragment StoreEntitySet="DietaryNeed">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="is_dinner" ColumnName="is_dinner" />
+                <ScalarProperty Name="is_lunch" ColumnName="is_lunch" />
+                <ScalarProperty Name="is_breakfast" ColumnName="is_breakfast" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="is_correspond" ColumnName="is_correspond" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="short_name" ColumnName="short_name" />
+                <ScalarProperty Name="dietary_need_id" ColumnName="dietary_need_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DietaryNeedOfElement">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.DietaryNeedOfElement">
+              <MappingFragment StoreEntitySet="DietaryNeedOfElement">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="dietary_need_id" ColumnName="dietary_need_id" />
+                <ScalarProperty Name="element_id" ColumnName="element_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
