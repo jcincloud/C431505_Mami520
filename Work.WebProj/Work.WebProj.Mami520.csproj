@@ -194,6 +194,7 @@
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
     <Compile Include="Areas\Active\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerBornController.cs" />
+    <Compile Include="Areas\Active\Controllers\GiftController.cs" />
     <Compile Include="Areas\Active\Controllers\NeedController.cs" />
     <Compile Include="Areas\Active\Controllers\MealIDController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
@@ -225,6 +226,8 @@
     <Content Include="Areas\Active\Views\Food\DailyMenu.cshtml" />
     <Content Include="Areas\Active\Views\Need\DietaryNeed.cshtml" />
     <Content Include="Areas\Active\Views\Need\CustomerNeed.cshtml" />
+    <Content Include="Areas\Active\Views\Gift\Activity.cshtml" />
+    <Content Include="Areas\Active\Views\Gift\GiftRecord.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -249,6 +252,7 @@
     <Compile Include="Controllers\Api\MealIDController.cs" />
     <Compile Include="Controllers\Api\CustomerController.cs" />
     <Compile Include="Controllers\Api\ElementFoodController.cs" />
+    <Compile Include="Controllers\Api\ActivityController.cs" />
     <Compile Include="Controllers\Api\ProductController.cs" />
     <Compile Include="Controllers\Api\RolesController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
@@ -687,6 +691,7 @@
     <Content Include="Scripts\build\comminc.js" />
     <Content Include="Scripts\build\func\inc\c-Comm.js" />
     <Content Include="Scripts\build\func\inc\c-ImgFileSort.js" />
+    <Content Include="Scripts\build\func\m-Category.js" />
     <Content Include="Scripts\build\func\m-ChangePassword.js" />
     <Content Include="Scripts\build\func\m-ConstituteFood.js" />
     <Content Include="Scripts\build\func\m-Customer.js" />
@@ -832,7 +837,6 @@
     <Content Include="Views\Fake\Require.cshtml" />
     <Content Include="Views\Shared\Manage\RLayout.tablet.cshtml" />
     <Content Include="_Code\Ashx\ValidateCodeB.ashx" />
-    <Content Include="Scripts\src\jsx\m-Agent.jsx" />
     <Content Include="Scripts\src\jsx\m-Users.jsx" />
     <Content Include="Scripts\src\jsx\m-CustomerBorn.jsx" />
     <Content Include="Scripts\src\jsx\m-Roles.jsx" />
@@ -959,6 +963,7 @@
     <Content Include="Scripts\src\jsx\m-ConstituteFood.jsx" />
     <Content Include="Scripts\src\jsx\m-DailyMenu.jsx" />
     <Content Include="Scripts\src\jsx\m-DietaryNeed.jsx" />
+    <Content Include="Scripts\src\jsx\m-Activity.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1101,6 +1106,7 @@
     <Content Include="Areas\Active\Views\Category\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Food\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Need\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\Gift\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="_Code\RPTFile\MemeberLabel.rdlc" />
   </ItemGroup>
   <PropertyGroup>

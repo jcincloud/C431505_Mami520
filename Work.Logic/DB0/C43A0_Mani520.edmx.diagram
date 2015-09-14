@@ -41,6 +41,7 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.DietaryNeedOfElement" Width="1.5" PointX="17.125" PointY="10.5" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DietaryNeedOfElement_DietaryNeed" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DietaryNeedOfElement_ElementFood" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Activity" Width="1.5" PointX="0.75" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

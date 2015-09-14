@@ -643,10 +643,10 @@ var GirdForm = React.createClass({
 			(
 			<div>
 				<ul className="breadcrumb">
-					<li><i className="fa-list-alt"></i> {this.props.menuName}</li>
+					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
 				</ul>
 				<h3 className="title clearfix">
-					<span className="pull-left">{this.props.caption}</span>
+					<span className="pull-left">{this.props.Caption}</span>
 					{/*<div className="form-inline pull-left col-xs-offset-1">
 						<label><small>選擇語系：</small></label>
 						<select className="form-control" 

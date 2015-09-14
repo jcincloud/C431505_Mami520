@@ -289,6 +289,11 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public bool? i_Hide { get; set; }
     }
+    public class q_Activity : QueryBase {
+        public string name { get; set; }
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
+    }
     #endregion
 
     #region c_Model_Define

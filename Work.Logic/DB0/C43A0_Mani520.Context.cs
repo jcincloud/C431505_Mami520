@@ -48,5 +48,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<DailyMenuOfConstitute> DailyMenuOfConstitute { get; set; }
         public virtual DbSet<DietaryNeed> DietaryNeed { get; set; }
         public virtual DbSet<DietaryNeedOfElement> DietaryNeedOfElement { get; set; }
+        public virtual DbSet<Activity> Activity { get; set; }
     }
 }
