@@ -15,6 +15,11 @@ namespace ProcCore.Business.DB0
     using Newtonsoft.Json;
     public partial class CustomerBorn : BaseEntityTable
     {
+        public CustomerBorn()
+        {
+            this.CustomerNeed = new HashSet<CustomerNeed>();
+        }
+    
         public int born_id { get; set; }
         public int customer_id { get; set; }
         public string meal_id { get; set; }
@@ -51,5 +56,7 @@ namespace ProcCore.Business.DB0
     
     	[JsonIgnore]
         public virtual Customer Customer { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<CustomerNeed> CustomerNeed { get; set; }
     }
 }

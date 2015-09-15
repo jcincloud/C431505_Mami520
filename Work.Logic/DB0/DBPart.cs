@@ -207,6 +207,22 @@ namespace ProcCore.Business.DB0
     {
         public int born_times { get; set; }
     }
+    public partial class m_CustomerNeed
+    {
+        public string name { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+    }
+    public partial class CustomerNeed
+    {
+        public string name { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+        public string tw_zip_1 { get; set; }
+        public string tw_city_1 { get; set; }
+		public string tw_country_1 { get; set; }
+		public string tw_address_1 { get; set; }
+    }
     /// <summary>
     /// 分類選單用
     /// </summary>
@@ -289,10 +305,18 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public bool? i_Hide { get; set; }
     }
-    public class q_Activity : QueryBase {
+    public class q_Activity : QueryBase
+    {
         public string name { get; set; }
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
+    }
+    public class q_CustomerNeed : QueryBase
+    {
+        public string name { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+        public string meal_id { get; set; }
     }
     #endregion
 

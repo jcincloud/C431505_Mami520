@@ -245,6 +245,7 @@
     <None Include="Content\bootstrap\js\npm.js" />
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
+    <Compile Include="Controllers\Api\CustomerNeedController.cs" />
     <Compile Include="Controllers\Api\DietaryNeedController.cs" />
     <Compile Include="Controllers\Api\DailyMenuController.cs" />
     <Compile Include="Controllers\Api\CustomerBornController.cs" />
@@ -964,6 +965,7 @@
     <Content Include="Scripts\src\jsx\m-DailyMenu.jsx" />
     <Content Include="Scripts\src\jsx\m-DietaryNeed.jsx" />
     <Content Include="Scripts\src\jsx\m-Activity.jsx" />
+    <Content Include="Scripts\src\jsx\m-CustomerNeed.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

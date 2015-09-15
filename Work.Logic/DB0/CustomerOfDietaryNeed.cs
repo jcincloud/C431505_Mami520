@@ -13,23 +13,10 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class DietaryNeed : BaseEntityTable
+    public partial class CustomerOfDietaryNeed : BaseEntityTable
     {
-        public DietaryNeed()
-        {
-            this.DietaryNeedOfElement = new HashSet<DietaryNeedOfElement>();
-            this.CustomerOfDietaryNeed = new HashSet<CustomerOfDietaryNeed>();
-        }
-    
         public int dietary_need_id { get; set; }
-        public string short_name { get; set; }
-        public string name { get; set; }
-        public bool is_correspond { get; set; }
-        public Nullable<int> sort { get; set; }
-        public string memo { get; set; }
-        public bool is_breakfast { get; set; }
-        public bool is_lunch { get; set; }
-        public bool is_dinner { get; set; }
+        public int customer_need_id { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -40,8 +27,8 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual ICollection<DietaryNeedOfElement> DietaryNeedOfElement { get; set; }
+        public virtual CustomerNeed CustomerNeed { get; set; }
     	[JsonIgnore]
-        public virtual ICollection<CustomerOfDietaryNeed> CustomerOfDietaryNeed { get; set; }
+        public virtual DietaryNeed DietaryNeed { get; set; }
     }
 }

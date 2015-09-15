@@ -42,6 +42,12 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_DietaryNeedOfElement_DietaryNeed" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DietaryNeedOfElement_ElementFood" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Activity" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.CustomerNeed" Width="1.5" PointX="9.875" PointY="17.25" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.CustomerOfDietaryNeed" Width="1.5" PointX="20.125" PointY="12" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerNeed_Customer" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerNeed_CustomerBorn" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_CustomerNeed" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_DietaryNeed" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

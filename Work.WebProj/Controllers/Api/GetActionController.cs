@@ -17,7 +17,7 @@ namespace DotWeb.Api
 {
     public class GetActionController : BaseApiController
     {
-        #region 用餐編號
+        #region 客戶生產-用餐編號選取
         public IHttpActionResult GetAllMealID()
         {
             db0 = getDB0();
@@ -95,6 +95,33 @@ namespace DotWeb.Api
 
                 await db0.SaveChangesAsync();
                 return Ok(new { result = true });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
+        #region 客戶需求-用餐編號選取
+        public IHttpActionResult GetNotCloseMealID(int? old_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                //過濾-已有客戶需求資料的客戶生產資料
+                var born_id = db0.CustomerNeed.Select(x => x.born_id);
+
+                var items = db0.CustomerBorn
+                    .OrderBy(x => x.meal_id)
+                    .Where(x => !x.is_close & !born_id.Contains(x.born_id))
+                    .Select(x => new { x.customer_id, x.born_id, x.meal_id, x.mom_name, x.born_frequency });
+
+                if (old_id != null)
+                {
+                    items = items.Where(x => x.born_id != old_id);//過濾目前選取的客戶生產資料id
+                }
+
+                return Ok(items.ToList());
             }
             finally
             {
@@ -517,6 +544,157 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        #region 客戶需求對應需求元素
+        public async Task<IHttpActionResult> GetLeftDietaryNeed([FromUri]ParmGetLeftDietaryNeed parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                int page_size = 10;
+                var dietary_need_id = db0.CustomerOfDietaryNeed
+                    .Where(x => x.customer_need_id == parm.main_id)
+                    .Select(x => x.dietary_need_id);
+
+                //設定未啟用i_hide=true的不顯示
+                var items = db0.DietaryNeed.Where(x => !dietary_need_id.Contains(x.dietary_need_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.dietary_need_id, x.name, x.is_correspond, x.is_breakfast, x.is_lunch, x.is_dinner });
+
+
+                if (parm.name != null)
+                {
+                    items = items.Where(x => x.name.Contains(parm.name));
+                }
+                if (parm.is_correspond != null)
+                {
+                    items = items.Where(x => x.is_correspond == parm.is_correspond);
+                }
+                if (parm.is_breakfast != null)
+                {
+                    items = items.Where(x => x.is_breakfast == parm.is_breakfast);
+                }
+                if (parm.is_lunch != null)
+                {
+                    items = items.Where(x => x.is_lunch == parm.is_lunch);
+                }
+                if (parm.is_dinner != null)
+                {
+                    items = items.Where(x => x.is_dinner == parm.is_dinner);
+                }
+
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        public IHttpActionResult GetRightDietaryNeed(int? main_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                var items = from x in db0.CustomerOfDietaryNeed
+                            join y in db0.DietaryNeed on x.dietary_need_id equals y.dietary_need_id
+                            where x.customer_need_id == main_id
+                            select new { x.dietary_need_id, y.name, y.is_correspond, y.is_breakfast, y.is_lunch, y.is_dinner };
+
+                return Ok(items.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> PostCustomerOfDietaryNeed([FromBody]ParmCustomerOfDietaryNeed parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = db0.CustomerOfDietaryNeed.Where(x => x.dietary_need_id == parm.dietary_need_id && x.customer_need_id == parm.customer_need_id).FirstOrDefault();
+                if (item == null)
+                {
+                    item = new CustomerOfDietaryNeed()
+                    {
+                        dietary_need_id = parm.dietary_need_id,
+                        customer_need_id = parm.customer_need_id,
+                        i_InsertUserID = this.UserId,
+                        i_InsertDateTime = DateTime.Now,
+                        i_InsertDeptID = this.departmentId,
+                        i_Lang = "zh-TW"
+                    };
+                    db0.CustomerOfDietaryNeed.Add(item);
+                }
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = item.dietary_need_id;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteCustomerOfDietaryNeed([FromBody]ParmCustomerOfDietaryNeed parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = await db0.CustomerOfDietaryNeed.FindAsync(parm.dietary_need_id, parm.customer_need_id);
+                if (item != null)
+                {
+                    db0.CustomerOfDietaryNeed.Remove(item);
+                    await db0.SaveChangesAsync();
+                }
+                else
+                {
+                    r.result = false;
+                    r.message = "未刪除";
+                    return Ok(r);
+                }
+                r.result = true;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
 
     }
     #region Parm
@@ -543,7 +721,7 @@ namespace DotWeb.Api
         public int constitute_id { get; set; }
         public int element_id { get; set; }
     }
-    public class ParmGetLeftConstitute: ParmGetLeftElement
+    public class ParmGetLeftConstitute : ParmGetLeftElement
     {
     }
     public class ParmDailyMenuOfConstitute
@@ -555,6 +733,21 @@ namespace DotWeb.Api
     {
         public int dietary_need_id { get; set; }
         public int element_id { get; set; }
+    }
+    public class ParmGetLeftDietaryNeed
+    {
+        public int? main_id { get; set; }
+        public string name { get; set; }
+        public bool? is_correspond { get; set; }
+        public bool? is_breakfast { get; set; }
+        public bool? is_lunch { get; set; }
+        public bool? is_dinner { get; set; }
+        public int page { get; set; }
+    }
+    public class ParmCustomerOfDietaryNeed
+    {
+        public int dietary_need_id { get; set; }
+        public int customer_need_id { get; set; }
     }
     #endregion
 }

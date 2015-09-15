@@ -16,9 +16,10 @@
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td>{this.props.itemData.meal_id}</td>
 					<td>{this.props.itemData.name}</td>
-					<td>{this.props.itemData.short_name}</td>
-					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
+					<td>{this.props.itemData.tel_1}</td>
+					<td>{this.props.itemData.tel_2}</td>				
 				</tr>
 			);
 		}
@@ -31,17 +32,19 @@ var GirdForm = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
-			searchData:{title:null},
+			searchData:{name:null},
 			edit_type:0,
 			checkAll:false,
-			category:[]
+			category:[],
+			isShowMealidSelect:false,
+			mealid_list:[]
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
 			fdName:'fieldData',
 			gdName:'searchData',
-			apiPathName: gb_approot + 'api/DietaryNeed',
+			apiPathName: gb_approot + 'api/CustomerNeed',
 			initPathName: gb_approot + 'Active/Food/constitute_food_Init'
 		};
 	},	
@@ -112,7 +115,7 @@ var GirdForm = React.createClass({
 		var ids = [];
 		for(var i in this.state.gridData.rows){
 			if(this.state.gridData.rows[i].check_del){
-			    ids.push('ids=' + this.state.gridData.rows[i].dietary_need_id);
+			    ids.push('ids=' + this.state.gridData.rows[i].customer_need_id);
 			}
 		}
 
@@ -180,7 +183,7 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{}});
+		this.setState({edit_type:1,fieldData:{born_id:null}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -239,6 +242,32 @@ var GirdForm = React.createClass({
 		}
 		this.setState({fieldData:obj});
 	},
+	queryAllMealID:function(){//選取用餐編號-取得未結案客戶生產的用餐編號List
+		//mealid 列表 要過濾目前已選取的資料
+		jqGet(gb_approot + 'api/GetAction/GetNotCloseMealID',{old_id:this.state.fieldData.born_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({mealid_list:data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+	showSelectMealid:function(){
+		this.queryAllMealID();
+		this.setState({isShowMealidSelect:true});
+	},
+	closeSelectMealid:function(){
+		this.setState({isShowMealidSelect:false});
+	},
+	selectMealid:function(customer_id,born_id,meal_id){
+		var fieldData = this.state.fieldData;//選取後變更customer_id,born_id,mealid
+
+		fieldData.customer_id=customer_id;
+		fieldData.born_id=born_id;
+		fieldData.meal_id=meal_id;
+
+		this.setState({isShowMealidSelect:false,fieldData:fieldData});
+	},
 	render: function() {
 		var outHtml = null;
 
@@ -262,22 +291,11 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">需求元素名稱</label> { }
+										<label className="sr-only">媽媽名稱</label> { }
 										<input type="text" className="form-control" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
-										placeholder="需求元素名稱..." /> { }
-
-										<label className="sr-only">狀態</label> { }
-										<select className="form-control" 
-												value={searchData.i_Hide}
-												onChange={this.onHideChange}>
-											<option value="">選擇狀態</option>
-											<option value="true">隱藏</option>
-											<option value="false">顯示</option>
-
-										</select> { }
-
+										placeholder="媽媽名稱..." /> { }
 
 										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
@@ -294,9 +312,10 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1">需求元素名稱</th>
-									<th className="col-xs-1">需求元素簡稱</th>
-									<th className="col-xs-1">狀態</th>
+									<th className="col-xs-1">用餐編號</th>
+									<th className="col-xs-1">媽媽姓名</th>
+									<th className="col-xs-1">電話1</th>
+									<th className="col-xs-1">電話2</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -305,7 +324,7 @@ var GirdForm = React.createClass({
 								return <GridRow 
 								key={i}
 								ikey={i}
-								primKey={itemData.dietary_need_id} 
+								primKey={itemData.customer_need_id} 
 								itemData={itemData} 
 								delCheck={this.delCheck}
 								updateType={this.updateType}							
@@ -332,9 +351,51 @@ var GirdForm = React.createClass({
 		else if(this.state.edit_type==1 || this.state.edit_type==2)
 		{
 			var fieldData = this.state.fieldData;
+
+			var MdoalMealidSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
+			var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
+			if(this.state.isShowMealidSelect){
+				mealid_select_out_html = 					
+					<MdoalMealidSelect bsSize="xsmall" onRequestHide={this.closeSelectMealid}>
+							<div className="modal-header light">
+								<div className="pull-right">
+									<button onClick={this.closeSelectMealid} type="button"><i className="fa-times"></i></button>
+								</div>
+								<h4 className="modal-title">請選擇用餐編號 { }</h4>
+							</div>
+							<div className="modal-body">
+								<table>
+									<tbody>
+										<tr>
+											<th className="col-xs-1 text-center">選擇</th>
+											<th className="col-xs-2">用餐編號</th>
+											<th className="col-xs-2">媽媽姓名</th>
+											<th className="col-xs-1">第幾胎</th>
+										</tr>
+										{
+											this.state.mealid_list.map(function(itemData,i) {
+												
+												var mealid_out_html = 
+													<tr key={itemData.born_id}>
+														<td className="text-center"><input type="checkbox" onClick={this.selectMealid.bind(this,itemData.customer_id,itemData.born_id,itemData.meal_id)} /></td>
+														<td>{itemData.meal_id}</td>
+														<td>{itemData.mom_name}</td>
+														<td>{itemData.born_frequency}</td>
+													</tr>;
+												return mealid_out_html;
+											}.bind(this))
+										}
+									</tbody>
+								</table>
+							</div>
+							<div className="modal-footer">
+								<button onClick={this.closeSelectMealid}><i className="fa-times"></i> { } 關閉</button>
+							</div>
+					</MdoalMealidSelect>;
+			}
 			var map_out_html=null;
 			if(this.state.edit_type==2){//只在修改時顯示下方對應程式
-				map_out_html=(<GirdCofE main_id={fieldData.dietary_need_id}/>);
+				map_out_html=(<GirdCofE main_id={fieldData.customer_need_id} />);
 			}else{
 				map_out_html=(
 					<div className="col-xs-12">
@@ -346,6 +407,7 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
+				{mealid_select_out_html}
 				<ul className="breadcrumb">
 					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
 				</ul>
@@ -354,122 +416,71 @@ var GirdForm = React.createClass({
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
 				<div className="col-xs-8">
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">名稱</label>
+						<label className="col-xs-2 control-label text-danger">用餐編號</label>
+							<div className="col-xs-3">
+								<input type="text" 
+								className="form-control"	
+								value={fieldData.meal_id}
+								onChange={this.changeFDValue.bind(this,'meal_id')}
+								required
+								disabled={true} />
+							</div>
+						<div className="col-xs-1">
+							<button type="button" 
+							onClick={this.showSelectMealid}>
+							...
+						</button>
+						</div>
+
+						<label className="col-xs-2 control-label">連絡電話1</label>
+						<div className="col-xs-4">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.tel_1}
+							onChange={this.changeFDValue.bind(this,'tel_1')}
+							maxLength="15"
+							required
+							disabled />
+						</div>
+					</div>
+
+					<div className="form-group">
+						<label className="col-xs-2 control-label">姓名</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
 							value={fieldData.name}
 							onChange={this.changeFDValue.bind(this,'name')}
-							maxLength="128"
-							required />
+							maxLength="64"
+							required
+							disabled />
 						</div>
-						<label className="col-xs-2 control-label text-danger">簡稱</label>
+
+						<label className="col-xs-2 control-label">連絡電話2</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
-							value={fieldData.short_name}
-							onChange={this.changeFDValue.bind(this,'short_name')}
-							maxLength="64"
-							required />
+							value={fieldData.tel_1}
+							onChange={this.changeFDValue.bind(this,'tel_1')}
+							maxLength="15"
+							required
+							disabled />
 						</div>
 					</div>
-
 					<div className="form-group">
-						<label className="col-xs-2 control-label">元素對應</label>
-						<div className="col-xs-4">
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="is_correspond"
-											value={true}
-											checked={fieldData.is_correspond===true} 
-											onChange={this.changeFDValue.bind(this,'is_correspond')}
-									/>
-									<span>須對應</span>
-								</label>
-							</div>
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="is_correspond"
-											value={false}
-											checked={fieldData.is_correspond===false} 
-											onChange={this.changeFDValue.bind(this,'is_correspond')}
-											/>
-									<span>不須對應</span>
-								</label>
-							</div>
-						</div>
-						<label className="col-xs-2 control-label">適用餐別</label>
-						<div className="col-xs-4">
-							<div className="checkbox-inline">
-								<label>
-									<input type="checkbox" 
-											id="is_breakfast"
-											checked={fieldData.is_breakfast}
-											onChange={this.onMealChange.bind(this,'is_breakfast')}
-									/>
-									<span>早餐</span>
-								</label>
-							</div>
-							<div className="checkbox-inline">
-								<label>
-									<input type="checkbox" 
-											id="is_lunch"
-											checked={fieldData.is_lunch}
-											onChange={this.onMealChange.bind(this,'is_lunch')}
-											/>
-									<span>午餐</span>
-								</label>
-							</div>
-							<div className="checkbox-inline">
-								<label>
-									<input type="checkbox" 
-											id="is_dinner"
-											checked={fieldData.is_dinner}
-											onChange={this.onMealChange.bind(this,'is_dinner')}
-											/>
-									<span>晚餐</span>
-								</label>
-							</div>
-						</div>
-					</div>
-
-					<div className="form-group">
-						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-2">
-							<input type="number" 
-							className="form-control"	
-							value={fieldData.sort}
-							onChange={this.changeFDValue.bind(this,'sort')}
-							 />
-						</div>
-						<small className="col-xs-2 help-inline">數字越大越前面</small>
-						<label className="col-xs-2 control-label">狀態</label>
-						<div className="col-xs-3">
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="i_Hide"
-											value={true}
-											checked={fieldData.i_Hide===true} 
-											onChange={this.changeFDValue.bind(this,'i_Hide')}
-									/>
-									<span>隱藏</span>
-								</label>
-							</div>
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="i_Hide"
-											value={false}
-											checked={fieldData.i_Hide===false} 
-											onChange={this.changeFDValue.bind(this,'i_Hide')}
-											/>
-									<span>顯示</span>
-								</label>
-							</div>
-						</div>
+						<label className="col-xs-2 control-label">送餐地址</label>
+						<TwAddress ver={1}
+						onChange={this.changeFDValue}
+						setFDValue={this.setFDValue}
+						zip_value={fieldData.tw_zip_1} 
+						city_value={fieldData.tw_city_1} 
+						country_value={fieldData.tw_country_1}
+						address_value={fieldData.tw_address_1}
+						zip_field="tw_zip_1"
+						city_field="tw_city_1"
+						country_field="tw_country_1"
+						address_field="tw_address_1"
+						disabled={true}/>
 					</div>
 
 					<div className="form-group">
@@ -510,7 +521,7 @@ var GirdCofE = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
-			searchData:{main_id:this.props.main_id,name:null,category_id:null},
+			searchData:{main_id:this.props.main_id,name:null,is_correspond:null,is_breakfast:null,is_lunch:null,is_dinner:null},
 			edit_type:0,
 			checkAll:false,
 			grid_right_element:[],
@@ -529,7 +540,7 @@ var GirdCofE = React.createClass({
 		};
 	},	
 	componentDidMount:function(){
-		this.getAjaxInitData();//載入init資料
+		//this.getAjaxInitData();//載入init資料
 		this.queryLeftElement();
 		this.queryRightElement();
 	},
@@ -549,7 +560,7 @@ var GirdCofE = React.createClass({
 		};
 
 		$.extend(parms, this.state.searchData);
-			jqGet(gb_approot + 'api/GetAction/GetLeftElement_byNeed',parms)
+			jqGet(gb_approot + 'api/GetAction/GetLeftDietaryNeed',parms)
 			.done(function(data, textStatus, jqXHRdata) {
 				this.setState({grid_left_element:data});
 			}.bind(this))
@@ -558,7 +569,7 @@ var GirdCofE = React.createClass({
 			});
 	},	
 	queryRightElement:function(){
-			jqGet(gb_approot + 'api/GetAction/GetRightElement_byNeed',{main_id:this.props.main_id})
+			jqGet(gb_approot + 'api/GetAction/GetRightDietaryNeed',{main_id:this.props.main_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				this.setState({grid_right_element:data});
 			}.bind(this))
@@ -572,8 +583,8 @@ var GirdCofE = React.createClass({
 		this.setState({searchData:obj});
 		this.queryLeftElement();			
 	},
-	addElement:function(element_id){
-			jqPost(gb_approot + 'api/GetAction/PostDietaryNeedOfElement',{dietary_need_id:this.props.main_id,element_id:element_id})
+	addElement:function(dietary_need_id){
+			jqPost(gb_approot + 'api/GetAction/PostCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
 					this.queryLeftElement();
@@ -586,8 +597,8 @@ var GirdCofE = React.createClass({
 				showAjaxError(errorThrown);
 			});		
 	},
-	removeElement:function(element_id){
-			jqDelete(gb_approot + 'api/GetAction/DeleteDietaryNeedOfElement',{dietary_need_id:this.props.main_id,element_id:element_id})
+	removeElement:function(dietary_need_id){
+			jqDelete(gb_approot + 'api/GetAction/DeleteCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
 					this.queryLeftElement();
@@ -622,6 +633,24 @@ var GirdCofE = React.createClass({
 			this.queryLeftElement();
 		}
 	},
+	showMealType:function(breakfast,lunch,dinner){
+		var val="";
+		if(!breakfast & !lunch & !dinner){
+			val="無";
+		}else{
+			if(breakfast){
+				val+="早";
+			}
+			if(lunch){
+				val+="午";
+			}
+			if(dinner){
+				val+="晚";
+			}
+		}
+
+		return val;
+	},
 	render: function() {
 		var outHtml = null;
 		var fieldData = {};
@@ -640,35 +669,49 @@ var GirdCofE = React.createClass({
 				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
 				                           	value={searchData.name} 
 	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
+				                            
 				                            <select name="" id="" className="form-control input-sm"
-				                            onChange={this.queryChangeElementParam.bind(this,'category_id')}
-											value={searchData.category_id}> { }
-				                                <option value="">分類</option>
-											{
-												this.state.category_element.map(function(itemData,i) {
-													return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
-												})
-											}
-				                            </select> { }			             
+				                            onChange={this.queryChangeElementParam.bind(this,'is_correspond')}
+											value={searchData.is_correspond}> { }
+				                                <option value="">全部</option>
+				                                <option value="true">有對應</option>
+				                                <option value="false">無對應</option>
 
+				                            </select> { }			             
+				                        </div>
+				                        <div className="form-group">
+				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
+				                           	value={searchData.name} 
+	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
+				                            
+				                            <select name="" id="" className="form-control input-sm"
+				                            onChange={this.queryChangeElementParam.bind(this,'is_correspond')}
+											value={searchData.is_correspond}> { }
+				                                <option value="">全部</option>
+				                                <option value="true">有對應</option>
+				                                <option value="false">無對應</option>
+
+				                            </select> { }			             
 				                        </div>
 				                    </div>
-				                    全部元素
+				                    全部需求
 								</caption>
 								<tbody>
 									<tr>
-										<th>分類</th>
+										<th>元素對應</th>
+										<th>餐別</th>
 										<th>名稱</th>
 					                	<th className="text-center">加入</th>
 									</tr>
 									{
 										this.state.grid_left_element.rows.map(function(itemData,i) {
 											var out_sub_html =                     
-												<tr key={itemData.element_id}>
-													<td>{this.Filter(itemData.category_id,'category_element')}</td>
-							                        <td>{itemData.element_name}</td>
+												<tr key={itemData.dietary_need_id}>
+													<td>{itemData.is_correspond ? "有對應":"無對應"}</td>
+													<td>{this.showMealType(itemData.is_breakfast,itemData.is_lunch,itemData.is_dinner)}</td>
+							                        <td>{itemData.name}</td>
 				                        			<td className="text-center">
-														<button className="btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.element_id)}>
+														<button className="btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.dietary_need_id)}>
 															<i className="fa-plus"></i>
 														</button>
 							                        </td>
@@ -690,21 +733,23 @@ var GirdCofE = React.createClass({
 					<div className="col-xs-6">
 						<div className="table-responsive">
 							<table className="table-condensed">
-								<caption>已排入元素對應</caption>
+								<caption>已排入飲食需求</caption>
 								<tbody>
 									<tr>
-										<th>分類</th>
+										<th>元素對應</th>
+										<th>餐別</th>
 										<th>名稱</th>
 					                	<th className="text-center">刪除</th>
 									</tr>
 									{
 										this.state.grid_right_element.map(function(itemData,i) {
 											var out_sub_html =                     
-												<tr key={itemData.element_id}>
-													<td>{this.Filter(itemData.category_id,'category_element')}</td>
-							                        <td>{itemData.element_name}</td>
+												<tr key={itemData.dietary_need_id}>
+													<td>{itemData.is_correspond ? "有對應":"無對應"}</td>
+													<td>{this.showMealType(itemData.is_breakfast,itemData.is_lunch,itemData.is_dinner)}</td>
+							                        <td>{itemData.name}</td>
 				                        			<td className="text-center">
-														<button className="btn-link text-danger" type="button" onClick={this.removeElement.bind(this,itemData.element_id)}>
+														<button className="btn-link text-danger" type="button" onClick={this.removeElement.bind(this,itemData.dietary_need_id)}>
 															<i className="fa-times"></i>
 														</button>
 							                        </td>
