@@ -311,6 +311,24 @@
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
         </EntityType>
+        <EntityType Name="Draft">
+          <Key>
+            <PropertyRef Name="draft_id" />
+          </Key>
+          <Property Name="draft_id" Type="int" Nullable="false" />
+          <Property Name="draft_name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="draft_title" Type="nvarchar" MaxLength="64" />
+          <Property Name="draft_content" Type="text" />
+          <Property Name="sort" Type="int" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="ElementFood">
           <Key>
             <PropertyRef Name="element_id" />
@@ -696,6 +714,7 @@
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DietaryNeed" EntityType="Self.DietaryNeed" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DietaryNeedOfElement" EntityType="Self.DietaryNeedOfElement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Draft" EntityType="Self.Draft" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ElementFood" EntityType="Self.ElementFood" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_Currency" EntityType="Self.i_Currency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="i_IDX" EntityType="Self.i_IDX" Schema="dbo" store:Type="Tables" />
@@ -1024,6 +1043,7 @@
             <End Role="DietaryNeed" EntitySet="DietaryNeed" />
             <End Role="CustomerOfDietaryNeed" EntitySet="CustomerOfDietaryNeed" />
           </AssociationSet>
+          <EntitySet Name="Draft" EntityType="C43A0_Mani520Model.Draft" />
         </EntityContainer>
         <EntityType Name="MealID">
           <Key>
@@ -1531,6 +1551,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Draft">
+          <Key>
+            <PropertyRef Name="draft_id" />
+          </Key>
+          <Property Name="draft_id" Type="Int32" Nullable="false" />
+          <Property Name="draft_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="draft_title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="draft_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="sort" Type="Int32" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1997,6 +2035,25 @@
                 <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
                 <ScalarProperty Name="customer_need_id" ColumnName="customer_need_id" />
                 <ScalarProperty Name="dietary_need_id" ColumnName="dietary_need_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Draft">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.Draft">
+              <MappingFragment StoreEntitySet="Draft">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="draft_content" ColumnName="draft_content" />
+                <ScalarProperty Name="draft_title" ColumnName="draft_title" />
+                <ScalarProperty Name="draft_name" ColumnName="draft_name" />
+                <ScalarProperty Name="draft_id" ColumnName="draft_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -220,8 +220,8 @@ namespace ProcCore.Business.DB0
         public string tel_2 { get; set; }
         public string tw_zip_1 { get; set; }
         public string tw_city_1 { get; set; }
-		public string tw_country_1 { get; set; }
-		public string tw_address_1 { get; set; }
+        public string tw_country_1 { get; set; }
+        public string tw_address_1 { get; set; }
     }
     /// <summary>
     /// 分類選單用
@@ -317,6 +317,9 @@ namespace ProcCore.Business.DB0
         public string tel_1 { get; set; }
         public string tel_2 { get; set; }
         public string meal_id { get; set; }
+    }
+    public class q_Draft : q_DietaryNeed
+    {
     }
     #endregion
 
