@@ -103,13 +103,21 @@ namespace DotWeb.Api
         }
         #endregion
         #region 客戶需求-用餐編號選取
-        public IHttpActionResult GetNotCloseMealID(int? old_id)
+        public IHttpActionResult GetNotCloseMealID(int? old_id, int? main_id)
         {
             db0 = getDB0();
             try
             {
                 //過濾-已有客戶需求資料的客戶生產資料
-                var born_id = db0.CustomerNeed.Select(x => x.born_id);
+                IQueryable<int> born_id = null;
+                if (main_id != null)
+                {
+                    born_id = db0.CustomerNeed.Where(x => x.customer_need_id != main_id).Select(x => x.born_id);
+                }
+                else
+                {
+                    born_id = db0.CustomerNeed.Select(x => x.born_id);
+                }
 
                 var items = db0.CustomerBorn
                     .OrderBy(x => x.meal_id)

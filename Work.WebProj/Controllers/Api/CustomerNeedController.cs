@@ -55,6 +55,10 @@ namespace DotWeb.Api
                 {
                     qr = qr.Where(x => x.CustomerBorn.tel_2.Contains(q.tel_2));
                 }
+                if (q.meal_id != null)
+                {
+                    qr = qr.Where(x => x.CustomerBorn.meal_id.Contains(q.meal_id));
+                }
 
                 var result = qr.Select(x => new m_CustomerNeed()
                 {
@@ -120,12 +124,12 @@ namespace DotWeb.Api
         {
             md.customer_need_id = GetNewId(ProcCore.Business.CodeTable.CustomerNeed);
             ResultInfo r = new ResultInfo();
-            if (!ModelState.IsValid)
-            {
-                r.message = ModelStateErrorPack();
-                r.result = false;
-                return Ok(r);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    r.message = ModelStateErrorPack();
+            //    r.result = false;
+            //    return Ok(r);
+            //}
 
             try
             {

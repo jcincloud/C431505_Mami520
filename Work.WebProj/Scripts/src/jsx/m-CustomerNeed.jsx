@@ -68,6 +68,11 @@ var GirdForm = React.createClass({
 	handleSubmit: function(e) {
 
 		e.preventDefault();
+		var fieldData=this.state.fieldData;
+		if(fieldData.customer_id==null || fieldData.born_id==null || fieldData.meal_id==null){
+			tosMessage(gb_title_from_invalid,'請選取用餐編號在儲存!',3);
+			return;
+		}
 
 		if(this.state.edit_type==1){
 			jqPost(this.props.apiPathName,this.state.fieldData)
@@ -183,7 +188,10 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{born_id:null}});
+		this.setState({edit_type:1,fieldData:{born_id:null,
+											  customer_need_id:null,
+											  customer_id:null,
+											  meal_id:null}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -244,7 +252,12 @@ var GirdForm = React.createClass({
 	},
 	queryAllMealID:function(){//選取用餐編號-取得未結案客戶生產的用餐編號List
 		//mealid 列表 要過濾目前已選取的資料
-		jqGet(gb_approot + 'api/GetAction/GetNotCloseMealID',{old_id:this.state.fieldData.born_id})
+		var parms = {
+			old_id:this.state.fieldData.born_id,
+			main_id:this.state.fieldData.customer_need_id
+		};
+
+		jqGet(gb_approot + 'api/GetAction/GetNotCloseMealID',parms)
 		.done(function(data, textStatus, jqXHRdata) {
 			this.setState({mealid_list:data});
 		}.bind(this))
@@ -295,7 +308,13 @@ var GirdForm = React.createClass({
 										<input type="text" className="form-control" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
-										placeholder="媽媽名稱..." /> { }
+										placeholder="媽媽姓名..." /> { }
+
+										<label className="sr-only">用餐編號</label> { }
+										<input type="text" className="form-control" 
+										value={searchData.meal_id}
+										onChange={this.changeGDValue.bind(this,'meal_id')}
+										placeholder="用餐編號..." /> { }
 
 										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
@@ -583,6 +602,17 @@ var GirdCofE = React.createClass({
 		this.setState({searchData:obj});
 		this.queryLeftElement();			
 	},
+	queryMealParam:function(name,e){
+		var obj = this.state.searchData;
+		if(e.target.checked){
+			obj[name]=true;
+			
+		}else{
+			obj[name]=false;
+		}
+		this.setState({searchData:obj});
+		this.queryLeftElement();
+	},
 	addElement:function(dietary_need_id){
 			jqPost(gb_approot + 'api/GetAction/PostCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
 			.done(function(data, textStatus, jqXHRdata) {
@@ -680,18 +710,36 @@ var GirdCofE = React.createClass({
 				                            </select> { }			             
 				                        </div>
 				                        <div className="form-group">
-				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
-				                           	value={searchData.name} 
-	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
-				                            
-				                            <select name="" id="" className="form-control input-sm"
-				                            onChange={this.queryChangeElementParam.bind(this,'is_correspond')}
-											value={searchData.is_correspond}> { }
-				                                <option value="">全部</option>
-				                                <option value="true">有對應</option>
-				                                <option value="false">無對應</option>
-
-				                            </select> { }			             
+											<div className="checkbox-inline">
+												<label>
+													<input type="checkbox" 
+															id="is_breakfast"
+															checked={searchData.is_breakfast}
+															onChange={this.queryMealParam.bind(this,'is_breakfast')}
+													/>
+													<span>早餐</span>
+												</label>
+											</div>
+											<div className="checkbox-inline">
+												<label>
+													<input type="checkbox" 
+															id="is_lunch"
+															checked={searchData.is_lunch}
+															onChange={this.queryMealParam.bind(this,'is_lunch')}
+															/>
+													<span>午餐</span>
+												</label>
+											</div>
+											<div className="checkbox-inline">
+												<label>
+													<input type="checkbox" 
+															id="is_dinner"
+															checked={searchData.is_dinner}
+															onChange={this.queryMealParam.bind(this,'is_dinner')}
+															/>
+													<span>晚餐</span>
+												</label>
+											</div>
 				                        </div>
 				                    </div>
 				                    全部需求
