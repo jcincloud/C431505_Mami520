@@ -697,6 +697,7 @@
     <Content Include="Scripts\build\func\m-ConstituteFood.js" />
     <Content Include="Scripts\build\func\m-Customer.js" />
     <Content Include="Scripts\build\func\m-CustomerBorn.js" />
+    <Content Include="Scripts\build\func\m-CustomerNeed.js" />
     <Content Include="Scripts\build\func\m-DailyMenu.js" />
     <Content Include="Scripts\build\func\m-DietaryNeed.js" />
     <Content Include="Scripts\build\func\m-ElementFood.js" />
