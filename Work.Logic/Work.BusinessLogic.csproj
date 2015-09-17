@@ -248,7 +248,13 @@
     <Compile Include="DB0\m_Product.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB0\m_ProductRecord.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB0\Product.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\ProductRecord.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="LogicCenter.cs" />

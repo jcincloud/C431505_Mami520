@@ -13,15 +13,15 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class Product : BaseEntityTable
+    public partial class ProductRecord : BaseEntityTable
     {
-        public int product_id { get; set; }
-        public int product_type { get; set; }
-        public string product_name { get; set; }
-        public double price { get; set; }
-        public string standard { get; set; }
-        public Nullable<int> sort { get; set; }
-        public string memo { get; set; }
+        public int product_record_id { get; set; }
+        public string record_sn { get; set; }
+        public System.DateTime record_day { get; set; }
+        public int customer_id { get; set; }
+        public int born_id { get; set; }
+        public bool is_close { get; set; }
+        public Nullable<bool> is_receipt { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -30,5 +30,11 @@ namespace ProcCore.Business.DB0
         public Nullable<int> i_UpdateDeptID { get; set; }
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
+    
+    	[JsonIgnore]
+        public virtual Customer Customer { get; set; }
+    	[JsonIgnore]
+        public virtual CustomerBorn CustomerBorn { get; set; }
     }
 }
+

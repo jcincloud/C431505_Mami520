@@ -800,6 +800,12 @@ var GirdSubForm = React.createClass({
 		var MdoaleditCustomerBorn=ReactBootstrap.Modal;//啟用生產編輯的視窗內容
 		var MdoalMealidSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
 			
+		var error_out_html=null;//如果生產資料有對應的產品銷售主檔就出現警告訊息
+		if(fieldDetailData.have_record){
+			error_out_html=<div className="alert alert-warning"><p>已有對應的產品銷售資料，<strong className="text-danger">不可隨意變更用餐編號</strong> 。</p></div>;
+		}
+
+
 		var customer_born_out_html=null;//存放生產編輯的視窗內容
 		var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowMealidSelect){
@@ -849,7 +855,7 @@ var GirdSubForm = React.createClass({
 						<div className="modal-body">
 								{mealid_select_out_html}
 							<form className="form-horizontal"  onSubmit={this.detailHandleSubmit} id="form2">
-								
+									{error_out_html}
 									<div className="form-group">
 										<label className="col-xs-2 control-label text-danger">用餐編號</label>
 										<div className="col-xs-3">
@@ -863,7 +869,7 @@ var GirdSubForm = React.createClass({
 										<div className="col-xs-1">
 											<button type="button" 
 											onClick={this.showSelectMealid}
-											disabled={this.state.detail_edit_type==3}>...</button>
+											disabled={this.state.detail_edit_type==3 || fieldDetailData.have_record}>...</button>
 										</div>
 										<label className="col-xs-2 control-label text-danger">媽媽姓名</label>
 										<div className="col-xs-4">

@@ -136,6 +136,133 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
+        public IHttpActionResult GetBornData(int born_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                var items = db0.CustomerBorn.Find(born_id);
+
+                return Ok(items);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
+        #region 產品銷售資料主檔-客戶生產選取
+        public IHttpActionResult GetAllBorn()
+        {
+            db0 = getDB0();
+            try
+            {
+
+                var items = db0.CustomerBorn
+                    .OrderBy(x => new { x.customer_id, x.meal_id })
+                    .Select(x => new { x.customer_id, x.born_id, x.Customer.customer_sn, x.meal_id, x.mom_name, x.born_frequency, x.is_close });
+
+                return Ok(items.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        public IHttpActionResult GetCustomerAndBorn(int customer_id, int born_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                var getBorn = db0.CustomerBorn.Find(born_id);
+                var getCustomer = db0.Customer.Find(customer_id);
+
+                return Ok(new { getBorn = getBorn, getCustomer = getCustomer });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> closeRecord([FromBody]ParmCloseRecord parm)
+        {
+            ResultInfo r = new ResultInfo();
+            db0 = getDB0();
+            try
+            {
+                var getRecord = await db0.ProductRecord.FindAsync(parm.main_id);//產品銷售主檔
+                var getBorn = await db0.CustomerBorn.FindAsync(getRecord.born_id);//客戶生產紀錄
+                var getMealID = await db0.MealID.FindAsync(getBorn.meal_id);//用餐編號
+
+                getRecord.is_close = true;
+                getBorn.is_close = true;
+                getMealID.i_Use = false;
+
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = parm.main_id;
+                return Ok(r);
+
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        /// <summary>
+        /// admin 才有權限修改回未結案狀態
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IHttpActionResult> openRecord([FromBody]ParmCloseRecord parm)
+        {
+            ResultInfo r = new ResultInfo();
+            db0 = getDB0();
+            try
+            {
+                var getRecord = await db0.ProductRecord.FindAsync(parm.main_id);//產品銷售主檔
+                var getBorn = await db0.CustomerBorn.FindAsync(getRecord.born_id);//客戶生產紀錄
+                var getMealID = await db0.MealID.FindAsync(getBorn.meal_id);//用餐編號
+
+                getRecord.is_close = false;
+                getBorn.is_close = false;
+                if (getMealID.i_Use)
+                {
+                    r.result = false;
+                    r.message = "此用餐編號已被其他客戶使用!";
+                    return Ok(r);
+                }
+                getMealID.i_Use = true;
+
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = parm.main_id;
+                return Ok(r);
+
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
         #endregion
         #region 組合菜單對應基礎菜單
         public async Task<IHttpActionResult> GetLeftElement([FromUri]ParmGetLeftElement parm)
@@ -756,6 +883,10 @@ namespace DotWeb.Api
     {
         public int dietary_need_id { get; set; }
         public int customer_need_id { get; set; }
+    }
+    public class ParmCloseRecord
+    {
+        public int main_id { get; set; }
     }
     #endregion
 }

@@ -223,6 +223,34 @@ namespace ProcCore.Business.DB0
         public string tw_country_1 { get; set; }
         public string tw_address_1 { get; set; }
     }
+    public partial class m_ProductRecord
+    {
+        public string name { get; set; }
+        public string meal_id { get; set; }
+    }
+    public partial class ProductRecord
+    {
+        public string customer_sn { get; set; }
+        public int customer_type { get; set; }
+        public string name { get; set; }
+        public string meal_id { get; set; }
+        public string sno { get; set; }
+        public DateTime? birthday { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+        public string tw_zip_1 { get; set; }
+        public string tw_city_1 { get; set; }
+        public string tw_country_1 { get; set; }
+        public string tw_address_1 { get; set; }
+        public string tw_zip_2 { get; set; }
+        public string tw_city_2 { get; set; }
+        public string tw_country_2 { get; set; }
+        public string tw_address_2 { get; set; }
+    }
+    public partial class CustomerBorn
+    {
+        public bool have_record { get; set; }//檢查生產紀錄有沒有產品銷售主檔
+    }
     /// <summary>
     /// 分類選單用
     /// </summary>
@@ -250,6 +278,15 @@ namespace ProcCore.Business.DB0
     {
         public string product_name { get; set; }
         public int? product_type { get; set; }
+    }
+    public class q_ProductRecord : QueryBase
+    {
+        public string name { get; set; }
+        public string meal_id { get; set; }
+        public bool? is_close { get; set; }
+        public bool? is_receipt { get; set; }
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
     }
     public class q_Customer : QueryBase
     {

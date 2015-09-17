@@ -273,13 +273,27 @@ var GirdForm = React.createClass({
 		this.setState({isShowMealidSelect:false});
 	},
 	selectMealid:function(customer_id,born_id,meal_id){
-		var fieldData = this.state.fieldData;//選取後變更customer_id,born_id,mealid
+		jqGet(gb_approot + 'api/GetAction/GetBornData',{born_id:born_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			var fieldData = this.state.fieldData;//選取後變更customer_id,born_id,mealid
+			fieldData.customer_id=customer_id;
+			fieldData.born_id=born_id;
+			fieldData.meal_id=meal_id;
 
-		fieldData.customer_id=customer_id;
-		fieldData.born_id=born_id;
-		fieldData.meal_id=meal_id;
+			//用餐編號改變下方帶入的資料要一起變更
+			fieldData.name=data.mom_name;
+			fieldData.tel_1=data.tel_1;
+			fieldData.tel_1=data.tel_1;
+			fieldData.tw_zip_1=data.tw_zip_1;
+			fieldData.tw_city_1=data.tw_city_1;
+			fieldData.tw_country_1=data.tw_country_1;
+			fieldData.tw_address_1=data.tw_address_1;
 
-		this.setState({isShowMealidSelect:false,fieldData:fieldData});
+			this.setState({isShowMealidSelect:false,fieldData:fieldData});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			//showAjaxError(errorThrown);
+		});	
 	},
 	render: function() {
 		var outHtml = null;
@@ -436,20 +450,22 @@ var GirdForm = React.createClass({
 				<div className="col-xs-8">
 					<div className="form-group">
 						<label className="col-xs-2 control-label text-danger">用餐編號</label>
-							<div className="col-xs-3">
-								<input type="text" 
-								className="form-control"	
-								value={fieldData.meal_id}
-								onChange={this.changeFDValue.bind(this,'meal_id')}
-								required
-								disabled={true} />
+							<div className="col-xs-4">
+								<div className="input-group">
+									<input type="text" 
+									className="form-control"	
+									value={fieldData.meal_id}
+									onChange={this.changeFDValue.bind(this,'meal_id')}
+									required
+									disabled={true} />
+									<span className="input-group-btn">
+										<button type="button" onClick={this.showSelectMealid}>
+										...
+										</button>
+									</span>
+								</div>
+
 							</div>
-						<div className="col-xs-1">
-							<button type="button" 
-							onClick={this.showSelectMealid}>
-							...
-						</button>
-						</div>
 
 						<label className="col-xs-2 control-label">連絡電話1</label>
 						<div className="col-xs-4">

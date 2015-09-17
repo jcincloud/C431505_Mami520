@@ -11,63 +11,80 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class CustomerNeedController : ajaxApi<CustomerNeed, q_CustomerNeed>
+    public class ProductRecordController : ajaxApi<ProductRecord, q_ProductRecord>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.CustomerNeed.FindAsync(id);
-
+                item = await db0.ProductRecord.FindAsync(id);
+                var getCustomer = await db0.Customer.FindAsync(item.customer_id);
                 var getCustomerBorn = await db0.CustomerBorn.FindAsync(item.born_id);
+                item.customer_type = getCustomer.customer_type;
+                item.customer_sn = getCustomer.customer_sn;
                 item.meal_id = getCustomerBorn.meal_id;
                 item.name = getCustomerBorn.mom_name;
+                item.sno = getCustomerBorn.sno;
+                item.birthday = getCustomerBorn.birthday;
                 item.tel_1 = getCustomerBorn.tel_1;
                 item.tel_2 = getCustomerBorn.tel_2;
                 item.tw_zip_1 = getCustomerBorn.tw_zip_1;
                 item.tw_city_1 = getCustomerBorn.tw_city_1;
                 item.tw_country_1 = getCustomerBorn.tw_country_1;
                 item.tw_address_1 = getCustomerBorn.tw_address_1;
+                item.tw_zip_2 = getCustomerBorn.tw_zip_2;
+                item.tw_city_2 = getCustomerBorn.tw_city_2;
+                item.tw_country_2 = getCustomerBorn.tw_country_2;
+                item.tw_address_2 = getCustomerBorn.tw_address_2;
 
-                r = new ResultInfo<CustomerNeed>() { data = item };
+                r = new ResultInfo<ProductRecord>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_CustomerNeed q)
+        public async Task<IHttpActionResult> Get([FromUri]q_ProductRecord q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.CustomerNeed.OrderBy(x=>x.CustomerBorn.mom_name).AsQueryable();
+                var qr = db0.ProductRecord
+                    .OrderByDescending(x => x.record_day).AsQueryable();
 
 
                 if (q.name != null)
-                {//簡稱或全名有重複
+                {
                     qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.name));
-                }
-                if (q.tel_1 != null)
-                {
-                    qr = qr.Where(x => x.CustomerBorn.tel_1.Contains(q.tel_1));
-                }
-                if (q.tel_2 != null)
-                {
-                    qr = qr.Where(x => x.CustomerBorn.tel_2.Contains(q.tel_2));
                 }
                 if (q.meal_id != null)
                 {
                     qr = qr.Where(x => x.CustomerBorn.meal_id.Contains(q.meal_id));
                 }
 
-                var result = qr.Select(x => new m_CustomerNeed()
+                if (q.is_close != null)
                 {
-                    customer_need_id = x.customer_need_id,
+                    qr = qr.Where(x => x.is_close == q.is_close);
+                }
+
+                if (q.is_receipt != null)
+                {
+                    qr = qr.Where(x => x.is_receipt == q.is_receipt);
+                }
+                if (q.start_date != null && q.end_date != null)
+                {
+                    DateTime end = ((DateTime)q.end_date).AddDays(1);
+                    qr = qr.Where(x => x.record_day >= q.start_date && x.record_day < end);
+                }
+                var result = qr.Select(x => new m_ProductRecord()
+                {
+                    product_record_id = x.product_record_id,
                     customer_id = x.customer_id,
                     born_id = x.born_id,
+                    is_receipt = x.is_receipt,
+                    is_close = x.is_close,
+                    record_sn = x.record_sn,
+                    record_day = x.record_day,
                     name = x.CustomerBorn.mom_name,
-                    tel_1 = x.CustomerBorn.tel_1,
-                    tel_2 = x.CustomerBorn.tel_2,
                     meal_id = x.CustomerBorn.meal_id
                 });
 
@@ -76,7 +93,7 @@ namespace DotWeb.Api
                 int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
                 var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
 
-                return Ok<GridInfo<m_CustomerNeed>>(new GridInfo<m_CustomerNeed>()
+                return Ok<GridInfo<m_ProductRecord>>(new GridInfo<m_ProductRecord>()
                 {
                     rows = segment,
                     total = PageCount.TotalPage,
@@ -88,18 +105,20 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]CustomerNeed md)
+        public async Task<IHttpActionResult> Put([FromBody]ProductRecord md)
         {
             ResultInfo r = new ResultInfo();
             try
             {
                 db0 = getDB0();
 
-                item = await db0.CustomerNeed.FindAsync(md.customer_need_id);
+                item = await db0.ProductRecord.FindAsync(md.product_record_id);
                 item.customer_id = md.customer_id;
                 item.born_id = md.born_id;
-                item.meal_id = md.meal_id;
-                item.memo = md.memo;
+                item.record_sn = md.record_sn;
+                item.record_day = md.record_day;
+                item.is_close = md.is_close;
+                item.is_receipt = md.is_receipt;
 
 
                 item.i_UpdateUserID = this.UserId;
@@ -108,7 +127,6 @@ namespace DotWeb.Api
 
                 await db0.SaveChangesAsync();
                 r.result = true;
-                r.id = md.customer_need_id;
             }
             catch (Exception ex)
             {
@@ -121,32 +139,35 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]CustomerNeed md)
+        public async Task<IHttpActionResult> Post([FromBody]ProductRecord md)
         {
-            md.customer_need_id = GetNewId(ProcCore.Business.CodeTable.CustomerNeed);
+            md.product_record_id = GetNewId(ProcCore.Business.CodeTable.ProductRecord);
             ResultInfo r = new ResultInfo();
-            //if (!ModelState.IsValid)
-            //{
-            //    r.message = ModelStateErrorPack();
-            //    r.result = false;
-            //    return Ok(r);
-            //}
+            if (!ModelState.IsValid)
+            {
+                r.message = ModelStateErrorPack();
+                r.result = false;
+                return Ok(r);
+            }
 
             try
             {
                 #region working a
                 db0 = getDB0();
 
+                md.record_sn = md.product_record_id.ToString();
+                md.record_day = DateTime.Now;
+
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
                 md.i_Lang = "zh-TW";
 
-                db0.CustomerNeed.Add(md);
+                db0.ProductRecord.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.customer_need_id;
+                r.id = md.product_record_id;
                 return Ok(r);
                 #endregion
             }
@@ -170,9 +191,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new CustomerNeed() { customer_need_id = id };
-                    db0.CustomerNeed.Attach(item);
-                    db0.CustomerNeed.Remove(item);
+                    item = new ProductRecord() { product_record_id = id };
+                    db0.ProductRecord.Attach(item);
+                    db0.ProductRecord.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();

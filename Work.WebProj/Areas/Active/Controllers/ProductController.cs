@@ -15,6 +15,11 @@ namespace DotWeb.Areas.Active.Controllers
             ActionRun();
             return View();
         }
+        public ActionResult ProductRecord()
+        {
+            ActionRun();
+            return View();
+        }
 
         #endregion
 

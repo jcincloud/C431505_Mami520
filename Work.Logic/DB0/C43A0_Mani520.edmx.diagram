@@ -49,6 +49,9 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_CustomerNeed" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_DietaryNeed" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Draft" Width="1.5" PointX="14.375" PointY="0.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.ProductRecord" Width="1.5" PointX="17.875" PointY="5.25" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_ProductRecord_Customer" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_ProductRecord_CustomerBorn" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -52,5 +52,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<CustomerNeed> CustomerNeed { get; set; }
         public virtual DbSet<CustomerOfDietaryNeed> CustomerOfDietaryNeed { get; set; }
         public virtual DbSet<Draft> Draft { get; set; }
+        public virtual DbSet<ProductRecord> ProductRecord { get; set; }
     }
 }

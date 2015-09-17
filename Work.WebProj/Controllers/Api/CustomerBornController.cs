@@ -16,6 +16,14 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 item = await db0.CustomerBorn.FindAsync(id);
+
+                bool check_record = db0.ProductRecord.Any(x => x.born_id == id);
+
+                if (check_record)
+                {
+                    item.have_record = true;
+                }
+
                 r = new ResultInfo<CustomerBorn>() { data = item };
             }
 
