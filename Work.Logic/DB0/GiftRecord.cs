@@ -13,20 +13,16 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class ProductRecord : BaseEntityTable
+    public partial class GiftRecord : BaseEntityTable
     {
-        public ProductRecord()
-        {
-            this.GiftRecord = new HashSet<GiftRecord>();
-        }
-    
+        public int gift_record_id { get; set; }
         public int product_record_id { get; set; }
         public string record_sn { get; set; }
-        public System.DateTime record_day { get; set; }
         public int customer_id { get; set; }
         public int born_id { get; set; }
-        public bool is_close { get; set; }
-        public Nullable<bool> is_receipt { get; set; }
+        public int activity_id { get; set; }
+        public int receive_state { get; set; }
+        public string memo { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -37,11 +33,10 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual Customer Customer { get; set; }
+        public virtual Activity Activity { get; set; }
     	[JsonIgnore]
         public virtual CustomerBorn CustomerBorn { get; set; }
     	[JsonIgnore]
-        public virtual ICollection<GiftRecord> GiftRecord { get; set; }
+        public virtual ProductRecord ProductRecord { get; set; }
     }
 }
-

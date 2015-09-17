@@ -19,6 +19,7 @@ namespace ProcCore.Business.DB0
         {
             this.CustomerNeed = new HashSet<CustomerNeed>();
             this.ProductRecord = new HashSet<ProductRecord>();
+            this.GiftRecord = new HashSet<GiftRecord>();
         }
     
         public int born_id { get; set; }
@@ -61,5 +62,7 @@ namespace ProcCore.Business.DB0
         public virtual ICollection<CustomerNeed> CustomerNeed { get; set; }
     	[JsonIgnore]
         public virtual ICollection<ProductRecord> ProductRecord { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<GiftRecord> GiftRecord { get; set; }
     }
 }

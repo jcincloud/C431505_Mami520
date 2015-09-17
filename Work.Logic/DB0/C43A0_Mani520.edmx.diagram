@@ -52,6 +52,10 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.ProductRecord" Width="1.5" PointX="17.875" PointY="5.25" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ProductRecord_Customer" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ProductRecord_CustomerBorn" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.GiftRecord" Width="1.5" PointX="23.125" PointY="10.375" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_Activity" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_CustomerBorn" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

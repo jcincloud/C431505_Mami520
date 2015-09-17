@@ -170,6 +170,13 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
+                    bool check = db0.CustomerOfDietaryNeed.Any(x => x.customer_need_id == id);
+                    if (check)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_Delete_DetailExist;
+                        return Ok(r);
+                    }
                     item = new CustomerNeed() { customer_need_id = id };
                     db0.CustomerNeed.Attach(item);
                     db0.CustomerNeed.Remove(item);

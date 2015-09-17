@@ -513,7 +513,11 @@
         { id: 2, label: '午餐', className: 'label label-primary', code: 'straght' },
         { id: 3, label: '晚餐', className: 'label label-default', code: 'straght' }
     ];
-
+    export var ReceiveState = [
+        { id: 1, label: '未領取', className: 'label label-danger', code: 'store' },
+        { id: 2, label: '領取部分', className: 'label label-warning', code: 'straght' },
+        { id: 3, label: '已領完', className: 'label label-success', code: 'straght' }
+    ];
     export var MonthsData = [
         { id: 1, label: '1月' },
         { id: 2, label: '2月' },

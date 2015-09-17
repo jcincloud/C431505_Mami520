@@ -270,6 +270,9 @@ var GirdForm = React.createClass({
 		});	
 	},
 	closeRecord:function(){
+		if(!confirm('確定是否結案?')){
+			return;
+		}
 		jqPost(gb_approot + 'api/GetAction/closeRecord',{main_id:this.state.fieldData.product_record_id})
 		.done(function(data, textStatus, jqXHRdata) {
 			var fieldData = this.state.fieldData;

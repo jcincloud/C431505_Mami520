@@ -155,6 +155,13 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
+                    bool check = db0.ConstituteOfElement.Any(x => x.constitute_id == id);
+                    if (check)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_Delete_DetailExist;
+                        return Ok(r);
+                    }
                     item = new ConstituteFood() { constitute_id = id };
                     db0.ConstituteFood.Attach(item);
                     db0.ConstituteFood.Remove(item);

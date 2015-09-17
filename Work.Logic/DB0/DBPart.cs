@@ -251,6 +251,11 @@ namespace ProcCore.Business.DB0
     {
         public bool have_record { get; set; }//檢查生產紀錄有沒有產品銷售主檔
     }
+    public partial class m_GiftRecord
+    {
+        public string name { get; set; }
+        public string activity_name { get; set; }
+    }
     /// <summary>
     /// 分類選單用
     /// </summary>
@@ -357,6 +362,12 @@ namespace ProcCore.Business.DB0
     }
     public class q_Draft : q_DietaryNeed
     {
+    }
+    public class q_GiftRecord : QueryBase
+    {
+        public string name { get; set; }
+        public string activity_name { get; set; }
+        public int? receive_state { get; set; }
     }
     #endregion
 

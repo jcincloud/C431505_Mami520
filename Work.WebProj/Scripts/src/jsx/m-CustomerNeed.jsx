@@ -495,8 +495,8 @@ var GirdForm = React.createClass({
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
-							value={fieldData.tel_1}
-							onChange={this.changeFDValue.bind(this,'tel_1')}
+							value={fieldData.tel_2}
+							onChange={this.changeFDValue.bind(this,'tel_2')}
 							maxLength="15"
 							required
 							disabled />

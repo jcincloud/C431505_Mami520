@@ -155,6 +155,13 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
+                    bool check = db0.DietaryNeedOfElement.Any(x => x.dietary_need_id == id);
+                    if (check)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_Delete_DetailExist;
+                        return Ok(r);
+                    }
                     item = new DietaryNeed() { dietary_need_id = id };
                     db0.DietaryNeed.Attach(item);
                     db0.DietaryNeed.Remove(item);

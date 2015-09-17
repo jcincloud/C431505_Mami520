@@ -75,16 +75,16 @@ var GirdForm = React.createClass({
 		   	tosMessage(gb_title_from_invalid,'身分證字號格式錯誤!!',3);
 		   	return;
 		   }
-		   //檢查地址
-		   	if(
-				this.state.fieldData['tw_city_1'] == undefined || this.state.fieldData['tw_city_1'] == '' ||
-				this.state.fieldData['tw_country_1'] == undefined || this.state.fieldData['tw_country_1'] == '' ||
-				this.state.fieldData['tw_address_1'] == undefined || this.state.fieldData['tw_address_1'] == ''
-				){
+		   //檢查地址－先不驗證
+		 //   	if(
+			// 	this.state.fieldData['tw_city_1'] == undefined || this.state.fieldData['tw_city_1'] == '' ||
+			// 	this.state.fieldData['tw_country_1'] == undefined || this.state.fieldData['tw_country_1'] == '' ||
+			// 	this.state.fieldData['tw_address_1'] == undefined || this.state.fieldData['tw_address_1'] == ''
+			// 	){
 
-				tosMessage(gb_title_from_invalid,'送餐地址需填寫完整',3);
-				return;
-			}
+			// 	tosMessage(gb_title_from_invalid,'送餐地址需填寫完整',3);
+			// 	return;
+			// }
 
 
 		if(this.state.edit_type==1){
@@ -487,7 +487,7 @@ var GirdForm = React.createClass({
 					</div>
 
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">送餐地址</label>
+						<label className="col-xs-2 control-label">送餐地址</label>
 						<TwAddress ver={1}
 						onChange={this.changeFDValue}
 						setFDValue={this.setFDValue}

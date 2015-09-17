@@ -258,6 +258,7 @@
     <Compile Include="Controllers\Api\ElementFoodController.cs" />
     <Compile Include="Controllers\Api\ActivityController.cs" />
     <Compile Include="Controllers\Api\DraftController.cs" />
+    <Compile Include="Controllers\Api\GiftRecordController.cs" />
     <Compile Include="Controllers\Api\ProductRecordController.cs" />
     <Compile Include="Controllers\Api\ProductController.cs" />
     <Compile Include="Controllers\Api\RolesController.cs" />

@@ -15,6 +15,11 @@ namespace ProcCore.Business.DB0
     using Newtonsoft.Json;
     public partial class Activity : BaseEntityTable
     {
+        public Activity()
+        {
+            this.GiftRecord = new HashSet<GiftRecord>();
+        }
+    
         public int activity_id { get; set; }
         public string activity_name { get; set; }
         public System.DateTime start_date { get; set; }
@@ -30,5 +35,8 @@ namespace ProcCore.Business.DB0
         public Nullable<int> i_UpdateDeptID { get; set; }
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
+    
+    	[JsonIgnore]
+        public virtual ICollection<GiftRecord> GiftRecord { get; set; }
     }
 }

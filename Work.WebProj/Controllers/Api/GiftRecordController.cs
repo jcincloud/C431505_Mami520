@@ -11,44 +11,51 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class DailyMenuController : ajaxApi<DailyMenu, q_DailyMenu>
+    public class GiftRecordController : ajaxApi<GiftRecord, q_GiftRecord>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.DailyMenu.FindAsync(id);
-                r = new ResultInfo<DailyMenu>() { data = item };
+                item = await db0.GiftRecord.FindAsync(id);
+                r = new ResultInfo<GiftRecord>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_DailyMenu q)
+        public async Task<IHttpActionResult> Get([FromUri]q_GiftRecord q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.DailyMenu
-                    .OrderByDescending(x => new { x.day, x.meal_type }).AsQueryable();
+                var qr = db0.GiftRecord
+                    .OrderByDescending(x => x.gift_record_id).AsQueryable();
 
 
-                if (q.start_date != null && q.end_date != null)
+                if (q.name != null)
                 {
-                    DateTime end = ((DateTime)q.end_date).AddDays(1);
-                    qr = qr.Where(x => x.day >= q.start_date && x.day < end);
+                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.name));
                 }
 
-                if (q.meal_type != null)
+                if (q.activity_name != null)
                 {
-                    qr = qr.Where(x => x.meal_type == q.meal_type);
+                    qr = qr.Where(x => x.Activity.activity_name.Contains(q.activity_name));
                 }
 
-                var result = qr.Select(x => new m_DailyMenu()
+                if (q.receive_state != null)
                 {
-                    dail_menu_id = x.dail_menu_id,
-                    day = x.day,
-                    meal_type = x.meal_type
+                    qr = qr.Where(x => x.receive_state == q.receive_state);
+                }
+
+                var result = qr.Select(x => new m_GiftRecord()
+                {
+                    gift_record_id = x.gift_record_id,
+                    product_record_id = x.product_record_id,
+                    record_sn = x.record_sn,
+                    name = x.CustomerBorn.mom_name,
+                    activity_name = x.Activity.activity_name,
+                    receive_state=x.receive_state
                 });
 
 
@@ -56,7 +63,7 @@ namespace DotWeb.Api
                 int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
                 var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
 
-                return Ok<GridInfo<m_DailyMenu>>(new GridInfo<m_DailyMenu>()
+                return Ok<GridInfo<m_GiftRecord>>(new GridInfo<m_GiftRecord>()
                 {
                     rows = segment,
                     total = PageCount.TotalPage,
@@ -68,23 +75,22 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]DailyMenu md)
+        public async Task<IHttpActionResult> Put([FromBody]GiftRecord md)
         {
             ResultInfo r = new ResultInfo();
             try
             {
                 db0 = getDB0();
-                bool check = db0.DailyMenu.Any(x => x.day == md.day & x.meal_type == md.meal_type & x.dail_menu_id != md.dail_menu_id);
-                if (check)
-                {//不能有同日期同餐別的資料存在
-                    r.message = "已有同日期同餐別的資料存在!!";
-                    r.result = false;
-                    return Ok(r);
-                }
 
-                item = await db0.DailyMenu.FindAsync(md.dail_menu_id);
-                item.day = md.day;
-                item.meal_type = md.meal_type;
+                item = await db0.GiftRecord.FindAsync(md.gift_record_id);
+                item.product_record_id = md.product_record_id;
+                item.record_sn = md.record_sn;
+                item.customer_id = md.customer_id;
+                item.born_id = md.born_id;
+                item.activity_id = md.activity_id;
+                item.receive_state = md.receive_state;
+                item.memo = md.memo;
+
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
@@ -104,9 +110,9 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]DailyMenu md)
+        public async Task<IHttpActionResult> Post([FromBody]GiftRecord md)
         {
-            md.dail_menu_id = GetNewId(ProcCore.Business.CodeTable.DailyMenu);
+            md.gift_record_id = GetNewId(ProcCore.Business.CodeTable.GiftRecord);
             ResultInfo r = new ResultInfo();
             if (!ModelState.IsValid)
             {
@@ -119,24 +125,17 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
-                bool check = db0.DailyMenu.Any(x => x.day == md.day & x.meal_type == md.meal_type);
-                if (check)
-                {//不能有同日期同餐別的資料存在
-                    r.message = "已有同日期同餐別的資料存在!!";
-                    r.result = false;
-                    return Ok(r);
-                }
 
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
                 md.i_Lang = "zh-TW";
 
-                db0.DailyMenu.Add(md);
+                db0.GiftRecord.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.dail_menu_id;
+                r.id = md.gift_record_id;
                 return Ok(r);
                 #endregion
             }
@@ -160,16 +159,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    bool check = db0.DailyMenuOfConstitute.Any(x => x.dail_menu_id == id);
-                    if (check)
-                    {
-                        r.result = false;
-                        r.message = Resources.Res.Log_Err_Delete_DetailExist;
-                        return Ok(r);
-                    }
-                    item = new DailyMenu() { dail_menu_id = id };
-                    db0.DailyMenu.Attach(item);
-                    db0.DailyMenu.Remove(item);
+                    item = new GiftRecord() { gift_record_id = id };
+                    db0.GiftRecord.Attach(item);
+                    db0.GiftRecord.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();
