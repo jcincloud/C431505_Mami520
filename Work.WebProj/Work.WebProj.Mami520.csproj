@@ -749,6 +749,7 @@
     <Content Include="Views\Fake\Birth.cshtml" />
     <Content Include="Views\Fake\Birth2.cshtml" />
     <Content Include="Views\Fake\Sell2.cshtml" />
+    <Content Include="Views\Fake\Sell2_2.cshtml" />
     <Content Include="Views\Index\Index.cshtml" />
     <Content Include="Scripts\src\ts-controller\tmp\modalEditFuel.html" />
     <Content Include="Scripts\src\ts-controller\tmp\modalQueryEquipment.html" />
@@ -978,6 +979,21 @@
     <Content Include="Scripts\src\jsx\m-CustomerNeed.jsx" />
     <Content Include="Scripts\src\jsx\m-Draft.jsx" />
     <Content Include="Scripts\src\jsx\m-ProductRecord.jsx" />
+    <Content Include="Views\Fake\Birth_2.cshtml" />
+    <Content Include="Views\Fake\Birth2_2.cshtml" />
+    <Content Include="Views\Fake\Birth3_2.cshtml" />
+    <Content Include="Views\Fake\Check_2.cshtml" />
+    <Content Include="Views\Fake\Dishes2_2.cshtml" />
+    <Content Include="Views\Fake\Dishes3_2.cshtml" />
+    <Content Include="Views\Fake\Dishes4_2.cshtml" />
+    <Content Include="Views\Fake\Dishes_2.cshtml" />
+    <Content Include="Views\Fake\Gift2_2.cshtml" />
+    <Content Include="Views\Fake\Gift_2.cshtml" />
+    <Content Include="Views\Fake\Require2_2.cshtml" />
+    <Content Include="Views\Fake\Require_2.cshtml" />
+    <Content Include="Views\Fake\Schedule_2.cshtml" />
+    <Content Include="Views\Fake\Sell2_3.cshtml" />
+    <Content Include="Views\Fake\Sell_2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

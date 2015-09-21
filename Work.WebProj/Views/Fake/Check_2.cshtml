@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "結帳作業";
+    ViewBag.BodyClass = "ch8";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+<h3 class="title">@ViewBag.Title</h3>
+
+<h4 class="title">應收帳款主檔</h4>
+
+<form class="form-horizontal clearfix" role="form">
+	<div class="col-xs-12">
+		<div class="form-group">
+			<div class="col-xs-8">
+				<label class="col-xs-2 control-label">單據號碼</label>
+				<div class="col-xs-4">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<label class="col-xs-2 control-label">單據日期</label>
+				<div class="col-xs-4">
+					<input type="text" class="form-control" disabled />
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<label class="col-xs-6 control-label">來源銷售單號</label>
+				<div class="col-xs-6">
+					<input type="text" class="form-control" disabled />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-8">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">客戶編號</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+			<label class="col-xs-2 control-label">連絡電話1</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">客戶姓名</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+			<label class="col-xs-2 control-label">連絡電話2</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">預計應收</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+			<label class="col-xs-2 control-label">試算應收</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+	</div>
+</form>
+
+<hr class="condensed" />
+
+<h4 class="title">新增收款明細</h4>
+
+<form class="form-horizontal clearfix" role="form">
+	<div class="col-xs-8">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">收款日期</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" />
+			</div>
+			<label class="col-xs-2 control-label">收款餐別</label>
+			<div class="col-xs-4">
+				<select class="form-control">
+					<option value="">早餐</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">收款人員</label>
+			<div class="col-xs-4">
+				<select class="form-control">
+					<option value="">外送人員</option>
+				</select>
+			</div>
+			<label class="col-xs-2 control-label">收款項目</label>
+			<div class="col-xs-4">
+				<select class="form-control">
+					<option value="">訂金</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">收款單號</label>
+			<div class="col-xs-10">
+				<input type="text" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">本次實收</label>
+			<div class="col-xs-10">
+				<input type="text" class="form-control" />
+			</div>
+		</div>
+		<div class="form-action">
+			<p class="text-right">
+				<button class="btn-primary"><i class="fa-check"></i> 存檔確認</button>
+				<button><i class="fa-times"></i> 回列表</button>
+			</p>
+		</div>
+	</div>
+</form>
+
+<hr class="condensed" />
+
+<h4 class="title">
+	收款明細：
+	<span class="text-muted">實際已收 <strong class="text-danger">$30,000</strong></span>
+</h4>
+
+<table class="table-condensed">
+	<tr>
+		<th class="col-xs-2">收款日期</th>
+		<th class="col-xs-2 text-center">收款餐別</th>
+		<th class="col-xs-2 text-center">收款人員</th>
+		<th class="col-xs-2 text-center">收款項目</th>
+		<th class="col-xs-2">收款單號</th>
+		<th class="col-xs-2">本次實收</th>
+	</tr>
+	<tr>
+		<td>2015/00/00</td>
+		<td class="text-center">早餐</td>
+		<td class="text-center">外送人員</td>
+		<td class="text-center">訂金</td>
+		<td>A001</td>
+		<td>$1,000</td>
+	</tr>
+</table>

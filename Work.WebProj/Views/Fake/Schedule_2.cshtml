@@ -1,0 +1,652 @@
+﻿@{
+    ViewBag.Title = "用餐紀錄 管理";
+    ViewBag.BodyClass = "ch4";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@section CSS {
+	<style>
+		.meal {
+			width: 6em;
+			margin:0 auto;
+		}
+	</style>
+}
+
+<h3 class="title">@ViewBag.Title</h3>
+
+<h4 class="title">客戶基本資料</h4>
+
+<form class="form-horizontal clearfix" role="form">
+	<div class="col-xs-8">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">用餐編號</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+			<label class="col-xs-2 control-label">連絡電話1</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">姓名</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+			<label class="col-xs-2 control-label">連絡電話2</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">送餐地址</label>
+			<div class="col-xs-10">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">用餐週期<br />說明</label>
+			<div class="col-xs-10">
+				<textarea rows="2" class="form-control" disabled></textarea>
+			</div>
+		</div>
+	</div>
+</form>
+
+<hr class="condensed" />
+
+<h4 class="title">用餐排程</h4>
+
+<div class="alert alert-warning">
+	<p>已停 <strong>6</strong> 餐／已增 <strong>2</strong> 餐／應排 <strong>77</strong> 餐／已排 <strong>77</strong> 餐／已吃 <strong>8</strong> 餐／未吃 <strong>69</strong> 餐</p>
+	<p><strong style="color:#333;">黑色：正常</strong>／<strong class="text-danger">紅色：停餐</strong>／<strong class="text-success">綠色：增餐</strong></p>
+</div>
+
+<ul class="pager">
+	<li class="previous">
+		<a href="">← 前 3 個月</a>
+	</li>
+	<li class="next">
+		<a href="">後 3 個月 →</a>
+	</li>
+</ul>
+
+<hr class="condensed" />
+
+<div class="panel-group">
+	<div class="panel">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" href="#calendar1">
+					<i class="fa-plus"></i> 2015 年 8 月
+				</a>
+			</h4>
+		</div>
+		<div id="calendar1" class="panel-collapse collapse in">
+			<div class="panel-body">
+				<table class="table-condensed">
+					<tr>
+						<th class="text-center">日</th>
+						<th class="text-center">一</th>
+						<th class="text-center">二</th>
+						<th class="text-center">三</th>
+						<th class="text-center">四</th>
+						<th class="text-center">五</th>
+						<th class="text-center">六</th>
+					</tr>
+					<tr>
+						<td>
+							<small class="text-muted">1</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">2</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">3</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" disabled />
+										<span>早 (已吃)</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span class="text-danger">午 (停)</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span class="text-success">晚 (增)</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">4</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">5</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">6</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">7</small>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<small class="text-muted">1</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">2</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">3</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" disabled />
+										<span>早 (已吃)</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span class="text-danger">午 (停)</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span class="text-success">晚 (增)</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">4</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">5</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">6</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">7</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="panel">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" href="#calendar2">
+					<i class="fa-plus"></i> 2015 年 9 月
+				</a>
+			</h4>
+		</div>
+		<div id="calendar2" class="panel-collapse collapse in">
+			<div class="panel-body">
+				<table class="table-condensed">
+					<tr>
+						<th class="text-center">日</th>
+						<th class="text-center">一</th>
+						<th class="text-center">二</th>
+						<th class="text-center">三</th>
+						<th class="text-center">四</th>
+						<th class="text-center">五</th>
+						<th class="text-center">六</th>
+					</tr>
+					<tr>
+						<td>
+							<small class="text-muted">1</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">2</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">3</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" disabled />
+										<span>早 (已吃)</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span class="text-danger">午 (停)</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span class="text-success">晚 (增)</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">4</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">5</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">6</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+						<td>
+							<small class="text-muted">7</small>
+							<div class="meal">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>早</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>午</span>
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" />
+										<span>晚</span>
+									</label>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="clearfix">
+	<p class="pull-left"><strong>開始送餐後(含送餐當日) 請勿任意修改用餐排程，如有異動會留下紀錄!!</strong></p>
+	<p class="pull-right text-right">
+		<button class="btn-primary"><i class="fa-checck"></i> 存檔確認</button>
+		<button><i class="fa-times"></i> 回列表</button>
+	</p>
+</div>
+
+<hr class="condensed" />
+
+<h4 class="title">訂餐日期及餐數異動紀錄</h4>
+
+<div class="row">
+	<div class="col-xs-8">
+		<table class="table-condensed">
+			<tr>
+				<th class="col-xs-2"></th>
+				<th class="col-xs-3">送餐起日</th>
+				<th class="col-xs-3">送餐迄日</th>
+				<th class="col-xs-4">餐數</th>
+			</tr>
+			<tr>
+				<td class="text-right"><strong>原訂</strong></td>
+				<td>2015/00/00</td>
+				<td>2015/00/00</td>
+				<td>早 20／午 20／晚 20</td>
+			</tr>
+			<tr>
+				<td class="text-right"><strong>實訂</strong></td>
+				<td>2015/00/00</td>
+				<td>2015/00/00</td>
+				<td>早 20／午 20／晚 20</td>
+			</tr>
+			<tr>
+				<td class="text-right"><strong>實際</strong></td>
+				<td>2015/00/00</td>
+				<td>2015/00/00</td>
+				<td>早 20／午 20／晚 20</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<hr class="condensed" />
+
+<h4 class="title">用餐排程異動紀錄</h4>
+
+<div class="row">
+	<div class="col-xs-8">
+		<table class="table-condensed">
+			<tr>
+				<th class="col-xs-4">異動時間</th>
+				<th class="col-xs-3">用餐日期</th>
+				<th class="col-xs-1 text-center">餐別</th>
+				<th class="col-xs-2 text-center">停／增餐</th>
+				<th class="col-xs-2 text-center">操作人員</th>
+			</tr>
+			<tr>
+				<td>2015/00/00 00:00</td>
+				<td>2015/00/00</td>
+				<td class="text-center">早餐</td>
+				<td class="text-center">停餐</td>
+				<td class="text-center">XXX</td>
+			</tr>
+			<tr>
+				<td>2015/00/00 00:00</td>
+				<td>2015/00/00</td>
+				<td class="text-center">早餐</td>
+				<td class="text-center">停餐</td>
+				<td class="text-center">XXX</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
