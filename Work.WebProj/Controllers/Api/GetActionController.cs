@@ -160,7 +160,7 @@ namespace DotWeb.Api
 
                 var items = db0.CustomerBorn
                     .OrderBy(x => new { x.customer_id, x.meal_id })
-                    .Select(x => new { x.customer_id, x.born_id, x.Customer.customer_sn, x.meal_id, x.mom_name, x.born_frequency, x.is_close });
+                    .Select(x => new { x.customer_id, x.born_id, x.Customer.customer_sn, x.Customer.customer_name, x.meal_id, x.mom_name, x.born_frequency, x.is_close });
 
                 return Ok(items.ToList());
             }
@@ -257,6 +257,63 @@ namespace DotWeb.Api
                 r.result = false;
                 r.message = ex.Message;
                 return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
+        #region 禮品贈送紀錄-取得贈品活動list
+        public IHttpActionResult GetAllActivity()
+        {
+            db0 = getDB0();
+            try
+            {
+                var items = db0.Activity
+                    .OrderByDescending(x => x.sort)
+                    .Where(x => !x.i_Hide)
+                    .Select(x => new option() { val = x.activity_id, Lname = x.activity_name });
+
+                return Ok(items.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        public IHttpActionResult GetAllRecord(int? old_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                //一筆生產紀錄只能有一筆禮品贈送紀錄
+                var born_id = db0.GiftRecord.Select(x => x.born_id).AsQueryable();
+
+                var items = db0.ProductRecord
+                    .OrderByDescending(x => x.record_day)
+                    .Where(x => !born_id.Contains(x.born_id))
+                    .Select(x => new
+                    {
+                        x.product_record_id,
+                        x.record_sn,
+                        x.customer_id,
+                        x.born_id,
+                        x.Customer.customer_name,
+                        x.CustomerBorn.mom_name,
+                        x.is_close,
+                        x.CustomerBorn.born_frequency,
+                        x.record_day,
+                        x.CustomerBorn.tel_1,
+                        x.CustomerBorn.tel_2
+                    });
+
+                if (old_id != null)
+                {
+                    items = items.Where(x => x.product_record_id != old_id);//過濾目前已選擇的id
+                }
+
+                return Ok(items.ToList());
             }
             finally
             {

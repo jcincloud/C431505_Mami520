@@ -349,4 +349,10 @@
   <data name="ViewbagMenuName" xml:space="preserve">
     <value>功能選單</value>
   </data>
+  <data name="Log_Err_PRecord_Delete_GiftRecord" xml:space="preserve">
+    <value>此筆資料無法刪除!刪除產品資料銷售主檔前需先刪除對應的禮品贈送紀錄。</value>
+  </data>
+  <data name="Log_Err_Delete_Close" xml:space="preserve">
+    <value>此筆資料已結案!無法刪除!!</value>
+  </data>
 </root>

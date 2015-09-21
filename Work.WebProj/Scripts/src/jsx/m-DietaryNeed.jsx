@@ -239,6 +239,23 @@ var GirdForm = React.createClass({
 		}
 		this.setState({fieldData:obj});
 	},
+	onCorrespondChange:function(e){
+		var size=this.refs.SubFrom.state.grid_right_element.length;		
+		var obj = this.state.fieldData;
+		if(obj.is_correspond && e.target.value=='false'){//從"須對應"切換為"不須對應"
+			if(size>0){
+				alert("下方已有加入對應的元素!\n請先將下方對應元素刪除再修改「元素對應」．");
+				return;
+			}
+		}
+
+		if(e.target.value=='true'){
+			obj.is_correspond = true;
+		}else if(e.target.value=='false'){
+			obj.is_correspond = false;
+		}
+		this.setState({fieldData:obj});
+	},
 	render: function() {
 		var outHtml = null;
 
@@ -334,7 +351,7 @@ var GirdForm = React.createClass({
 			var fieldData = this.state.fieldData;
 			var map_out_html=null;
 			if(this.state.edit_type==2){//只在修改時顯示下方對應程式
-				map_out_html=(<GirdCofE main_id={fieldData.dietary_need_id}/>);
+				map_out_html=(<GirdCofE ref="SubFrom" main_id={fieldData.dietary_need_id} is_correspond={fieldData.is_correspond}/>);
 			}else{
 				map_out_html=(
 					<div className="col-xs-12">
@@ -363,6 +380,9 @@ var GirdForm = React.createClass({
 							maxLength="128"
 							required />
 						</div>
+					</div>
+
+					<div className="form-group">
 						<label className="col-xs-2 control-label text-danger">簡稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
@@ -372,6 +392,7 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
+						<small className="col-xs-4 help-inline">列印"每日菜單報表"時顯示使用之簡稱</small>
 					</div>
 
 					<div className="form-group">
@@ -383,7 +404,7 @@ var GirdForm = React.createClass({
 											name="is_correspond"
 											value={true}
 											checked={fieldData.is_correspond===true} 
-											onChange={this.changeFDValue.bind(this,'is_correspond')}
+											onChange={this.onCorrespondChange.bind(this)}
 									/>
 									<span>須對應</span>
 								</label>
@@ -394,12 +415,15 @@ var GirdForm = React.createClass({
 											name="is_correspond"
 											value={false}
 											checked={fieldData.is_correspond===false} 
-											onChange={this.changeFDValue.bind(this,'is_correspond')}
+											onChange={this.onCorrespondChange.bind(this)}
 											/>
 									<span>不須對應</span>
 								</label>
 							</div>
 						</div>
+					</div>
+
+					<div className="form-group">
 						<label className="col-xs-2 control-label">適用餐別</label>
 						<div className="col-xs-4">
 							<div className="checkbox-inline">
@@ -434,17 +458,7 @@ var GirdForm = React.createClass({
 							</div>
 						</div>
 					</div>
-
 					<div className="form-group">
-						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-2">
-							<input type="number" 
-							className="form-control"	
-							value={fieldData.sort}
-							onChange={this.changeFDValue.bind(this,'sort')}
-							 />
-						</div>
-						<small className="col-xs-2 help-inline">數字越大越前面</small>
 						<label className="col-xs-2 control-label">狀態</label>
 						<div className="col-xs-3">
 							<div className="radio-inline">
@@ -470,6 +484,17 @@ var GirdForm = React.createClass({
 								</label>
 							</div>
 						</div>
+					</div>
+					<div className="form-group">
+						<label className="col-xs-2 control-label">排序</label>
+						<div className="col-xs-2">
+							<input type="number" 
+							className="form-control"	
+							value={fieldData.sort}
+							onChange={this.changeFDValue.bind(this,'sort')}
+							 />
+						</div>
+						<small className="col-xs-2 help-inline">數字越大越前面</small>
 					</div>
 
 					<div className="form-group">
@@ -573,6 +598,10 @@ var GirdCofE = React.createClass({
 		this.queryLeftElement();			
 	},
 	addElement:function(element_id){
+			if(!this.props.is_correspond){
+				alert("「元素對應」設定為不須對應!不可加入對應!!");
+				return;
+			}
 			jqPost(gb_approot + 'api/GetAction/PostDietaryNeedOfElement',{dietary_need_id:this.props.main_id,element_id:element_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){

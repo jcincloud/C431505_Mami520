@@ -230,7 +230,7 @@ namespace ProcCore.Business.DB0
     }
     public partial class ProductRecord
     {
-        public string customer_sn { get; set; }
+        public string customer_name { get; set; }
         public int customer_type { get; set; }
         public string name { get; set; }
         public string meal_id { get; set; }
@@ -255,6 +255,14 @@ namespace ProcCore.Business.DB0
     {
         public string name { get; set; }
         public string activity_name { get; set; }
+    }
+    public partial class GiftRecord
+    {
+        public DateTime record_day { get; set; }
+        public string customer_name { get; set;}
+        public string name { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
     }
     /// <summary>
     /// 分類選單用

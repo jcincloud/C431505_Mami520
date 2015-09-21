@@ -247,7 +247,7 @@ var GirdForm = React.createClass({
 
 			//客戶編號改變下方帶入的資料要一起變更
 			fieldData.customer_type=data.getCustomer.customer_type;
-			fieldData.customer_sn=data.getCustomer.customer_sn;
+			fieldData.customer_name=data.getCustomer.customer_name;
 
 			fieldData.name=data.getBorn.mom_name;
 			fieldData.sno=data.getBorn.sno;
@@ -423,7 +423,7 @@ var GirdForm = React.createClass({
 									<tbody>
 										<tr>
 											<th className="col-xs-1 text-center">選擇</th>
-											<th className="col-xs-1">客戶編號</th>
+											<th className="col-xs-1">客戶姓名</th>
 											<th className="col-xs-1">用餐編號</th>
 											<th className="col-xs-1">媽媽姓名</th>
 											<th className="col-xs-1">第幾胎</th>
@@ -435,7 +435,7 @@ var GirdForm = React.createClass({
 												var born_out_html = 
 													<tr key={itemData.born_id}>
 														<td className="text-center"><input type="checkbox" onClick={this.selectCustomerBorn.bind(this,itemData.customer_id,itemData.born_id,itemData.meal_id)} /></td>
-														<td>{itemData.customer_sn}</td>
+														<td>{itemData.customer_name}</td>
 														<td>{itemData.meal_id}</td>
 														<td>{itemData.mom_name}</td>
 														<td>{itemData.born_frequency}</td>
@@ -504,8 +504,8 @@ var GirdForm = React.createClass({
 								<div className="input-group">
 									<input type="text" 							
 									className="form-control"	
-									value={fieldData.customer_sn}
-									onChange={this.changeFDValue.bind(this,'customer_sn')}
+									value={fieldData.customer_name}
+									onChange={this.changeFDValue.bind(this,'customer_name')}
 									maxLength="64"
 									disabled />
 									<span className="input-group-btn">
@@ -515,18 +515,15 @@ var GirdForm = React.createClass({
 									</span>
 								</div>
 							</div>
-							<label className="col-xs-2 control-label">客戶類別</label>
+							<label className="col-xs-2 control-label">媽媽姓名</label>
 							<div className="col-xs-4">
-								<select className="form-control" 
-								value={fieldData.customer_type}
-								disabled
-								onChange={this.changeFDValue.bind(this,'customer_type')}>
-								{
-									CommData.CustomerType.map(function(itemData,i) {
-										return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-									})
-								}
-								</select>
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.name}
+								onChange={this.changeFDValue.bind(this,'name')}
+								maxLength="64"
+								required 
+								disabled />
 							</div>
 						</div>
 
@@ -540,15 +537,18 @@ var GirdForm = React.createClass({
 								required
 								disabled />
 							</div>
-							<label className="col-xs-2 control-label">媽媽姓名</label>
+							<label className="col-xs-2 control-label">客戶類別</label>
 							<div className="col-xs-4">
-								<input type="text" 							
-								className="form-control"	
-								value={fieldData.name}
-								onChange={this.changeFDValue.bind(this,'name')}
-								maxLength="64"
-								required 
-								disabled />
+								<select className="form-control" 
+								value={fieldData.customer_type}
+								disabled
+								onChange={this.changeFDValue.bind(this,'customer_type')}>
+								{
+									CommData.CustomerType.map(function(itemData,i) {
+										return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+									})
+								}
+								</select>
 							</div>
 						</div>
 						<div className="form-group">
@@ -645,6 +645,8 @@ var GirdForm = React.createClass({
 						</span>
 					</div>
 				</h4>
+				{/* ---是否結案按鈕--- */}
+				
 			</div>
 			);
 		}else{

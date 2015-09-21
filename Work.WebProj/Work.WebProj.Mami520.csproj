@@ -978,6 +978,7 @@
     <Content Include="Scripts\src\jsx\m-CustomerNeed.jsx" />
     <Content Include="Scripts\src\jsx\m-Draft.jsx" />
     <Content Include="Scripts\src\jsx\m-ProductRecord.jsx" />
+    <Content Include="Scripts\src\jsx\m-GiftRecord.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

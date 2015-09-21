@@ -538,6 +538,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 此筆資料已結案!無法刪除!! 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_Delete_Close {
+            get {
+                return ResourceManager.GetString("Log_Err_Delete_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 此筆資料無法刪除!刪除主檔前需先刪除明細檔或其他參照檔。 的當地語系化字串。
         /// </summary>
         internal static string Log_Err_Delete_DetailExist {
@@ -651,6 +660,15 @@ namespace Resources {
         internal static string Log_Err_Password {
             get {
                 return ResourceManager.GetString("Log_Err_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 此筆資料無法刪除!刪除產品資料銷售主檔前需先刪除對應的禮品贈送紀錄。 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_PRecord_Delete_GiftRecord {
+            get {
+                return ResourceManager.GetString("Log_Err_PRecord_Delete_GiftRecord", resourceCulture);
             }
         }
         
