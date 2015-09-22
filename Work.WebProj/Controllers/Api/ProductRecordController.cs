@@ -21,7 +21,7 @@ namespace DotWeb.Api
                 var getCustomer = await db0.Customer.FindAsync(item.customer_id);
                 var getCustomerBorn = await db0.CustomerBorn.FindAsync(item.born_id);
                 item.customer_type = getCustomer.customer_type;
-                item.customer_sn = getCustomer.customer_sn;
+                item.customer_name = getCustomer.customer_name;
                 item.meal_id = getCustomerBorn.meal_id;
                 item.name = getCustomerBorn.mom_name;
                 item.sno = getCustomerBorn.sno;
@@ -191,6 +191,13 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
+                    var check_gift = db0.GiftRecord.Any(x => x.product_record_id == id);
+                    if (check_gift)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_PRecord_Delete_GiftRecord;
+                        return Ok(r);
+                    }
                     item = new ProductRecord() { product_record_id = id };
                     db0.ProductRecord.Attach(item);
                     db0.ProductRecord.Remove(item);

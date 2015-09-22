@@ -397,6 +397,7 @@ var GirdForm = React.createClass({
 								<h4 className="modal-title">請選擇用餐編號 { }</h4>
 							</div>
 							<div className="modal-body">
+							<div className="alert alert-warning"><p>此列表僅列出<strong className="text-danger">未結案且無客戶需求</strong>的客戶生產紀錄。</p></div>
 								<table>
 									<tbody>
 										<tr>
@@ -494,7 +495,7 @@ var GirdForm = React.createClass({
 						<label className="col-xs-2 control-label">連絡電話2</label>
 						<div className="col-xs-4">
 							<input type="text" 							
-							className="form-control"	
+							className="form-control"
 							value={fieldData.tel_2}
 							onChange={this.changeFDValue.bind(this,'tel_2')}
 							maxLength="15"

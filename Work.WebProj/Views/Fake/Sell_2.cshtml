@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "產品基本資料 管理";
+    ViewBag.BodyClass = "ch2 p1";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@section breadCrumb {
+    <li><a href=""><i class="fa-list-alt"></i> 銷售紀錄</a></li>
+}
+
+<h3 class="title">@ViewBag.Title</h3>
+
+<h4 class="title">產品基本資料編輯</h4>
+
+<form class="form-horizontal clearfix" role="form" action="~/Fake/Sell">
+	<div class="col-xs-9">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">產品分類</label>
+			<div class="col-xs-4">
+				<select class="form-control">
+					<option value="">試吃</option>
+					<option value="">月子餐</option>
+					<option value="">一般商品</option>
+					<option value="">折扣 &amp; 退款</option>
+				</select>
+			</div>
+			<small class="help-inline col-xs-6 text-danger">(必填)</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">產品名稱</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" />
+			</div>
+			<small class="help-inline col-xs-6 text-danger">(必填)</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">產品規格</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" />
+			</div>
+			<small class="help-inline col-xs-6 text-danger">(必填)</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">售價</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" />
+			</div>
+			<small class="help-inline col-xs-6 text-danger">(必填)</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">排序</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" />
+			</div>
+			<small class="help-inline col-xs-6">數字愈大愈前面，未填寫視為 0</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">備註</label>
+			<div class="col-xs-10">
+				<textarea class="form-control" row="3"></textarea>
+			</div>
+		</div>
+		<div class="form-action text-right">
+			<button class="btn-primary"><i class="fa-check"></i> 存檔確認</button>
+			<button><i class="fa-times"></i> 回列表</button>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,274 @@
+﻿@{
+    ViewBag.Title = "客戶生產紀錄";
+    ViewBag.BodyClass = "ch1 p2";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@section breadCrumb {
+    <li><a href=""><i class="fa-list-alt"></i> 生產紀錄</a></li>
+}
+
+<h3 class="title">@ViewBag.Title</h3>
+
+<h4 class="title">客戶生產紀錄 主檔</h4>
+
+<form class="form-horizontal" role="form" action="~/Fake/Birth2">
+	<div class="form-group">
+		<label class="col-xs-1 control-label">客戶編號</label>
+		<div class="col-xs-2">
+			<input type="text" class="form-control" disabled />
+		</div>
+		<label class="col-xs-1 control-label">客戶名稱</label>
+		<div class="col-xs-2">
+			<input type="text" class="form-control" disabled />
+		</div>
+		<label class="col-xs-1 control-label">客戶分類</label>
+		<div class="col-xs-2">
+			<input type="text" class="form-control" disabled />
+		</div>
+		<div class="col-xs-3 text-right">
+			<button><i class="fa-times"></i> 回列表</button>
+		</div>
+	</div>
+</form>
+
+<hr class="condensed" />
+
+<h4 class="title">
+	客戶生產紀錄 明細檔
+	<button class="btn-link text-success" data-toggle="modal" data-target="#addDetail"><i class="fa-plus-circle"></i> 新增生產紀錄</button>
+</h4>
+
+<table class="table-condensed">
+	<tr>
+		<th class="col-xs-1 text-center">編輯</th>
+		<th class="col-xs-2">生產日期</th>
+		<th class="col-xs-2">用餐編號</th>
+		<th class="col-xs-2">媽媽姓名</th>
+		<th class="col-xs-1">寶寶性別</th>
+		<th class="col-xs-2">生產方式</th>
+		<th class="col-xs-2">是否結案</th>
+	</tr>
+	<tr>
+		<td class="text-center">
+			<button class="btn-link btn-lg" data-toggle="modal" data-target="#addDetail"><i class="fa-pencil"></i></button>
+            <button class="btn-link btn-lg text-danger"><i class="fa-trash-o"></i></button>
+		</td>
+		<td>2015/00/00</td>
+		<td>A001</td>
+		<td>陳小姐</td>
+		<td><span class="label label-primary">男</span></td>
+		<td><span class="label label-info">自然產</span></td>
+		<td><span class="label label-danger">未結案</span></td>
+	</tr>
+	<tr>
+		<td class="text-center">
+			<button class="btn-link btn-lg" data-toggle="modal" data-target="#addDetail"><i class="fa-pencil"></i></button>
+            <button class="btn-link btn-lg text-danger"><i class="fa-trash-o"></i></button>
+		</td>
+		<td>2015/00/00</td>
+		<td>A001</td>
+		<td>陳小姐</td>
+		<td><span class="label label-warning">女</span></td>
+		<td><span class="label label-default">剖腹產</span></td>
+		<td><span class="label label-success">已結案</span></td>
+	</tr>
+</table>
+
+<div class="modal fade" id="addDetail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">客戶生產紀錄編輯</h4>
+            </div>
+            <div class="modal-body">
+            	<form class="form-horizontal">
+            		<div class="form-group">
+            			<label class="col-xs-2 control-label">用餐編號</label>
+            			<div class="col-xs-3">
+            				<div class="input-group">
+            					<input type="text" class="form-control" disabled />
+            					<span class="input-group-btn">
+            						<a class="btn" data-toggle="modal" href="#mealNo"><i class="fa-plus"></i></a>
+            					</span>
+            				</div>
+            			</div>
+            			<small class="help-inline col-xs-7"><span class="text-danger">(必填)</span> 請按 <i class="fa-plus"></i> 選取</small>
+            		</div>
+            		<div class="form-group">
+            			<label class="col-xs-2 control-label">媽媽姓名</label>
+            			<div class="col-xs-3">
+            				<input type="text" class="form-control" />
+            			</div>
+            			<small class="help-inline col-xs-7 text-danger">(必填)</small>
+            		</div>
+            		<div class="bg-warning">
+            			<div class="form-group">
+            				<label class="col-xs-2 control-label">聯絡電話1</label>
+            				<div class="col-xs-3">
+            					<input type="text" class="form-control" />
+            				</div>
+            				<label class="col-xs-2 control-label">聯絡電話2</label>
+            				<div class="col-xs-4">
+            					<input type="text" class="form-control" />
+            				</div>
+            			</div>
+            			<div class="form-group">
+            				<label class="col-xs-2 control-label">身分證號</label>
+            				<div class="col-xs-3">
+            					<input type="text" class="form-control" />
+            				</div>
+            				<label class="col-xs-2 control-label">生日</label>
+            				<div class="col-xs-4">
+            					<input type="text" class="form-control" />
+            				</div>
+            			</div>
+            			<div class="form-group">
+            				<label class="col-xs-2 control-label">送餐地址</label>
+            				<div class="col-xs-1">
+            					<input type="text" class="form-control" disabled>
+            				</div>
+            				<div class="col-xs-2">
+            					<select class="form-control">
+            						<option value="">縣市</option>
+            						<option value="">台北市</option>
+            					</select>
+            				</div>
+            				<div class="col-xs-2">
+            					<select class="form-control">
+            						<option value="">鄉鎮市區</option>
+            						<option value="">大安區</option>
+            					</select>
+            				</div>
+            				<div class="col-xs-4">
+            					<input type="text" class="form-control" />
+            				</div>
+            				<div class="col-xs-1 text-danger">(必填)</div>
+            			</div>
+            			<div class="form-group">
+            				<label class="col-xs-2 control-label">備用地址</label>
+            				<div class="col-xs-1">
+            					<input type="text" class="form-control" disabled>
+            				</div>
+            				<div class="col-xs-2">
+            					<select class="form-control">
+            						<option value="">縣市</option>
+            						<option value="">台北市</option>
+            					</select>
+            				</div>
+            				<div class="col-xs-2">
+            					<select class="form-control">
+            						<option value="">鄉鎮市區</option>
+            						<option value="">大安區</option>
+            					</select>
+            				</div>
+            				<div class="col-xs-4">
+            					<input type="text" class="form-control" />
+            				</div>
+            			</div>
+            		</div>
+            		<div class="form-group">
+            			<label class="col-xs-2 control-label">預產期</label>
+            			<div class="col-xs-3">
+            				<span class="has-feedback">
+		                        <input type="text" class="form-control datetimepicker" />
+		                        <i class="fa-calendar form-control-feedback"></i>
+		                    </span>
+            			</div>
+            			<label class="col-xs-2 control-label">生產日期</label>
+            			<div class="col-xs-4">
+            				<span class="has-feedback">
+		                        <input type="text" class="form-control datetimepicker" />
+		                        <i class="fa-calendar form-control-feedback"></i>
+		                    </span>
+            			</div>
+            			<div class="col-xs-1 text-danger">(必填)</div>
+            		</div>
+            		<div class="form-group">
+            			<label class="col-xs-2 control-label">產檢醫院</label>
+            			<div class="col-xs-3">
+            				<input type="text" class="form-control" />
+            			</div>
+            			<label class="col-xs-2 control-label">生產醫院</label>
+            			<div class="col-xs-4">
+            				<input type="text" class="form-control" />
+            			</div>
+            		</div>
+            		<div class="form-group">
+            			<label class="col-xs-2 control-label">第幾胎</label>
+            			<div class="col-xs-1">
+            				<input type="text" class="form-control" />
+            			</div>
+            			<label class="col-xs-2 control-label">生產方式</label>
+            			<div class="col-xs-2">
+            				<select name="" id="" class="form-control">
+            					<option value="">自然產</option>
+            					<option value="">剖腹產</option>
+            				</select>
+            			</div>
+            			<label class="col-xs-2 control-label">寶寶性別</label>
+            			<div class="col-xs-2">
+            				<select name="" id="" class="form-control">
+            					<option value="">未知</option>
+            					<option value="">男</option>
+            					<option value="">女</option>
+            				</select>
+            			</div>
+            		</div>
+            		<div class="form-group">
+						<label class="col-xs-2 control-label">備註</label>
+						<div class="col-xs-9">
+							<textarea class="form-control" row="3"></textarea>
+						</div>
+					</div>
+				</form>
+            </div>
+            <div class="modal-footer">
+            	<button type="button" class="btn-primary" data-dismiss="modal"><i class="fa-check"></i> 存檔確認</button>
+                <button type="button" data-dismiss="modal"><i class="fa-times"></i> 取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="mealNo">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">選擇用餐編號</h4>
+            </div>
+            <div class="modal-body">
+            	<div class="alert alert-warning">僅列出尚未使用的用餐編號</div>
+            	<table class="table-condensed">
+            		<tr>
+            			<th class="col-xs-2 text-center">選擇</th>
+            			<th class="col-xs-10">用餐編號</th>
+            		</tr>
+            		<tr>
+            			<td class="text-center">
+            				<label class="cbox">
+		                        <input type="checkbox">
+		                        <i class="fa-check"></i>
+		                    </label>
+            			</td>
+            			<td>A001</td>
+            		</tr>
+            		<tr>
+            			<td class="text-center">
+            				<label class="cbox">
+		                        <input type="checkbox">
+		                        <i class="fa-check"></i>
+		                    </label>
+            			</td>
+            			<td>A001</td>
+            		</tr>
+            	</table>
+            </div>
+            <div class="modal-footer">
+            	<button type="button" class="btn-primary" data-dismiss="modal"><i class="fa-check"></i> 存檔確認</button>
+                <button type="button" data-dismiss="modal"><i class="fa-times"></i> 取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

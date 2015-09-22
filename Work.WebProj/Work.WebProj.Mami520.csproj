@@ -979,9 +979,9 @@
     <Content Include="Scripts\src\jsx\m-CustomerNeed.jsx" />
     <Content Include="Scripts\src\jsx\m-Draft.jsx" />
     <Content Include="Scripts\src\jsx\m-ProductRecord.jsx" />
-    <Content Include="Views\Fake\Birth_2.cshtml" />
     <Content Include="Views\Fake\Birth2_2.cshtml" />
     <Content Include="Views\Fake\Birth3_2.cshtml" />
+    <Content Include="Views\Fake\Birth_2.cshtml" />
     <Content Include="Views\Fake\Check_2.cshtml" />
     <Content Include="Views\Fake\Dishes2_2.cshtml" />
     <Content Include="Views\Fake\Dishes3_2.cshtml" />

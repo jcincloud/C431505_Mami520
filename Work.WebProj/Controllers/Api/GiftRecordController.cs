@@ -18,6 +18,14 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 item = await db0.GiftRecord.FindAsync(id);
+                var getCustomer = await db0.Customer.FindAsync(item.customer_id);
+
+                item.record_day = item.ProductRecord.record_day;
+                item.customer_name = getCustomer.customer_name;
+                item.name = item.CustomerBorn.mom_name;
+                item.tel_1 = item.CustomerBorn.tel_1;
+                item.tel_2 = item.CustomerBorn.tel_2;
+
                 r = new ResultInfo<GiftRecord>() { data = item };
             }
 
@@ -55,7 +63,7 @@ namespace DotWeb.Api
                     record_sn = x.record_sn,
                     name = x.CustomerBorn.mom_name,
                     activity_name = x.Activity.activity_name,
-                    receive_state=x.receive_state
+                    receive_state = x.receive_state
                 });
 
 
