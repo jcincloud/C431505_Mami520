@@ -709,6 +709,7 @@
     <Content Include="Scripts\build\func\m-DietaryNeed.js" />
     <Content Include="Scripts\build\func\m-Draft.js" />
     <Content Include="Scripts\build\func\m-ElementFood.js" />
+    <Content Include="Scripts\build\func\m-GiftRecord.js" />
     <Content Include="Scripts\build\func\m-login.js" />
     <Content Include="Scripts\build\func\m-MealID.js" />
     <Content Include="Scripts\build\func\m-Product.js" />

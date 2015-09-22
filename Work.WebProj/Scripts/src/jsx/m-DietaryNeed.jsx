@@ -266,12 +266,8 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h3 className="title">
-					{this.props.Caption}
-				</h3>
+                <h3 className="title">{this.props.Caption}</h3>
+                <h4 className="title">{this.props.Caption} 列表</h4>
 				<form onSubmit={this.handleSearch}>
 					<div className="table-responsive">
 						<div className="table-header">
@@ -279,17 +275,17 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">需求元素名稱</label> { }
+										<label for="">名稱/簡稱</label>
 										<input type="text" className="form-control" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
-										placeholder="需求元素名稱..." /> { }
+										placeholder="名稱/簡稱..." /> { }
 
-										<label className="sr-only">狀態</label> { }
+										<label>狀態</label> { }
 										<select className="form-control" 
 												value={searchData.i_Hide}
 												onChange={this.onHideChange}>
-											<option value="">選擇狀態</option>
+											<option value="">全部</option>
 											<option value="true">隱藏</option>
 											<option value="false">顯示</option>
 
@@ -363,15 +359,13 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h4 className="title">{this.props.Caption}</h4>
-				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
+                <h3 className="title">{this.props.Caption}</h3>
+                <h4 className="title">{this.props.Caption} 編輯</h4>
+
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-				<div className="col-xs-8">
+				<div className="col-xs-9">
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">名稱</label>
+						<label className="col-xs-2 control-label">名稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -380,10 +374,11 @@ var GirdForm = React.createClass({
 							maxLength="128"
 							required />
 						</div>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
 
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">簡稱</label>
+						<label className="col-xs-2 control-label">簡稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -392,7 +387,7 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
-						<small className="col-xs-4 help-inline">列印"每日菜單報表"時顯示使用之簡稱</small>
+						<small className="col-xs-4 help-inline"><span className="text-danger">(必填)</span> 列印"每日菜單報表"時顯示</small>
 					</div>
 
 					<div className="form-group">
@@ -487,14 +482,14 @@ var GirdForm = React.createClass({
 					</div>
 					<div className="form-group">
 						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-2">
+						<div className="col-xs-4">
 							<input type="number" 
 							className="form-control"	
 							value={fieldData.sort}
 							onChange={this.changeFDValue.bind(this,'sort')}
 							 />
 						</div>
-						<small className="col-xs-2 help-inline">數字越大越前面</small>
+						<small className="col-xs-6 help-inline">數字越大越前面</small>
 					</div>
 
 					<div className="form-group">

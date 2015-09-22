@@ -27,14 +27,14 @@
                 <div id="menu">
                     <ul class="menu">
                         @* <li class="dropdown activity">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa-clock-o"></i>登入紀錄
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="title" tabindex="-1"><i class="fa-eye"></i> @Resources.Res.Info_Last_Login</li>
-                                <li tabindex="-1">@LastLoginDateTime.Value</li>
-                            </ul>
-                        </li> *@
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa-clock-o"></i>登入紀錄
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="title" tabindex="-1"><i class="fa-eye"></i> @Resources.Res.Info_Last_Login</li>
+                                    <li tabindex="-1">@LastLoginDateTime.Value</li>
+                                </ul>
+                            </li> *@
                         <li class="dropdown user">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa-user"></i>登入身分: @Cookie_UserName.Value
@@ -46,10 +46,10 @@
                                     </a>
                                 </li>
                                 @* <li>
-                                    <a href="~/Login/Logout" tabindex="-1">
-                                        <i class="fa-power-off"></i> @Resources.Res.Button_Logout
-                                    </a>
-                                </li> *@
+                                        <a href="~/Login/Logout" tabindex="-1">
+                                            <i class="fa-power-off"></i> @Resources.Res.Button_Logout
+                                        </a>
+                                    </li> *@
                             </ul>
                         </li>
                         <li class="dropdown activity">
@@ -63,6 +63,13 @@
         </div><!-- header //-->
         <div id="main">
             <div id="content">
+                <ul class="breadcrumb">
+                    <li><a href=""><i class="fa-home"></i> @Resources.Res.System_Name</a></li>
+                    @RenderSection("breadCrumb", required: false)
+                </ul>
+            <div id="page_content">
+
+            </div>
                 @RenderBody()
             </div><!-- content //-->
             <div id="sidebar">

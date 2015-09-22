@@ -484,10 +484,10 @@ var CommData;
         { id: 4, label: '暫停', className: 'label label-danger', code: 'pause' }
     ];
     CommData.CustomerType = [
-        { id: 1, label: '自有客戶', className: 'label label-default', code: 'store' },
+        { id: 1, label: '自有客戶', className: 'label label-primary', code: 'store' },
         { id: 2, label: '醫院', className: 'label label-success', code: 'straght' },
-        { id: 3, label: '月子中心', className: 'label label-success', code: 'straght' },
-        { id: 4, label: '轉介', className: 'label label-default', code: 'straght' }
+        { id: 3, label: '月子中心', className: 'label label-warning', code: 'straght' },
+        { id: 4, label: '轉介', className: 'label label-info', code: 'straght' }
     ];
     CommData.ProductType = [
         { id: 1, label: '試吃', className: 'label label-default', code: 'store' },
@@ -497,9 +497,9 @@ var CommData;
     ];
     CommData.BornType = [
         { id: 0, label: '未知', className: 'label label-warning', code: 'store' },
-        { id: 1, label: '自然產', className: 'label label-success', code: 'store' },
-        { id: 2, label: '剖腹產', className: 'label label-primary', code: 'straght' },
-        { id: 3, label: '小產', className: 'label label-default', code: 'straght' }
+        { id: 1, label: '自然產', className: 'label label-info', code: 'store' },
+        { id: 2, label: '剖腹產', className: 'label label-default', code: 'straght' },
+        { id: 3, label: '小產', className: 'label label-warning', code: 'straght' }
     ];
     CommData.SexType = [
         { id: null, label: '未知', className: 'label label-default', code: 'store' },

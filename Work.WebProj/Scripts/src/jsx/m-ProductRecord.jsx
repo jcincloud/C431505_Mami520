@@ -293,12 +293,8 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h3 className="title">
-					{this.props.Caption}
-				</h3>
+				<h3 className="title">{this.props.Caption}</h3>
+				<h4 className="title">{this.props.Caption} 列表</h4>
 				<form onSubmit={this.handleSearch}>
 					<div className="table-responsive">
 						<div className="table-header">
@@ -467,11 +463,8 @@ var GirdForm = React.createClass({
 			outHtml=(
 			<div>
 				{born_select_out_html}
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
 				<h3 className="title">{this.props.Caption}</h3>
-				<h4 className="title">產品銷售資料主檔</h4>
+				<h4 className="title">{this.props.Caption} 主檔</h4>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
 					<div className="col-xs-8">
 						<div className="form-group">
@@ -647,11 +640,199 @@ var GirdForm = React.createClass({
 				</h4>
 				{/* ---是否結案按鈕--- */}
 				
+				{/*---產品明細---*/}
+				<SubForm ref="SubForm" />
 			</div>
 			);
 		}else{
 			outHtml=(<span>No Page</span>);
 		}
+
+		return outHtml;
+	}
+});
+
+//明細檔
+var SubForm = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			gridData:{rows:[],page:1},
+			fieldData:{},
+			searchData:{title:null},
+			edit_type:0,
+			checkAll:false
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldData',
+			gdName:'searchData',
+			apiPathName:gb_approot+'api/Product'
+		};
+	},	
+	render: function() {
+		var outHtml = null;
+
+			outHtml =
+			(
+				<div>
+					<h4 className="title">新增產品明細</h4>
+					<div className="row">
+						<div className="item-box">
+							<div className="item-title">
+								<h5>產品明細基本資料</h5>
+							</div>
+							<div className="panel-body">
+								<form className="form-horizontal clearfix" role="form">
+									<div className="form-group">
+										<label className="col-xs-2 control-label">銷售日期</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" />
+										</div>
+										<label className="col-xs-1 control-label">分類</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" disabled />
+										</div>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">產品編號</label>
+										<div className="col-xs-2">
+											<div className="input-group">
+												<input type="text" className="form-control" />
+												<span className="input-group-btn">
+													<button type="button">...</button>
+												</span>
+											</div>
+										</div>
+										<label className="col-xs-1 control-label">名稱</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" disabled />
+										</div>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">售價</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" />
+										</div>
+										<label className="col-xs-1 control-label">規格</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" />
+										</div>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">數量</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" />
+										</div>
+										<label className="col-xs-1 control-label">小計</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" />
+										</div>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">備註</label>
+										<div className="col-xs-5">
+											<textarea rows="2" className="form-control"></textarea>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div className="item-title">
+								<h5>
+									用餐排程 &amp; 試算
+									<small className="text-muted">產品分類為 "月子餐" 才需填寫!!</small>
+								</h5>
+							</div>
+							<div className="panel-body">
+								<form className="form-horizontal clearfix" role="form">
+									<div className="form-group">
+										<label className="col-xs-2 control-label">預計送餐起日</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" />
+										</div>
+										<label className="col-xs-2 control-label">預計送餐迄日</label>
+										<div className="col-xs-2">
+											<input type="text" className="form-control" />
+										</div>
+										<div className="col-xs-2">
+											<label className="col-xs-8 control-label">預計天數</label>
+											<div className="col-xs-4">
+											<input type="text" className="form-control" disabled />
+										</div>
+										</div>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">預計餐數</label>
+										<div className="col-xs-1">
+											<div className="input-group">
+												<span className="input-group-addon" id="meal1-1">早</span>
+												<input type="text" className="form-control" aria-describedby="meal1-1" />
+											</div>
+										</div>
+										<div className="col-xs-1">
+											<div className="input-group">
+												<span className="input-group-addon" id="meal1-2">午</span>
+												<input type="text" className="form-control" aria-describedby="meal1-2" />
+											</div>
+										</div>
+										<div className="col-xs-1">
+											<div className="input-group">
+												<span className="input-group-addon" id="meal1-3">晚</span>
+												<input type="text" className="form-control" aria-describedby="meal1-3" />
+											</div>
+										</div>
+										<div className="col-xs-3">
+											<label className="col-xs-6 control-label">預計點數</label>
+											<div className="col-xs-6">
+												<input type="text" className="form-control" disabled />
+											</div>
+										</div>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">實際餐數</label>
+										<div className="col-xs-1">
+											<div className="input-group">
+												<span className="input-group-addon" id="meal2-1">早</span>
+												<input type="text" className="form-control" aria-describedby="meal2-1" disabled />
+											</div>
+										</div>
+										<div className="col-xs-1">
+											<div className="input-group">
+												<span className="input-group-addon" id="meal2-2">午</span>
+												<input type="text" className="form-control" aria-describedby="meal2-2" disabled />
+											</div>
+										</div>
+										<div className="col-xs-1">
+											<div className="input-group">
+												<span className="input-group-addon" id="meal2-3">晚</span>
+												<input type="text" className="form-control" aria-describedby="meal2-3" disabled />
+											</div>
+										</div>
+										<div className="col-xs-3">
+											<label className="col-xs-6 control-label">實際點數</label>
+											<div className="col-xs-6">
+												<input type="text" className="form-control" disabled />
+											</div>
+										</div>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
+										<div className="col-xs-8">
+											<textarea rows="2" className="form-control"></textarea>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div className="panel-footer">
+								<button className="btn-primary col-xs-offset-9">
+									<i className="fa-check"></i> 存檔確認
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			);
 
 		return outHtml;
 	}

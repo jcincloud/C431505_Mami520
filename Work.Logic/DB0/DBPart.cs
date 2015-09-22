@@ -259,7 +259,7 @@ namespace ProcCore.Business.DB0
     public partial class GiftRecord
     {
         public DateTime record_day { get; set; }
-        public string customer_name { get; set;}
+        public string customer_name { get; set; }
         public string name { get; set; }
         public string tel_1 { get; set; }
         public string tel_2 { get; set; }
@@ -303,6 +303,7 @@ namespace ProcCore.Business.DB0
     }
     public class q_Customer : QueryBase
     {
+        public string word { get; set; }
         public string customer_name { get; set; }
         public string city { get; set; }
         public string country { get; set; }

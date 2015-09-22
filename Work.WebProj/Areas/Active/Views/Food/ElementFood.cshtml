@@ -14,7 +14,7 @@
     <script src="~/Scripts/app/react-sortable-mixin.js"></script>
     <script src="~/Scripts/build/func/m-ElementFood.js"></script>
     <script>
-        var getRootDOM = document.getElementById('content');
+        var getRootDOM = document.getElementById('page_content');
         var rootParm = { MenuName: '@ViewBag.MenuName', Caption: '@ViewBag.Caption', IconClass: 'fa-list-alt' };
         var compObject = React.render(React.createElement(GirdForm, rootParm), getRootDOM);
     </script>

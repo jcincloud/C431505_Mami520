@@ -250,12 +250,8 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h3 className="title">
-					{this.props.Caption}
-				</h3>
+				<h3 className="title">{this.props.Caption}</h3>
+				<h4 className="title">{this.props.Caption} 列表</h4>
 				<form onSubmit={this.handleSearch}>
 					<div className="table-responsive">
 						<div className="table-header">
@@ -263,17 +259,17 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">產品名稱</label> { }
-										<input type="text" className="form-control" 
+										 <label for="">產品名稱</label>{ }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.product_name}
 										onChange={this.changeGDValue.bind(this,'product_name')}
 										placeholder="產品名稱..." /> { }
 
-										<label className="sr-only">產品分類</label> { }
-										<select className="form-control" 
+										<label>產品分類</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.product_type}
 												onChange={this.onProductTypeChange}>
-											<option value="">選擇分類</option>
+											<option value="">全部</option>
 										{
 											CommData.ProductType.map(function(itemData,i) {
 												return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
@@ -339,16 +335,14 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h4 className="title">{this.props.Caption}</h4>
-				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
+				<h3 className="title">{this.props.Caption}</h3>
+				<h4 className="title">{this.props.Caption} 編輯</h4>
+
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-				<div className="col-xs-8">
+				<div className="col-xs-9">
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">產品分類</label>
-						<div className="col-xs-10">
+						<label className="col-xs-2 control-label">產品分類</label>
+						<div className="col-xs-4">
 							<select className="form-control" 
 							value={fieldData.product_type}
 							onChange={this.changeFDValue.bind(this,'product_type')}>
@@ -359,10 +353,10 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
-
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">產品名稱</label>
+						<label className="col-xs-2 control-label">產品名稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -371,7 +365,10 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
-						<label className="col-xs-2 control-label text-danger">產品規格</label>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
+					</div>
+					<div className="form-group">
+						<label className="col-xs-2 control-label">產品規格</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -380,26 +377,29 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
-
-					<div className="form-group">
+					<div className="form-group"> 
 						<label className="col-xs-2 control-label">售價</label>
 						<div className="col-xs-4">
 							<input type="number" 
 							className="form-control"	
 							value={fieldData.price}
-							onChange={this.changeFDValue.bind(this,'price')}
-							 />
+							onChange={this.changeFDValue.bind(this,'price')} />
 						</div>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
+					</div>
+					<div className="form-group">
+
 						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-2">
+						<div className="col-xs-4">
 							<input type="number" 
 							className="form-control"	
 							value={fieldData.sort}
 							onChange={this.changeFDValue.bind(this,'sort')}
 							 />
 						</div>
-						<small className="col-xs-2 help-inline">數字越大越前面</small>
+						<small className="col-xs-6 help-inline">數字愈大愈前面，未填寫視為 0</small>
 					</div>
 
 					<div className="form-group">
@@ -412,14 +412,12 @@ var GirdForm = React.createClass({
 						</div>
 					</div>
 
-				</div>
-
-				<div className="col-xs-8">
-					<div className="form-action text-center">
+					<div className="form-action text-right">
 						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回列表</button>
 					</div>
 				</div>
+
 				</form>
 			</div>
 			);

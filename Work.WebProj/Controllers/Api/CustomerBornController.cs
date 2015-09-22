@@ -86,6 +86,24 @@ namespace DotWeb.Api
                 item.checkup_hospital = md.checkup_hospital;
                 item.born_hospital = md.born_hospital;
 
+                #region 修改生產紀錄時要將資料反寫回客戶資料
+                var getCustomer = await db0.Customer.FindAsync(md.customer_id);
+                if (getCustomer.customer_type == 1)//如果客戶分類為:自有客戶
+                {
+                    getCustomer.sno = md.sno;
+                    getCustomer.birthday = md.birthday;
+                    getCustomer.tel_1 = md.tel_1;
+                    getCustomer.tel_2 = md.tel_2;
+                    getCustomer.tw_zip_1 = md.tw_zip_1;
+                    getCustomer.tw_zip_2 = md.tw_zip_2;
+                    getCustomer.tw_city_1 = md.tw_city_1;
+                    getCustomer.tw_city_2 = md.tw_city_2;
+                    getCustomer.tw_country_1 = md.tw_country_1;
+                    getCustomer.tw_country_2 = md.tw_country_2;
+                    getCustomer.tw_address_1 = md.tw_address_1;
+                    getCustomer.tw_address_2 = md.tw_address_2;
+                }
+                #endregion
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
@@ -192,12 +210,13 @@ namespace DotWeb.Api
                 {
                     item = db0.CustomerBorn.Find(id);
 
-                    //刪除生產紀錄要自動釋放用餐編號
+                    //刪除生產紀錄要自動釋放用餐編號(如果未結案)
                     bool check_mealid = db0.MealID.Any(x => x.meal_id == item.meal_id);
                     if (check_mealid)
                     {
                         var getMealid = db0.MealID.Find(item.meal_id);
-                        getMealid.i_Use = false;
+                        if (!item.is_close & getMealid.i_Use)
+                            getMealid.i_Use = false;
                     }
 
                     db0.CustomerBorn.Attach(item);

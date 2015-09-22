@@ -179,7 +179,7 @@ var GridNavPage = React.createClass({
 			            <div className="form-group">
 			                <label>第</label>
 			                {' '}
-			                <input className="form-control" type="number" min="1" tabIndex="-1" value={this.props.NowPage}
+			                <input className="form-control text-center" type="number" min="1" tabIndex="-1" value={this.props.NowPage}
 			                       onChange={this.jumpPage} />
 			                {' '}
 			                <label>頁，共{this.props.TotalPage}頁</label>
@@ -801,7 +801,7 @@ var TwAddress = React.createClass({
 								}
 						</select>
 					</div>
-					<div className="col-xs-5">
+					<div className="col-xs-3">
 						<input 	type="text" 
 								className="form-control"	
 								value={this.props.address_value}
@@ -869,6 +869,56 @@ var TwAddress = React.createClass({
 			</div>
 			);
 
+			return outHtml;
+		}
+
+		if(this.props.ver==3){
+			outHtml=(				
+				<div>
+					<div className="col-xs-1">
+						<input 	type="text" 
+								className="form-control"	
+								value={this.props.zip_value}
+								onChange={this.valueChange.bind(this,this.props.zip_field)}
+								maxLength="5"
+								required disabled />
+					</div>
+					<div className="col-xs-2">
+						<select className="form-control" 
+								value={this.props.city_value}
+								onChange={this.onCityChange}
+								disabled={this.props.disabled}>
+								<option value=""></option>
+								{
+									CommData.twDistrict.map(function(itemData,i) {
+										return <option key={itemData.city} value={itemData.city}>{itemData.city}</option>;
+									})
+								}
+						</select>
+					</div>
+					<div className="col-xs-2">
+						<select className="form-control" 
+								value={this.props.country_value}
+								onChange={this.onCountryChange}
+								disabled={this.props.disabled}>
+								<option value=""></option>
+								{
+									this.state.country_list.map(function(itemData,i) {
+										return <option key={itemData.county} value={itemData.county}>{itemData.county}</option>;
+									})
+								}
+						</select>
+					</div>
+					<div className="col-xs-4">
+						<input 	type="text" 
+								className="form-control"	
+								value={this.props.address_value}
+								onChange={this.valueChange.bind(this,this.props.address_field)}
+								maxLength="128"
+								disabled={this.props.disabled} />
+					</div>
+				</div>
+			);
 			return outHtml;
 		}
 	}
