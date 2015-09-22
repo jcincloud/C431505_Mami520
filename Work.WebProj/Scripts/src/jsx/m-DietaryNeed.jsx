@@ -240,12 +240,15 @@ var GirdForm = React.createClass({
 		this.setState({fieldData:obj});
 	},
 	onCorrespondChange:function(e){
-		var size=this.refs.SubFrom.state.grid_right_element.length;		
 		var obj = this.state.fieldData;
-		if(obj.is_correspond && e.target.value=='false'){//從"須對應"切換為"不須對應"
-			if(size>0){
-				alert("下方已有加入對應的元素!\n請先將下方對應元素刪除再修改「元素對應」．");
-				return;
+		if(this.state.edit_type==2){//修改時才判斷
+			var size=this.refs.SubFrom.state.grid_right_element.length;		
+
+			if(obj.is_correspond && e.target.value=='false'){//從"須對應"切換為"不須對應"
+				if(size>0){
+					alert("下方已有加入對應的元素!\n請先將下方對應元素刪除再修改「元素對應」．");
+					return;
+				}
 			}
 		}
 

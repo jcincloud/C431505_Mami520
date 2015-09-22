@@ -642,25 +642,8 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h3 className="title clearfix">
-					<span className="pull-left">{this.props.Caption}</span>
-					{/*<div className="form-inline pull-left col-xs-offset-1">
-						<label><small>選擇語系：</small></label>
-						<select className="form-control" 
-							value={searchData.i_Lang}
-							onChange={this.changeLangVal.bind(this)}
-						>
-							{
-								CommData.LangData.map(function(itemData,i) {
-									return <option key={itemData.val} value={itemData.val}>{itemData.label}</option>;
-								})
-							}
-						</select>
-					</div>*/}
-				</h3>
+                <h3 className="title">{this.props.Caption}</h3>
+                <h4 className="title">{this.props.Caption} 列表</h4>
 				<div className="alert alert-warning clear" role="alert">
 					<p>點選 <i className="fa-bars"></i> 並拖曳，可修改排列順序。</p>
 				</div>

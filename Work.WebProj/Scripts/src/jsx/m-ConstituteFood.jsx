@@ -254,12 +254,8 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h3 className="title">
-					{this.props.Caption}
-				</h3>
+                <h3 className="title">{this.props.Caption}</h3>
+                <h4 className="title">{this.props.Caption} 列表</h4>
 				<form onSubmit={this.handleSearch}>
 					<div className="table-responsive">
 						<div className="table-header">
@@ -364,10 +360,8 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className={this.props.IconClass}></i> {this.props.MenuName}</li>
-				</ul>
-				<h4 className="title">{this.props.Caption}</h4>
+                <h3 className="title">{this.props.Caption}</h3>
+                <h4 className="title">{this.props.Caption} 編輯</h4>
 				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
 				<div className="col-xs-2"></div>
