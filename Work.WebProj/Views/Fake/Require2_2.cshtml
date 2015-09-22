@@ -9,4 +9,97 @@
 
 <h3 class="title">@ViewBag.Title</h3>
 
-<h4 class="title">By Ajoe</h4>
+<h4 class="title">客戶需求編輯</h4>
+
+<form class="form-horizontal clearfix" role="form" action="~/Fake/Sell2_3">
+	<div class="col-xs-9">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">用餐編號</label>
+			<div class="col-xs-3">
+				<div class="input-group">
+					<input type="text" class="form-control" disabled />
+					<span class="input-group-btn">
+					<a class="btn" data-toggle="modal" href="#addClient"><i class="fa-plus"></i></a>
+					</span>
+				</div>
+			</div>
+			<small class="help-inline col-xs-6"><span class="text-danger">(必填)</span> 請按 <i class="fa-plus"></i> 選取</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">媽媽姓名</label>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="bg-warning">
+			<div class="form-group">
+				<label class="col-xs-2 control-label">連絡電話1</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<label class="col-xs-2 control-label">連絡電話2</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">身分證號</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<label class="col-xs-2 control-label">生日</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">送餐地址</label>
+				<div class="col-xs-1">
+					<input type="text" class="form-control" disabled>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">縣市</option>
+						<option value="">台北市</option>
+					</select>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">鄉鎮市區</option>
+						<option value="">大安區</option>
+					</select>
+				</div>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<small class="help-inline col-xs-2 text-danger">(必填)</small>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">備用地址</label>
+				<div class="col-xs-1">
+					<input type="text" class="form-control" disabled>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">縣市</option>
+						<option value="">台北市</option>
+					</select>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">鄉鎮市區</option>
+						<option value="">大安區</option>
+					</select>
+				</div>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<small class="help-inline col-xs-2 text-danger">(必填)</small>
+			</div>
+		</div>
+		<div class="form-action text-right">
+			<button class="btn-primary"><i class="fa-check"></i> 存檔，下一步</button>
+			<button><i class="fa-times"></i> 回列表</button>
+		</div>
+	</div>
+</form>
