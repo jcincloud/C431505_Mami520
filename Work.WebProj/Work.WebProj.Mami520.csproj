@@ -751,6 +751,8 @@
     <Content Include="Views\Fake\Birth2.cshtml" />
     <Content Include="Views\Fake\Sell2.cshtml" />
     <Content Include="Views\Fake\Sell2_2.cshtml" />
+    <Content Include="Views\Fake\Tel.cshtml" />
+    <Content Include="Views\Fake\Tel5_2.cshtml" />
     <Content Include="Views\Index\Index.cshtml" />
     <Content Include="Scripts\src\ts-controller\tmp\modalEditFuel.html" />
     <Content Include="Scripts\src\ts-controller\tmp\modalQueryEquipment.html" />
@@ -962,7 +964,6 @@
     <Content Include="Views\Fake\Report3.cshtml" />
     <Content Include="Views\Fake\Require2.cshtml" />
     <Content Include="Views\Fake\Schedule.cshtml" />
-    <Content Include="Views\Fake\Tel.cshtml" />
     <Content Include="Views\Fake\Tel2.cshtml" />
     <Content Include="Views\Fake\Tel3.cshtml" />
     <Content Include="Views\Fake\Tel4.cshtml" />
@@ -995,6 +996,9 @@
     <Content Include="Views\Fake\Schedule_2.cshtml" />
     <Content Include="Views\Fake\Sell2_3.cshtml" />
     <Content Include="Views\Fake\Sell_2.cshtml" />
+    <Content Include="Views\Fake\Require2_3.cshtml" />
+    <Content Include="Views\Fake\Tel_2.cshtml" />
+    <Content Include="Views\Fake\Tel_3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

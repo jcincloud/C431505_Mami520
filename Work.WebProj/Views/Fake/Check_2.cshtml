@@ -9,39 +9,29 @@
 <h4 class="title">應收帳款主檔</h4>
 
 <form class="form-horizontal clearfix" role="form">
-	<div class="col-xs-12">
+	<div class="col-xs-9">
 		<div class="form-group">
-			<div class="col-xs-8">
-				<label class="col-xs-2 control-label">單據號碼</label>
-				<div class="col-xs-4">
-					<input type="text" class="form-control" disabled />
-				</div>
-				<label class="col-xs-2 control-label">單據日期</label>
-				<div class="col-xs-4">
-					<input type="text" class="form-control" disabled />
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<label class="col-xs-6 control-label">來源銷售單號</label>
-				<div class="col-xs-6">
-					<input type="text" class="form-control" disabled />
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-8">
-		<div class="form-group">
-			<label class="col-xs-2 control-label">客戶編號</label>
+			<label class="col-xs-2 control-label">單據號碼</label>
 			<div class="col-xs-4">
 				<input type="text" class="form-control" disabled />
 			</div>
-			<label class="col-xs-2 control-label">連絡電話1</label>
+			<label class="col-xs-2 control-label">單據日期</label>
 			<div class="col-xs-4">
 				<input type="text" class="form-control" disabled />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-xs-2 control-label">客戶姓名</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+			<label class="col-xs-2 control-label">來源銷售單號</label>
+			<div class="col-xs-4">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">連絡電話1</label>
 			<div class="col-xs-4">
 				<input type="text" class="form-control" disabled />
 			</div>
@@ -68,12 +58,17 @@
 <h4 class="title">新增收款明細</h4>
 
 <form class="form-horizontal clearfix" role="form">
-	<div class="col-xs-8">
+	<div class="col-xs-9">
 		<div class="form-group">
 			<label class="col-xs-2 control-label">收款日期</label>
 			<div class="col-xs-4">
-				<input type="text" class="form-control" />
+				<span class="has-feedback">
+					<input type="text" class="form-control datetimepicker" />
+					<i class="fa-calendar form-control-feedback"></i>
+				</span>
 			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-xs-2 control-label">收款餐別</label>
 			<div class="col-xs-4">
 				<select class="form-control">
@@ -88,6 +83,8 @@
 					<option value="">外送人員</option>
 				</select>
 			</div>
+		</div>
+		<div class="form-group">
 			<label class="col-xs-2 control-label">收款項目</label>
 			<div class="col-xs-4">
 				<select class="form-control">
@@ -97,13 +94,13 @@
 		</div>
 		<div class="form-group">
 			<label class="col-xs-2 control-label">收款單號</label>
-			<div class="col-xs-10">
+			<div class="col-xs-4">
 				<input type="text" class="form-control" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-xs-2 control-label">本次實收</label>
-			<div class="col-xs-10">
+			<div class="col-xs-4">
 				<input type="text" class="form-control" />
 			</div>
 		</div>
@@ -123,21 +120,25 @@
 	<span class="text-muted">實際已收 <strong class="text-danger">$30,000</strong></span>
 </h4>
 
-<table class="table-condensed">
-	<tr>
-		<th class="col-xs-2">收款日期</th>
-		<th class="col-xs-2 text-center">收款餐別</th>
-		<th class="col-xs-2 text-center">收款人員</th>
-		<th class="col-xs-2 text-center">收款項目</th>
-		<th class="col-xs-2">收款單號</th>
-		<th class="col-xs-2">本次實收</th>
-	</tr>
-	<tr>
-		<td>2015/00/00</td>
-		<td class="text-center">早餐</td>
-		<td class="text-center">外送人員</td>
-		<td class="text-center">訂金</td>
-		<td>A001</td>
-		<td>$1,000</td>
-	</tr>
-</table>
+<div class="row">
+	<div class="col-xs-9">
+		<table class="table-condensed">
+			<tr>
+				<th class="col-xs-2">收款日期</th>
+				<th class="col-xs-2">收款餐別</th>
+				<th class="col-xs-2">收款人員</th>
+				<th class="col-xs-2">收款項目</th>
+				<th class="col-xs-2">收款單號</th>
+				<th class="col-xs-2">本次實收</th>
+			</tr>
+			<tr>
+				<td>2015/00/00</td>
+				<td>早餐</td>
+				<td>外送人員</td>
+				<td>訂金</td>
+				<td>A001</td>
+				<td>$1,000</td>
+			</tr>
+		</table>
+	</div>
+</div>

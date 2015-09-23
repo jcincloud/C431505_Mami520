@@ -9,4 +9,103 @@
 
 <h3 class="title">@ViewBag.Title</h3>
 
-<h4 class="title">By Ajoe</h4>
+<h4 class="title">禮品贈送紀錄列表</h4>
+
+<div class="table-responsive">
+
+    <div class="table-header">
+        <div class="table-filter">
+            <div class="form-inline">
+            	<div class="form-group">
+                    <label for="">銷售單號/媽媽姓名/身分證號/電話</label>
+                    <input type="text" class="form-control input-sm" placeholder="請擇一填寫" />
+                </div>
+                <div class="form-group">
+                    <label for="">是否領取</label>
+                    <select class="form-control input-sm">
+                        <option value="">全部</option>
+                        <option value="">已領取</option>
+                        <option value="">未領取</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn-primary btn-sm"><i class="fa-search"></i> 搜尋</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table-condensed">
+        <thead>
+            <tr>
+                <th class="col-xs-1 text-center">
+                    <label class="cbox">
+                        <input type="checkbox">
+                        <i class="fa-check"></i>
+                    </label>
+                </th>
+                <th class="col-xs-1 text-center">修改</th>
+                <th class="col-xs-2">銷售單號</th>
+                <th class="col-xs-3">媽媽姓名</th>
+                <th class="col-xs-2">身分證號</th>
+                <th class="col-xs-2">電話1</th>
+                <th class="col-xs-1">是否領取</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <label class="cbox">
+                        <input type="checkbox">
+                        <i class="fa-check"></i>
+                    </label>
+                </td>
+                <td class="text-center">
+                    <a href="~/Fake/Gift2_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>XXX</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td><span class="label label-success">已領取</span></td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <label class="cbox">
+                        <input type="checkbox">
+                        <i class="fa-check"></i>
+                    </label>
+                </td>
+                <td class="text-center">
+                    <a href="~/Fake/Gift2_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>XXX</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td><span class="label label-danger">已領取</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="table-footer">
+        <div class="pull-left">
+            <a href="~/Fake/Gift2_2"><button class="btn-link text-success"><i class="fa-plus-circle"></i> 新增</button></a>
+            <button class="btn-link text-danger"><i class="fa-trash-o"></i> 刪除</button>
+        </div>
+        <small class="pull-right">第1-3筆，共3筆</small>
+        <ul class="pager">
+            <li class="disabled"><a href="" title="第一頁"><i class="fa-angle-double-left"></i></a></li>
+            <li class="disabled"><a href="" title="上一頁"><i class="fa-angle-left"></i></a></li>
+            <li class="form-inline">
+                <div class="form-group">
+                    <label for="">第</label>
+                    <input type="text" class="form-control text-center" value="1" style="width:50px;">
+                    <label for="">頁，共3頁</label>
+                </div>
+            </li>
+            <li><a href="" title="下一頁"><i class="fa-angle-right"></i></a></li>
+            <li><a href="" title="最後一頁"><i class="fa-angle-double-right"></i></a></li>
+        </ul>
+    </div>
+</div><!-- 後台常用列表 //-->

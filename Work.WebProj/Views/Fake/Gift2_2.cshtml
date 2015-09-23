@@ -9,4 +9,241 @@
 
 <h3 class="title">@ViewBag.Title</h3>
 
-<h4 class="title">By Ajoe</h4>
+<h4 class="title">禮品贈送紀錄編輯</h4>
+
+<form class="form-horizontal clearfix" role="form" action="~/Fake/Gift2">
+	<div class="col-xs-9">
+		<div class="form-group">
+			<label class="col-xs-2 control-label">銷售單號</label>
+			<div class="col-xs-3">
+				<div class="input-group">
+					<input type="text" class="form-control" disabled />
+					<span class="input-group-btn">
+					<a class="btn" data-toggle="modal" href="#addNumber"><i class="fa-plus"></i></a>
+					</span>
+				</div>
+			</div>
+			<small class="help-inline col-xs-6"><span class="text-danger">(必填)</span> 請按 <i class="fa-plus"></i> 選取</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">訂單日期</label>
+			<div class="col-xs-3">
+				<span class="has-feedback">
+		            <input type="text" class="form-control datetimepicker" disabled />
+		            <i class="fa-calendar form-control-feedback"></i>
+		        </span>
+			</div>
+			<label class="col-xs-2 control-label">訂單金額</label>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">客戶名稱</label>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" disabled />
+			</div>
+			<label class="col-xs-2 control-label">媽媽姓名</label>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" disabled />
+			</div>
+		</div>
+		<div class="bg-warning">
+			<div class="form-group">
+				<label class="col-xs-2 control-label">連絡電話1</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<label class="col-xs-2 control-label">連絡電話2</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">身分證號</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<label class="col-xs-2 control-label">生日</label>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">送餐地址</label>
+				<div class="col-xs-1">
+					<input type="text" class="form-control" disabled>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">縣市</option>
+						<option value="">台北市</option>
+					</select>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">鄉鎮市區</option>
+						<option value="">大安區</option>
+					</select>
+				</div>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+				<small class="help-inline col-xs-2 text-danger">(必填)</small>
+			</div>
+			<div class="form-group">
+				<label class="col-xs-2 control-label">備用地址</label>
+				<div class="col-xs-1">
+					<input type="text" class="form-control" disabled>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">縣市</option>
+						<option value="">台北市</option>
+					</select>
+				</div>
+				<div class="col-xs-2">
+					<select class="form-control" disabled>
+						<option value="">鄉鎮市區</option>
+						<option value="">大安區</option>
+					</select>
+				</div>
+				<div class="col-xs-3">
+					<input type="text" class="form-control" disabled />
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">參與活動</label>
+			<div class="col-xs-3">
+				<select class="form-control">
+					<option value="">AAA</option>
+				</select>
+			</div>
+			<small class="help-inline col-xs-1 text-danger">(必填)</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">領取狀態</label>
+			<div class="col-xs-4">
+				<div class="radio-inline">
+					<label>
+						<input type="radio" name="radio-test2" checked>
+						<span>未領取</span>
+					</label>
+				</div>
+				<div class="radio-inline">
+					<label>
+						<input type="radio" name="radio-test2">
+						<span>領部分</span>
+					</label>
+				</div>
+				<div class="radio-inline">
+					<label>
+						<input type="radio" name="radio-test2">
+						<span>已領完</span>
+					</label>
+				</div>
+			</div>
+			<small class="help-inline col-xs-1 text-danger">(必填)</small>
+		</div>
+		<div class="form-group">
+			<label class="col-xs-2 control-label">備註</label>
+			<div class="col-xs-8">
+				<textarea class="form-control" row="3"></textarea>
+			</div>
+		</div>
+		<div class="form-action text-right">
+			<button class="btn-primary"><i class="fa-check"></i> 存檔確認</button>
+			<button><i class="fa-times"></i> 回列表</button>
+		</div>
+	</div>
+</form>
+
+<div class="modal fade" id="addNumber">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">選擇銷售單號</h4>
+            </div>
+            <div class="modal-body">
+            	<div class="table-header">
+			        <div class="table-filter">
+			            <div class="form-inline">
+			                <div class="form-group">
+			                    <label for="">銷售單號/客戶名稱/媽媽姓名/身分證號</label>
+			                    <input type="text" class="form-control input-sm" placeholder="請擇一填寫" />
+			                </div>
+			                <div class="form-group">
+			                    <label for="">是否結案</label>
+			                    <select class="form-control input-sm">
+			                        <option value="">全部</option>
+			                        <option value="">已結案</option>
+			                        <option value="">未結案</option>
+			                    </select>
+			                </div>
+			                <div class="form-group">
+			                    <label for="">訂單日期</label>
+			                    <span class="has-feedback">
+			                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+			                        <i class="fa-calendar form-control-feedback"></i>
+			                    </span>
+			                    <label for="">~</label>
+			                    <span class="has-feedback">
+			                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+			                        <i class="fa-calendar form-control-feedback"></i>
+			                    </span>
+			                </div>
+			                <div class="form-group">
+			                    <button class="btn-primary btn-sm"><i class="fa-search"></i> 搜尋</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+            	<table class="table-condensed">
+            		<tr>
+            			<th class="col-xs-1 text-center">選擇</th>
+            			<th class="col-xs-2">銷售單號</th>
+            			<th class="col-xs-2">訂單日期</th>
+            			<th class="col-xs-2">客戶名稱</th>
+            			<th class="col-xs-2">媽媽姓名</th>
+            			<th class="col-xs-2">身分證號</th>
+            			<th class="col-xs-1">結案?</th>
+            		</tr>
+            		<tr>
+            			<td class="text-center">
+            				<label class="cbox">
+		                        <input type="checkbox">
+		                        <i class="fa-check"></i>
+		                    </label>
+            			</td>
+            			<td>XXX</td>
+            			<td>2015/11/11</td>
+            			<td>宏其醫院</td>
+            			<td>陳小姐</td>
+            			<td>A123456789</td>
+            			<td><span class="label label-danger">未結案</span></td>
+            		</tr>
+            		<tr>
+            			<td class="text-center">
+            				<label class="cbox">
+		                        <input type="checkbox">
+		                        <i class="fa-check"></i>
+		                    </label>
+            			</td>
+            			<td>XXX</td>
+            			<td>2015/11/11</td>
+            			<td>張小姐</td>
+            			<td>張小姐</td>
+            			<td>A123456789</td>
+            			<td><span class="label label-success">已結案</span></td>
+            		</tr>
+            	</table>
+            </div>
+            <div class="modal-footer">
+            	<button type="button" class="btn-primary" data-dismiss="modal"><i class="fa-check"></i> 存檔確認</button>
+                <button type="button" data-dismiss="modal"><i class="fa-times"></i> 取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

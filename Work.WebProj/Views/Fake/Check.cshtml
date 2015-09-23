@@ -6,138 +6,88 @@
 
 <h3 class="title">@ViewBag.Title</h3>
 
-<h4 class="title">應收帳款主檔</h4>
+<h4 class="title">結帳作業列表</h4>
 
-<form class="form-horizontal clearfix" role="form">
-	<div class="col-xs-12">
-		<div class="form-group">
-			<div class="col-xs-8">
-				<label class="col-xs-2 control-label">單據號碼</label>
-				<div class="col-xs-4">
-					<input type="text" class="form-control" disabled />
-				</div>
-				<label class="col-xs-2 control-label">單據日期</label>
-				<div class="col-xs-4">
-					<input type="text" class="form-control" disabled />
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<label class="col-xs-6 control-label">來源銷售單號</label>
-				<div class="col-xs-6">
-					<input type="text" class="form-control" disabled />
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="col-xs-8">
-		<div class="form-group">
-			<label class="col-xs-2 control-label">客戶編號</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-			<label class="col-xs-2 control-label">連絡電話1</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">客戶姓名</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-			<label class="col-xs-2 control-label">連絡電話2</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">預計應收</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-			<label class="col-xs-2 control-label">試算應收</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-		</div>
-	</div>
-</form>
+<div class="table-responsive">
 
-<hr class="condensed" />
+    <div class="table-header">
+        <div class="table-filter">
+            <div class="form-inline">
+            	<div class="form-group">
+                    <label for="">單據號碼/客戶名稱/身分證號/電話/來源銷售單號</label>
+                    <input type="text" class="form-control input-sm" placeholder="請擇一填寫" />
+                </div>
+                <div class="form-group">
+                    <label for="">單據日期</label>
+                    <span class="has-feedback">
+                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+                        <i class="fa-calendar form-control-feedback"></i>
+                    </span>
+                    <label for="">~</label>
+                    <span class="has-feedback">
+                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+                        <i class="fa-calendar form-control-feedback"></i>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <button class="btn-primary btn-sm"><i class="fa-search"></i> 搜尋</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<h4 class="title">新增收款明細</h4>
+    <table class="table-condensed">
+        <thead>
+            <tr>
+                <th class="col-xs-1 text-center">修改</th>
+                <th class="col-xs-2">單據號碼</th>
+                <th class="col-xs-2">日期</th>
+                <th class="col-xs-2">客戶名稱</th>
+                <th class="col-xs-2">身分證號</th>
+                <th class="col-xs-2">電話1</th>
+                <th class="col-xs-1">銷售單號</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Check_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>XXXX</td>
+                <td>2015/11/11</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td>XXXX</td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Check_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>XXXX</td>
+                <td>2015/11/11</td>
+                <td>宏其醫院</td>
+                <td></td>
+                <td>034567890</td>
+                <td>XXXX</td>
+            </tr>
+        </tbody>
+    </table>
 
-<form class="form-horizontal clearfix" role="form">
-	<div class="col-xs-8">
-		<div class="form-group">
-			<label class="col-xs-2 control-label">收款日期</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" />
-			</div>
-			<label class="col-xs-2 control-label">收款餐別</label>
-			<div class="col-xs-4">
-				<select class="form-control">
-					<option value="">早餐</option>
-				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">收款人員</label>
-			<div class="col-xs-4">
-				<select class="form-control">
-					<option value="">外送人員</option>
-				</select>
-			</div>
-			<label class="col-xs-2 control-label">收款項目</label>
-			<div class="col-xs-4">
-				<select class="form-control">
-					<option value="">訂金</option>
-				</select>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">收款單號</label>
-			<div class="col-xs-10">
-				<input type="text" class="form-control" />
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">本次實收</label>
-			<div class="col-xs-10">
-				<input type="text" class="form-control" />
-			</div>
-		</div>
-		<div class="form-action">
-			<p class="text-right">
-				<button class="btn-primary"><i class="fa-check"></i> 存檔確認</button>
-				<button><i class="fa-times"></i> 回列表</button>
-			</p>
-		</div>
-	</div>
-</form>
-
-<hr class="condensed" />
-
-<h4 class="title">
-	收款明細：
-	<span class="text-muted">實際已收 <strong class="text-danger">$30,000</strong></span>
-</h4>
-
-<table class="table-condensed">
-	<tr>
-		<th class="col-xs-2">收款日期</th>
-		<th class="col-xs-2 text-center">收款餐別</th>
-		<th class="col-xs-2 text-center">收款人員</th>
-		<th class="col-xs-2 text-center">收款項目</th>
-		<th class="col-xs-2">收款單號</th>
-		<th class="col-xs-2">本次實收</th>
-	</tr>
-	<tr>
-		<td>2015/00/00</td>
-		<td class="text-center">早餐</td>
-		<td class="text-center">外送人員</td>
-		<td class="text-center">訂金</td>
-		<td>A001</td>
-		<td>$1,000</td>
-	</tr>
-</table>
+    <div class="table-footer">
+        <small class="pull-right">第1-3筆，共3筆</small>
+        <ul class="pager">
+            <li class="disabled"><a href="" title="第一頁"><i class="fa-angle-double-left"></i></a></li>
+            <li class="disabled"><a href="" title="上一頁"><i class="fa-angle-left"></i></a></li>
+            <li class="form-inline">
+                <div class="form-group">
+                    <label for="">第</label>
+                    <input type="text" class="form-control text-center" value="1" style="width:50px;">
+                    <label for="">頁，共3頁</label>
+                </div>
+            </li>
+            <li><a href="" title="下一頁"><i class="fa-angle-right"></i></a></li>
+            <li><a href="" title="最後一頁"><i class="fa-angle-double-right"></i></a></li>
+        </ul>
+    </div>
+</div><!-- 後台常用列表 //-->
