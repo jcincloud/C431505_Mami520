@@ -27,21 +27,24 @@ namespace DotWeb.Api
 
             using (db0 = getDB0())
             {
-                var items = (from x in db0.RecordDetail
-                             orderby x.sell_day descending
-                             where x.product_record_id == q.main_id
-                             select new m_RecordDetail()
+                var qr = db0.RecordDetail
+                             .OrderByDescending(x => x.sell_day)
+                             .Where(x => x.product_record_id == q.main_id)
+                             .Select(x => new m_RecordDetail()
                              {
-                                 product_record_id=x.product_record_id,
-                                 record_deatil_id=x.record_deatil_id,
+                                 product_record_id = x.product_record_id,
+                                 record_deatil_id = x.record_deatil_id,
                                  product_name = x.product_name,
                                  product_type = x.product_type,
                                  price = x.price,
                                  qty = x.qty,
                                  subtotal = x.subtotal
-                             });
+                             }).AsQueryable();
 
-                return Ok(items.ToList());
+
+                var result = qr.ToList();
+
+                return Ok(result);
             }
             #endregion
         }
@@ -57,6 +60,7 @@ namespace DotWeb.Api
                 //一般產品
                 item.price = md.price;
                 item.qty = md.qty;
+                item.subtotal = md.subtotal;
                 item.memo = md.memo;
 
                 //用餐排程
@@ -103,6 +107,7 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
+                md.sell_day = DateTime.Now;
 
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;

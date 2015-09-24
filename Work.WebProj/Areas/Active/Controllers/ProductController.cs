@@ -1,5 +1,6 @@
 ﻿using DotWeb.CommSetup;
 using DotWeb.Controller;
+using ProcCore.Business.LogicConect;
 using ProcCore.HandleResult;
 using System;
 using System.IO;
@@ -29,9 +30,12 @@ namespace DotWeb.Areas.Active.Controllers
         {
             using (var db0 = getDB0())
             {
+                var open = openLogic();
                 return defJSON(new
                 {
-                    // options_equipment_category = db0.Equipment_Category.OrderBy(x=>x.sort)
+                    breakfast = (decimal)open.getParmValue(ParmDefine.breakfast),
+                    lunch = (decimal)open.getParmValue(ParmDefine.lunch),
+                    dinner = (decimal)open.getParmValue(ParmDefine.dinner)
                 });
             }
         }

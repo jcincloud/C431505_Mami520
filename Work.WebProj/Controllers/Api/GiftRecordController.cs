@@ -19,6 +19,8 @@ namespace DotWeb.Api
             {
                 item = await db0.GiftRecord.FindAsync(id);
                 var getCustomer = await db0.Customer.FindAsync(item.customer_id);
+                double total = db0.RecordDetail.Where(x => x.product_record_id == item.product_record_id).Sum(x => x.subtotal);
+                item.totle_price = total;
 
                 item.record_day = item.ProductRecord.record_day;
                 item.customer_name = getCustomer.customer_name;

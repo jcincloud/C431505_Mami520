@@ -47,7 +47,7 @@ namespace ProcCore.Business.LogicConect
     #region Parm Section
     public enum ParmDefine
     {
-        Open, ValidDate, Apply_Max_Day, bufferNorth_Max, bufferSouth_Max, N_Max_joinnum, S_Max_joinnum, receiveMails, BccMails
+        Open, breakfast, lunch, dinner
     }
     #endregion
 
@@ -235,7 +235,8 @@ namespace ProcCore.Business.LogicConect
         public void setParmValue(ParmDefine ParmName, object value)
         {
             db0 = getDB0;
-            var item = db0.i_Parm.Where(x => x.ParmName == Enum.GetName(typeof(ParmDefine), ParmName)).FirstOrDefault();
+            string str = Enum.GetName(typeof(ParmDefine), ParmName);
+            var item = db0.i_Parm.Where(x => x.ParmName == str).FirstOrDefault();
             if (item != null)
             {
                 if (item.ParmType == "S")

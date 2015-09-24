@@ -217,11 +217,11 @@ function getBrower() {
 var replace_br: RegExp = /(?:\\[rn]|[\r\n]+)+/g; //將換行碼換成<br/>的樣板
 
 function checkTelReg(tel: string) {
-  /*
-    Autohr:Ajoe
-    Date:2015/9/8
-    Description:檢查電話格式
-  */
+    /*
+      Autohr:Ajoe
+      Date:2015/9/8
+      Description:檢查電話格式
+    */
     if (tel != undefined && tel != '') {
         if (tel.indexOf('-') != -1 || tel.indexOf(' ') != -1 || tel.indexOf('　') != -1) {//檢查電話是否含有空白或「-」
             return { result: false, errMsg: '電話請勿輸入「空白」或「-」！！' };
@@ -234,11 +234,11 @@ function checkTelReg(tel: string) {
     return { result: true };
 }
 function checkTwID(id) {
-  /*
-    Autohr:Ajoe
-    Date:2015/9/8
-    Description:台灣身份證檢查簡
-  */
+    /*
+      Autohr:Ajoe
+      Date:2015/9/8
+      Description:台灣身份證檢查簡
+    */
     if (id != null && id != "") {
         //建立字母分數陣列(A~Z)
         var city = new Array(
@@ -266,4 +266,48 @@ function checkTwID(id) {
     } else {
         return true;
     }
+}
+
+function DiffDate(start: string, end: string) {
+    /*
+      Autohr:Ajoe
+      Date:2015/9/24
+      Description:計算兩日期相差天數
+    */
+    if (start != null && end != null) {
+        var day_s: Date = new Date(start);
+        var day_e: Date = new Date(end);
+        if (day_s <= day_e) {
+            //開始日期 小於等於 結束日期 才計算
+            var iDays: number = (Math.abs(day_e.getTime() - day_s.getTime()) / 1000 / 60 / 60 / 24) + 1;
+            return { result: 1, diff_day: iDays };
+        } else {
+            return { result: -1, diff_day: 0 };
+        }
+    } else {
+        return { result: -2, diff_day: 0 };
+    }
+}
+function MealCount(Parm: ParmMealCount, B, L, D) {
+    /*
+      Autohr:Ajoe
+      Date:2015/9/24
+      Description:計算用餐點數
+    */
+    var total: number = 0;
+    if (B != null) {
+        total += parseFloat((B * Parm.breakfast).toFixed(2));
+    }
+    if (L != null) {
+        total += parseFloat((L * Parm.lunch).toFixed(2));
+    }
+    if (D != null) {
+        total += parseFloat((D * Parm.dinner).toFixed(2));
+    }
+    return parseFloat(total.toFixed(2));
+}
+interface ParmMealCount {
+    breakfast: number;
+    lunch: number;
+    dinner: number;
 }

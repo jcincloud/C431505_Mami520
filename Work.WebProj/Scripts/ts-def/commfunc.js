@@ -221,3 +221,32 @@ function checkTwID(id) {
         return true;
     }
 }
+function DiffDate(start, end) {
+    if (start != null && end != null) {
+        var day_s = new Date(start);
+        var day_e = new Date(end);
+        if (day_s <= day_e) {
+            var iDays = (Math.abs(day_e.getTime() - day_s.getTime()) / 1000 / 60 / 60 / 24) + 1;
+            return { result: 1, diff_day: iDays };
+        }
+        else {
+            return { result: -1, diff_day: 0 };
+        }
+    }
+    else {
+        return { result: -2, diff_day: 0 };
+    }
+}
+function MealCount(Parm, B, L, D) {
+    var total = 0;
+    if (B != null) {
+        total += parseFloat((B * Parm.breakfast).toFixed(2));
+    }
+    if (L != null) {
+        total += parseFloat((L * Parm.lunch).toFixed(2));
+    }
+    if (D != null) {
+        total += parseFloat((D * Parm.dinner).toFixed(2));
+    }
+    return parseFloat(total.toFixed(2));
+}

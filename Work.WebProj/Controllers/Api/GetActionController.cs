@@ -268,6 +268,33 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        #region 產品銷售資料明細檔
+        public IHttpActionResult GetAllProduct([FromUri]ParmProductSelect parm)
+        {
+            db0 = getDB0();
+            try
+            {
+
+                var items = db0.Product
+                    .OrderBy(x => new { x.sort })
+                    .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard, x.is_modify });
+
+                if (parm.name != null)
+                {
+                    items = items.Where(x => x.product_name.Contains(parm.name));
+                }
+                if (parm.product_type != null)
+                {
+                    items = items.Where(x => x.product_type == parm.product_type);
+                }
+                return Ok(items.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
         #region 禮品贈送紀錄-取得贈品活動list
         public IHttpActionResult GetAllActivity()
         {
@@ -948,6 +975,11 @@ namespace DotWeb.Api
     public class ParmCloseRecord
     {
         public int main_id { get; set; }
+    }
+    public class ParmProductSelect
+    {
+        public string name { get; set; }
+        public int? product_type { get; set; }
     }
     #endregion
 }

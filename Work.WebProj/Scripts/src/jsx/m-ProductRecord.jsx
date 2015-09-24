@@ -456,10 +456,16 @@ var GirdForm = React.createClass({
 
 			var save_out_html=null;
 			var close_out_html=null;
+			var detail_out_html=null;
 			if(this.state.edit_type==1){
 				save_out_html=<button type="submit" className="btn-primary"><i className="fa-check"></i> 儲存</button>;
 			}else{
 				save_out_html=<strong>主檔資料不可修改！</strong>;
+				detail_out_html=
+				<SubForm ref="SubForm" 
+				main_id={fieldData.product_record_id}
+				customer_id={fieldData.customer_id}
+				born_id={fieldData.born_id} />;
 				if(!fieldData.is_close){
 					close_out_html=<button className="btn-success" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
 				}
@@ -663,7 +669,8 @@ var GirdForm = React.createClass({
 				{/* ---是否結案按鈕end--- */}
 				
 				{/*---產品明細---*/}
-				<SubForm ref="SubForm" main_id={fieldData.product_record_id} />
+				{detail_out_html}
+
 
 			</div>
 			);
@@ -682,25 +689,40 @@ var SubForm = React.createClass({
 		return {
 			gridSubData:[],
 			fieldSubData:{},
-			searchData:{title:null},
-			edit_sub_type:1,//預設皆為新增狀態
+			searchProductData:{name:null,product_type:null},
+			edit_sub_type:0,//預設皆為新增狀態
 			checkAll:false,
 			isShowProductSelect:false,//控制選取產品視窗顯示
-			product_list:[]
+			product_list:[],
+			parm:{breakfast:0,lunch:0,dinner:0}//計算用		
+
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
 			fdName:'fieldSubData',
 			gdName:'searchData',
-			apiPathName:gb_approot+'api/RecordDetail'
+			apiPathName:gb_approot+'api/RecordDetail',
+			initPathName:gb_approot+'Active/Product/aj_Init'
 		};
 	},
 	componentDidMount:function(){
 		this.queryGridData();
+		this.insertSubType();//一開始載入預設為新增狀態
+		this.getAjaxInitData();//載入init資料
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
+	},
+	getAjaxInitData:function(){
+		jqGet(this.props.initPathName)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({parm:{breakfast:data.breakfast,lunch:data.lunch,dinner:data.dinner}});
+			//載入用餐點數計算
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
 	},
 	detailHandleSubmit: function(e) {
 
@@ -720,6 +742,8 @@ var SubForm = React.createClass({
 					}else{
 						tosMessage(null,'新增完成',1);
 					}
+					//儲存後更新下分list
+					this.queryGridData();
 					this.insertSubType();
 				}else{
 					tosMessage(null,data.message,3);
@@ -738,6 +762,8 @@ var SubForm = React.createClass({
 					}else{
 						tosMessage(null,'修改完成',1);
 					}
+					//儲存後更新下分list
+					this.queryGridData();
 					this.insertSubType();
 				}else{
 					tosMessage(null,data.message,3);
@@ -748,6 +774,25 @@ var SubForm = React.createClass({
 			});
 		};
 		return;
+	},
+	detailDeleteSubmit:function(id,e){
+
+		if(!confirm('確定是否刪除?')){
+			return;
+		}
+		jqDelete(this.props.apiPathName + '?ids=' +id ,{})			
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'刪除完成',1);
+				this.queryGridData();
+				this.insertSubType();
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
 	},
 	gridData:function(){
 		var parms = {
@@ -768,12 +813,24 @@ var SubForm = React.createClass({
 	},
 	insertSubType:function(){
 		$('textarea').val("");
-		this.setState({edit_sub_type:1,fieldSubData:{memo:null,meal_memo:null}});
+		this.setState({edit_sub_type:1,fieldSubData:{
+			product_record_id:this.props.main_id,
+			customer_id:this.props.customer_id,
+			born_id:this.props.born_id,
+			qty:1,
+			subtotal:0
+		}});
 	},
 	updateSubType:function(id,e){
 		jqGet(this.props.apiPathName,{id:id})
 		.done(function(data, textStatus, jqXHRdata) {
-			console.log(data.data);
+			//計算天數
+			var diff_mealday=DiffDate(data.data.meal_start,data.data.meal_end);
+			data.data.diff_day=diff_mealday.diff_day;
+			//計算點數
+			data.data.estimate_count=MealCount(this.state.parm,data.data.estimate_breakfast,data.data.estimate_lunch,data.data.estimate_dinner);
+			data.data.real_count=MealCount(this.state.parm,data.data.real_breakfast,data.data.real_lunch,data.data.real_dinner);
+			
 			this.setState({edit_sub_type:2,fieldSubData:data.data});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -795,67 +852,140 @@ var SubForm = React.createClass({
 		}
 		this.setState({fieldSubData:obj});
 	},
+	changeGDProductValue:function(name,e){
+		var obj = this.state.searchProductData;
+		obj[name] = e.target.value;
+		this.setState({searchProductData:obj});
+		this.queryAllProduct();
+	},
 	changeMealday:function(name,e){//計算日期天數
 		var obj = this.state.fieldSubData;
 		obj[name] = e.target.value;//先變更修改後的日期在計算
 
-		if(obj.meal_start!=null & obj.meal_end!=null){
-			if(obj.meal_start <= obj.meal_end){
-			//開始日期 小於等於 結束日期 才計算
-			var day_s=new Date(obj.meal_start);
-			var day_e=new Date(obj.meal_end);
-			var iDays = parseInt(Math.abs(day_e - day_s) / 1000 / 60 / 60 /24)+1;
-				obj.diff_day=iDays;
-			}else{
-				obj.diff_day=0;
-				tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
-			}
+		var diff_mealday=DiffDate(obj.meal_start,obj.meal_end);
+		obj.diff_day=diff_mealday.diff_day;
+		if(diff_mealday.result==-1){
+			tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
 		}
+
+		this.setState({fieldSubData:obj});
+	},
+	changePriceCount:function(name,e){
+		var obj = this.state.fieldSubData;
+		obj[name] = e.target.value;
+		obj.subtotal=obj.qty*obj.price;
+		this.setState({fieldSubData:obj});
+	},
+	changeMealCount:function(name,e){
+		var obj = this.state.fieldSubData;
+		obj[name] = e.target.value;
+
+		obj.estimate_count=MealCount(this.state.parm,obj.estimate_breakfast,obj.estimate_lunch,obj.estimate_dinner);
+
 		this.setState({fieldSubData:obj});
 	},
 	queryAllProduct:function(){//選取產品編號-
-		jqGet(gb_approot + 'api/GetAction/GetAllMealID',{})
+		jqGet(gb_approot + 'api/GetAction/GetAllProduct',this.state.searchProductData)
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({mealid_list:data});
+			this.setState({product_list:data});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
 		});		
 	},
 	showSelectProduct:function(){
-		//this.queryAllMealID();
+		this.queryAllProduct();
 		this.setState({isShowProductSelect:true});
 	},
 	closeSelectProduct:function(){
 		this.setState({isShowProductSelect:false});
 	},
-	selectMealid:function(meal_id){
-		var fieldDetailData = this.state.fieldDetailData;//選取後變更mealid
-		jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldDetailData.meal_id,new_id:meal_id})
-		.done(function(data, textStatus, jqXHRdata) {
-			if(!data.result){
-				alert(data.message);
+	selectProduct:function(product_id,e){
+		var fSD = this.state.fieldSubData;
+		this.state.product_list.forEach(function(obj,i){
+			if(obj.product_id==product_id){
+				fSD.product_id=product_id;
+				fSD.product_type=obj.product_type;
+				fSD.product_name=obj.product_name;
+				fSD.price=obj.price;
+				fSD.standard=obj.standard;
+				fSD.is_modify=obj.is_modify;
+				fSD.subtotal=fSD.qty*obj.price;
 			}
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			//showAjaxError(errorThrown);
 		});
-
-		fieldDetailData.meal_id=meal_id;
-		this.setState({isShowProductSelect:false,fieldDetailData:fieldDetailData});
+		this.setState({isShowProductSelect:false,fieldSubData:fSD});
 	},
 	render: function() {
 		var outHtml = null;
 		var fieldSubData = this.state.fieldSubData;//明細檔資料
+		var searchProductData=this.state.searchProductData;//
 
 		var ModalProductSelect=ReactBootstrap.Modal;//啟用產品選取的視窗內容
 		var product_select_out_html=null;
 		if(this.state.isShowProductSelect){
 			product_select_out_html=
-			<ModalProductSelect bsSize="medium" title="客戶生產紀錄編輯" onRequestHide={this.closeSelectProduct}>
+			<ModalProductSelect bsSize="medium" title="選擇產品" onRequestHide={this.closeSelectProduct}>
 						<div className="modal-body">
-							<h4>hi</h4>
+							<div className="table-header">
+			                    <div className="table-filter">
+			                        <div className="form-inline">
+			                            <div className="form-group">
+			                                <label for="">產品名稱</label>
+			                                <input type="text" className="form-control input-sm"
+			                            	value={searchProductData.name}
+											onChange={this.changeGDProductValue.bind(this,'name')} />
+			                            </div>
+			                            <div className="form-group">
+			                                <label for="">產品分類</label>
+			                                <select className="form-control input-sm"
+			                                	value={searchProductData.product_type}
+												onChange={this.changeGDProductValue.bind(this,'product_type')}>
+			                                    <option value="">全部</option>
+												{
+													CommData.ProductType.map(function(itemData,i) {
+														return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+													})
+												}
+			                                </select>
+			                            </div>
+			                            <div className="form-group">
+			                                <button className="btn-primary btn-sm" onClick={this.queryAllProduct}><i className="fa-search"></i> 搜尋</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			                <table className="table-condensed">
+			                <tbody>
+				                    <tr>
+				                        <th className="col-xs-1 text-center">選擇</th>
+				                        <th className="col-xs-3">產品名稱</th>
+				                        <th className="col-xs-3">產品分類</th>
+				                        <th className="col-xs-2">售價</th>
+				                    </tr>
+				                    {
+										this.state.product_list.map(function(itemData,i) {
+											
+											var product_out_html = 
+												<tr key={itemData.product_id}>
+													<td className="text-center">
+														<label className="cbox">
+				                                			<input type="checkbox" onClick={this.selectProduct.bind(this,itemData.product_id)} />
+				                                			<i className="fa-check"></i>
+				                            			</label>
+				                            		</td>
+													<td>{itemData.product_name}</td>
+													<td  className="text-center"><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
+													<td>{itemData.price}</td>
+												</tr>;
+											return product_out_html;
+										}.bind(this))
+									}
+			                    </tbody>                   
+			                </table>
 						</div>
+						<div className="modal-footer">
+			                <button type="button" onClick={this.closeSelectProduct}><i className="fa-times"></i> 關閉</button>
+			            </div>
 				</ModalProductSelect>;
 		}
 
@@ -868,190 +998,200 @@ var SubForm = React.createClass({
 			{/*---產品明細編輯start---*/}
 					<h4 className="title">新增產品明細</h4>
 					<div className="row">
-						<div className="item-box">
-							<div className="item-title">
-								<h5>產品明細基本資料</h5>
-							</div>
-							<div className="panel-body">
-								<form className="form-horizontal clearfix" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
-
-									<div className="form-group">
-										<label className="col-xs-2 control-label">銷售日期</label>
-										<div className="col-xs-2">
-											<span className="has-feedback">
-												<InputDate id="sell_day" 
-												onChange={this.changeFDValue} 
-												field_name="sell_day" 
-												value={fieldSubData.sell_day}
-												disabled={true}
-												placeholder="系統自動產生" />
-											</span>
-										</div>
-										<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
-									</div>
-									<div className="form-group">
-										<label className="col-xs-2 control-label">產品名稱</label>
-										<div className="col-xs-2">
-											<div className="input-group">
-												<input type="text" 							
-												className="form-control"	
-												value={fieldSubData.product_name}
-												onChange={this.changeFDValue.bind(this,'product_name')}
-												maxLength="64"
-												required disabled　/>
-												<span className="input-group-btn">
-													<button type="button" onClick={this.showSelectProduct}>...</button>
+						<div className="col-xs-9">
+							<div className="item-box">
+								<div className="item-title">
+									<h5>產品明細基本資料</h5>
+								</div>
+								<form className="form-horizontal" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
+								<div className="panel-body">
+										<div className="form-group">
+											<label className="col-xs-2 control-label">銷售日期</label>
+											<div className="col-xs-4">
+												<span className="has-feedback">
+													<InputDate id="sell_day" 
+													onChange={this.changeFDValue} 
+													field_name="sell_day" 
+													value={fieldSubData.sell_day}
+													disabled={true}
+													placeholder="系統自動產生" />
 												</span>
 											</div>
+											<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
 										</div>
-										<label className="col-xs-1 control-label">分類</label>
-										<div className="col-xs-2">
-											<select className="form-control" 
-											value={fieldSubData.product_type}
-											onChange={this.changeFDValue.bind(this,'product_type')}
-											disabled>
-											{
-												CommData.ProductType.map(function(itemData,i) {
-													return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-												})
-											}
-											</select>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">選擇產品</label>
+											<div className="col-xs-4">
+												<div className="input-group">
+													<input type="text" 							
+													className="form-control"	
+													value={fieldSubData.product_name}
+													onChange={this.changeFDValue.bind(this,'product_name')}
+													maxLength="64"
+													required disabled　/>
+													<span className="input-group-btn">
+														<a className="btn" onClick={this.showSelectProduct}
+														disabled={this.state.edit_sub_type==2} ><i className="fa-plus"></i></a>
+													</span>
+												</div>
+											</div>
+											<small className="help-inline col-xs-6"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
 										</div>
-									</div>
-									<div className="form-group">
-										<label className="col-xs-2 control-label">售價</label>
-										<div className="col-xs-2">
-											<input type="number" 
-											className="form-control"	
-											value={fieldSubData.price}
-											onChange={this.changeFDValue.bind(this,'price')} />
+										<div className="form-group">
+											<label className="col-xs-2 control-label">產品分類</label>
+											<div className="col-xs-4">
+												<select className="form-control" 
+												value={fieldSubData.product_type}
+												onChange={this.changeFDValue.bind(this,'product_type')}
+												disabled>
+												{
+													CommData.ProductType.map(function(itemData,i) {
+														return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+													})
+												}
+												</select>
+											</div>
 										</div>
-										<label className="col-xs-1 control-label">規格</label>
-										<div className="col-xs-2">
-											<input type="text" 							
-											className="form-control"	
-											value={fieldSubData.standard}
-											onChange={this.changeFDValue.bind(this,'standard')}
-											maxLength="64"
-											required disabled　/>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">規格</label>
+											<div className="col-xs-4">
+												<input type="text" 							
+												className="form-control"	
+												value={fieldSubData.standard}
+												onChange={this.changeFDValue.bind(this,'standard')}
+												maxLength="64"
+												required disabled　/>
+											</div>
 										</div>
-									</div>
-									<div className="form-group">
-										<label className="col-xs-2 control-label">數量</label>
-										<div className="col-xs-2">
-											<input type="number" 							
-											className="form-control"	
-											value={fieldSubData.qty}
-											onChange={this.changeFDValue.bind(this,'qty')}
-											min="1"
-											required/>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">售價</label>
+											<div className="col-xs-2">
+												<input type="number" 
+												className="form-control"	
+												value={fieldSubData.price}
+												disabled={!fieldSubData.is_modify}
+												onChange={this.changePriceCount.bind(this,'price')} />
+											</div>
+											<label className="col-xs-1 control-label">數量</label>
+											<div className="col-xs-1">
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.qty}
+												onChange={this.changePriceCount.bind(this,'qty')}
+												min="1"
+												required/>
+											</div>
+											<small className="help-inline col-xs-2 text-danger">(必填)</small>
 										</div>
-										<label className="col-xs-1 control-label">小計</label>
-										<div className="col-xs-2">
-											<input type="number" 							
-											className="form-control"	
-											value={fieldSubData.subtotal}
-											onChange={this.changeFDValue.bind(this,'subtotal')}
-											required disabled　/>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">小計</label>
+											<div className="col-xs-4">
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.subtotal}
+												onChange={this.changeFDValue.bind(this,'subtotal')}
+												required disabled　/>
+											</div>
 										</div>
-									</div>
-									<div className="form-group">
-										<label className="col-xs-2 control-label">備註</label>
-										<div className="col-xs-5">
-											<textarea col="30" row="2" className="form-control"
-											value={fieldSubData.memo}
-											onChange={this.changeFDValue.bind(this,'memo')}
-											maxLength="256"></textarea>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">備註</label>
+											<div className="col-xs-4">
+												<textarea col="30" row="2" className="form-control"
+												value={fieldSubData.memo}
+												onChange={this.changeFDValue.bind(this,'memo')}
+												maxLength="256"></textarea>
+											</div>
 										</div>
-									</div>
-								</form>
-							</div>
-							<div className="item-title">
-								<h5>
-									用餐排程 &amp; 試算
-									<small className="text-muted">產品分類為 "月子餐" 才需填寫!!</small>
-								</h5>
-							</div>
-							<div className="panel-body">
-								<form className="form-horizontal clearfix" role="form">
+								</div>
+								<div className="item-title">
+									<h5>
+										用餐排程 &amp; 試算
+										<small className="text-muted">產品分類為 "月子餐" 才需填寫!!</small>
+									</h5>
+								</div>
+								<div className="panel-body">
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計送餐起日</label>
-										<div className="col-xs-2">
+										<div className="col-xs-6">
 											<span className="has-feedback">
 												<InputDate id="meal_start" 
 												onChange={this.changeMealday} 
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
-												require={fieldSubData.price==2} />
+												required={fieldSubData.product_type==2} />
 											</span>
-										</div>
+										</div>										
+									</div>
+									<div className="form-group">
 										<label className="col-xs-2 control-label">預計送餐迄日</label>
-										<div className="col-xs-2">
+										<div className="col-xs-6">
 											<span className="has-feedback">
 												<InputDate id="meal_end" 
 												onChange={this.changeMealday} 
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
-												require={fieldSubData.price==2} />
+												required={fieldSubData.product_type==2} />
 											</span>
+										</div>										
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">預計天數</label>
+										<div className="col-xs-6">
+											<input type="number" 							
+											className="form-control"	
+											value={fieldSubData.diff_day}
+											onChange={this.changeFDValue.bind(this,'diff_day')}
+											min="0" disabled/>
 										</div>
-										<div className="col-xs-2">
-											<label className="col-xs-8 control-label">預計天數</label>
-											<div className="col-xs-4">
-												<input type="number" 							
-												className="form-control"	
-												value={fieldSubData.diff_day}
-												onChange={this.changeFDValue.bind(this,'diff_day')}
-												min="0" disabled/>
-										</div>
-										</div>
+										<small className="help-inline col-xs-4">系統自動計算</small>
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計餐數</label>
-										<div className="col-xs-1">
+										<div className="col-xs-2">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal1-1">早</span>
 												<input type="number" 							
 												className="form-control"	
 												value={fieldSubData.estimate_breakfast}
-												onChange={this.changeFDValue.bind(this,'estimate_breakfast')}
+												onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
 												min="0"/>
 											</div>
 										</div>
-										<div className="col-xs-1">
+										<div className="col-xs-2">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal1-2">午</span>
 												<input type="number" 							
 												className="form-control"	
 												value={fieldSubData.estimate_lunch}
-												onChange={this.changeFDValue.bind(this,'estimate_lunch')}
+												onChange={this.changeMealCount.bind(this,'estimate_lunch')}
 												min="0"/>
 											</div>
 										</div>
-										<div className="col-xs-1">
+										<div className="col-xs-2">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal1-3">晚</span>
 												<input type="number" 							
 												className="form-control"	
 												value={fieldSubData.estimate_dinner}
-												onChange={this.changeFDValue.bind(this,'estimate_dinner')}
+												onChange={this.changeMealCount.bind(this,'estimate_dinner')}
 												min="0"/>
-											</div>
-										</div>
-										<div className="col-xs-3">
-											<label className="col-xs-6 control-label">預計點數</label>
-											<div className="col-xs-6">
-												<input type="number" 							
-												className="form-control"	
-												value={fieldSubData.estimate_count}
-												onChange={this.changeFDValue.bind(this,'estimate_count')}
-												min="0" disabled/>
 											</div>
 										</div>
 									</div>
 									<div className="form-group">
+										<label className="col-xs-2 control-label">預計點數</label>
+										<div className="col-xs-6">
+											<input type="number" 							
+											className="form-control"	
+											value={fieldSubData.estimate_count}
+											onChange={this.changeFDValue.bind(this,'estimate_count')}
+											min="0" disabled/>
+										</div>
+										<small className="help-inline col-xs-4">系統自動計算</small>
+									</div>
+									<div className="form-group">
 										<label className="col-xs-2 control-label">實際餐數</label>
-										<div className="col-xs-1">
+										<div className="col-xs-2">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal2-1">早</span>
 												<input type="number" 							
@@ -1061,7 +1201,7 @@ var SubForm = React.createClass({
 												min="0" disabled/>
 											</div>
 										</div>
-										<div className="col-xs-1">
+										<div className="col-xs-2">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal2-2">午</span>
 												<input type="number" 							
@@ -1071,7 +1211,7 @@ var SubForm = React.createClass({
 												min="0" disabled/>
 											</div>
 										</div>
-										<div className="col-xs-1">
+										<div className="col-xs-2">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal2-3">晚</span>
 												<input type="number" 							
@@ -1081,36 +1221,37 @@ var SubForm = React.createClass({
 												min="0" disabled/>
 											</div>
 										</div>
-										<div className="col-xs-3">
-											<label className="col-xs-6 control-label">實際點數</label>
-											<div className="col-xs-6">
-												<input type="number" 							
-												className="form-control"	
-												value={fieldSubData.real_count}
-												onChange={this.changeFDValue.bind(this,'real_count')}
-												min="0" disabled/>
-											</div>
-										</div>
 									</div>
 									<div className="form-group">
+										<label className="col-xs-2 control-label">實際點數</label>
+										<div className="col-xs-6">
+											<input type="number" 							
+											className="form-control"	
+											value={fieldSubData.real_count}
+											onChange={this.changeFDValue.bind(this,'real_count')}
+											min="0" disabled/>
+										</div>
+									</div>										
+									<div className="form-group">
 										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
-										<div className="col-xs-8">
-											<textarea col="30" row="2" className="form-control"
+										<div className="col-xs-6">
+											<textarea col="30" rows="3" className="form-control"
 											value={fieldSubData.meal_memo}
 											onChange={this.changeFDValue.bind(this,'meal_memo')}
 											maxLength="256"></textarea>
 										</div>
-									</div>
+									</div>	
+								</div>
 								</form>
-							</div>
-							<div className="panel-footer">
-								<button className="btn-primary col-xs-offset-9"
-								type="submit" form="form2">
-									<i className="fa-check"></i> 存檔確認
-								</button>
+								<div className="panel-footer">
+									<button className="btn-primary col-xs-offset-9"
+									type="submit" form="form2">
+										<i className="fa-check"></i> 存檔確認
+									</button>
+								</div>
 							</div>
 						</div>
-					</div>
+					</div>			
 				{/*---產品明細編輯end---*/}
 
 					<hr className="condensed" />
@@ -1130,18 +1271,23 @@ var SubForm = React.createClass({
 							</tr>
 							{
 								this.state.gridSubData.map(function(itemData,i) {
+									var meal_detail_button=null;
+									if(itemData.product_type==2)//產品為月子餐才有用餐明細
+									{
+										meal_detail_button=<button className="btn-info btn-sm"><i className="fa-search"></i> 查看</button>;
+									}
 									var sub_out_html = 
 										<tr key={itemData.record_deatil_id}>
 											<td className="text-center">
 												<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.record_deatil_id)}><i className="fa-pencil"></i></button>
-												<button className="btn-link text-danger"><i className="fa-trash"></i></button>
+												<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.record_deatil_id)}><i className="fa-trash"></i></button>
 											</td>
 											<td  className="text-center"><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
 											<td>{itemData.product_name}</td>
 											<td>{itemData.price}</td>
 											<td>{itemData.qty}</td>
 											<td>{itemData.subtotal}</td>
-											<td className="text-center"><button className="btn-info btn-sm"><i className="fa-search"></i> 查看</button></td>			
+											<td className="text-center">{meal_detail_button}</td>			
 										</tr>;
 										return sub_out_html;
 								}.bind(this))

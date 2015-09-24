@@ -270,6 +270,7 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public string tel_1 { get; set; }
         public string tel_2 { get; set; }
+        public double totle_price { get; set; }
     }
     /// <summary>
     /// 分類選單用
