@@ -388,7 +388,7 @@ var GirdForm = React.createClass({
 							onChange={this.changeFDValue.bind(this,'price')} />
 						</div>
 						<small className="help-inline col-xs-6 text-danger">(必填)</small>
-					</div>
+					</div>				
 					<div className="form-group">
 
 						<label className="col-xs-2 control-label">排序</label>
@@ -401,7 +401,33 @@ var GirdForm = React.createClass({
 						</div>
 						<small className="col-xs-6 help-inline">數字愈大愈前面，未填寫視為 0</small>
 					</div>
-
+					<div className="form-group">
+						<label className="col-xs-2 control-label">售價可編輯</label>
+						<div className="col-xs-10">
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="is_modify"
+											value={true}
+											checked={fieldData.is_modify===true} 
+											onChange={this.changeFDValue.bind(this,'is_modify')}
+									/>
+									<span>可編輯</span>
+								</label>
+							</div>
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="is_modify"
+											value={false}
+											checked={fieldData.is_modify===false} 
+											onChange={this.changeFDValue.bind(this,'is_modify')}
+											/>
+									<span>不可編輯</span>
+								</label>
+							</div>
+						</div>
+					</div>	
 					<div className="form-group">
 						<label className="col-xs-2 control-label">備註</label>
 						<div className="col-xs-10">

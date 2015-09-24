@@ -18,6 +18,7 @@ namespace ProcCore.Business.DB0
         public ProductRecord()
         {
             this.GiftRecord = new HashSet<GiftRecord>();
+            this.RecordDetail = new HashSet<RecordDetail>();
         }
     
         public int product_record_id { get; set; }
@@ -42,6 +43,7 @@ namespace ProcCore.Business.DB0
         public virtual CustomerBorn CustomerBorn { get; set; }
     	[JsonIgnore]
         public virtual ICollection<GiftRecord> GiftRecord { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<RecordDetail> RecordDetail { get; set; }
     }
 }
-

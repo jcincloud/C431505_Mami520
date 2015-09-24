@@ -68,32 +68,36 @@ namespace DotWeb.Api
             db0 = getDB0();
             try
             {
-                var check_born = db0.CustomerBorn.Any(x => x.born_id == parm.born_id);//先檢查此筆生產存不存在
-                var meal_item = await db0.MealID.FindAsync(parm.meal_id);
-                if (!check_born)
+                bool check_born = db0.CustomerBorn.Any(x => x.born_id == parm.born_id);//先檢查此筆生產存不存在
+                if (parm.meal_id != null)//有選用餐編號才改
                 {
-                    meal_item.i_Use = false;
-                }
-                else
-                {
-                    var born_item = await db0.CustomerBorn.FindAsync(parm.born_id);
-                    if (born_item.meal_id != parm.meal_id)
+                    var meal_item = await db0.MealID.FindAsync(parm.meal_id);
+                    if (!check_born || parm.born_id == null)
                     {
-                        var old_item = await db0.MealID.FindAsync(born_item.meal_id);
-                        if (old_item.i_Use)
-                        {//如果舊id已經被其他人用
-                            born_item.meal_id = parm.meal_id;//換成新id
-                        }
-                        else
+                        meal_item.i_Use = false;
+                    }
+                    else
+                    {
+                        var born_item = await db0.CustomerBorn.FindAsync(parm.born_id);
+                        if (born_item.meal_id != parm.meal_id)
                         {
-                            old_item.i_Use = true;
-                            meal_item.i_Use = false;
+                            var old_item = await db0.MealID.FindAsync(born_item.meal_id);
+                            if (old_item.i_Use)
+                            {//如果舊id已經被其他人用
+                                born_item.meal_id = parm.meal_id;//換成新id
+                            }
+                            else
+                            {
+                                old_item.i_Use = true;
+                                meal_item.i_Use = false;
+                            }
                         }
+
                     }
 
+                    await db0.SaveChangesAsync();
                 }
 
-                await db0.SaveChangesAsync();
                 return Ok(new { result = true });
             }
             finally
@@ -897,7 +901,7 @@ namespace DotWeb.Api
     }
     public class ParmCheckMealID
     {
-        public int born_id { get; set; }
+        public int? born_id { get; set; }
         public string meal_id { get; set; }
     }
     public class ParmGetLeftElement

@@ -1,97 +1,80 @@
-﻿using DotWeb.Helpers;
-using ProcCore.Business.DB0;
+﻿using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
-using ProcCore.WebCore;
 using System;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class ProductController : ajaxApi<Product, q_Product>
+    public class RecordDetailController : ajaxApi<RecordDetail, q_RecordDetail>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.Product.FindAsync(id);
-                r = new ResultInfo<Product>() { data = item };
+                item = await db0.RecordDetail.FindAsync(id);
+                r = new ResultInfo<RecordDetail>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_Product q)
+        public async Task<IHttpActionResult> Get([FromUri]q_RecordDetail q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.Product
-                    .OrderByDescending(x => x.sort).AsQueryable();
+                var items = (from x in db0.RecordDetail
+                             orderby x.sell_day descending
+                             where x.product_record_id == q.main_id
+                             select new m_RecordDetail()
+                             {
+                                 product_record_id=x.product_record_id,
+                                 record_deatil_id=x.record_deatil_id,
+                                 product_name = x.product_name,
+                                 product_type = x.product_type,
+                                 price = x.price,
+                                 qty = x.qty,
+                                 subtotal = x.subtotal
+                             });
 
-
-                if (q.product_name != null)
-                {
-                    qr = qr.Where(x => x.product_name.Contains(q.product_name));
-                }
-
-                if (q.product_type != null)
-                {
-                    qr = qr.Where(x => x.product_type == q.product_type);
-                }
-
-                var result = qr.Select(x => new m_Product()
-                {
-                    product_id = x.product_id,
-                    product_name = x.product_name,
-                    product_type = x.product_type,
-                    price = x.price,
-                    standard = x.standard
-                });
-
-
-                int page = (q.page == null ? 1 : (int)q.page);
-                int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
-                var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
-
-                return Ok<GridInfo<m_Product>>(new GridInfo<m_Product>()
-                {
-                    rows = segment,
-                    total = PageCount.TotalPage,
-                    page = PageCount.Page,
-                    records = PageCount.RecordCount,
-                    startcount = PageCount.StartCount,
-                    endcount = PageCount.EndCount
-                });
+                return Ok(items.ToList());
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]Product md)
+        public async Task<IHttpActionResult> Put([FromBody]RecordDetail md)
         {
             ResultInfo r = new ResultInfo();
+
             try
             {
                 db0 = getDB0();
 
-                item = await db0.Product.FindAsync(md.product_id);
-                item.product_name = md.product_name;
-                item.product_type = md.product_type;
+                item = await db0.RecordDetail.FindAsync(md.record_deatil_id);
+                //一般產品
                 item.price = md.price;
-                item.standard = md.standard;
-                item.sort = md.sort;
+                item.qty = md.qty;
                 item.memo = md.memo;
-                item.is_modify = md.is_modify;
 
+                //用餐排程
+                item.meal_start = md.meal_start;
+                item.meal_end = md.meal_end;
+                item.estimate_breakfast = md.estimate_breakfast;
+                item.estimate_dinner = md.estimate_dinner;
+                item.estimate_lunch = md.estimate_lunch;
+                item.meal_memo = md.meal_memo;
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
                 item.i_UpdateDeptID = this.departmentId;
 
+
                 await db0.SaveChangesAsync();
                 r.result = true;
+                r.id = md.customer_id;
             }
             catch (Exception ex)
             {
@@ -104,17 +87,18 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]Product md)
+        public async Task<IHttpActionResult> Post([FromBody]RecordDetail md)
         {
-            md.product_id = GetNewId(ProcCore.Business.CodeTable.Product);
             ResultInfo r = new ResultInfo();
+
+            md.record_deatil_id = GetNewId(ProcCore.Business.CodeTable.RecordDetail);
+
             if (!ModelState.IsValid)
             {
                 r.message = ModelStateErrorPack();
                 r.result = false;
                 return Ok(r);
             }
-
             try
             {
                 #region working a
@@ -124,14 +108,27 @@ namespace DotWeb.Api
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
                 md.i_Lang = "zh-TW";
-
-                db0.Product.Add(md);
+                db0.RecordDetail.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.product_id;
+                r.id = md.born_id;
                 return Ok(r);
                 #endregion
+            }
+            catch (DbEntityValidationException ex)
+            {
+                r.result = false;
+
+                foreach (var m in ex.EntityValidationErrors)
+                {
+
+                    foreach (var n in m.ValidationErrors)
+                    {
+                        r.message += "[" + n.PropertyName + ":" + n.ErrorMessage + "]";
+                    }
+                }
+                return Ok(r);
             }
             catch (Exception ex)
             {
@@ -142,6 +139,7 @@ namespace DotWeb.Api
             finally
             {
                 db0.Dispose();
+                //tx.Dispose();
             }
         }
         public async Task<IHttpActionResult> Delete([FromUri]int[] ids)
@@ -153,9 +151,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new Product() { product_id = id };
-                    db0.Product.Attach(item);
-                    db0.Product.Remove(item);
+                    item = new RecordDetail() { record_deatil_id = id };
+                    db0.RecordDetail.Attach(item);
+                    db0.RecordDetail.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();

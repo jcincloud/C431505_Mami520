@@ -88,7 +88,7 @@ namespace DotWeb.Api
 
                 #region 修改生產紀錄時要將資料反寫回客戶資料
                 var getCustomer = await db0.Customer.FindAsync(md.customer_id);
-                if (getCustomer.customer_type == 1)//如果客戶分類為:自有客戶
+                if (getCustomer.customer_type == (int)CustomerType.Common)//如果客戶分類為:自有客戶
                 {
                     getCustomer.sno = md.sno;
                     getCustomer.birthday = md.birthday;
@@ -144,7 +144,7 @@ namespace DotWeb.Api
 
                 #region 新增生產紀錄時要將資料反寫回客戶資料
                 var getCustomer = await db0.Customer.FindAsync(md.customer_id);
-                if (getCustomer.customer_type == 1)//如果客戶分類為:自有客戶
+                if (getCustomer.customer_type == (int)CustomerType.Common)//如果客戶分類為:自有客戶
                 {
                     getCustomer.sno = md.sno;
                     getCustomer.birthday = md.birthday;

@@ -33,16 +33,21 @@ namespace DotWeb.Api
                 var qr = db0.Customer
                     .OrderByDescending(x => x.customer_id).AsQueryable();
 
-                if (q.word != null) {
-                    qr = qr.Where(x => x.customer_name.Contains(q.word) 
+                if (q.word != null)
+                {
+                    qr = qr.Where(x => x.customer_name.Contains(q.word)
                                         || x.tel_1.Contains(q.word)
                                         || x.tel_2.Contains(q.word)
                                         || x.sno.Contains(q.word));
                 }
-                if (q.customer_name != null)
+                if (q.word_born != null)
                 {
-                    qr = qr.Where(x => x.customer_name.Contains(q.customer_name));
+                    qr = qr.Where(x => x.customer_name.Contains(q.word_born) || x.sno.Contains(q.word_born));
                 }
+                //if (q.customer_name != null)
+                //{
+                //    qr = qr.Where(x => x.customer_name.Contains(q.customer_name));
+                //}
 
                 //if (q.tel != null)
                 //{
@@ -74,7 +79,7 @@ namespace DotWeb.Api
                     customer_sn = x.customer_sn,
                     customer_name = x.customer_name,
                     customer_type = x.customer_type,
-                    sno=x.sno,
+                    sno = x.sno,
                     tw_city_1 = x.tw_city_1,
                     tw_country_1 = x.tw_country_1,
                     tw_address_1 = x.tw_address_1,

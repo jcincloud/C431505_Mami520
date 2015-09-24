@@ -22,6 +22,13 @@ namespace ProcCore.Business.DB0
         finish,
         pause
     }
+    public enum CustomerType
+    {
+        Common = 1,//自有客戶
+        Hospital=2,//醫院
+        PostnatalCareCenter=3,//月子中心
+        Transfer=4//轉介
+    }
     #region set CodeSheet
 
     public static class CodeSheet
@@ -303,7 +310,8 @@ namespace ProcCore.Business.DB0
     }
     public class q_Customer : QueryBase
     {
-        public string word { get; set; }
+        public string word { get; set; }//客戶搜尋
+        public string word_born { get; set; }//生產客戶搜尋
         public string customer_name { get; set; }
         public string city { get; set; }
         public string country { get; set; }
@@ -377,6 +385,10 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public string activity_name { get; set; }
         public int? receive_state { get; set; }
+    }
+    public class q_RecordDetail : QueryBase
+    {
+        public int main_id { get; set; }
     }
     #endregion
 

@@ -58,6 +58,11 @@ var GirdForm = React.createClass({
 
 		e.preventDefault();
 
+		if(this.state.fieldData.customer_id==null || this.state.fieldData.customer_id==undefined){
+			tosMessage(gb_title_from_invalid,'未選擇客戶無法新增產品銷售資料!!',3);
+			return;
+		}
+
 		if(this.state.edit_type==1){
 			jqPost(this.props.apiPathName,this.state.fieldData)
 			.done(function(data, textStatus, jqXHRdata) {
@@ -466,10 +471,23 @@ var GirdForm = React.createClass({
 				<h3 className="title">{this.props.Caption}</h3>
 				<h4 className="title">{this.props.Caption} 主檔</h4>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-					<div className="col-xs-8">
+					<div className="col-xs-9">
 						<div className="form-group">
-							<label className="col-xs-2 control-label text-danger">訂單日期</label>
-							<div className="col-xs-4">
+							<label className="col-xs-2 control-label">銷售單號</label>
+							<div className="col-xs-3">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.record_sn}
+								onChange={this.changeFDValue.bind(this,'record_sn')}
+								maxLength="64"
+								disabled
+								placeholder="系統自動產生" />
+							</div>
+							<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
+						</div>
+						<div className="form-group">
+							<label className="col-xs-2 control-label">訂單日期</label>
+							<div className="col-xs-3">
 								<span className="has-feedback">
 									<InputDate id="record_day" 
 									onChange={this.changeFDValue} 
@@ -479,21 +497,12 @@ var GirdForm = React.createClass({
 									placeholder="系統自動產生" />
 								</span>
 							</div>
-							<label className="col-xs-2 control-label text-danger">銷售單號</label>
-							<div className="col-xs-4">
-								<input type="text" 							
-								className="form-control"	
-								value={fieldData.record_sn}
-								onChange={this.changeFDValue.bind(this,'record_sn')}
-								maxLength="64"
-								disabled
-								placeholder="系統自動產生" />
-							</div>
+							<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
 						</div>
 
 						<div className="form-group">
-							<label className="col-xs-2 control-label text-danger">選擇客戶</label>
-							<div className="col-xs-4">
+							<label className="col-xs-2 control-label">選擇客戶</label>
+							<div className="col-xs-3">
 								<div className="input-group">
 									<input type="text" 							
 									className="form-control"	
@@ -508,30 +517,11 @@ var GirdForm = React.createClass({
 									</span>
 								</div>
 							</div>
-							<label className="col-xs-2 control-label">媽媽姓名</label>
-							<div className="col-xs-4">
-								<input type="text" 							
-								className="form-control"	
-								value={fieldData.name}
-								onChange={this.changeFDValue.bind(this,'name')}
-								maxLength="64"
-								required 
-								disabled />
-							</div>
+							<small className="help-inline col-xs-6 text-danger">(必填)</small>
 						</div>
-
 						<div className="form-group">
-							<label className="col-xs-2 control-label">用餐編號</label>
-							<div className="col-xs-4">
-								<input type="text" 
-								className="form-control"	
-								value={fieldData.meal_id}
-								onChange={this.changeFDValue.bind(this,'meal_id')}
-								required
-								disabled />
-							</div>
 							<label className="col-xs-2 control-label">客戶類別</label>
-							<div className="col-xs-4">
+							<div className="col-xs-3">
 								<select className="form-control" 
 								value={fieldData.customer_type}
 								disabled
@@ -543,10 +533,42 @@ var GirdForm = React.createClass({
 								}
 								</select>
 							</div>
+							<label className="col-xs-2 control-label">客戶名稱</label>
+							<div className="col-xs-3">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.customer_name}
+								onChange={this.changeFDValue.bind(this,'customer_name')}
+								maxLength="64"
+								required 
+								disabled />
+							</div>				
 						</div>
 						<div className="form-group">
+							<label className="col-xs-2 control-label">用餐編號</label>
+							<div className="col-xs-3">
+								<input type="text" 
+								className="form-control"	
+								value={fieldData.meal_id}
+								onChange={this.changeFDValue.bind(this,'meal_id')}
+								required
+								disabled />
+							</div>
+							<label className="col-xs-2 control-label">媽媽姓名</label>
+							<div className="col-xs-3">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.name}
+								onChange={this.changeFDValue.bind(this,'name')}
+								maxLength="64"
+								required 
+								disabled />
+							</div>	
+						</div>
+						<div className="bg-warning">
+						<div className="form-group">
 							<label className="col-xs-2 control-label">連絡電話1</label>
-							<div className="col-xs-4">
+							<div className="col-xs-3">
 								<input type="tel" 
 								className="form-control"	
 								value={fieldData.tel_1}
@@ -555,7 +577,7 @@ var GirdForm = React.createClass({
 								disabled />
 							</div>
 							<label className="col-xs-2 control-label">連絡電話2</label>
-							<div className="col-xs-4">
+							<div className="col-xs-3">
 								<input type="tel" 
 								className="form-control"	
 								value={fieldData.tel_2}
@@ -566,7 +588,7 @@ var GirdForm = React.createClass({
 						</div>						
 						<div className="form-group">
 							<label className="col-xs-2 control-label">身分證字號</label>
-							<div className="col-xs-4">
+							<div className="col-xs-3">
 								<input type="text" 
 								className="form-control"	
 								value={fieldData.sno}
@@ -575,7 +597,7 @@ var GirdForm = React.createClass({
 								disabled />
 							</div>
 							<label className="col-xs-2 control-label">生日</label>
-							<div className="col-xs-4">
+							<div className="col-xs-3">
 								<span className="has-feedback">
 									<InputDate id="birthday" 
 									onChange={this.changeFDValue} 
@@ -616,7 +638,7 @@ var GirdForm = React.createClass({
 								address_field="tw_address_2"
 								disabled={true}/>
 						</div>
-
+					</div>
 					</div>
 					<div className="col-xs-8">
 						<p className="text-right">
@@ -628,7 +650,7 @@ var GirdForm = React.createClass({
 				<div className="col-xs-12">
 					<hr className="condensed" />
 				</div>
-				{/* ---是否結案按鈕--- */}
+				{/* ---是否結案按鈕start--- */}
 				<h4 className="title clearfix">
 					<div className="col-xs-8">
 						<span className="pull-left">是否結案：{fieldData.is_close?<strong className="text-primary">已結案</strong>:<strong className="text-danger">未結案</strong>}</span>
@@ -638,10 +660,11 @@ var GirdForm = React.createClass({
 						</span>
 					</div>
 				</h4>
-				{/* ---是否結案按鈕--- */}
+				{/* ---是否結案按鈕end--- */}
 				
 				{/*---產品明細---*/}
-				<SubForm ref="SubForm" />
+				<SubForm ref="SubForm" main_id={fieldData.product_record_id} />
+
 			</div>
 			);
 		}else{
@@ -652,31 +675,197 @@ var GirdForm = React.createClass({
 	}
 });
 
-//明細檔
+//明細檔編輯
 var SubForm = React.createClass({
 	mixins: [React.addons.LinkedStateMixin], 
 	getInitialState: function() {  
 		return {
-			gridData:{rows:[],page:1},
-			fieldData:{},
+			gridSubData:[],
+			fieldSubData:{},
 			searchData:{title:null},
-			edit_type:0,
-			checkAll:false
+			edit_sub_type:1,//預設皆為新增狀態
+			checkAll:false,
+			isShowProductSelect:false,//控制選取產品視窗顯示
+			product_list:[]
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
-			fdName:'fieldData',
+			fdName:'fieldSubData',
 			gdName:'searchData',
-			apiPathName:gb_approot+'api/Product'
+			apiPathName:gb_approot+'api/RecordDetail'
 		};
-	},	
+	},
+	componentDidMount:function(){
+		this.queryGridData();
+	},
+	shouldComponentUpdate:function(nextProps,nextState){
+		return true;
+	},
+	detailHandleSubmit: function(e) {
+
+		e.preventDefault();
+
+		if(this.state.fieldSubData.product_id==null || this.state.fieldSubData.product_id==undefined){
+			tosMessage(gb_title_from_invalid,'未選擇產品!!',3);
+			return;
+		}
+
+		if(this.state.edit_sub_type==1){
+			jqPost(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		}		
+		else if(this.state.edit_sub_type==2){
+			jqPut(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		};
+		return;
+	},
+	gridData:function(){
+		var parms = {
+			main_id:this.props.main_id
+		};
+		$.extend(parms, this.state.searchData);
+
+		return jqGet(this.props.apiPathName,parms);
+	},
+	queryGridData:function(){
+		this.gridData()
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({gridSubData:data});
+		}.bind(this))
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			showAjaxError(errorThrown);
+		});
+	},
+	insertSubType:function(){
+		$('textarea').val("");
+		this.setState({edit_sub_type:1,fieldSubData:{memo:null,meal_memo:null}});
+	},
+	updateSubType:function(id,e){
+		jqGet(this.props.apiPathName,{id:id})
+		.done(function(data, textStatus, jqXHRdata) {
+			console.log(data.data);
+			this.setState({edit_sub_type:2,fieldSubData:data.data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	changeFDValue:function(name,e){
+		this.setInputValue(this.props.fdName,name,e);
+	},
+	setInputValue:function(collentName,name,e){
+
+		var obj = this.state[collentName];
+		if(e.target.value=='true'){
+			obj[name] = true;
+		}else if(e.target.value=='false'){
+			obj[name] = false;
+		}else{
+			obj[name] = e.target.value;
+		}
+		this.setState({fieldSubData:obj});
+	},
+	changeMealday:function(name,e){//計算日期天數
+		var obj = this.state.fieldSubData;
+		obj[name] = e.target.value;//先變更修改後的日期在計算
+
+		if(obj.meal_start!=null & obj.meal_end!=null){
+			if(obj.meal_start <= obj.meal_end){
+			//開始日期 小於等於 結束日期 才計算
+			var day_s=new Date(obj.meal_start);
+			var day_e=new Date(obj.meal_end);
+			var iDays = parseInt(Math.abs(day_e - day_s) / 1000 / 60 / 60 /24)+1;
+				obj.diff_day=iDays;
+			}else{
+				obj.diff_day=0;
+				tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
+			}
+		}
+		this.setState({fieldSubData:obj});
+	},
+	queryAllProduct:function(){//選取產品編號-
+		jqGet(gb_approot + 'api/GetAction/GetAllMealID',{})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({mealid_list:data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+	showSelectProduct:function(){
+		//this.queryAllMealID();
+		this.setState({isShowProductSelect:true});
+	},
+	closeSelectProduct:function(){
+		this.setState({isShowProductSelect:false});
+	},
+	selectMealid:function(meal_id){
+		var fieldDetailData = this.state.fieldDetailData;//選取後變更mealid
+		jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldDetailData.meal_id,new_id:meal_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			if(!data.result){
+				alert(data.message);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			//showAjaxError(errorThrown);
+		});
+
+		fieldDetailData.meal_id=meal_id;
+		this.setState({isShowProductSelect:false,fieldDetailData:fieldDetailData});
+	},
 	render: function() {
 		var outHtml = null;
+		var fieldSubData = this.state.fieldSubData;//明細檔資料
+
+		var ModalProductSelect=ReactBootstrap.Modal;//啟用產品選取的視窗內容
+		var product_select_out_html=null;
+		if(this.state.isShowProductSelect){
+			product_select_out_html=
+			<ModalProductSelect bsSize="medium" title="客戶生產紀錄編輯" onRequestHide={this.closeSelectProduct}>
+						<div className="modal-body">
+							<h4>hi</h4>
+						</div>
+				</ModalProductSelect>;
+		}
+
+
 
 			outHtml =
 			(
 				<div>
+					{product_select_out_html}
+			{/*---產品明細編輯start---*/}
 					<h4 className="title">新增產品明細</h4>
 					<div className="row">
 						<div className="item-box">
@@ -684,56 +873,95 @@ var SubForm = React.createClass({
 								<h5>產品明細基本資料</h5>
 							</div>
 							<div className="panel-body">
-								<form className="form-horizontal clearfix" role="form">
+								<form className="form-horizontal clearfix" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
+
 									<div className="form-group">
 										<label className="col-xs-2 control-label">銷售日期</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" />
+											<span className="has-feedback">
+												<InputDate id="sell_day" 
+												onChange={this.changeFDValue} 
+												field_name="sell_day" 
+												value={fieldSubData.sell_day}
+												disabled={true}
+												placeholder="系統自動產生" />
+											</span>
 										</div>
-										<label className="col-xs-1 control-label">分類</label>
-										<div className="col-xs-2">
-											<input type="text" className="form-control" disabled />
-										</div>
+										<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
 									</div>
 									<div className="form-group">
-										<label className="col-xs-2 control-label">產品編號</label>
+										<label className="col-xs-2 control-label">產品名稱</label>
 										<div className="col-xs-2">
 											<div className="input-group">
-												<input type="text" className="form-control" />
+												<input type="text" 							
+												className="form-control"	
+												value={fieldSubData.product_name}
+												onChange={this.changeFDValue.bind(this,'product_name')}
+												maxLength="64"
+												required disabled　/>
 												<span className="input-group-btn">
-													<button type="button">...</button>
+													<button type="button" onClick={this.showSelectProduct}>...</button>
 												</span>
 											</div>
 										</div>
-										<label className="col-xs-1 control-label">名稱</label>
+										<label className="col-xs-1 control-label">分類</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" disabled />
+											<select className="form-control" 
+											value={fieldSubData.product_type}
+											onChange={this.changeFDValue.bind(this,'product_type')}
+											disabled>
+											{
+												CommData.ProductType.map(function(itemData,i) {
+													return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select>
 										</div>
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">售價</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" />
+											<input type="number" 
+											className="form-control"	
+											value={fieldSubData.price}
+											onChange={this.changeFDValue.bind(this,'price')} />
 										</div>
 										<label className="col-xs-1 control-label">規格</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" />
+											<input type="text" 							
+											className="form-control"	
+											value={fieldSubData.standard}
+											onChange={this.changeFDValue.bind(this,'standard')}
+											maxLength="64"
+											required disabled　/>
 										</div>
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">數量</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" />
+											<input type="number" 							
+											className="form-control"	
+											value={fieldSubData.qty}
+											onChange={this.changeFDValue.bind(this,'qty')}
+											min="1"
+											required/>
 										</div>
 										<label className="col-xs-1 control-label">小計</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" />
+											<input type="number" 							
+											className="form-control"	
+											value={fieldSubData.subtotal}
+											onChange={this.changeFDValue.bind(this,'subtotal')}
+											required disabled　/>
 										</div>
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">備註</label>
 										<div className="col-xs-5">
-											<textarea rows="2" className="form-control"></textarea>
+											<textarea col="30" row="2" className="form-control"
+											value={fieldSubData.memo}
+											onChange={this.changeFDValue.bind(this,'memo')}
+											maxLength="256"></textarea>
 										</div>
 									</div>
 								</form>
@@ -749,16 +977,32 @@ var SubForm = React.createClass({
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計送餐起日</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" />
+											<span className="has-feedback">
+												<InputDate id="meal_start" 
+												onChange={this.changeMealday} 
+												field_name="meal_start" 
+												value={fieldSubData.meal_start}
+												require={fieldSubData.price==2} />
+											</span>
 										</div>
 										<label className="col-xs-2 control-label">預計送餐迄日</label>
 										<div className="col-xs-2">
-											<input type="text" className="form-control" />
+											<span className="has-feedback">
+												<InputDate id="meal_end" 
+												onChange={this.changeMealday} 
+												field_name="meal_end" 
+												value={fieldSubData.meal_end}
+												require={fieldSubData.price==2} />
+											</span>
 										</div>
 										<div className="col-xs-2">
 											<label className="col-xs-8 control-label">預計天數</label>
 											<div className="col-xs-4">
-											<input type="text" className="form-control" disabled />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.diff_day}
+												onChange={this.changeFDValue.bind(this,'diff_day')}
+												min="0" disabled/>
 										</div>
 										</div>
 									</div>
@@ -767,25 +1011,41 @@ var SubForm = React.createClass({
 										<div className="col-xs-1">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal1-1">早</span>
-												<input type="text" className="form-control" aria-describedby="meal1-1" />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.estimate_breakfast}
+												onChange={this.changeFDValue.bind(this,'estimate_breakfast')}
+												min="0"/>
 											</div>
 										</div>
 										<div className="col-xs-1">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal1-2">午</span>
-												<input type="text" className="form-control" aria-describedby="meal1-2" />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.estimate_lunch}
+												onChange={this.changeFDValue.bind(this,'estimate_lunch')}
+												min="0"/>
 											</div>
 										</div>
 										<div className="col-xs-1">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal1-3">晚</span>
-												<input type="text" className="form-control" aria-describedby="meal1-3" />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.estimate_dinner}
+												onChange={this.changeFDValue.bind(this,'estimate_dinner')}
+												min="0"/>
 											</div>
 										</div>
 										<div className="col-xs-3">
 											<label className="col-xs-6 control-label">預計點數</label>
 											<div className="col-xs-6">
-												<input type="text" className="form-control" disabled />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.estimate_count}
+												onChange={this.changeFDValue.bind(this,'estimate_count')}
+												min="0" disabled/>
 											</div>
 										</div>
 									</div>
@@ -794,43 +1054,101 @@ var SubForm = React.createClass({
 										<div className="col-xs-1">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal2-1">早</span>
-												<input type="text" className="form-control" aria-describedby="meal2-1" disabled />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.real_breakfast}
+												onChange={this.changeFDValue.bind(this,'real_breakfast')}
+												min="0" disabled/>
 											</div>
 										</div>
 										<div className="col-xs-1">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal2-2">午</span>
-												<input type="text" className="form-control" aria-describedby="meal2-2" disabled />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.real_lunch}
+												onChange={this.changeFDValue.bind(this,'real_lunch')}
+												min="0" disabled/>
 											</div>
 										</div>
 										<div className="col-xs-1">
 											<div className="input-group">
 												<span className="input-group-addon" id="meal2-3">晚</span>
-												<input type="text" className="form-control" aria-describedby="meal2-3" disabled />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.real_dinner}
+												onChange={this.changeFDValue.bind(this,'real_dinner')}
+												min="0" disabled/>
 											</div>
 										</div>
 										<div className="col-xs-3">
 											<label className="col-xs-6 control-label">實際點數</label>
 											<div className="col-xs-6">
-												<input type="text" className="form-control" disabled />
+												<input type="number" 							
+												className="form-control"	
+												value={fieldSubData.real_count}
+												onChange={this.changeFDValue.bind(this,'real_count')}
+												min="0" disabled/>
 											</div>
 										</div>
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
 										<div className="col-xs-8">
-											<textarea rows="2" className="form-control"></textarea>
+											<textarea col="30" row="2" className="form-control"
+											value={fieldSubData.meal_memo}
+											onChange={this.changeFDValue.bind(this,'meal_memo')}
+											maxLength="256"></textarea>
 										</div>
 									</div>
 								</form>
 							</div>
 							<div className="panel-footer">
-								<button className="btn-primary col-xs-offset-9">
+								<button className="btn-primary col-xs-offset-9"
+								type="submit" form="form2">
 									<i className="fa-check"></i> 存檔確認
 								</button>
 							</div>
 						</div>
 					</div>
+				{/*---產品明細編輯end---*/}
+
+					<hr className="condensed" />
+
+				{/*---產谝明細列表start---*/}
+					<h4 className="title">產品明細列表</h4>
+					<table className="table-condensed">
+						<tbody>
+							<tr>
+								<th className="col-xs-1 text-center">編輯</th>
+								<th className="col-xs-2 text-center">產品分類</th>
+								<th className="col-xs-4">產品名稱</th>
+								<th className="col-xs-1">單價</th>
+								<th className="col-xs-1">數量</th>
+								<th className="col-xs-1">小計</th>
+								<th className="col-xs-2 text-center">用餐明細</th>
+							</tr>
+							{
+								this.state.gridSubData.map(function(itemData,i) {
+									var sub_out_html = 
+										<tr key={itemData.record_deatil_id}>
+											<td className="text-center">
+												<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.record_deatil_id)}><i className="fa-pencil"></i></button>
+												<button className="btn-link text-danger"><i className="fa-trash"></i></button>
+											</td>
+											<td  className="text-center"><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
+											<td>{itemData.product_name}</td>
+											<td>{itemData.price}</td>
+											<td>{itemData.qty}</td>
+											<td>{itemData.subtotal}</td>
+											<td className="text-center"><button className="btn-info btn-sm"><i className="fa-search"></i> 查看</button></td>			
+										</tr>;
+										return sub_out_html;
+								}.bind(this))
+							}
+						</tbody>
+					</table>
+				{/*---產品明細列表end---*/}
 				</div>
 			);
 

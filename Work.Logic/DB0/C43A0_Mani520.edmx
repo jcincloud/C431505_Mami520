@@ -475,6 +475,7 @@
           <Property Name="price" Type="float" Nullable="false" />
           <Property Name="standard" Type="nvarchar" MaxLength="64" />
           <Property Name="sort" Type="int" />
+          <Property Name="is_modify" Type="bit" Nullable="false" />
           <Property Name="memo" Type="nvarchar" MaxLength="256" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
@@ -496,6 +497,41 @@
           <Property Name="born_id" Type="int" Nullable="false" />
           <Property Name="is_close" Type="bit" Nullable="false" />
           <Property Name="is_receipt" Type="bit" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RecordDetail">
+          <Key>
+            <PropertyRef Name="record_deatil_id" />
+          </Key>
+          <Property Name="record_deatil_id" Type="int" Nullable="false" />
+          <Property Name="product_record_id" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="born_id" Type="int" Nullable="false" />
+          <Property Name="sell_day" Type="smalldatetime" Nullable="false" />
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="product_type" Type="int" Nullable="false" />
+          <Property Name="product_name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="price" Type="float" Nullable="false" />
+          <Property Name="standard" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="qty" Type="float" Nullable="false" />
+          <Property Name="subtotal" Type="float" Nullable="false" />
+          <Property Name="memo" Type="nvarchar" MaxLength="256" />
+          <Property Name="meal_start" Type="smalldatetime" />
+          <Property Name="meal_end" Type="smalldatetime" />
+          <Property Name="estimate_breakfast" Type="int" />
+          <Property Name="estimate_lunch" Type="int" />
+          <Property Name="estimate_dinner" Type="int" />
+          <Property Name="real_breakfast" Type="int" />
+          <Property Name="real_lunch" Type="int" />
+          <Property Name="real_dinner" Type="int" />
+          <Property Name="meal_memo" Type="nvarchar" MaxLength="256" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="i_InsertDeptID" Type="int" />
@@ -797,6 +833,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RecordDetail_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="RecordDetail" Type="Self.RecordDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="RecordDetail">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecordDetail_ProductRecord">
+          <End Role="ProductRecord" Type="Self.ProductRecord" Multiplicity="1" />
+          <End Role="RecordDetail" Type="Self.RecordDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductRecord">
+              <PropertyRef Name="product_record_id" />
+            </Principal>
+            <Dependent Role="RecordDetail">
+              <PropertyRef Name="product_record_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="C43A0_Mani520ModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="All_Category_L1" EntityType="Self.All_Category_L1" Schema="dbo" store:Type="Tables" />
@@ -829,6 +889,7 @@
           <EntitySet Name="MenuRole" EntityType="Self.MenuRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductRecord" EntityType="Self.ProductRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecordDetail" EntityType="Self.RecordDetail" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_All_Category_L2_All_Category_L1" Association="Self.FK_All_Category_L2_All_Category_L1">
             <End Role="All_Category_L1" EntitySet="All_Category_L1" />
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
@@ -924,6 +985,14 @@
           <AssociationSet Name="FK_ProductRecord_CustomerBorn" Association="Self.FK_ProductRecord_CustomerBorn">
             <End Role="CustomerBorn" EntitySet="CustomerBorn" />
             <End Role="ProductRecord" EntitySet="ProductRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordDetail_Product" Association="Self.FK_RecordDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="RecordDetail" EntitySet="RecordDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordDetail_ProductRecord" Association="Self.FK_RecordDetail_ProductRecord">
+            <End Role="ProductRecord" EntitySet="ProductRecord" />
+            <End Role="RecordDetail" EntitySet="RecordDetail" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -1101,7 +1170,6 @@
             <End Role="Customer" EntitySet="Customer" />
             <End Role="CustomerBorn" EntitySet="CustomerBorn" />
           </AssociationSet>
-          <EntitySet Name="Product" EntityType="C43A0_Mani520Model.Product" />
           <EntitySet Name="All_Category_L1" EntityType="C43A0_Mani520Model.All_Category_L1" />
           <EntitySet Name="All_Category_L2" EntityType="C43A0_Mani520Model.All_Category_L2" />
           <AssociationSet Name="FK_All_Category_L2_All_Category_L1" Association="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1">
@@ -1188,6 +1256,16 @@
           <AssociationSet Name="FK_GiftRecord_ProductRecord" Association="C43A0_Mani520Model.FK_GiftRecord_ProductRecord">
             <End Role="ProductRecord" EntitySet="ProductRecord" />
             <End Role="GiftRecord" EntitySet="GiftRecord" />
+          </AssociationSet>
+          <EntitySet Name="RecordDetail" EntityType="C43A0_Mani520Model.RecordDetail" />
+          <AssociationSet Name="FK_RecordDetail_ProductRecord" Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord">
+            <End Role="ProductRecord" EntitySet="ProductRecord" />
+            <End Role="RecordDetail" EntitySet="RecordDetail" />
+          </AssociationSet>
+          <EntitySet Name="Product" EntityType="C43A0_Mani520Model.Product" />
+          <AssociationSet Name="FK_RecordDetail_Product" Association="C43A0_Mani520Model.FK_RecordDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="RecordDetail" EntitySet="RecordDetail" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="MealID">
@@ -1288,26 +1366,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="product_id" />
-          </Key>
-          <Property Name="product_id" Type="Int32" Nullable="false" />
-          <Property Name="product_type" Type="Int32" Nullable="false" />
-          <Property Name="product_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="price" Type="Double" Nullable="false" />
-          <Property Name="standard" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="sort" Type="Int32" />
-          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
-          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_InsertDeptID" Type="Int32" />
-          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_UpdateDeptID" Type="Int32" />
-          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-        </EntityType>
         <EntityType Name="All_Category_L1">
           <Key>
             <PropertyRef Name="all_category_l1_id" />
@@ -1740,6 +1798,7 @@
           <NavigationProperty Name="Customer" Relationship="C43A0_Mani520Model.FK_ProductRecord_Customer" FromRole="ProductRecord" ToRole="Customer" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_ProductRecord_CustomerBorn" FromRole="ProductRecord" ToRole="CustomerBorn" />
           <NavigationProperty Name="GiftRecord" Relationship="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" FromRole="ProductRecord" ToRole="GiftRecord" />
+          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="ProductRecord" ToRole="RecordDetail" />
         </EntityType>
         <Association Name="FK_ProductRecord_Customer">
           <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
@@ -1822,6 +1881,89 @@
             </Principal>
             <Dependent Role="GiftRecord">
               <PropertyRef Name="product_record_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RecordDetail">
+          <Key>
+            <PropertyRef Name="record_deatil_id" />
+          </Key>
+          <Property Name="record_deatil_id" Type="Int32" Nullable="false" />
+          <Property Name="product_record_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="born_id" Type="Int32" Nullable="false" />
+          <Property Name="sell_day" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="product_type" Type="Int32" Nullable="false" />
+          <Property Name="product_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Double" Nullable="false" />
+          <Property Name="standard" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="qty" Type="Double" Nullable="false" />
+          <Property Name="subtotal" Type="Double" Nullable="false" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="meal_start" Type="DateTime" Precision="0" />
+          <Property Name="meal_end" Type="DateTime" Precision="0" />
+          <Property Name="estimate_breakfast" Type="Int32" />
+          <Property Name="estimate_lunch" Type="Int32" />
+          <Property Name="estimate_dinner" Type="Int32" />
+          <Property Name="real_breakfast" Type="Int32" />
+          <Property Name="real_lunch" Type="Int32" />
+          <Property Name="real_dinner" Type="Int32" />
+          <Property Name="meal_memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="RecordDetail" ToRole="ProductRecord" />
+          <NavigationProperty Name="Product" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="RecordDetail" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_RecordDetail_ProductRecord">
+          <End Type="C43A0_Mani520Model.ProductRecord" Role="ProductRecord" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductRecord">
+              <PropertyRef Name="product_record_id" />
+            </Principal>
+            <Dependent Role="RecordDetail">
+              <PropertyRef Name="product_record_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="product_type" Type="Int32" Nullable="false" />
+          <Property Name="product_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Double" Nullable="false" />
+          <Property Name="standard" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="sort" Type="Int32" />
+          <Property Name="is_modify" Type="Boolean" Nullable="false" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="Product" ToRole="RecordDetail" />
+        </EntityType>
+        <Association Name="FK_RecordDetail_Product">
+          <End Type="C43A0_Mani520Model.Product" Role="Product" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="RecordDetail">
+              <PropertyRef Name="product_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2051,27 +2193,6 @@
                 <ScalarProperty Name="meal_id" ColumnName="meal_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="born_id" ColumnName="born_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Product">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
-                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
-                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
-                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
-                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
-                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
-                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
-                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="memo" ColumnName="memo" />
-                <ScalarProperty Name="sort" ColumnName="sort" />
-                <ScalarProperty Name="standard" ColumnName="standard" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="product_name" ColumnName="product_name" />
-                <ScalarProperty Name="product_type" ColumnName="product_type" />
-                <ScalarProperty Name="product_id" ColumnName="product_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2353,6 +2474,64 @@
                 <ScalarProperty Name="record_sn" ColumnName="record_sn" />
                 <ScalarProperty Name="product_record_id" ColumnName="product_record_id" />
                 <ScalarProperty Name="gift_record_id" ColumnName="gift_record_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecordDetail">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.RecordDetail">
+              <MappingFragment StoreEntitySet="RecordDetail">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="meal_memo" ColumnName="meal_memo" />
+                <ScalarProperty Name="real_dinner" ColumnName="real_dinner" />
+                <ScalarProperty Name="real_lunch" ColumnName="real_lunch" />
+                <ScalarProperty Name="real_breakfast" ColumnName="real_breakfast" />
+                <ScalarProperty Name="estimate_dinner" ColumnName="estimate_dinner" />
+                <ScalarProperty Name="estimate_lunch" ColumnName="estimate_lunch" />
+                <ScalarProperty Name="estimate_breakfast" ColumnName="estimate_breakfast" />
+                <ScalarProperty Name="meal_end" ColumnName="meal_end" />
+                <ScalarProperty Name="meal_start" ColumnName="meal_start" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="subtotal" ColumnName="subtotal" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
+                <ScalarProperty Name="standard" ColumnName="standard" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="product_type" ColumnName="product_type" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="sell_day" ColumnName="sell_day" />
+                <ScalarProperty Name="born_id" ColumnName="born_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="product_record_id" ColumnName="product_record_id" />
+                <ScalarProperty Name="record_deatil_id" ColumnName="record_deatil_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="is_modify" ColumnName="is_modify" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="standard" ColumnName="standard" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="product_type" ColumnName="product_type" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

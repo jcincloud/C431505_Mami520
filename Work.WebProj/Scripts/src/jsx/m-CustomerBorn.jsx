@@ -16,9 +16,9 @@ var GridRow = React.createClass({
 				<tr>
 					{/*<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>*/}
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
-					<td>{this.props.itemData.customer_sn}</td>
 					<td>{this.props.itemData.customer_name}</td>
 					<td><StateForGrid stateData={CommData.CustomerType} id={this.props.itemData.customer_type} /></td>
+					<td>{this.props.itemData.sno}</td>
 					<td>{this.props.itemData.tw_city_1+this.props.itemData.tw_country_1+this.props.itemData.tw_address_1}</td>
 					<td className="text-center">{this.props.itemData.born_times}</td>
 				</tr>
@@ -292,10 +292,10 @@ var GirdForm = React.createClass({
 							<div className="table-filter">
 								<div className="form-inline">
 									<div className="form-group">
-										<label>客戶名稱</label> { }
+										<label>客戶名稱/身分證號</label> { }
 										<input type="text" className="form-control input-sm" 
-										value={searchData.customer_name}
-										onChange={this.changeGDValue.bind(this,'customer_name')}
+										value={searchData.word_born}
+										onChange={this.changeGDValue.bind(this,'word_born')}
 										placeholder="客戶名稱..." /> { }
 									</div>
 									<div className="form-group">
@@ -351,9 +351,9 @@ var GirdForm = React.createClass({
 										</label>
 									</th>*/}
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">客戶編號</th>
 									<th className="col-xs-2">客戶名稱</th>
 									<th className="col-xs-1">客戶分類</th>
+									<th className="col-xs-2">身分證號</th>
 									<th className="col-xs-4">送餐地址</th>
 									<th className="col-xs-2 text-center">生產筆數</th>
 								</tr>
@@ -481,7 +481,7 @@ var GirdSubForm = React.createClass({
 	},	
 	componentDidMount:function(){
 		this.queryGridDetailData(1);
-		console.log(this.props.main_id);
+		//console.log(this.props.main_id);
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
@@ -630,6 +630,8 @@ var GirdSubForm = React.createClass({
 			this.setState({
 				detail_edit_type:1,
 				fieldDetailData:{
+					born_id:null,
+					meal_id:null,
 					customer_id:fiedlData.customer_id,
 					mom_name:fiedlData.customer_name,
 					sno:fiedlData.sno,
@@ -650,7 +652,12 @@ var GirdSubForm = React.createClass({
 		}else{
 			this.setState({
 				detail_edit_type:1,
-				fieldDetailData:{customer_id:fiedlData.customer_id,born_type:1}
+				fieldDetailData:{
+					customer_id:fiedlData.customer_id,
+					born_type:1,
+					born_id:null,
+					meal_id:null
+				}
 			});
 		}
 	},
@@ -743,10 +750,7 @@ var GirdSubForm = React.createClass({
 		var fDData = this.state.fieldDetailData;
 		jqPost(gb_approot + 'api/GetAction/CheckMealID',{born_id:fDData.born_id,meal_id:fDData.meal_id})
 		.done(function(data, textStatus, jqXHRdata) {
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			//showAjaxError(errorThrown);
-		});	
+		}.bind(this));	
 
 	},
 	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
@@ -790,7 +794,7 @@ var GirdSubForm = React.createClass({
 		var error_out_html=null;//如果生產資料有對應的產品銷售主檔就出現警告訊息
 		if(fieldDetailData.have_record && fieldDetailData.meal_id!=null){
 			error_out_html=<div className="alert alert-warning"><p>已有對應的產品銷售資料，<strong className="text-danger">不可隨意變更用餐編號</strong> 。</p></div>;
-		}
+		}//客戶分類為自有客戶之客戶，客戶生產紀錄有新增及修改時會會將部分資料更新至客戶基本資料 。
 
 
 		var customer_born_out_html=null;//存放生產編輯的視窗內容

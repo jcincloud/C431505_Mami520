@@ -248,6 +248,7 @@
     <None Include="Content\bootstrap\js\npm.js" />
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
+    <Compile Include="Controllers\Api\RecordDetailController.cs" />
     <Compile Include="Controllers\Api\CustomerNeedController.cs" />
     <Compile Include="Controllers\Api\DietaryNeedController.cs" />
     <Compile Include="Controllers\Api\DailyMenuController.cs" />

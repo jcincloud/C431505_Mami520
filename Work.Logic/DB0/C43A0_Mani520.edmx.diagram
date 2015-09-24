@@ -22,7 +22,6 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.Customer" Width="1.5" PointX="5.375" PointY="10.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.CustomerBorn" Width="1.5" PointX="7.625" PointY="12.125" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerBorn_Customer" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="10.375" PointY="6.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.All_Category_L1" Width="1.5" PointX="10.375" PointY="12.125" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.All_Category_L2" Width="1.5" PointX="12.625" PointY="12" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" />
@@ -56,6 +55,10 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_Activity" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_CustomerBorn" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="20.125" PointY="3.5" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
