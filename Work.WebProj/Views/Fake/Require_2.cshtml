@@ -43,7 +43,7 @@
 					</label>
 				</div>
 			</div>
-			<small class="help-inline col-xs-6">此需求是否用來描述特定菜色</small>
+			<small class="help-inline col-xs-6">ex. 不薑 / 不酒 (有對應)、清淡 / 素食 (無對應)</small>
 		</div>
 		<div class="form-group">
 			<label class="col-xs-2 control-label">適用餐別</label>
@@ -67,6 +67,7 @@
 					</label>
 				</div>
 			</div>
+			<small class="help-inline col-xs-6">需求元素設為 "有對應" 才需填寫!!</small>
 		</div>
 		<div class="form-group">
 			<label class="col-xs-2 control-label">狀態</label>
@@ -103,3 +104,78 @@
 		</div>
 	</div>
 </form>
+
+<hr class="condensed" />
+
+<h4 class="title">需求元素對應設定 <small class="text-muted">需求元素設為 "有對應" 才需填寫!!</small></h4>
+
+@* 主檔還沒新增，會出現的畫面 *@
+<div class="alert alert-warning">
+	請先按上方的 <strong>存檔確認</strong>，再進行設定。
+</div>
+
+@* 主檔新增完成後，會出現的畫面 *@
+<div class="row">
+	<div class="col-xs-6">
+	    <table class="table-condensed">
+	    	<caption>
+	    		食材
+	    		<div class="form-inline pull-right">
+	                <div class="form-group">
+	                   <input type="text" class="form-control input-sm" placeholder="食材名稱" /> 
+	                </div>
+	                <div class="form-group">
+	                   <select class="form-control input-sm">
+	                        <option value="">全部分類</option>
+	                        <option value="">AAA</option>
+	                        <option value="">BBB</option>
+	                    </select>
+	                </div>
+	            </div>
+	    	</caption>
+	    	<tr>
+	    		<th class="col-xs-3">分類</th>
+	    		<th class="col-xs-7">食材名稱</th>
+	    		<th class="col-xs-2 text-center">加入</th>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-success"><i class="fa-plus"></i></button>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-success"><i class="fa-plus"></i></button>
+	    		</td>
+	    	</tr>
+	    </table>
+	</div>
+	<div class="col-xs-6">
+		<table class="table-condensed">
+	    	<caption>已加入對應</caption>
+	    	<tr>
+	    		<th class="col-xs-3">分類</th>
+	    		<th class="col-xs-7">食材名稱</th>
+	    		<th class="col-xs-2 text-center">移除</th>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-danger"><i class="fa-times"></i></button>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-danger"><i class="fa-times"></i></button>
+	    		</td>
+	    	</tr>
+	    </table>
+	</div>
+</div>

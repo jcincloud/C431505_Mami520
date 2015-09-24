@@ -81,6 +81,10 @@ namespace DotWeb.Controllers
         {
             return View("Require2_2");
         }
+        public ActionResult Require2_3()
+        {
+            return View("Require2_3");
+        }
 
         public ActionResult Schedule()
         {
@@ -145,6 +149,14 @@ namespace DotWeb.Controllers
         {
             return View("Tel");
         }
+        public ActionResult Tel_2()
+        {
+            return View("Tel_2");
+        }
+        public ActionResult Tel_3()
+        {
+            return View("Tel_3");
+        }
         public ActionResult Tel2()
         {
             return View("Tel2");
@@ -161,10 +173,18 @@ namespace DotWeb.Controllers
         {
             return View("Tel5");
         }
+        public ActionResult Tel5_2()
+        {
+            return View("Tel5_2");
+        }
 
         public ActionResult Check()
         {
             return View("Check");
+        }
+        public ActionResult Check_2()
+        {
+            return View("Check_2");
         }
 
         public ActionResult Report()

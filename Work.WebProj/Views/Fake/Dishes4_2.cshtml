@@ -9,4 +9,119 @@
 
 <h3 class="title">@ViewBag.Title</h3>
 
-<h4 class="title">By Ajoe</h4>
+<h4 class="title">每日菜單編輯</h4>
+
+<form class="form-horizontal" role="form" action="~/Fake/Dishes4">
+	<div class="form-group">
+		<label class="col-xs-1 control-label">日期</label>
+		<div class="col-xs-2">
+			<span class="has-feedback">
+				<input type="text" class="form-control datetimepicker" />
+				<i class="fa-calendar form-control-feedback"></i>
+			</span>
+		</div>
+		<label class="col-xs-1 control-label">餐別</label>
+		<div class="col-xs-1">
+			<select class="form-control">
+				<option value="">早</option>
+				<option value="">午</option>
+				<option value="">晚</option>
+			</select>
+		</div>
+		<label class="col-xs-1 control-label">狀態</label>
+		<div class="col-xs-2">
+			<div class="radio-inline">
+				<label>
+					<input type="radio" name="radio-test2" checked>
+					<span>啟用</span>
+				</label>
+			</div>
+			<div class="radio-inline">
+				<label>
+					<input type="radio" name="radio-test2">
+					<span>停用</span>
+				</label>
+			</div>
+		</div>
+		<small class="help-inline col-xs-1 text-danger">(必填)</small>
+		<div class="col-xs-3 text-right">
+			<button class="btn-primary"><i class="fa-check"></i> 存檔確認</button>
+			<button><i class="fa-times"></i> 回列表</button>
+		</div>
+	</div>
+</form>
+
+<hr class="condensed" />
+
+<h4 class="title">菜單設定</h4>
+
+@* 主檔還沒新增，會出現的畫面 *@
+<div class="alert alert-warning">
+	請先按上方的 <strong>存檔確認</strong>，再進行設定。
+</div>
+
+@* 主檔新增完成後，會出現的畫面 *@
+<div class="row">
+	<div class="col-xs-6">
+	    <table class="table-condensed">
+	    	<caption>
+	    		菜餚
+	    		<div class="form-inline pull-right">
+	                <div class="form-group">
+	                   <input type="text" class="form-control input-sm" placeholder="菜名" /> 
+	                </div>
+	                <div class="form-group">
+	                   <select class="form-control input-sm">
+	                        <option value="">菜餚分類</option>
+	                        <option value="">AAA</option>
+	                        <option value="">BBB</option>
+	                    </select>
+	                </div>
+	            </div>
+	    	</caption>
+	    	<tr>
+	    		<th class="col-xs-3">菜餚分類</th>
+	    		<th class="col-xs-7">菜名</th>
+	    		<th class="col-xs-2 text-center">加入</th>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-success"><i class="fa-plus"></i></button>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-success"><i class="fa-plus"></i></button>
+	    		</td>
+	    	</tr>
+	    </table>
+	</div>
+	<div class="col-xs-6">
+		<table class="table-condensed">
+	    	<caption>已排入菜單: 2015/00/00 午餐</caption>
+	    	<tr>
+	    		<th class="col-xs-3">菜餚分類</th>
+	    		<th class="col-xs-7">菜名</th>
+	    		<th class="col-xs-2 text-center">移除</th>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-danger"><i class="fa-times"></i></button>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>AAA</td>
+	    		<td>XXX</td>
+	    		<td class="text-center">
+	    			<button class="btn-link btn-lg text-danger"><i class="fa-times"></i></button>
+	    		</td>
+	    	</tr>
+	    </table>
+	</div>
+</div>

@@ -1,0 +1,161 @@
+﻿@{
+ViewBag.Title = "每日電訪名單 管理";
+ViewBag.BodyClass = "ch7 p1";
+Layout = "~/Views/Shared/Layout.cshtml";
+}
+@section breadCrumb {
+<li><a href=""><i class="fa-list-alt"></i> 通訊系統</a></li>
+}
+
+<h3 class="title">@ViewBag.Title</h3>
+
+<h4 class="title">每日電訪名單編輯</h4>
+
+<form class="form-horizontal clearfix" role="form" action="~/Fake/Tel">
+    <div class="col-xs-9">
+        <div class="form-group">
+            <label class="col-xs-2 control-label">選擇客戶</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" disabled />
+            </div>
+            <small class="help-inline col-xs-6"><span class="text-danger">(必填)</span> 請按 <i class="fa-plus"></i> 選取</small>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">用餐編號</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" disabled />
+            </div>
+            <label class="col-xs-2 control-label">媽媽姓名</label>
+            <div class="col-xs-3">
+                <input type="text" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="bg-warning">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">連絡電話1</label>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" disabled />
+                </div>
+                <label class="col-xs-2 control-label">連絡電話2</label>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" disabled />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">身分證號</label>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" disabled />
+                </div>
+                <label class="col-xs-2 control-label">生日</label>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" disabled />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">送餐地址</label>
+                <div class="col-xs-1">
+                    <input type="text" class="form-control" disabled>
+                </div>
+                <div class="col-xs-2">
+                    <select class="form-control" disabled>
+                        <option value="">縣市</option>
+                        <option value="">台北市</option>
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <select class="form-control" disabled>
+                        <option value="">鄉鎮市區</option>
+                        <option value="">大安區</option>
+                    </select>
+                </div>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" disabled />
+                </div>
+                <small class="help-inline col-xs-2 text-danger">(必填)</small>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">備用地址</label>
+                <div class="col-xs-1">
+                    <input type="text" class="form-control" disabled>
+                </div>
+                <div class="col-xs-2">
+                    <select class="form-control" disabled>
+                        <option value="">縣市</option>
+                        <option value="">台北市</option>
+                    </select>
+                </div>
+                <div class="col-xs-2">
+                    <select class="form-control" disabled>
+                        <option value="">鄉鎮市區</option>
+                        <option value="">大安區</option>
+                    </select>
+                </div>
+                <div class="col-xs-3">
+                    <input type="text" class="form-control" disabled />
+                </div>
+            </div>
+        </div>
+        <div class="form-action text-right">
+            <strong>主檔資料不可修改!!</strong>
+            <button><i class="fa-times"></i> 回列表</button>
+        </div>
+    </div>
+</form>
+
+<hr class="condensed" />
+
+<div class="row">
+    <div class="col-xs-4">
+        <h4 class="title">新增電訪排程</h4>
+        <form class="form-horizontal clearfix" role="form" action="~/Fake/Tel">
+            <div class="form-group">
+                <label class="col-xs-3 control-label">電訪日期</label>
+                <div class="col-xs-7">
+                    <span class="has-feedback">
+                        <input type="text" class="form-control datetimepicker" />
+                        <i class="fa-calendar form-control-feedback"></i>
+                    </span>
+                </div>
+                <small class="help-inline col-xs-2 text-danger">(必填)</small>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-3 control-label">電訪原因</label>
+                <div class="col-xs-7">
+                    <select class="form-control">
+                        <option value="">收頭款</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <div class="col-xs-10">
+                    <button class="btn-primary"><i class="fa-check"></i> 存檔確認</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-5">
+        <h4 class="title">電訪排程明細</h4>
+        <table class="table-condensed">
+            <tr>
+                <th class="col-xs-5">電訪日期</th>
+                <th class="col-xs-5">電訪原因</th>
+                <th class="col-xs-2 text-center">移除</th>
+            </tr>
+            <tr>
+                <td>2015/11/11</td>
+                <td>收頭款</td>
+                <td class="text-center">
+                    <button class="btn-link btn-lg text-danger"><i class="fa-times"></i></button>
+                </td>
+            </tr>
+            <tr>
+                <td>2015/11/11</td>
+                <td>收頭款</td>
+                <td class="text-center">
+                    <button class="btn-link btn-lg text-danger"><i class="fa-times"></i></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+

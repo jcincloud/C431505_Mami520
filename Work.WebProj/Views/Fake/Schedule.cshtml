@@ -14,639 +14,99 @@
 
 <h3 class="title">@ViewBag.Title</h3>
 
-<h4 class="title">客戶基本資料</h4>
+<h4 class="title">客戶用餐紀錄列表</h4>
 
-<form class="form-horizontal clearfix" role="form">
-	<div class="col-xs-8">
-		<div class="form-group">
-			<label class="col-xs-2 control-label">用餐編號</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-			<label class="col-xs-2 control-label">連絡電話1</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">姓名</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-			<label class="col-xs-2 control-label">連絡電話2</label>
-			<div class="col-xs-4">
-				<input type="text" class="form-control" disabled />
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">送餐地址</label>
-			<div class="col-xs-10">
-				<input type="text" class="form-control" disabled />
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-xs-2 control-label">用餐週期<br />說明</label>
-			<div class="col-xs-10">
-				<textarea rows="2" class="form-control" disabled></textarea>
-			</div>
-		</div>
-	</div>
-</form>
+<div class="table-responsive">
 
-<hr class="condensed" />
+    <div class="table-header">
+        <div class="table-filter">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="">用餐編號/媽媽姓名/身分證號/電話</label>
+                    <input type="text" class="form-control input-sm" placeholder="請擇一填寫" />
+                </div>
+                <div class="form-group">
+                    <label for="">送餐日期</label>
+                    <span class="has-feedback">
+                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+                        <i class="fa-calendar form-control-feedback"></i>
+                    </span>
+                    <label for="">~</label>
+                    <span class="has-feedback">
+                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+                        <i class="fa-calendar form-control-feedback"></i>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="">是否結案</label>
+                    <select class="form-control input-sm">
+                        <option value="">全部</option>
+                        <option value="">已結案</option>
+                        <option value="">未結案</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn-primary btn-sm"><i class="fa-search"></i> 搜尋</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<h4 class="title">用餐排程</h4>
+    <table class="table-condensed">
+        <thead>
+            <tr>
+                <th class="col-xs-1 text-center">修改</th>
+                <th class="col-xs-1">用餐編號</th>
+                <th class="col-xs-1">媽媽姓名</th>
+                <th class="col-xs-2">身分證號</th>
+                <th class="col-xs-2">電話1</th>
+                <th class="col-xs-2">送餐起日</th>
+                <th class="col-xs-2">送餐迄日</th>
+                <th class="col-xs-1">是否結案</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Schedule_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>A001</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td>2015/11/11</td>
+                <td>2015/11/11</td>
+                <td><span class="label label-danger">未結案</span></td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Schedule_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>A001</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td>2015/11/11</td>
+                <td>2015/11/11</td>
+                <td><span class="label label-success">已結案</span></td>
+            </tr>
+        </tbody>
+    </table>
 
-<div class="alert alert-warning">
-	<p>已停 <strong>6</strong> 餐／已增 <strong>2</strong> 餐／應排 <strong>77</strong> 餐／已排 <strong>77</strong> 餐／已吃 <strong>8</strong> 餐／未吃 <strong>69</strong> 餐</p>
-	<p><strong style="color:#333;">黑色：正常</strong>／<strong class="text-danger">紅色：停餐</strong>／<strong class="text-success">綠色：增餐</strong></p>
-</div>
-
-<ul class="pager">
-	<li class="previous">
-		<a href="">← 前 3 個月</a>
-	</li>
-	<li class="next">
-		<a href="">後 3 個月 →</a>
-	</li>
-</ul>
-
-<hr class="condensed" />
-
-<div class="panel-group">
-	<div class="panel">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a data-toggle="collapse" href="#calendar1">
-					<i class="fa-plus"></i> 2015 年 8 月
-				</a>
-			</h4>
-		</div>
-		<div id="calendar1" class="panel-collapse collapse in">
-			<div class="panel-body">
-				<table class="table-condensed">
-					<tr>
-						<th class="text-center">日</th>
-						<th class="text-center">一</th>
-						<th class="text-center">二</th>
-						<th class="text-center">三</th>
-						<th class="text-center">四</th>
-						<th class="text-center">五</th>
-						<th class="text-center">六</th>
-					</tr>
-					<tr>
-						<td>
-							<small class="text-muted">1</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">2</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">3</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" disabled />
-										<span>早 (已吃)</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span class="text-danger">午 (停)</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span class="text-success">晚 (增)</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">4</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">5</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">6</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">7</small>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<small class="text-muted">1</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">2</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">3</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" disabled />
-										<span>早 (已吃)</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span class="text-danger">午 (停)</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span class="text-success">晚 (增)</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">4</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">5</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">6</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">7</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</div>
-	<div class="panel">
-		<div class="panel-heading">
-			<h4 class="panel-title">
-				<a data-toggle="collapse" href="#calendar2">
-					<i class="fa-plus"></i> 2015 年 9 月
-				</a>
-			</h4>
-		</div>
-		<div id="calendar2" class="panel-collapse collapse in">
-			<div class="panel-body">
-				<table class="table-condensed">
-					<tr>
-						<th class="text-center">日</th>
-						<th class="text-center">一</th>
-						<th class="text-center">二</th>
-						<th class="text-center">三</th>
-						<th class="text-center">四</th>
-						<th class="text-center">五</th>
-						<th class="text-center">六</th>
-					</tr>
-					<tr>
-						<td>
-							<small class="text-muted">1</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">2</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">3</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" disabled />
-										<span>早 (已吃)</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span class="text-danger">午 (停)</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span class="text-success">晚 (增)</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">4</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">5</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">6</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-						<td>
-							<small class="text-muted">7</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="clearfix">
-	<p class="pull-left"><strong>開始送餐後(含送餐當日) 請勿任意修改用餐排程，如有異動會留下紀錄!!</strong></p>
-	<p class="pull-right text-right">
-		<button class="btn-primary"><i class="fa-checck"></i> 存檔確認</button>
-		<button><i class="fa-times"></i> 回列表</button>
-	</p>
-</div>
-
-<hr class="condensed" />
-
-<h4 class="title">訂餐日期及餐數異動紀錄</h4>
-
-<div class="row">
-	<div class="col-xs-8">
-		<table class="table-condensed">
-			<tr>
-				<th class="col-xs-2"></th>
-				<th class="col-xs-3">送餐起日</th>
-				<th class="col-xs-3">送餐迄日</th>
-				<th class="col-xs-4">餐數</th>
-			</tr>
-			<tr>
-				<td class="text-right"><strong>原訂</strong></td>
-				<td>2015/00/00</td>
-				<td>2015/00/00</td>
-				<td>早 20／午 20／晚 20</td>
-			</tr>
-			<tr>
-				<td class="text-right"><strong>實訂</strong></td>
-				<td>2015/00/00</td>
-				<td>2015/00/00</td>
-				<td>早 20／午 20／晚 20</td>
-			</tr>
-			<tr>
-				<td class="text-right"><strong>實際</strong></td>
-				<td>2015/00/00</td>
-				<td>2015/00/00</td>
-				<td>早 20／午 20／晚 20</td>
-			</tr>
-		</table>
-	</div>
-</div>
-
-<hr class="condensed" />
-
-<h4 class="title">用餐排程異動紀錄</h4>
-
-<div class="row">
-	<div class="col-xs-8">
-		<table class="table-condensed">
-			<tr>
-				<th class="col-xs-4">異動時間</th>
-				<th class="col-xs-3">用餐日期</th>
-				<th class="col-xs-1 text-center">餐別</th>
-				<th class="col-xs-2 text-center">停／增餐</th>
-				<th class="col-xs-2 text-center">操作人員</th>
-			</tr>
-			<tr>
-				<td>2015/00/00 00:00</td>
-				<td>2015/00/00</td>
-				<td class="text-center">早餐</td>
-				<td class="text-center">停餐</td>
-				<td class="text-center">XXX</td>
-			</tr>
-			<tr>
-				<td>2015/00/00 00:00</td>
-				<td>2015/00/00</td>
-				<td class="text-center">早餐</td>
-				<td class="text-center">停餐</td>
-				<td class="text-center">XXX</td>
-			</tr>
-		</table>
-	</div>
-</div>
-
+    <div class="table-footer">
+        <small class="pull-right">第1-3筆，共3筆</small>
+        <ul class="pager">
+            <li class="disabled"><a href="" title="第一頁"><i class="fa-angle-double-left"></i></a></li>
+            <li class="disabled"><a href="" title="上一頁"><i class="fa-angle-left"></i></a></li>
+            <li class="form-inline">
+                <div class="form-group">
+                    <label for="">第</label>
+                    <input type="text" class="form-control text-center" value="1" style="width:50px;">
+                    <label for="">頁，共3頁</label>
+                </div>
+            </li>
+            <li><a href="" title="下一頁"><i class="fa-angle-right"></i></a></li>
+            <li><a href="" title="最後一頁"><i class="fa-angle-double-right"></i></a></li>
+        </ul>
+    </div>
+</div><!-- 後台常用列表 //-->

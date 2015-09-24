@@ -17,7 +17,7 @@
         <div class="table-filter">
             <div class="form-inline">
                 <div class="form-group">
-                    <label for="">用餐編號/媽媽姓名</label>
+                    <label for="">用餐編號/媽媽姓名/身分證號</label>
                     <input type="text" class="form-control input-sm" placeholder="請擇一填寫" />
                 </div>
                 <div class="form-group">
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <table>
+    <table class="table-condensed">
         <thead>
             <tr>
                 <th class="col-xs-1 text-center">
@@ -45,8 +45,9 @@
                     </label>
                 </th>
                 <th class="col-xs-1 text-center">修改</th>
-                <th class="col-xs-3">用餐編號</th>
-                <th class="col-xs-3">媽媽姓名</th>
+                <th class="col-xs-1">用餐編號</th>
+                <th class="col-xs-2">媽媽姓名</th>
+                <th class="col-xs-2">身分證號</th>
                 <th class="col-xs-4">是否結案</th>
             </tr>
         </thead>
@@ -63,6 +64,7 @@
                 </td>
                 <td>A001</td>
                 <td>陳小姐</td>
+                <td>A123456789</td>
                 <td><span class="label label-danger">未結案</span></td>
             </tr>
             <tr>
@@ -77,6 +79,7 @@
                 </td>
                 <td>A001</td>
                 <td>陳小姐</td>
+                <td>A123456789</td>
                 <td><span class="label label-success">已結案</span></td>
             </tr>
         </tbody>
