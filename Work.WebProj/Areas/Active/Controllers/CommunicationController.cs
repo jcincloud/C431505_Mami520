@@ -10,6 +10,12 @@ namespace DotWeb.Areas.Active.Controllers
     public class CommunicationController : AdminController
     {
         #region Action and function section
+        public ActionResult ContactSchedule()
+        {//每日電訪排程
+            ActionRun();
+            return View();
+        }
+
         public ActionResult Draft()
         {
             ActionRun();

@@ -231,6 +231,7 @@
     <Content Include="Areas\Active\Views\Gift\GiftRecord.cshtml" />
     <Content Include="Areas\Active\Views\Communication\Draft.cshtml" />
     <Content Include="Areas\Active\Views\Product\ProductRecord.cshtml" />
+    <Content Include="Areas\Active\Views\Communication\ContactSchedule.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -248,6 +249,7 @@
     <None Include="Content\bootstrap\js\npm.js" />
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
+    <Compile Include="Controllers\Api\ContactScheduleController.cs" />
     <Compile Include="Controllers\Api\RecordDetailController.cs" />
     <Compile Include="Controllers\Api\CustomerNeedController.cs" />
     <Compile Include="Controllers\Api\DietaryNeedController.cs" />
@@ -703,6 +705,7 @@
     <Content Include="Scripts\build\func\m-Category.js" />
     <Content Include="Scripts\build\func\m-ChangePassword.js" />
     <Content Include="Scripts\build\func\m-ConstituteFood.js" />
+    <Content Include="Scripts\build\func\m-ContactSchedule.js" />
     <Content Include="Scripts\build\func\m-Customer.js" />
     <Content Include="Scripts\build\func\m-CustomerBorn.js" />
     <Content Include="Scripts\build\func\m-CustomerNeed.js" />
@@ -1000,6 +1003,7 @@
     <Content Include="Views\Fake\Require2_3.cshtml" />
     <Content Include="Views\Fake\Tel_2.cshtml" />
     <Content Include="Views\Fake\Tel_3.cshtml" />
+    <Content Include="Scripts\src\jsx\m-ContactSchedule.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

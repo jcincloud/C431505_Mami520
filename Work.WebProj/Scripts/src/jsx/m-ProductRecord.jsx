@@ -35,6 +35,7 @@ var GirdForm = React.createClass({
 			gridData:{rows:[],page:1},
 			fieldData:{},
 			searchData:{title:null},
+			searchBornData:{word:null,is_close:null},
 			edit_type:0,
 			checkAll:false,
 			isShowCustomerBornSelect:false,
@@ -227,7 +228,7 @@ var GirdForm = React.createClass({
 		this.setState({searchData:obj});
 	},
 	queryAllCustomerBorn:function(){//選取用餐編號-取得全部客戶生產資料(已結/未結)list
-		jqGet(gb_approot + 'api/GetAction/GetAllBorn',{})
+		jqGet(gb_approot + 'api/GetAction/GetAllBorn',this.state.searchBornData)
 		.done(function(data, textStatus, jqXHRdata) {
 			this.setState({born_list:data});
 		}.bind(this))
@@ -287,6 +288,12 @@ var GirdForm = React.createClass({
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
 		});	
+	},
+	changeGDBornValue:function(name,e){
+		var obj = this.state.searchBornData;
+		obj[name] = e.target.value;
+		this.setState({searchBornData:obj});
+		this.queryAllCustomerBorn();
 	},
 	render: function() {
 		var outHtml = null;
@@ -407,20 +414,41 @@ var GirdForm = React.createClass({
 		else if(this.state.edit_type==1 || this.state.edit_type==2)
 		{
 			var fieldData = this.state.fieldData;
+			var searchBornData=this.state.searchBornData;
 
 			var MdoalCustomerBornSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
 			var born_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowCustomerBornSelect){
 				born_select_out_html = 					
-					<MdoalCustomerBornSelect bsSize="xsmall" onRequestHide={this.closeSelectCustomerBorn}>
-							<div className="modal-header light">
-								<div className="pull-right">
-									<button onClick={this.closeSelectCustomerBorn} type="button"><i className="fa-times"></i></button>
-								</div>
-								<h4 className="modal-title">請選擇客戶 { }</h4>
-							</div>
+					<MdoalCustomerBornSelect bsSize="xsmall"  title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
 							<div className="modal-body">
-								<table>
+								<div className="table-header">
+							        <div className="table-filter">
+							            <div className="form-inline">
+							                <div className="form-group">
+							                    <label for="">客戶名稱/餐編/媽媽姓名</label>
+							                    <input type="text" className="form-control input-sm"
+							      			    value={searchBornData.word}
+												onChange={this.changeGDBornValue.bind(this,'word')}
+											 	placeholder="請擇一填寫" />
+							                </div>
+							                <div className="form-group">
+							                    <label for="">是否結案</label>
+							                    <select className="form-control input-sm"
+							                    value={searchBornData.is_close}
+												onChange={this.changeGDBornValue.bind(this,'is_close')}>
+							                        <option value="">全部</option>
+							                        <option value="true">已結案</option>
+							                        <option value="false">未結案</option>
+							                    </select>
+							                </div>
+							                <div className="form-group">
+							                    <button className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
+							                </div>
+							            </div>
+							        </div>
+							    </div>
+								<table className="table-condensed">
 									<tbody>
 										<tr>
 											<th className="col-xs-1 text-center">選擇</th>
@@ -435,7 +463,12 @@ var GirdForm = React.createClass({
 												
 												var born_out_html = 
 													<tr key={itemData.born_id}>
-														<td className="text-center"><input type="checkbox" onClick={this.selectCustomerBorn.bind(this,itemData.customer_id,itemData.born_id,itemData.meal_id)} /></td>
+														<td className="text-center">
+															<label className="cbox">
+										                        <input type="checkbox" onClick={this.selectCustomerBorn.bind(this,itemData.customer_id,itemData.born_id,itemData.meal_id)} />
+										                        <i className="fa-check"></i>
+										                    </label>
+														</td>
 														<td>{itemData.customer_name}</td>
 														<td>{itemData.meal_id}</td>
 														<td>{itemData.mom_name}</td>
@@ -517,13 +550,13 @@ var GirdForm = React.createClass({
 									maxLength="64"
 									disabled />
 									<span className="input-group-btn">
-										<button type="button" 
+										<a className="btn"
 										onClick={this.showSelectCustomerBorn}
-										disabled={this.state.edit_type==2} >...</button>
+										disabled={this.state.edit_type==2} ><i className="fa-plus"></i></a>
 									</span>
 								</div>
 							</div>
-							<small className="help-inline col-xs-6 text-danger">(必填)</small>
+							<small className="help-inline col-xs-6"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
 						</div>
 						<div className="form-group">
 							<label className="col-xs-2 control-label">客戶類別</label>
@@ -926,6 +959,10 @@ var SubForm = React.createClass({
 			product_select_out_html=
 			<ModalProductSelect bsSize="medium" title="選擇產品" onRequestHide={this.closeSelectProduct}>
 						<div className="modal-body">
+						<div className="alert alert-warning">
+							<p>1.一筆生產紀錄只能對應一筆試吃</p>
+							<p>2.一筆銷售紀錄只能對應一筆月子餐</p>
+						</div>
 							<div className="table-header">
 			                    <div className="table-filter">
 			                        <div className="form-inline">

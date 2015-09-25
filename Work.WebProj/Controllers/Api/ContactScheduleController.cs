@@ -11,64 +11,65 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class CustomerNeedController : ajaxApi<CustomerNeed, q_CustomerNeed>
+    public class ContactScheduleController : ajaxApi<ContactSchedule, q_ContactSchedule>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.CustomerNeed.FindAsync(id);
-
-                var getCustomerBorn = await db0.CustomerBorn.FindAsync(item.born_id);
-                //item.meal_id = getCustomerBorn.meal_id;
-                item.name = getCustomerBorn.mom_name;
-                item.tel_1 = getCustomerBorn.tel_1;
-                item.tel_2 = getCustomerBorn.tel_2;
-                item.tw_zip_1 = getCustomerBorn.tw_zip_1;
-                item.tw_city_1 = getCustomerBorn.tw_city_1;
-                item.tw_country_1 = getCustomerBorn.tw_country_1;
-                item.tw_address_1 = getCustomerBorn.tw_address_1;
-
-                r = new ResultInfo<CustomerNeed>() { data = item };
+                item = await db0.ContactSchedule.FindAsync(id);
+                var getCustomer = await db0.Customer.FindAsync(item.customer_id);
+                item.customer_type = getCustomer.customer_type;
+                item.customer_name = getCustomer.customer_name;;
+                item.mom_name = item.CustomerBorn.mom_name;
+                item.sno = item.CustomerBorn.sno;
+                item.birthday = item.CustomerBorn.birthday;
+                item.tel_1 = item.CustomerBorn.tel_1;
+                item.tel_2 = item.CustomerBorn.tel_2;
+                item.tw_zip_1 = item.CustomerBorn.tw_zip_1;
+                item.tw_city_1 = item.CustomerBorn.tw_city_1;
+                item.tw_country_1 = item.CustomerBorn.tw_country_1;
+                item.tw_address_1 = item.CustomerBorn.tw_address_1;
+                item.tw_zip_2 = item.CustomerBorn.tw_zip_2;
+                item.tw_city_2 = item.CustomerBorn.tw_city_2;
+                item.tw_country_2 = item.CustomerBorn.tw_country_2;
+                item.tw_address_2 = item.CustomerBorn.tw_address_2;
+                item.expected_born_day = item.CustomerBorn.expected_born_day;
+                item.born_day = item.CustomerBorn.born_day;
+                r = new ResultInfo<ContactSchedule>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_CustomerNeed q)
+        public async Task<IHttpActionResult> Get([FromUri]q_ContactSchedule q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.CustomerNeed.OrderBy(x=>x.CustomerBorn.mom_name).AsQueryable();
+                var qr = db0.ContactSchedule
+                    .OrderByDescending(x => x.schedule_id).AsQueryable();
 
 
-                if (q.name != null)
-                {//簡稱或全名有重複
-                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.name));
-                }
-                if (q.tel_1 != null)
+                if (q.word != null)
                 {
-                    qr = qr.Where(x => x.CustomerBorn.tel_1.Contains(q.tel_1));
-                }
-                if (q.tel_2 != null)
-                {
-                    qr = qr.Where(x => x.CustomerBorn.tel_2.Contains(q.tel_2));
-                }
-                if (q.meal_id != null)
-                {
-                    qr = qr.Where(x => x.CustomerBorn.meal_id.Contains(q.meal_id));
+                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.word) ||
+                                       x.CustomerBorn.tel_1.Contains(q.word) ||
+                                       x.CustomerBorn.sno.Contains(q.word) ||
+                                       x.meal_id.Contains(q.word));
                 }
 
-                var result = qr.Select(x => new m_CustomerNeed()
+
+                var result = qr.Select(x => new m_ContactSchedule()
                 {
-                    customer_need_id = x.customer_need_id,
+                    schedule_id = x.schedule_id,
                     customer_id = x.customer_id,
                     born_id = x.born_id,
-                    name = x.CustomerBorn.mom_name,
-                    tel_1 = x.CustomerBorn.tel_1,
-                    tel_2 = x.CustomerBorn.tel_2,
-                    meal_id = x.CustomerBorn.meal_id
+                    meal_id = x.meal_id,
+                    mom_name=x.CustomerBorn.mom_name,
+                    sno=x.CustomerBorn.sno,
+                    tel_1=x.CustomerBorn.tel_1,
+                    tel_2=x.CustomerBorn.tel_2
                 });
 
 
@@ -76,7 +77,7 @@ namespace DotWeb.Api
                 int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
                 var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
 
-                return Ok<GridInfo<m_CustomerNeed>>(new GridInfo<m_CustomerNeed>()
+                return Ok<GridInfo<m_ContactSchedule>>(new GridInfo<m_ContactSchedule>()
                 {
                     rows = segment,
                     total = PageCount.TotalPage,
@@ -88,19 +89,17 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]CustomerNeed md)
+        public async Task<IHttpActionResult> Put([FromBody]ContactSchedule md)
         {
             ResultInfo r = new ResultInfo();
             try
             {
                 db0 = getDB0();
 
-                item = await db0.CustomerNeed.FindAsync(md.customer_need_id);
+                item = await db0.ContactSchedule.FindAsync(md.schedule_id);
                 item.customer_id = md.customer_id;
                 item.born_id = md.born_id;
                 item.meal_id = md.meal_id;
-                item.memo = md.memo;
-
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
@@ -108,7 +107,6 @@ namespace DotWeb.Api
 
                 await db0.SaveChangesAsync();
                 r.result = true;
-                r.id = md.customer_need_id;
             }
             catch (Exception ex)
             {
@@ -121,16 +119,16 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]CustomerNeed md)
+        public async Task<IHttpActionResult> Post([FromBody]ContactSchedule md)
         {
-            md.customer_need_id = GetNewId(ProcCore.Business.CodeTable.CustomerNeed);
+            md.schedule_id = GetNewId(ProcCore.Business.CodeTable.ContactSchedule);
             ResultInfo r = new ResultInfo();
-            //if (!ModelState.IsValid)
-            //{
-            //    r.message = ModelStateErrorPack();
-            //    r.result = false;
-            //    return Ok(r);
-            //}
+            if (!ModelState.IsValid)
+            {
+                r.message = ModelStateErrorPack();
+                r.result = false;
+                return Ok(r);
+            }
 
             try
             {
@@ -142,11 +140,11 @@ namespace DotWeb.Api
                 md.i_InsertDeptID = this.departmentId;
                 md.i_Lang = "zh-TW";
 
-                db0.CustomerNeed.Add(md);
+                db0.ContactSchedule.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.customer_need_id;
+                r.id = md.schedule_id;
                 return Ok(r);
                 #endregion
             }
@@ -170,16 +168,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    bool check = db0.CustomerOfDietaryNeed.Any(x => x.customer_need_id == id);
-                    if (check)
-                    {
-                        r.result = false;
-                        r.message = Resources.Res.Log_Err_Delete_DetailExist;
-                        return Ok(r);
-                    }
-                    item = new CustomerNeed() { customer_need_id = id };
-                    db0.CustomerNeed.Attach(item);
-                    db0.CustomerNeed.Remove(item);
+                    item = new ContactSchedule() { schedule_id = id };
+                    db0.ContactSchedule.Attach(item);
+                    db0.ContactSchedule.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();

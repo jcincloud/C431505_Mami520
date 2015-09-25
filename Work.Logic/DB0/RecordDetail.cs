@@ -19,6 +19,7 @@ namespace ProcCore.Business.DB0
         public int product_record_id { get; set; }
         public int customer_id { get; set; }
         public int born_id { get; set; }
+        public string meal_id { get; set; }
         public System.DateTime sell_day { get; set; }
         public int product_id { get; set; }
         public int product_type { get; set; }
@@ -47,9 +48,9 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual ProductRecord ProductRecord { get; set; }
-    	[JsonIgnore]
         public virtual Product Product { get; set; }
+    	[JsonIgnore]
+        public virtual ProductRecord ProductRecord { get; set; }
     }
 }
 

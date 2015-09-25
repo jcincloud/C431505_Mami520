@@ -14,7 +14,12 @@ namespace ProcCore.Business
 {
     public enum CodeTable
     {
-        Base, Customer, CustomerBorn, Product, ProductRecord, RecordDetail, ElementFood, ConstituteFood, DailyMenu, DietaryNeed, CustomerNeed, Activity, GiftRecord, Draft, All_Category_L1, All_Category_L2
+        Base, Customer, CustomerBorn,
+        Product, ProductRecord, RecordDetail,
+        ElementFood, ConstituteFood, DailyMenu, DietaryNeed, CustomerNeed,
+        Activity, GiftRecord,
+        ContactSchedule,Draft,
+        All_Category_L1, All_Category_L2
     }
     public enum SNType
     {

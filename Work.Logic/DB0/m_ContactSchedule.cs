@@ -11,30 +11,11 @@ namespace ProcCore.Business.DB0
 {
     using System;
     using System.Collections.Generic;
-    public partial class m_RecordDetail :BaseEntityTable {
-    public int record_deatil_id { get; set; }
-    public int product_record_id { get; set; }
+    public partial class m_ContactSchedule :BaseEntityTable {
+    public int schedule_id { get; set; }
     public int customer_id { get; set; }
     public int born_id { get; set; }
     public string meal_id { get; set; }
-    public System.DateTime sell_day { get; set; }
-    public int product_id { get; set; }
-    public int product_type { get; set; }
-    public string product_name { get; set; }
-    public double price { get; set; }
-    public string standard { get; set; }
-    public double qty { get; set; }
-    public double subtotal { get; set; }
-    public string memo { get; set; }
-    public Nullable<System.DateTime> meal_start { get; set; }
-    public Nullable<System.DateTime> meal_end { get; set; }
-    public Nullable<int> estimate_breakfast { get; set; }
-    public Nullable<int> estimate_lunch { get; set; }
-    public Nullable<int> estimate_dinner { get; set; }
-    public Nullable<int> real_breakfast { get; set; }
-    public Nullable<int> real_lunch { get; set; }
-    public Nullable<int> real_dinner { get; set; }
-    public string meal_memo { get; set; }
     public bool i_Hide { get; set; }
     public string i_InsertUserID { get; set; }
     public Nullable<int> i_InsertDeptID { get; set; }
@@ -45,4 +26,3 @@ namespace ProcCore.Business.DB0
     public string i_Lang { get; set; }
     }
 }
-

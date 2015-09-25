@@ -156,7 +156,7 @@ namespace DotWeb.Api
         }
         #endregion
         #region 產品銷售資料主檔-客戶生產選取
-        public IHttpActionResult GetAllBorn()
+        public IHttpActionResult GetAllBorn([FromUri]ParmGetAllBorn parm)
         {
             db0 = getDB0();
             try
@@ -165,6 +165,15 @@ namespace DotWeb.Api
                 var items = db0.CustomerBorn
                     .OrderBy(x => new { x.customer_id, x.meal_id })
                     .Select(x => new { x.customer_id, x.born_id, x.Customer.customer_sn, x.Customer.customer_name, x.meal_id, x.mom_name, x.born_frequency, x.is_close });
+
+                if (parm.is_close != null)
+                {
+                    items = items.Where(x => x.is_close == parm.is_close);
+                }
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.customer_name.Contains(parm.word) || x.mom_name.Contains(parm.word) || x.meal_id.Contains(parm.word));
+                }
 
                 return Ok(items.ToList());
             }
@@ -980,6 +989,11 @@ namespace DotWeb.Api
     {
         public string name { get; set; }
         public int? product_type { get; set; }
+    }
+    public class ParmGetAllBorn
+    {
+        public string word { get; set; }
+        public bool? is_close { get; set; }
     }
     #endregion
 }

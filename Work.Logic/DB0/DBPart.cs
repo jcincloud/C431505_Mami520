@@ -25,9 +25,9 @@ namespace ProcCore.Business.DB0
     public enum CustomerType
     {
         Common = 1,//自有客戶
-        Hospital=2,//醫院
-        PostnatalCareCenter=3,//月子中心
-        Transfer=4//轉介
+        Hospital = 2,//醫院
+        PostnatalCareCenter = 3,//月子中心
+        Transfer = 4//轉介
     }
     #region set CodeSheet
 
@@ -272,6 +272,33 @@ namespace ProcCore.Business.DB0
         public string tel_2 { get; set; }
         public double totle_price { get; set; }
     }
+    public partial class m_ContactSchedule
+    {
+        public string mom_name { get; set; }
+        public string sno { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+    }
+    public partial class ContactSchedule
+    {
+        public string customer_name { get; set; }
+        public int customer_type { get; set; }
+        public string mom_name { get; set; }
+        public string sno { get; set; }
+        public DateTime? birthday { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+        public string tw_zip_1 { get; set; }
+        public string tw_city_1 { get; set; }
+        public string tw_country_1 { get; set; }
+        public string tw_address_1 { get; set; }
+        public string tw_zip_2 { get; set; }
+        public string tw_city_2 { get; set; }
+        public string tw_country_2 { get; set; }
+        public string tw_address_2 { get; set; }
+        public DateTime? expected_born_day { get; set; }
+        public DateTime? born_day { get; set; }
+    }
     /// <summary>
     /// 分類選單用
     /// </summary>
@@ -390,6 +417,10 @@ namespace ProcCore.Business.DB0
     public class q_RecordDetail : QueryBase
     {
         public int main_id { get; set; }
+    }
+    public class q_ContactSchedule : QueryBase
+    {
+        public string word { get; set; }
     }
     #endregion
 
