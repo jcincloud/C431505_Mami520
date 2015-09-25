@@ -18,7 +18,7 @@ namespace ProcCore.Business
         Product, ProductRecord, RecordDetail,
         ElementFood, ConstituteFood, DailyMenu, DietaryNeed, CustomerNeed,
         Activity, GiftRecord,
-        ContactSchedule,Draft,
+        ContactSchedule, ScheduleDetail,Draft,
         All_Category_L1, All_Category_L2
     }
     public enum SNType

@@ -11,65 +11,37 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class ContactScheduleController : ajaxApi<ContactSchedule, q_ContactSchedule>
+    public class ScheduleDetailController : ajaxApi<ScheduleDetail, q_ScheduleDetail>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.ContactSchedule.FindAsync(id);
-                var getCustomer = await db0.Customer.FindAsync(item.customer_id);
-                item.customer_type = getCustomer.customer_type;
-                item.customer_name = getCustomer.customer_name;;
-                item.mom_name = item.CustomerBorn.mom_name;
-                item.sno = item.CustomerBorn.sno;
-                item.birthday = item.CustomerBorn.birthday;
-                item.tel_1 = item.CustomerBorn.tel_1;
-                item.tel_2 = item.CustomerBorn.tel_2;
-                item.tw_zip_1 = item.CustomerBorn.tw_zip_1;
-                item.tw_city_1 = item.CustomerBorn.tw_city_1;
-                item.tw_country_1 = item.CustomerBorn.tw_country_1;
-                item.tw_address_1 = item.CustomerBorn.tw_address_1;
-                item.tw_zip_2 = item.CustomerBorn.tw_zip_2;
-                item.tw_city_2 = item.CustomerBorn.tw_city_2;
-                item.tw_country_2 = item.CustomerBorn.tw_country_2;
-                item.tw_address_2 = item.CustomerBorn.tw_address_2;
-                item.born_type = item.CustomerBorn.born_type;
-                item.born_day = item.CustomerBorn.born_day;
-                r = new ResultInfo<ContactSchedule>() { data = item };
+                item = await db0.ScheduleDetail.FindAsync(id);
+                r = new ResultInfo<ScheduleDetail>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_ContactSchedule q)
+        public async Task<IHttpActionResult> Get([FromUri]q_ScheduleDetail q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var qr = db0.ContactSchedule
-                    .OrderByDescending(x => x.schedule_id).AsQueryable();
+                var qr = db0.ScheduleDetail
+                    .OrderBy(x => x.tel_day).AsQueryable();
 
 
-                if (q.word != null)
+                if (q.main_id != null)
                 {
-                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.word) ||
-                                       x.CustomerBorn.tel_1.Contains(q.word) ||
-                                       x.CustomerBorn.sno.Contains(q.word) ||
-                                       x.meal_id.Contains(q.word));
+                    qr = qr.Where(x => x.schedule_id == q.main_id);
                 }
 
-
-                var result = qr.Select(x => new m_ContactSchedule()
+                var result = qr.Select(x => new m_ScheduleDetail()
                 {
                     schedule_id = x.schedule_id,
-                    customer_id = x.customer_id,
-                    born_id = x.born_id,
-                    meal_id = x.meal_id,
-                    mom_name=x.CustomerBorn.mom_name,
-                    sno=x.CustomerBorn.sno,
-                    tel_1=x.CustomerBorn.tel_1,
-                    tel_2=x.CustomerBorn.tel_2
+                    schedule_detail_id = x.schedule_detail_id
                 });
 
 
@@ -77,7 +49,7 @@ namespace DotWeb.Api
                 int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
                 var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
 
-                return Ok<GridInfo<m_ContactSchedule>>(new GridInfo<m_ContactSchedule>()
+                return Ok<GridInfo<m_ScheduleDetail>>(new GridInfo<m_ScheduleDetail>()
                 {
                     rows = segment,
                     total = PageCount.TotalPage,
@@ -89,17 +61,19 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]ContactSchedule md)
+        public async Task<IHttpActionResult> Put([FromBody]ScheduleDetail md)
         {
             ResultInfo r = new ResultInfo();
             try
             {
                 db0 = getDB0();
 
-                item = await db0.ContactSchedule.FindAsync(md.schedule_id);
+                item = await db0.ScheduleDetail.FindAsync(md.schedule_detail_id);
                 item.customer_id = md.customer_id;
                 item.born_id = md.born_id;
                 item.meal_id = md.meal_id;
+                item.tel_day = md.tel_day;
+                item.tel_reason = md.tel_reason;
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
@@ -119,9 +93,9 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]ContactSchedule md)
+        public async Task<IHttpActionResult> Post([FromBody]ScheduleDetail md)
         {
-            md.schedule_id = GetNewId(ProcCore.Business.CodeTable.ContactSchedule);
+            md.schedule_detail_id = GetNewId(ProcCore.Business.CodeTable.ScheduleDetail);
             ResultInfo r = new ResultInfo();
             if (!ModelState.IsValid)
             {
@@ -140,11 +114,11 @@ namespace DotWeb.Api
                 md.i_InsertDeptID = this.departmentId;
                 md.i_Lang = "zh-TW";
 
-                db0.ContactSchedule.Add(md);
+                db0.ScheduleDetail.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.schedule_id;
+                r.id = md.schedule_detail_id;
                 return Ok(r);
                 #endregion
             }
@@ -168,9 +142,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new ContactSchedule() { schedule_id = id };
-                    db0.ContactSchedule.Attach(item);
-                    db0.ContactSchedule.Remove(item);
+                    item = new ScheduleDetail() { schedule_detail_id = id };
+                    db0.ScheduleDetail.Attach(item);
+                    db0.ScheduleDetail.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();

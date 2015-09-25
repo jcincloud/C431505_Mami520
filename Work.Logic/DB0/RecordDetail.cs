@@ -53,4 +53,3 @@ namespace ProcCore.Business.DB0
         public virtual ProductRecord ProductRecord { get; set; }
     }
 }
-

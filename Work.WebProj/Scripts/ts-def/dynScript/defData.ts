@@ -518,6 +518,17 @@
         { id: 2, label: '領取部分', className: 'label label-warning', code: 'straght' },
         { id: 3, label: '已領完', className: 'label label-success', code: 'straght' }
     ];
+    export var TelReasonBySchedule = [
+        { id: 2, label: '收頭款', className: 'label label-success', code: 'straght' },
+        { id: 3, label: '可麻油酒', className: 'label label-warning', code: 'straght' },
+        { id: 4, label: '收尾款', className: 'label label-primary', code: 'straght' }
+    ];
+    export var TelReasonByDetail = [
+        { id: 1, label: '客戶來電', className: 'label label-info', code: 'store' },
+        { id: 2, label: '收頭款', className: 'label label-success', code: 'straght' },
+        { id: 3, label: '可麻油酒', className: 'label label-warning', code: 'straght' },
+        { id: 4, label: '收尾款', className: 'label label-primary', code: 'straght' }
+    ];
     export var MonthsData = [
         { id: 1, label: '1月' },
         { id: 2, label: '2月' },

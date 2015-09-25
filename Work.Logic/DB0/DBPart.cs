@@ -296,7 +296,7 @@ namespace ProcCore.Business.DB0
         public string tw_city_2 { get; set; }
         public string tw_country_2 { get; set; }
         public string tw_address_2 { get; set; }
-        public DateTime? expected_born_day { get; set; }
+        public int? born_type { get; set; }
         public DateTime? born_day { get; set; }
     }
     /// <summary>
@@ -421,6 +421,10 @@ namespace ProcCore.Business.DB0
     public class q_ContactSchedule : QueryBase
     {
         public string word { get; set; }
+    }
+    public class q_ScheduleDetail : QueryBase
+    {
+        public int? main_id { get; set; }
     }
     #endregion
 

@@ -559,6 +559,26 @@
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
         </EntityType>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="schedule_detail_id" />
+          </Key>
+          <Property Name="schedule_detail_id" Type="int" Nullable="false" />
+          <Property Name="schedule_id" Type="int" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="born_id" Type="int" Nullable="false" />
+          <Property Name="meal_id" Type="varchar" MaxLength="4" />
+          <Property Name="tel_reason" Type="int" Nullable="false" />
+          <Property Name="tel_day" Type="smalldatetime" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <Association Name="FK_All_Category_L2_All_Category_L1">
           <End Role="All_Category_L1" Type="Self.All_Category_L1" Multiplicity="1" />
           <End Role="All_Category_L2" Type="Self.All_Category_L2" Multiplicity="*" />
@@ -887,6 +907,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ScheduleDetail_CustomerBorn">
+          <End Role="CustomerBorn" Type="Self.CustomerBorn" Multiplicity="1" />
+          <End Role="ScheduleDetail" Type="Self.ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerBorn">
+              <PropertyRef Name="born_id" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="born_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="C43A0_Mani520ModelStoreContainer">
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="All_Category_L1" EntityType="Self.All_Category_L1" Schema="dbo" store:Type="Tables" />
@@ -921,6 +953,7 @@
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductRecord" EntityType="Self.ProductRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecordDetail" EntityType="Self.RecordDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScheduleDetail" EntityType="Self.ScheduleDetail" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_All_Category_L2_All_Category_L1" Association="Self.FK_All_Category_L2_All_Category_L1">
             <End Role="All_Category_L1" EntitySet="All_Category_L1" />
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
@@ -1028,6 +1061,10 @@
           <AssociationSet Name="FK_RecordDetail_ProductRecord" Association="Self.FK_RecordDetail_ProductRecord">
             <End Role="ProductRecord" EntitySet="ProductRecord" />
             <End Role="RecordDetail" EntitySet="RecordDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScheduleDetail_CustomerBorn" Association="Self.FK_ScheduleDetail_CustomerBorn">
+            <End Role="CustomerBorn" EntitySet="CustomerBorn" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -1307,6 +1344,11 @@
             <End Role="CustomerBorn" EntitySet="CustomerBorn" />
             <End Role="ContactSchedule" EntitySet="ContactSchedule" />
           </AssociationSet>
+          <EntitySet Name="ScheduleDetail" EntityType="C43A0_Mani520Model.ScheduleDetail" />
+          <AssociationSet Name="FK_ScheduleDetail_CustomerBorn" Association="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn">
+            <End Role="CustomerBorn" EntitySet="CustomerBorn" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="MealID">
           <Key>
@@ -1394,6 +1436,7 @@
           <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_ProductRecord_CustomerBorn" FromRole="CustomerBorn" ToRole="ProductRecord" />
           <NavigationProperty Name="GiftRecord" Relationship="C43A0_Mani520Model.FK_GiftRecord_CustomerBorn" FromRole="CustomerBorn" ToRole="GiftRecord" />
           <NavigationProperty Name="ContactSchedule" Relationship="C43A0_Mani520Model.FK_ContactSchedule_CustomerBorn" FromRole="CustomerBorn" ToRole="ContactSchedule" />
+          <NavigationProperty Name="ScheduleDetail" Relationship="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" FromRole="CustomerBorn" ToRole="ScheduleDetail" />
         </EntityType>
         <Association Name="FK_CustomerBorn_Customer">
           <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
@@ -2039,6 +2082,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="schedule_detail_id" />
+          </Key>
+          <Property Name="schedule_detail_id" Type="Int32" Nullable="false" />
+          <Property Name="schedule_id" Type="Int32" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="born_id" Type="Int32" Nullable="false" />
+          <Property Name="meal_id" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="tel_reason" Type="Int32" Nullable="false" />
+          <Property Name="tel_day" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" FromRole="ScheduleDetail" ToRole="CustomerBorn" />
+        </EntityType>
+        <Association Name="FK_ScheduleDetail_CustomerBorn">
+          <End Type="C43A0_Mani520Model.CustomerBorn" Role="CustomerBorn" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.ScheduleDetail" Role="ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerBorn">
+              <PropertyRef Name="born_id" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="born_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2623,6 +2699,27 @@
                 <ScalarProperty Name="born_id" ColumnName="born_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="schedule_id" ColumnName="schedule_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleDetail">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.ScheduleDetail">
+              <MappingFragment StoreEntitySet="ScheduleDetail">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="tel_day" ColumnName="tel_day" />
+                <ScalarProperty Name="tel_reason" ColumnName="tel_reason" />
+                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
+                <ScalarProperty Name="born_id" ColumnName="born_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="schedule_id" ColumnName="schedule_id" />
+                <ScalarProperty Name="schedule_detail_id" ColumnName="schedule_detail_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -361,6 +361,28 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        #region 每日電訪排程
+        public IHttpActionResult GetScheduleDetail(int main_id)
+        {
+            #region 連接BusinessLogicLibary資料庫並取得資料
+
+            using (db0 = getDB0())
+            {
+                var qr = db0.ScheduleDetail
+                             .OrderBy(x => x.tel_day)
+                             .Where(x => x.schedule_id == main_id)
+                             .Select(x => new m_ScheduleDetail()
+                             {
+                                 schedule_detail_id = x.schedule_detail_id,
+                                 schedule_id = x.schedule_id,
+                                 tel_day = x.tel_day,
+                                 tel_reason = x.tel_reason
+                             }).AsQueryable();
+                return Ok(qr.ToList());
+            }
+            #endregion
+        }
+        #endregion
         #region 組合菜單對應基礎菜單
         public async Task<IHttpActionResult> GetLeftElement([FromUri]ParmGetLeftElement parm)
         {
