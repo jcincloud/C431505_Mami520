@@ -3,6 +3,7 @@ using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
 using ProcCore.WebCore;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -123,6 +124,41 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
+                #region 發送條件新增對應
+                if (md.send_type == (int)SendType.SendMsgByFactor)
+                {
+                    List<int> customer_id = new List<int>();
+                    var getItem = db0.ScheduleDetail
+                                    .Where(x => x.tel_day == md.send_day)
+                                    .Select(x => new m_ScheduleDetail { customer_id = x.customer_id, tel_reason = x.tel_reason });
+                    if (md.send_factor == (int)SendFactor.FirstPayment)
+                    {
+                        customer_id = getItem.Where(x => x.tel_reason == (int)SendFactor.FirstPayment).Select(x => x.customer_id).Distinct().ToList();
+                    }
+                    if (md.send_factor == (int)SendFactor.SesameOil)
+                    {
+                        customer_id = getItem.Where(x => x.tel_reason == (int)SendFactor.SesameOil).Select(x => x.customer_id).Distinct().ToList();
+                    }
+                    if (md.send_factor == (int)SendFactor.BalancePayment)
+                    {
+                        customer_id = getItem.Where(x => x.tel_reason == (int)SendFactor.BalancePayment).Select(x => x.customer_id).Distinct().ToList();
+                    }
+
+                    foreach (var id in customer_id)
+                    {
+                        var detailItem = new SendMsgOfCustomer()
+                        {
+                            customer_id = id,
+                            send_msg_id = md.send_msg_id,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.SendMsgOfCustomer.Add(detailItem);
+                    }
+                }
+                #endregion
 
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;

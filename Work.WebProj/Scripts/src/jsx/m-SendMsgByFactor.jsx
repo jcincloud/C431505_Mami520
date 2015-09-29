@@ -181,7 +181,7 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{send_type:2,send_factor:1}});
+		this.setState({edit_type:1,fieldData:{send_type:2,send_factor:2}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -339,6 +339,7 @@ var GirdForm = React.createClass({
 		{
 			var fieldData = this.state.fieldData;
 			var map_out_html=null;
+			var send_out_html=null;
 			if(this.state.edit_type==2){//只在修改時顯示下方對應程式
 				map_out_html=(<GirdSofC main_id={fieldData.send_msg_id}  is_send={fieldData.is_send} />);
 			}else{
@@ -349,12 +350,15 @@ var GirdForm = React.createClass({
 					</div>
 					);
 			}
+			if(fieldData.is_send){
+				send_out_html=<div className="alert alert-warning"><p>訊息已發佈後<strong className="text-danger">不可隨意變更內容</strong> 。</p></div>;
+			}
 
 			outHtml=(
 			<div>
                 <h3 className="title">{this.props.Caption}</h3>
                 <h4 className="title">{this.props.Caption} 編輯</h4>
-				
+				{send_out_html}
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
 				<div className="col-xs-9">
 				    <div className="form-group">

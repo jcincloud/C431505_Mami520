@@ -34,6 +34,12 @@ namespace ProcCore.Business.DB0
         SendMsg = 1,
         SendMsgByFactor = 2
     }
+    public enum SendFactor
+    {
+        FirstPayment = 2,//頭款
+        SesameOil = 3,//可麻油
+        BalancePayment = 4//尾款
+    }
     #region set CodeSheet
 
     public static class CodeSheet
