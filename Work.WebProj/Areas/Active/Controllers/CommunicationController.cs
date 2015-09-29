@@ -15,6 +15,11 @@ namespace DotWeb.Areas.Active.Controllers
             ActionRun();
             return View();
         }
+        public ActionResult ScheduleDetail()
+        {
+            ActionRun();
+            return View();
+        }
 
         public ActionResult Draft()
         {

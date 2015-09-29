@@ -18,6 +18,24 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 item = await db0.ScheduleDetail.FindAsync(id);
+                var getCustomer = await db0.Customer.FindAsync(item.customer_id);
+                item.customer_type = getCustomer.customer_type;
+                item.customer_name = getCustomer.customer_name; ;
+                item.mom_name = item.CustomerBorn.mom_name;
+                item.sno = item.CustomerBorn.sno;
+                item.birthday = item.CustomerBorn.birthday;
+                item.tel_1 = item.CustomerBorn.tel_1;
+                item.tel_2 = item.CustomerBorn.tel_2;
+                item.tw_zip_1 = item.CustomerBorn.tw_zip_1;
+                item.tw_city_1 = item.CustomerBorn.tw_city_1;
+                item.tw_country_1 = item.CustomerBorn.tw_country_1;
+                item.tw_address_1 = item.CustomerBorn.tw_address_1;
+                item.tw_zip_2 = item.CustomerBorn.tw_zip_2;
+                item.tw_city_2 = item.CustomerBorn.tw_city_2;
+                item.tw_country_2 = item.CustomerBorn.tw_country_2;
+                item.tw_address_2 = item.CustomerBorn.tw_address_2;
+                item.born_type = item.CustomerBorn.born_type;
+                item.born_day = item.CustomerBorn.born_day;
                 r = new ResultInfo<ScheduleDetail>() { data = item };
             }
 
@@ -30,18 +48,30 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.ScheduleDetail
-                    .OrderBy(x => x.tel_day).AsQueryable();
+                    .OrderByDescending(x => x.tel_day).AsQueryable();
 
 
-                if (q.main_id != null)
+                if (q.tel_reason != null)
                 {
-                    qr = qr.Where(x => x.schedule_id == q.main_id);
+                    qr = qr.Where(x => x.tel_reason == q.tel_reason);
                 }
-
+                if (q.word != null)
+                {
+                    qr = qr.Where(x => x.meal_id.Contains(q.word) ||
+                                      x.CustomerBorn.mom_name.Contains(q.word) ||
+                                      x.CustomerBorn.tel_1.Contains(q.word) ||
+                                      x.CustomerBorn.tel_2.Contains(q.word));
+                }
                 var result = qr.Select(x => new m_ScheduleDetail()
                 {
                     schedule_id = x.schedule_id,
-                    schedule_detail_id = x.schedule_detail_id
+                    schedule_detail_id = x.schedule_detail_id,
+                    meal_id=x.meal_id,
+                    mom_name=x.CustomerBorn.mom_name,
+                    tel_1=x.CustomerBorn.tel_1,
+                    tel_2=x.CustomerBorn.tel_2,
+                    tel_reason=x.tel_reason,
+                    tel_day=x.tel_day
                 });
 
 

@@ -299,6 +299,32 @@ namespace ProcCore.Business.DB0
         public int? born_type { get; set; }
         public DateTime? born_day { get; set; }
     }
+    public partial class m_ScheduleDetail
+    {
+        public string mom_name { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+    }
+    public partial class ScheduleDetail
+    {
+        public string customer_name { get; set; }
+        public int customer_type { get; set; }
+        public string mom_name { get; set; }
+        public string sno { get; set; }
+        public DateTime? birthday { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+        public string tw_zip_1 { get; set; }
+        public string tw_city_1 { get; set; }
+        public string tw_country_1 { get; set; }
+        public string tw_address_1 { get; set; }
+        public string tw_zip_2 { get; set; }
+        public string tw_city_2 { get; set; }
+        public string tw_country_2 { get; set; }
+        public string tw_address_2 { get; set; }
+        public int? born_type { get; set; }
+        public DateTime? born_day { get; set; }
+    }
     /// <summary>
     /// 分類選單用
     /// </summary>
@@ -424,7 +450,8 @@ namespace ProcCore.Business.DB0
     }
     public class q_ScheduleDetail : QueryBase
     {
-        public int? main_id { get; set; }
+        public int? tel_reason { get; set; }
+        public string word { get; set; }
     }
     #endregion
 
