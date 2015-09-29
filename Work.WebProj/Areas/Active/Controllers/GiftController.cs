@@ -37,26 +37,6 @@ namespace DotWeb.Areas.Active.Controllers
                 });
             }
         }
-        public string element_food_Init()
-        {
-            using (var db0 = getDB0())
-            {
-                return defJSON(new
-                {
-                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ElementFood).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
-                });
-            }
-        }
-        public string constitute_food_Init()
-        {
-            using (var db0 = getDB0())
-            {
-                return defJSON(new
-                {
-                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ConstituteFood).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
-                });
-            }
-        }
         #endregion
 
         #region ajax file section

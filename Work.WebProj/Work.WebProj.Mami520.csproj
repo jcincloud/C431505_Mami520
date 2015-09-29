@@ -233,6 +233,8 @@
     <Content Include="Areas\Active\Views\Product\ProductRecord.cshtml" />
     <Content Include="Areas\Active\Views\Communication\ContactSchedule.cshtml" />
     <Content Include="Areas\Active\Views\Communication\ScheduleDetail.cshtml" />
+    <Content Include="Areas\Active\Views\Communication\SendMsg.cshtml" />
+    <Content Include="Areas\Active\Views\Communication\SendMsgByFactor.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -250,6 +252,7 @@
     <None Include="Content\bootstrap\js\npm.js" />
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
+    <Compile Include="Controllers\Api\SendMsgController.cs" />
     <Compile Include="Controllers\Api\ContactScheduleController.cs" />
     <Compile Include="Controllers\Api\DeatilTelRecordController.cs" />
     <Compile Include="Controllers\Api\ScheduleDetailController.cs" />
@@ -722,6 +725,9 @@
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductRecord.js" />
     <Content Include="Scripts\build\func\m-Roles.js" />
+    <Content Include="Scripts\build\func\m-ScheduleDetail.js" />
+    <Content Include="Scripts\build\func\m-SendMsg.js" />
+    <Content Include="Scripts\build\func\m-SendMsgByFactor.js" />
     <Content Include="Scripts\build\func\m-Users.js" />
     <Content Include="Scripts\build\ts\commangular.js" />
     <Content Include="Scripts\build\ts\commfunc.js" />
@@ -754,6 +760,7 @@
     <Content Include="Scripts\app\toastr.js" />
     <Content Include="Scripts\react\react.min.js" />
     <Content Include="Scripts\require.js" />
+    <Content Include="Scripts\src\jsx\m-ContactSchedule.jsx" />
     <Content Include="Views\Fake\Birth.cshtml" />
     <Content Include="Views\Fake\Birth2.cshtml" />
     <Content Include="Views\Fake\Sell2.cshtml" />
@@ -1006,8 +1013,9 @@
     <Content Include="Views\Fake\Require2_3.cshtml" />
     <Content Include="Views\Fake\Tel_2.cshtml" />
     <Content Include="Views\Fake\Tel_3.cshtml" />
-    <Content Include="Scripts\src\jsx\m-ContactSchedule.jsx" />
     <Content Include="Scripts\src\jsx\m-ScheduleDetail.jsx" />
+    <Content Include="Scripts\src\jsx\m-SendMsg.jsx" />
+    <Content Include="Scripts\src\jsx\m-SendMsgByFactor.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

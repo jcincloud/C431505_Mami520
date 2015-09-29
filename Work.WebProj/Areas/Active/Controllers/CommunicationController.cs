@@ -1,8 +1,10 @@
 ﻿using DotWeb.CommSetup;
 using DotWeb.Controller;
+using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
 using System;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace DotWeb.Areas.Active.Controllers
@@ -16,6 +18,16 @@ namespace DotWeb.Areas.Active.Controllers
             return View();
         }
         public ActionResult ScheduleDetail()
+        {
+            ActionRun();
+            return View();
+        }
+        public ActionResult SendMsg()
+        {
+            ActionRun();
+            return View();
+        }
+        public ActionResult SendMsgByFactor()
         {
             ActionRun();
             return View();
@@ -37,7 +49,7 @@ namespace DotWeb.Areas.Active.Controllers
             {
                 return defJSON(new
                 {
-                    // options_equipment_category = db0.Equipment_Category.OrderBy(x=>x.sort)
+                    options_draft = db0.Draft.Where(x => !x.i_Hide).OrderByDescending(x=>x.sort).Select(x => new option() { val = x.draft_id, Lname = x.draft_name })
                 });
             }
         }

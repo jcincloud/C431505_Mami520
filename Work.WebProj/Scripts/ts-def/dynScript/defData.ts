@@ -534,6 +534,11 @@
         { id: 2, label: '未接通', className: 'label label-danger', code: 'straght' },
         { id: 3, label: '忙碌中', className: 'label label-warning', code: 'straght' },
     ];
+    export var SendFactor = [
+        { id: 1, label: '收頭款', className: 'label label-success', code: 'store' },
+        { id: 2, label: '可麻油酒', className: 'label label-warning', code: 'straght' },
+        { id: 3, label: '收尾款', className: 'label label-primary', code: 'straght' },
+    ];
     export var MonthsData = [
         { id: 1, label: '1月' },
         { id: 2, label: '2月' },

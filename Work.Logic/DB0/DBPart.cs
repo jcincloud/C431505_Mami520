@@ -29,6 +29,11 @@ namespace ProcCore.Business.DB0
         PostnatalCareCenter = 3,//月子中心
         Transfer = 4//轉介
     }
+    public enum SendType
+    {
+        SendMsg = 1,
+        SendMsgByFactor = 2
+    }
     #region set CodeSheet
 
     public static class CodeSheet
@@ -460,6 +465,13 @@ namespace ProcCore.Business.DB0
     public class q_DeatilTelRecord : QueryBase
     {
         public int main_id { get; set; }
+    }
+    public class q_SendMsg : QueryBase
+    {
+        public string title { get; set; }
+        public bool? is_complete { get; set; }
+        public bool? is_send { get; set; }
+        public int send_type { get; set; }
     }
     #endregion
 

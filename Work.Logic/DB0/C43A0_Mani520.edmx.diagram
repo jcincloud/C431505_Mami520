@@ -65,6 +65,10 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DeatilTelRecord" Width="1.5" PointX="12.125" PointY="27.625" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsg" Width="1.5" PointX="8.375" PointY="33" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsgOfCustomer" Width="1.5" PointX="10.625" PointY="7.625" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

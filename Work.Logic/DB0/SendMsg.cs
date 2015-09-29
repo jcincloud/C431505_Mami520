@@ -13,20 +13,22 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class ScheduleDetail : BaseEntityTable
+    public partial class SendMsg : BaseEntityTable
     {
-        public ScheduleDetail()
+        public SendMsg()
         {
-            this.DeatilTelRecord = new HashSet<DeatilTelRecord>();
+            this.SendMsgOfCustomer = new HashSet<SendMsgOfCustomer>();
         }
     
-        public int schedule_detail_id { get; set; }
-        public Nullable<int> schedule_id { get; set; }
-        public int customer_id { get; set; }
-        public int born_id { get; set; }
-        public string meal_id { get; set; }
-        public int tel_reason { get; set; }
-        public System.DateTime tel_day { get; set; }
+        public int send_msg_id { get; set; }
+        public int send_type { get; set; }
+        public System.DateTime send_day { get; set; }
+        public Nullable<int> send_factor { get; set; }
+        public string title { get; set; }
+        public string send_content { get; set; }
+        public Nullable<int> sort { get; set; }
+        public bool is_complete { get; set; }
+        public bool is_send { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -37,8 +39,6 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual CustomerBorn CustomerBorn { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<DeatilTelRecord> DeatilTelRecord { get; set; }
+        public virtual ICollection<SendMsgOfCustomer> SendMsgOfCustomer { get; set; }
     }
 }

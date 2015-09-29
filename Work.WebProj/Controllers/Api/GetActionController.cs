@@ -949,7 +949,158 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        #region 發送訊息對應客戶
+        public IHttpActionResult GetDraftData(int draft_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                var getDraft = db0.Draft.Find(draft_id);
 
+                return Ok(new { title = getDraft.draft_title, content = getDraft.draft_content, draft_id = draft_id });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        public async Task<IHttpActionResult> GetLeftCustomer([FromUri]ParmGetLeftCustomer parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                int page_size = 10;
+                var customer_id = db0.SendMsgOfCustomer
+                    .Where(x => x.send_msg_id == parm.main_id)
+                    .Select(x => x.customer_id);
+
+                var items = db0.Customer.Where(x => !customer_id.Contains(x.customer_id)).OrderByDescending(x => x.customer_id).Select(x => new { x.customer_id, x.customer_name, x.customer_type });
+
+
+                if (parm.name != null)
+                {
+                    items = items.Where(x => x.customer_name.Contains(parm.name));
+                }
+                if (parm.customer_type != null)
+                {
+                    items = items.Where(x => x.customer_type == parm.customer_type);
+                }
+
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        public IHttpActionResult GetRightCustomer(int? main_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                var items = from x in db0.SendMsgOfCustomer
+                            join y in db0.Customer on x.customer_id equals y.customer_id
+                            where x.send_msg_id == main_id
+                            select new { x.customer_id, y.customer_name, y.customer_type };
+
+                return Ok(items.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> PostSendMsgOfCustomer([FromBody]ParmSendMsgOfCustomer parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = db0.SendMsgOfCustomer.Where(x => x.customer_id == parm.customer_id && x.send_msg_id == parm.send_msg_id).FirstOrDefault();
+                if (item == null)
+                {
+                    item = new SendMsgOfCustomer()
+                    {
+                        customer_id = parm.customer_id,
+                        send_msg_id = parm.send_msg_id,
+                        i_InsertUserID = this.UserId,
+                        i_InsertDateTime = DateTime.Now,
+                        i_InsertDeptID = this.departmentId,
+                        i_Lang = "zh-TW"
+                    };
+                    db0.SendMsgOfCustomer.Add(item);
+                }
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = item.customer_id;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteSendMsgOfCustomer([FromBody]ParmSendMsgOfCustomer parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = await db0.SendMsgOfCustomer.FindAsync(parm.customer_id, parm.send_msg_id);
+                if (item != null)
+                {
+                    db0.SendMsgOfCustomer.Remove(item);
+                    await db0.SaveChangesAsync();
+                }
+                else
+                {
+                    r.result = false;
+                    r.message = "未刪除";
+                    return Ok(r);
+                }
+                r.result = true;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
     }
     #region Parm
     public class ParmChangeMealID
@@ -1016,6 +1167,18 @@ namespace DotWeb.Api
     {
         public string word { get; set; }
         public bool? is_close { get; set; }
+    }
+    public class ParmGetLeftCustomer
+    {
+        public int? customer_type { get; set; }
+        public int? main_id { get; set; }
+        public string name { get; set; }
+        public int page { get; set; }
+    }
+    public class ParmSendMsgOfCustomer
+    {
+        public int send_msg_id { get; set; }
+        public int customer_id { get; set; }
     }
     #endregion
 }
