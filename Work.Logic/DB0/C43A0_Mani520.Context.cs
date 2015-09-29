@@ -57,5 +57,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<RecordDetail> RecordDetail { get; set; }
         public virtual DbSet<ContactSchedule> ContactSchedule { get; set; }
         public virtual DbSet<ScheduleDetail> ScheduleDetail { get; set; }
+        public virtual DbSet<DeatilTelRecord> DeatilTelRecord { get; set; }
     }
 }

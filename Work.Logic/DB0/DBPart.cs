@@ -325,6 +325,10 @@ namespace ProcCore.Business.DB0
         public int? born_type { get; set; }
         public DateTime? born_day { get; set; }
     }
+    public partial class m_DeatilTelRecord
+    {
+        public string user_name { get; set; }
+    }
     /// <summary>
     /// 分類選單用
     /// </summary>
@@ -452,6 +456,10 @@ namespace ProcCore.Business.DB0
     {
         public int? tel_reason { get; set; }
         public string word { get; set; }
+    }
+    public class q_DeatilTelRecord : QueryBase
+    {
+        public int main_id { get; set; }
     }
     #endregion
 

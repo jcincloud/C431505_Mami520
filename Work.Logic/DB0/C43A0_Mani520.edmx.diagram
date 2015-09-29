@@ -63,6 +63,8 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_ContactSchedule_CustomerBorn" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.ScheduleDetail" Width="1.5" PointX="9.875" PointY="27.375" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.DeatilTelRecord" Width="1.5" PointX="12.125" PointY="27.625" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

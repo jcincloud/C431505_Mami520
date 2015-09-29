@@ -251,6 +251,7 @@
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
     <Compile Include="Controllers\Api\ContactScheduleController.cs" />
+    <Compile Include="Controllers\Api\DeatilTelRecordController.cs" />
     <Compile Include="Controllers\Api\ScheduleDetailController.cs" />
     <Compile Include="Controllers\Api\RecordDetailController.cs" />
     <Compile Include="Controllers\Api\CustomerNeedController.cs" />

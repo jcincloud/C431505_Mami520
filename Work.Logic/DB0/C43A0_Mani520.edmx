@@ -282,6 +282,24 @@
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
         </EntityType>
+        <EntityType Name="DeatilTelRecord">
+          <Key>
+            <PropertyRef Name="deatil_tel_record_id" />
+          </Key>
+          <Property Name="deatil_tel_record_id" Type="int" Nullable="false" />
+          <Property Name="schedule_detail_id" Type="int" Nullable="false" />
+          <Property Name="tel_datetime" Type="datetime" Nullable="false" />
+          <Property Name="tel_state" Type="int" Nullable="false" />
+          <Property Name="memo" Type="nvarchar" MaxLength="256" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="department_id" />
@@ -763,6 +781,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DeatilTelRecord_ScheduleDetail">
+          <End Role="ScheduleDetail" Type="Self.ScheduleDetail" Multiplicity="1" />
+          <End Role="DeatilTelRecord" Type="Self.DeatilTelRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleDetail">
+              <PropertyRef Name="schedule_detail_id" />
+            </Principal>
+            <Dependent Role="DeatilTelRecord">
+              <PropertyRef Name="schedule_detail_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DietaryNeedOfElement_DietaryNeed">
           <End Role="DietaryNeed" Type="Self.DietaryNeed" Multiplicity="1" />
           <End Role="DietaryNeedOfElement" Type="Self.DietaryNeedOfElement" Multiplicity="*" />
@@ -935,6 +965,7 @@
           <EntitySet Name="CustomerOfDietaryNeed" EntityType="Self.CustomerOfDietaryNeed" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyMenu" EntityType="Self.DailyMenu" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyMenuOfConstitute" EntityType="Self.DailyMenuOfConstitute" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeatilTelRecord" EntityType="Self.DeatilTelRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DietaryNeed" EntityType="Self.DietaryNeed" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DietaryNeedOfElement" EntityType="Self.DietaryNeedOfElement" Schema="dbo" store:Type="Tables" />
@@ -1013,6 +1044,10 @@
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DeatilTelRecord_ScheduleDetail" Association="Self.FK_DeatilTelRecord_ScheduleDetail">
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
+            <End Role="DeatilTelRecord" EntitySet="DeatilTelRecord" />
           </AssociationSet>
           <AssociationSet Name="FK_DietaryNeedOfElement_DietaryNeed" Association="Self.FK_DietaryNeedOfElement_DietaryNeed">
             <End Role="DietaryNeed" EntitySet="DietaryNeed" />
@@ -1348,6 +1383,11 @@
           <AssociationSet Name="FK_ScheduleDetail_CustomerBorn" Association="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn">
             <End Role="CustomerBorn" EntitySet="CustomerBorn" />
             <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
+          </AssociationSet>
+          <EntitySet Name="DeatilTelRecord" EntityType="C43A0_Mani520Model.DeatilTelRecord" />
+          <AssociationSet Name="FK_DeatilTelRecord_ScheduleDetail" Association="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail">
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
+            <End Role="DeatilTelRecord" EntitySet="DeatilTelRecord" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="MealID">
@@ -2102,6 +2142,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" FromRole="ScheduleDetail" ToRole="CustomerBorn" />
+          <NavigationProperty Name="DeatilTelRecord" Relationship="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" FromRole="ScheduleDetail" ToRole="DeatilTelRecord" />
         </EntityType>
         <Association Name="FK_ScheduleDetail_CustomerBorn">
           <End Type="C43A0_Mani520Model.CustomerBorn" Role="CustomerBorn" Multiplicity="1" />
@@ -2112,6 +2153,37 @@
             </Principal>
             <Dependent Role="ScheduleDetail">
               <PropertyRef Name="born_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DeatilTelRecord">
+          <Key>
+            <PropertyRef Name="deatil_tel_record_id" />
+          </Key>
+          <Property Name="deatil_tel_record_id" Type="Int32" Nullable="false" />
+          <Property Name="schedule_detail_id" Type="Int32" Nullable="false" />
+          <Property Name="tel_datetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="tel_state" Type="Int32" Nullable="false" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="ScheduleDetail" Relationship="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" FromRole="DeatilTelRecord" ToRole="ScheduleDetail" />
+        </EntityType>
+        <Association Name="FK_DeatilTelRecord_ScheduleDetail">
+          <End Type="C43A0_Mani520Model.ScheduleDetail" Role="ScheduleDetail" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.DeatilTelRecord" Role="DeatilTelRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleDetail">
+              <PropertyRef Name="schedule_detail_id" />
+            </Principal>
+            <Dependent Role="DeatilTelRecord">
+              <PropertyRef Name="schedule_detail_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2720,6 +2792,25 @@
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="schedule_id" ColumnName="schedule_id" />
                 <ScalarProperty Name="schedule_detail_id" ColumnName="schedule_detail_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeatilTelRecord">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.DeatilTelRecord">
+              <MappingFragment StoreEntitySet="DeatilTelRecord">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="tel_state" ColumnName="tel_state" />
+                <ScalarProperty Name="tel_datetime" ColumnName="tel_datetime" />
+                <ScalarProperty Name="schedule_detail_id" ColumnName="schedule_detail_id" />
+                <ScalarProperty Name="deatil_tel_record_id" ColumnName="deatil_tel_record_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

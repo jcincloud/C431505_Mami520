@@ -456,10 +456,8 @@ var GirdForm = React.createClass({
 				save_out_html=<strong>主檔資料不可修改！</strong>;
 				detail_out_html=
 				<SubForm ref="SubForm" 
-				main_id={fieldData.schedule_id}
-				customer_id={fieldData.customer_id}
-				born_id={fieldData.born_id}
-				meal_id={fieldData.meal_id} />;
+				main_id={fieldData.schedule_detail_id}
+				tel_reason={fieldData.tel_reason} />;
 			}
 
 			outHtml=(
@@ -696,54 +694,67 @@ var SubForm = React.createClass({
 		return {
 			gridSubData:[],
 			fieldSubData:{},
-			searchData:{name:null,product_type:null},
-			grid_right_detail:[]
+			edit_sub_type:0,//預設皆為新增狀態
+			checkAll:false
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
 			fdName:'fieldSubData',
 			gdName:'searchData',
-			apiPathName:gb_approot+'api/ScheduleDetail',
-			initPathName:gb_approot+'Active/Product/aj_Init'
+			apiPathName:gb_approot+'api/DeatilTelRecord'
 		};
 	},
 	componentDidMount:function(){
-		this.queryScheduleDetail();
-		this.insertSubType();
+		this.queryGridData();
+		this.insertSubType();//一開始載入預設為新增狀態
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
 	},
-	queryScheduleDetail:function(){//取得右邊已增加的電訪排程
-		jqGet(gb_approot + 'api/GetAction/GetScheduleDetail',{main_id:this.props.main_id})
-		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({grid_right_detail:data});
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			showAjaxError(errorThrown);
-		});		
-	},
-	detailHandleSubmit:function(e){//新增 
+	detailHandleSubmit: function(e) {
 		e.preventDefault();
-			
-		jqPost(this.props.apiPathName,this.state.fieldSubData)
-		.done(function(data, textStatus, jqXHRdata) {
-			if(data.result){
-				if(data.message!=null){
-					tosMessage(null,'新增完成'+data.message,1);
+
+		if(this.state.edit_sub_type==1){
+			jqPost(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
+					//儲存後更新下分list
+					this.queryGridData();
+					this.insertSubType();
 				}else{
-					tosMessage(null,'新增完成',1);
+					tosMessage(null,data.message,3);
 				}
-				this.queryScheduleDetail();
-				this.insertSubType();
-			}else{
-				tosMessage(null,data.message,3);
-			}
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			showAjaxError(errorThrown);
-		});
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		}		
+		else if(this.state.edit_sub_type==2){
+			jqPut(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
+					//儲存後更新下分list
+					this.queryGridData();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		};
 		return;
 	},
 	detailDeleteSubmit:function(id,e){
@@ -755,7 +766,8 @@ var SubForm = React.createClass({
 		.done(function(data, textStatus, jqXHRdata) {
 			if(data.result){
 				tosMessage(null,'刪除完成',1);
-				this.queryScheduleDetail();
+				this.queryGridData();
+				this.insertSubType();
 			}else{
 				tosMessage(null,data.message,3);
 			}
@@ -764,90 +776,155 @@ var SubForm = React.createClass({
 			showAjaxError(errorThrown);
 		});
 	},
+	gridData:function(){
+		var parms = {
+			main_id:this.props.main_id
+		};
+		$.extend(parms, this.state.searchData);
+
+		return jqGet(this.props.apiPathName,parms);
+	},
+	queryGridData:function(){
+		this.gridData()
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({gridSubData:data});
+		}.bind(this))
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			showAjaxError(errorThrown);
+		});
+	},
 	insertSubType:function(){
-		this.setState({fieldSubData:{
-			schedule_id:this.props.main_id,
-			customer_id:this.props.customer_id,
-			born_id:this.props.born_id,
-			meal_id:this.props.meal_id,
-			tel_reason:2
+		$('textarea').val("");
+		this.setState({edit_sub_type:1,fieldSubData:{
+			schedule_detail_id:this.props.main_id,
+			tel_state:1
 		}});
 	},
+	updateSubType:function(id,e){
+		jqGet(this.props.apiPathName,{id:id})
+		.done(function(data, textStatus, jqXHRdata) {
+			data.data.tel_datetime=moment(data.data.tel_datetime).format('YYYY/MM/DD hh:mm:ss');
+			this.setState({edit_sub_type:2,fieldSubData:data.data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
 	changeFDValue:function(name,e){
-		var obj = this.state.fieldSubData;
-		obj[name] = e.target.value;
+		this.setInputValue(this.props.fdName,name,e);
+	},
+	setInputValue:function(collentName,name,e){
 
+		var obj = this.state[collentName];
+		if(e.target.value=='true'){
+			obj[name] = true;
+		}else if(e.target.value=='false'){
+			obj[name] = false;
+		}else{
+			obj[name] = e.target.value;
+		}
 		this.setState({fieldSubData:obj});
 	},
 	render: function() {
 		var outHtml = null;
-		var fieldSubData=this.state.fieldSubData;
+		var fieldSubData = this.state.fieldSubData;//明細檔資料
 
 			outHtml =
 			(
-				<div className="row">
-				    <div className="col-xs-4">
-				        <h4 className="title">新增電訪排程</h4>
-				        <form className="form-horizontal clearfix" role="form" id="detailForm" onSubmit={this.detailHandleSubmit}>
-				            <div className="form-group">
-				                <label className="col-xs-3 control-label">電訪日期</label>
-				                <div className="col-xs-7">
-					                <span className="has-feedback">
-										<InputDate id="tel_day" 
-										onChange={this.changeFDValue} 
-										field_name="tel_day" 
-										value={fieldSubData.tel_day}
-										required={true} />
-									</span>
-				                </div>
-				                <small className="help-inline col-xs-2 text-danger">(必填)</small>
-				            </div>
-				            <div className="form-group">
-				                <label className="col-xs-3 control-label">電訪原因</label>
-				                <div className="col-xs-7">
-				                    <select className="form-control"
-				                    value={fieldSubData.tel_reason}
-				                    onChange={this.changeFDValue.bind(this,'tel_reason')}>
-						                {
-											CommData.TelReasonBySchedule.map(function(itemData,i) {
-											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-											})
-										}
-				                    </select>
-				                </div>
-				            </div>
-				            <div className="form-group text-right">
-				                <div className="col-xs-10">
-				                    <button type="submit" form="detailForm" className="btn-primary"><i className="fa-check"></i> 存檔確認</button>
-				                </div>
-				            </div>
-				        </form>
-				    </div>
-				    <div className="col-xs-5">
-				        <h4 className="title">電訪排程明細</h4>
-				        <table className="table-condensed">
-				        	<tbody>
-					            <tr>
-					                <th className="col-xs-5 text-center">電訪日期</th>
-					                <th className="col-xs-5 text-center">電訪原因</th>
-					                <th className="col-xs-2 text-center">移除</th>
-					            </tr>
-					            {
-									this.state.grid_right_detail.map(function(itemData,i) {											
-										var detail_out_html = 
-											<tr key={itemData.schedule_detail_id}>
-												<td className="text-center">{moment(itemData.tel_day).format('YYYY/MM/DD')}</td>
-												<td className="text-center"><StateForGrid stateData={CommData.TelReasonBySchedule} id={itemData.tel_reason} /></td>
-												<td className="text-center">
-								                    <button className="btn-link btn-lg text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.schedule_detail_id)}><i className="fa-times"></i></button>
-								                </td>
-											</tr>;
-										return detail_out_html;
-									}.bind(this))
-								}
-				            </tbody>
-				        </table>
-				    </div>
+				<div>
+			{/*---產品明細編輯start---*/}
+					<h4 className="title">新增電訪明細</h4>
+					<div className="row">
+						<div className="col-xs-9">
+							<div className="item-box">
+								<div className="item-title">
+									<h5>新增電訪紀錄</h5>
+								</div>
+								<form className="form-horizontal" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
+								<div className="panel-body">
+										<div className="form-group">
+											<label className="col-xs-2 control-label">電訪時間</label>
+											<div className="col-xs-4">
+												<input type="datetime" 							
+												className="form-control"	
+												value={fieldSubData.tel_datetime}
+												onChange={this.changeFDValue.bind(this,'tel_datetime')}
+												maxLength="30"
+												required disabled　/>
+											</div>
+											<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
+										</div>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">電訪狀態</label>
+											<div className="col-xs-4">
+												<select className="form-control" 
+												value={fieldSubData.tel_state}
+												onChange={this.changeFDValue.bind(this,'tel_state')}>
+												{
+													CommData.TelState.map(function(itemData,i) {
+														return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+													})
+												}
+												</select>
+											</div>
+											<small className="help-inline text-danger col-xs-6">(必填)</small>
+										</div>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">電訪內容(備註)</label>
+											<div className="col-xs-4">
+												<textarea col="30" rows="5" className="form-control"
+												value={fieldSubData.memo}
+												onChange={this.changeFDValue.bind(this,'memo')}
+												maxLength="256"></textarea>
+											</div>
+										</div>
+								</div>								
+								</form>
+								<div className="panel-footer">
+									<button className="btn-primary col-xs-offset-9"
+									type="submit" form="form2">
+										<i className="fa-check"></i> 存檔確認
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>			
+				{/*---產品明細編輯end---*/}
+
+					<hr className="condensed" />
+
+				{/*---產谝明細列表start---*/}
+					<h4 className="title">電訪紀錄</h4>
+					<table className="table-condensed">
+						<tbody>
+							<tr>
+								<th className="col-xs-1 text-center">編輯</th>
+								<th className="col-xs-2 text-center">時間</th>
+								<th className="col-xs-1 text-center">原因</th>
+								<th className="col-xs-4">內容</th>
+								<th className="col-xs-1 text-center">狀態</th>
+								<th className="col-xs-1">人員</th>
+							</tr>
+							{
+								this.state.gridSubData.map(function(itemData,i) {
+									var sub_out_html = 
+										<tr key={itemData.deatil_tel_record_id}>
+											<td className="text-center">
+												<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.deatil_tel_record_id)}><i className="fa-pencil"></i></button>
+												<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.deatil_tel_record_id)}><i className="fa-trash"></i></button>
+											</td>
+											<td className="text-center">{moment(itemData.tel_datetime).format('YYYY/MM/DD hh:mm:ss')}</td>
+											<td className="text-center"><StateForGrid stateData={CommData.TelReasonByDetail} id={this.props.tel_reason} /></td>
+											<td>{itemData.memo}</td>
+											<td className="text-center"><StateForGrid stateData={CommData.TelState} id={itemData.tel_state} /></td>
+											<td>{itemData.user_name}</td>			
+										</tr>;
+										return sub_out_html;
+								}.bind(this))
+							}
+						</tbody>
+					</table>
+				{/*---產品明細列表end---*/}
 				</div>
 			);
 

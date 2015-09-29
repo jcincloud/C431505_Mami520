@@ -131,6 +131,9 @@
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\DBPart.cs" />
+    <Compile Include="DB0\DeatilTelRecord.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB0\Department.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
@@ -213,6 +216,9 @@
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_DailyMenuOfConstitute.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_DeatilTelRecord.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Department.cs">
