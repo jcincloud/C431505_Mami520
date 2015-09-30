@@ -338,7 +338,7 @@ var GirdForm = React.createClass({
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -351,8 +351,8 @@ var GirdForm = React.createClass({
 									<th className="col-xs-2">客戶名稱</th>
 									<th className="col-xs-1">客戶分類</th>
 									<th className="col-xs-2">身分證號</th>
-									<th className="col-xs-4">送餐地址</th>
-									<th className="col-xs-1">電話1</th>
+									<th className="col-xs-3">送餐地址</th>
+									<th className="col-xs-2">電話1</th>
 									<th className="col-xs-1">電話2</th>
 								</tr>
 							</thead>
