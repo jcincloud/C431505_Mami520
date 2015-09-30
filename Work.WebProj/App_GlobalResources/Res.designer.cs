@@ -520,6 +520,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 此筆生產資料已有月子餐產品存在!無法再新增月子餐產品。 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Check_RecordDetail_PostnatalMeal {
+            get {
+                return ResourceManager.GetString("Log_Check_RecordDetail_PostnatalMeal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 此筆生產資料已有試吃產品存在!無法再新增試吃產品。 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Check_RecordDetail_Tryout {
+            get {
+                return ResourceManager.GetString("Log_Check_RecordDetail_Tryout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 帳號已存在，不可使用。 的當地語系化字串。
         /// </summary>
         internal static string Log_Err_AccountExists {

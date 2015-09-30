@@ -40,6 +40,13 @@ namespace ProcCore.Business.DB0
         SesameOil = 3,//可麻油
         BalancePayment = 4//尾款
     }
+    public enum ProdyctType
+    {
+        Tryout = 1,//試吃
+        PostnatalMeal = 2,//月子餐
+        Common = 3,//一般產品
+        DiscountAndRefund = 4//折扣及退款
+    }
     #region set CodeSheet
 
     public static class CodeSheet

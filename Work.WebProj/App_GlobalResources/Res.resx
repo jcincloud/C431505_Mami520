@@ -355,4 +355,10 @@
   <data name="Log_Err_Delete_Close" xml:space="preserve">
     <value>此筆資料已結案!無法刪除!!</value>
   </data>
+  <data name="Log_Check_RecordDetail_PostnatalMeal" xml:space="preserve">
+    <value>此筆生產資料已有月子餐產品存在!無法再新增月子餐產品。</value>
+  </data>
+  <data name="Log_Check_RecordDetail_Tryout" xml:space="preserve">
+    <value>此筆生產資料已有試吃產品存在!無法再新增試吃產品。</value>
+  </data>
 </root>

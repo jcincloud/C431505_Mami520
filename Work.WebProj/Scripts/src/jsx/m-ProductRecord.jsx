@@ -961,7 +961,7 @@ var SubForm = React.createClass({
 						<div className="modal-body">
 						<div className="alert alert-warning">
 							<p>1.一筆生產紀錄只能對應一筆試吃</p>
-							<p>2.一筆銷售紀錄只能對應一筆月子餐</p>
+							<p>2.一筆生產紀錄只能對應一筆月子餐</p>
 						</div>
 							<div className="table-header">
 			                    <div className="table-filter">

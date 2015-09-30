@@ -107,6 +107,31 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
+
+                if (md.product_type == (int)ProdyctType.Tryout)
+                {
+                    //驗證一筆生產紀錄只能有一筆試吃
+                    var check_Tryout = db0.RecordDetail.Any(x => x.born_id == md.born_id & x.product_type == (int)ProdyctType.Tryout);
+                    if (check_Tryout)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_RecordDetail_Tryout;
+                        return Ok(r);
+                    }
+                }
+                if (md.product_type == (int)ProdyctType.PostnatalMeal)
+                {
+                    //驗證一筆生產紀錄只能有一筆月子餐
+                    var check_PostnatalMeal = db0.RecordDetail.Any(x => x.born_id == md.born_id & x.product_type == (int)ProdyctType.PostnatalMeal);
+                    if (check_PostnatalMeal)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_RecordDetail_PostnatalMeal;
+                        return Ok(r);
+                    }
+                }
+
+
                 md.sell_day = DateTime.Now;
 
                 md.i_InsertUserID = this.UserId;
