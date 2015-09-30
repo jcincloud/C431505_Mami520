@@ -722,7 +722,7 @@ var SubForm = React.createClass({
 		return {
 			gridSubData:[],
 			fieldSubData:{},
-			searchProductData:{name:null,product_type:null},
+			searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
 			edit_sub_type:0,//預設皆為新增狀態
 			checkAll:false,
 			isShowProductSelect:false,//控制選取產品視窗顯示
@@ -1155,7 +1155,7 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
-												required={fieldSubData.product_type==2} />
+												required={fieldSubData.product_type==2 || fieldSubData.product_type==1} />
 											</span>
 										</div>										
 									</div>
@@ -1167,7 +1167,7 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
-												required={fieldSubData.product_type==2} />
+												required={fieldSubData.product_type==2 || fieldSubData.product_type==1} />
 											</span>
 										</div>										
 									</div>
@@ -1191,6 +1191,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_breakfast}
 												onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
+												required={fieldSubData.product_type==2}
 												min="0"/>
 											</div>
 										</div>
@@ -1201,6 +1202,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_lunch}
 												onChange={this.changeMealCount.bind(this,'estimate_lunch')}
+												required={fieldSubData.product_type==2}
 												min="0"/>
 											</div>
 										</div>
@@ -1211,6 +1213,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_dinner}
 												onChange={this.changeMealCount.bind(this,'estimate_dinner')}
+												required={fieldSubData.product_type==2}
 												min="0"/>
 											</div>
 										</div>

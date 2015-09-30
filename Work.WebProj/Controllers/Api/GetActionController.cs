@@ -283,6 +283,9 @@ namespace DotWeb.Api
             db0 = getDB0();
             try
             {
+                //檢查此筆生產紀錄是否已有"試吃"及"月子餐"
+                var check_Tryout = db0.RecordDetail.Any(x => x.born_id == parm.born_id & x.product_type == (int)ProdyctType.Tryout);
+                var check_PostnatalMeal = db0.RecordDetail.Any(x => x.born_id == parm.born_id & x.product_type == (int)ProdyctType.PostnatalMeal);
 
                 var items = db0.Product
                     .OrderBy(x => new { x.sort })
@@ -296,6 +299,15 @@ namespace DotWeb.Api
                 {
                     items = items.Where(x => x.product_type == parm.product_type);
                 }
+                if (check_Tryout)
+                {//已有試吃,將不列出試吃產品
+                    items = items.Where(x => x.product_type != (int)ProdyctType.Tryout);
+                }
+                if (check_PostnatalMeal)
+                {//已有月子餐,將不列出月子餐產品
+                    items = items.Where(x => x.product_type != (int)ProdyctType.PostnatalMeal);
+                }
+
                 return Ok(items.ToList());
             }
             finally
@@ -1162,6 +1174,7 @@ namespace DotWeb.Api
     {
         public string name { get; set; }
         public int? product_type { get; set; }
+        public int born_id { get; set; }
     }
     public class ParmGetAllBorn
     {
