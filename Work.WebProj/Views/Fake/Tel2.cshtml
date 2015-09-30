@@ -9,4 +9,130 @@
 
 <h3 class="title">@ViewBag.Title</h3>
 
-<h4 class="title">By Ajoe</h4>
+<h4 class="title">電訪名單列表</h4>
+
+<div class="table-responsive">
+
+    <div class="table-header">
+        <div class="table-filter">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="">客戶名稱/用餐編號/媽媽姓名/身分證號/電話/上次電訪人員</label>
+                    <input type="text" class="form-control input-sm" placeholder="請擇一填寫" />
+                </div>
+                <div class="form-group">
+                    <label for="">上次電訪狀態</label>
+                    <select class="form-control input-sm">
+                        <option value="">全部</option>
+                        <option value="">未拜訪</option>
+                        <option value="">未接通</option>
+                        <option value="">忙碌中</option>
+                        <option value="">完成</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="">預計電訪日期</label>
+                    <span class="has-feedback">
+                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+                        <i class="fa-calendar form-control-feedback"></i>
+                    </span>
+                    <label for="">~</label>
+                    <span class="has-feedback">
+                        <input type="text" class="form-control input-sm datetimepicker" style="width:130px;" />
+                        <i class="fa-calendar form-control-feedback"></i>
+                    </span>
+                </div>
+                <div class="form-group">
+                    <button class="btn-primary btn-sm"><i class="fa-search"></i> 搜尋</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table-condensed">
+        <thead>
+            <tr>
+                <th class="text-center">修改</th>
+                <th>客戶名稱</th>
+                <th>用餐編號</th>
+                <th>媽媽姓名</th>
+                <th>身分證號</th>
+                <th>電話1</th>
+                <th>預計電訪日期</th>
+                <th>上次電訪人員</th>
+                <th>上次電訪狀態</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Tel2_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>陳小姐</td>
+                <td>A001</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td>2015/11/11</td>
+                <td>XXX</td>
+                <td><span class="label label-default">未拜訪</span></td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Tel2_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>陳小姐</td>
+                <td>A001</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td>2015/11/11</td>
+                <td>XXX</td>
+                <td><span class="label label-danger">未接通</span></td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Tel2_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>宏其醫院</td>
+                <td>A001</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td>2015/11/11</td>
+                <td>XXX</td>
+                <td><span class="label label-warning">忙碌中</span></td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <a href="~/Fake/Tel2_2"><button class="btn-link btn-lg"><i class="fa-pencil"></i></button></a>
+                </td>
+                <td>宏其醫院</td>
+                <td>A001</td>
+                <td>陳小姐</td>
+                <td>A123456789</td>
+                <td>0912345678</td>
+                <td>2015/11/11</td>
+                <td>XXX</td>
+                <td><span class="label label-success">完成</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="table-footer">
+        <small class="pull-right">第1-3筆，共3筆</small>
+        <ul class="pager">
+            <li class="disabled"><a href="" title="第一頁"><i class="fa-angle-double-left"></i></a></li>
+            <li class="disabled"><a href="" title="上一頁"><i class="fa-angle-left"></i></a></li>
+            <li class="form-inline">
+                <div class="form-group">
+                    <label for="">第</label>
+                    <input type="text" class="form-control text-center" value="1" style="width:50px;">
+                    <label for="">頁，共3頁</label>
+                </div>
+            </li>
+            <li><a href="" title="下一頁"><i class="fa-angle-right"></i></a></li>
+            <li><a href="" title="最後一頁"><i class="fa-angle-double-right"></i></a></li>
+        </ul>
+    </div>
+</div><!-- 後台常用列表 //-->

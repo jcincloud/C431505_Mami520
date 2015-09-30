@@ -161,13 +161,33 @@ namespace DotWeb.Controllers
         {
             return View("Tel2");
         }
+        public ActionResult Tel2_2()
+        {
+            return View("Tel2_2");
+        }
         public ActionResult Tel3()
         {
             return View("Tel3");
         }
+        public ActionResult Tel3_2()
+        {
+            return View("Tel3_2");
+        }
+        public ActionResult Tel3_3()
+        {
+            return View("Tel3_3");
+        }
         public ActionResult Tel4()
         {
             return View("Tel4");
+        }
+        public ActionResult Tel4_2()
+        {
+            return View("Tel4_2");
+        }
+        public ActionResult Tel4_3()
+        {
+            return View("Tel4_3");
         }
         public ActionResult Tel5()
         {

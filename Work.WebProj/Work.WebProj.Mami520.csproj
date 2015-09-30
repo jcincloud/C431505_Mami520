@@ -766,6 +766,8 @@
     <Content Include="Views\Fake\Sell2.cshtml" />
     <Content Include="Views\Fake\Sell2_2.cshtml" />
     <Content Include="Views\Fake\Tel.cshtml" />
+    <Content Include="Views\Fake\Tel2.cshtml" />
+    <Content Include="Views\Fake\Tel3_2.cshtml" />
     <Content Include="Views\Fake\Tel5_2.cshtml" />
     <Content Include="Views\Index\Index.cshtml" />
     <Content Include="Scripts\src\ts-controller\tmp\modalEditFuel.html" />
@@ -978,7 +980,6 @@
     <Content Include="Views\Fake\Report3.cshtml" />
     <Content Include="Views\Fake\Require2.cshtml" />
     <Content Include="Views\Fake\Schedule.cshtml" />
-    <Content Include="Views\Fake\Tel2.cshtml" />
     <Content Include="Views\Fake\Tel3.cshtml" />
     <Content Include="Views\Fake\Tel4.cshtml" />
     <Content Include="Views\Fake\Tel5.cshtml" />
@@ -1016,6 +1017,10 @@
     <Content Include="Scripts\src\jsx\m-ScheduleDetail.jsx" />
     <Content Include="Scripts\src\jsx\m-SendMsg.jsx" />
     <Content Include="Scripts\src\jsx\m-SendMsgByFactor.jsx" />
+    <Content Include="Views\Fake\Tel2_2.cshtml" />
+    <Content Include="Views\Fake\Tel3_3.cshtml" />
+    <Content Include="Views\Fake\Tel4_2.cshtml" />
+    <Content Include="Views\Fake\Tel4_3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
