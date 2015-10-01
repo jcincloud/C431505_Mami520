@@ -39,9 +39,9 @@ namespace DotWeb.Api
                 }
 
                 if (q.start_date != null && q.end_date != null)
-                {
+                {//日期區間的比對
                     DateTime end = ((DateTime)q.end_date).AddDays(1);
-                    qr = qr.Where(x => x.start_date >= q.start_date && x.start_date < end);
+                    qr = qr.Where(x => x.start_date <= end && x.end_date >= q.start_date);
                 }
 
                 var result = qr.Select(x => new m_Activity()

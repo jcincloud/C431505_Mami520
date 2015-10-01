@@ -50,7 +50,11 @@ var GirdForm = React.createClass({
 		};
 	},	
 	componentDidMount:function(){
-		this.queryGridData(1);
+		if(gb_main_id==0){
+            this.queryGridData(1);
+        }else{//有帶id的話,直接進入修改頁面
+            this.updateType(gb_main_id);
+        }
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
@@ -498,7 +502,8 @@ var GirdForm = React.createClass({
 				<SubForm ref="SubForm" 
 				main_id={fieldData.product_record_id}
 				customer_id={fieldData.customer_id}
-				born_id={fieldData.born_id} />;
+				born_id={fieldData.born_id}
+				meal_id={fieldData.meal_id} />;
 				if(!fieldData.is_close){
 					close_out_html=<button className="btn-success" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
 				}
@@ -736,7 +741,8 @@ var SubForm = React.createClass({
 			fdName:'fieldSubData',
 			gdName:'searchData',
 			apiPathName:gb_approot+'api/RecordDetail',
-			initPathName:gb_approot+'Active/Product/aj_Init'
+			initPathName:gb_approot+'Active/Product/aj_Init',
+			apiGridPathName:gb_approot+'api/GetAction/GetAllRecordDetail'
 		};
 	},
 	componentDidMount:function(){
@@ -833,7 +839,7 @@ var SubForm = React.createClass({
 		};
 		$.extend(parms, this.state.searchData);
 
-		return jqGet(this.props.apiPathName,parms);
+		return jqGet(this.props.apiGridPathName,parms);
 	},
 	queryGridData:function(){
 		this.gridData()
@@ -946,8 +952,15 @@ var SubForm = React.createClass({
 				fSD.subtotal=fSD.qty*obj.price;
 			}
 		});
+		if(fSD.product_type==2 || fSD.product_type==1){
+			fSD.meal_id=this.props.meal_id;
+		}
 		this.setState({isShowProductSelect:false,fieldSubData:fSD});
 	},
+	setMealSchedule:function(record_deatil_id){
+		//設定用餐排程
+		document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
+	},	
 	render: function() {
 		var outHtml = null;
 		var fieldSubData = this.state.fieldSubData;//明細檔資料
@@ -1314,7 +1327,7 @@ var SubForm = React.createClass({
 									var meal_detail_button=null;
 									if(itemData.product_type==2)//產品為月子餐才有用餐明細
 									{
-										meal_detail_button=<button className="btn-info btn-sm"><i className="fa-search"></i> 查看</button>;
+										meal_detail_button=<button className="btn-info btn-sm" onClick={this.setMealSchedule.bind(this,itemData.record_deatil_id)}><i className="fa-search"></i> 查看</button>;
 									}
 									var sub_out_html = 
 										<tr key={itemData.record_deatil_id}>

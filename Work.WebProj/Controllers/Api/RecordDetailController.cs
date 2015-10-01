@@ -1,11 +1,15 @@
-﻿using ProcCore.Business.DB0;
+﻿using DotWeb.Helpers;
+using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
+using ProcCore.WebCore;
 using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+
 
 namespace DotWeb.Api
 {
@@ -16,6 +20,20 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 item = await db0.RecordDetail.FindAsync(id);
+                var getCustomerBorn = await db0.CustomerBorn.FindAsync(item.born_id);
+                item.mom_name = getCustomerBorn.mom_name;
+                item.sno = getCustomerBorn.sno;
+                item.birthday = getCustomerBorn.birthday;
+                item.tel_1 = getCustomerBorn.tel_1;
+                item.tel_2 = getCustomerBorn.tel_2;
+                item.tw_zip_1 = getCustomerBorn.tw_zip_1;
+                item.tw_city_1 = getCustomerBorn.tw_city_1;
+                item.tw_country_1 = getCustomerBorn.tw_country_1;
+                item.tw_address_1 = getCustomerBorn.tw_address_1;
+                item.tw_zip_2 = getCustomerBorn.tw_zip_2;
+                item.tw_city_2 = getCustomerBorn.tw_city_2;
+                item.tw_country_2 = getCustomerBorn.tw_country_2;
+                item.tw_address_2 = getCustomerBorn.tw_address_2;
                 r = new ResultInfo<RecordDetail>() { data = item };
             }
 
@@ -28,23 +46,52 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.RecordDetail
-                             .OrderByDescending(x => x.sell_day)
-                             .Where(x => x.product_record_id == q.main_id)
-                             .Select(x => new m_RecordDetail()
-                             {
-                                 product_record_id = x.product_record_id,
-                                 record_deatil_id = x.record_deatil_id,
-                                 product_name = x.product_name,
-                                 product_type = x.product_type,
-                                 price = x.price,
-                                 qty = x.qty,
-                                 subtotal = x.subtotal
-                             }).AsQueryable();
+                    .Where(x => x.product_type == (int)ProdyctType.PostnatalMeal)
+                    .OrderByDescending(x => x.sell_day).AsQueryable();
 
 
-                var result = qr.ToList();
+                if (q.word != null)
+                {
+                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.word) ||
+                                       x.meal_id.Contains(q.word) ||
+                                       x.CustomerBorn.sno.Contains(q.word) ||
+                                       x.CustomerBorn.tel_1.Contains(q.word));
+                }
 
-                return Ok(result);
+                if (q.start_date != null && q.end_date != null)
+                {//日期區間的比對
+                    DateTime end = ((DateTime)q.end_date).AddDays(1);
+                    qr = qr.Where(x => x.meal_start <= end && x.meal_end >= q.start_date);
+                }
+
+                var result = qr.Select(x => new m_RecordDetail()
+                {
+                    record_deatil_id = x.record_deatil_id,
+                    product_record_id = x.product_record_id,
+                    customer_id = x.customer_id,
+                    born_id = x.born_id,
+                    meal_id = x.meal_id,
+                    mom_name = x.CustomerBorn.mom_name,
+                    sno = x.CustomerBorn.sno,
+                    tel_1 = x.CustomerBorn.tel_1,
+                    meal_start = x.meal_start,
+                    meal_end = x.meal_end
+                });
+
+
+                int page = (q.page == null ? 1 : (int)q.page);
+                int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
+                var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
+
+                return Ok<GridInfo<m_RecordDetail>>(new GridInfo<m_RecordDetail>()
+                {
+                    rows = segment,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
             }
             #endregion
         }

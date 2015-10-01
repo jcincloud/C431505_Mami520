@@ -359,8 +359,7 @@ var GirdForm = React.createClass({
 							<tbody>
 							    {
 							    this.state.gridData.rows.map(function(itemData,i) {
-							    return
-								<GridRow key={i}
+							    return  <GridRow key={i}
                                          ikey={i}
                                          primKey={itemData.customer_id}
                                          itemData={itemData}

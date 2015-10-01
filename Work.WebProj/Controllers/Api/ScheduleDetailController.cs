@@ -66,12 +66,12 @@ namespace DotWeb.Api
                 {
                     schedule_id = x.schedule_id,
                     schedule_detail_id = x.schedule_detail_id,
-                    meal_id=x.meal_id,
-                    mom_name=x.CustomerBorn.mom_name,
-                    tel_1=x.CustomerBorn.tel_1,
-                    tel_2=x.CustomerBorn.tel_2,
-                    tel_reason=x.tel_reason,
-                    tel_day=x.tel_day
+                    meal_id = x.meal_id,
+                    mom_name = x.CustomerBorn.mom_name,
+                    tel_1 = x.CustomerBorn.tel_1,
+                    tel_2 = x.CustomerBorn.tel_2,
+                    tel_reason = x.tel_reason,
+                    tel_day = x.tel_day
                 });
 
 
@@ -138,6 +138,10 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
+                if (md.is_detailInsert)
+                {
+                    md.tel_day = DateTime.Parse(DateTime.Now.ToShortDateString());
+                }
 
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;

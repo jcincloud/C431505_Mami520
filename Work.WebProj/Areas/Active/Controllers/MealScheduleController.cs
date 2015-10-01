@@ -1,39 +1,31 @@
 ﻿using DotWeb.CommSetup;
 using DotWeb.Controller;
-using ProcCore.Business.LogicConect;
+using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
 using System;
 using System.IO;
-using System.Web.Mvc;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace DotWeb.Areas.Active.Controllers
 {
-    public class ProductController : AdminController
+    public class MealScheduleController : AdminController
     {
         #region Action and function section
-        public ActionResult Main()
-        {
-            ActionRun();
-            return View();
-        }
-        public ActionResult ProductRecord(int? product_record_id)
+        public ActionResult Main(int? record_deatil_id)
         {
             int id = 0;
             db0 = getDB0();
-            if (product_record_id != null)
+            if (record_deatil_id != null)
             {
-                bool check = db0.ProductRecord.Any(x => x.product_record_id == product_record_id);
-                id = check ? (int)product_record_id : 0;
-
+                bool check = db0.RecordDetail.Any(x => x.record_deatil_id == record_deatil_id & x.product_type == (int)ProdyctType.PostnatalMeal);
+                id = check ? (int)record_deatil_id : 0;
             }
 
             ViewBag.main_id = id;
-
             ActionRun();
             return View();
         }
-
         #endregion
 
         #region ajax call section
@@ -42,12 +34,9 @@ namespace DotWeb.Areas.Active.Controllers
         {
             using (var db0 = getDB0())
             {
-                var open = openLogic();
                 return defJSON(new
                 {
-                    breakfast = (decimal)open.getParmValue(ParmDefine.breakfast),
-                    lunch = (decimal)open.getParmValue(ParmDefine.lunch),
-                    dinner = (decimal)open.getParmValue(ParmDefine.dinner)
+                    // options_equipment_category = db0.Equipment_Category.OrderBy(x=>x.sort)
                 });
             }
         }
