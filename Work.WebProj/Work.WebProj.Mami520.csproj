@@ -195,6 +195,7 @@
     <Compile Include="Areas\Active\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerBornController.cs" />
     <Compile Include="Areas\Active\Controllers\GiftController.cs" />
+    <Compile Include="Areas\Active\Controllers\MealScheduleController.cs" />
     <Compile Include="Areas\Active\Controllers\NeedController.cs" />
     <Compile Include="Areas\Active\Controllers\MealIDController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerController.cs" />
@@ -235,6 +236,7 @@
     <Content Include="Areas\Active\Views\Communication\ScheduleDetail.cshtml" />
     <Content Include="Areas\Active\Views\Communication\SendMsg.cshtml" />
     <Content Include="Areas\Active\Views\Communication\SendMsgByFactor.cshtml" />
+    <Content Include="Areas\Active\Views\MealSchedule\Main.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -722,6 +724,7 @@
     <Content Include="Scripts\build\func\m-GiftRecord.js" />
     <Content Include="Scripts\build\func\m-login.js" />
     <Content Include="Scripts\build\func\m-MealID.js" />
+    <Content Include="Scripts\build\func\m-MealSchedule.js" />
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductRecord.js" />
     <Content Include="Scripts\build\func\m-Roles.js" />
@@ -1021,6 +1024,7 @@
     <Content Include="Views\Fake\Tel3_3.cshtml" />
     <Content Include="Views\Fake\Tel4_2.cshtml" />
     <Content Include="Views\Fake\Tel4_3.cshtml" />
+    <Content Include="Scripts\src\jsx\m-MealSchedule.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1165,6 +1169,7 @@
     <Content Include="Areas\Active\Views\Need\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Gift\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Communication\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\MealSchedule\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="_Code\RPTFile\MemeberLabel.rdlc" />
   </ItemGroup>
   <PropertyGroup>

@@ -178,7 +178,7 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{tel_reason:1}});
+		this.setState({edit_type:1,fieldData:{tel_reason:1,is_detailInsert:true}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -495,10 +495,10 @@ var GirdForm = React.createClass({
 									field_name="tel_day" 
 									value={fieldData.tel_day}
 									required={true}
-									disabled={this.state.edit_type==2} />
+									disabled={true} />
 								</span>
 							</div>
-							<small className="text-danger col-xs-6">(必填)</small>
+							<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
 						</div>
 						<div className="form-group">
 							<label className="col-xs-2 control-label">電訪原因</label>

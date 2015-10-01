@@ -27,7 +27,7 @@ namespace ProcCore.Business.DB0
         public int customer_id { get; set; }
         public int born_id { get; set; }
         public bool is_close { get; set; }
-        public Nullable<bool> is_receipt { get; set; }
+        public bool is_receipt { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }

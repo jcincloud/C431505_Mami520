@@ -21,8 +21,8 @@ namespace ProcCore.Business.DB0
     public int product_id { get; set; }
     public int product_type { get; set; }
     public string product_name { get; set; }
-    public double price { get; set; }
     public string standard { get; set; }
+    public double price { get; set; }
     public double qty { get; set; }
     public double subtotal { get; set; }
     public string memo { get; set; }
@@ -31,6 +31,11 @@ namespace ProcCore.Business.DB0
     public Nullable<int> estimate_breakfast { get; set; }
     public Nullable<int> estimate_lunch { get; set; }
     public Nullable<int> estimate_dinner { get; set; }
+    public Nullable<System.DateTime> real_estimate_meal_start { get; set; }
+    public Nullable<System.DateTime> real_estimate_meal_end { get; set; }
+    public Nullable<int> real_estimate_breakfast { get; set; }
+    public Nullable<int> real_estimate_lunch { get; set; }
+    public Nullable<int> real_estimate_dinner { get; set; }
     public Nullable<int> real_breakfast { get; set; }
     public Nullable<int> real_lunch { get; set; }
     public Nullable<int> real_dinner { get; set; }

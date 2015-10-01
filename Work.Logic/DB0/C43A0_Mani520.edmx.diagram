@@ -56,9 +56,6 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_CustomerBorn" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="20.125" PointY="16.625" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.ContactSchedule" Width="1.5" PointX="9.875" PointY="22.5" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ContactSchedule_CustomerBorn" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.ScheduleDetail" Width="1.5" PointX="9.875" PointY="27.375" />
@@ -69,6 +66,10 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsgOfCustomer" Width="1.5" PointX="10.625" PointY="7.625" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="23.125" PointY="16" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
