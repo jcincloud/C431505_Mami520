@@ -315,6 +315,32 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
+        public IHttpActionResult GetAllRecordDetail([FromUri]q_RecordDetail q)
+        {
+            db0 = getDB0();
+            try
+            {
+                var qr = db0.RecordDetail
+                             .OrderByDescending(x => x.sell_day)
+                             .Where(x => x.product_record_id == q.main_id)
+                             .Select(x => new m_RecordDetail()
+                             {
+                                 product_record_id = x.product_record_id,
+                                 record_deatil_id = x.record_deatil_id,
+                                 product_name = x.product_name,
+                                 product_type = x.product_type,
+                                 price = x.price,
+                                 qty = x.qty,
+                                 subtotal = x.subtotal
+                             }).AsQueryable();
+
+                return Ok(qr.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
         #endregion
         #region 禮品贈送紀錄-取得贈品活動list
         public IHttpActionResult GetAllActivity()

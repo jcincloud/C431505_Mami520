@@ -342,10 +342,34 @@ namespace ProcCore.Business.DB0
         public string tw_address_2 { get; set; }
         public int? born_type { get; set; }
         public DateTime? born_day { get; set; }
+
+        public bool is_detailInsert { get; set; }//判斷是否為明細檔自行新增
     }
     public partial class m_DeatilTelRecord
     {
         public string user_name { get; set; }
+    }
+    public partial class m_RecordDetail
+    {
+        public string mom_name { get; set; }
+        public string sno { get; set; }
+        public string tel_1 { get; set; }
+    }
+    public partial class RecordDetail
+    {
+        public string mom_name { get; set; }
+        public string sno { get; set; }
+        public DateTime? birthday { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+        public string tw_zip_1 { get; set; }
+        public string tw_city_1 { get; set; }
+        public string tw_country_1 { get; set; }
+        public string tw_address_1 { get; set; }
+        public string tw_zip_2 { get; set; }
+        public string tw_city_2 { get; set; }
+        public string tw_country_2 { get; set; }
+        public string tw_address_2 { get; set; }
     }
     /// <summary>
     /// 分類選單用
@@ -465,6 +489,9 @@ namespace ProcCore.Business.DB0
     public class q_RecordDetail : QueryBase
     {
         public int main_id { get; set; }
+        public string word { get; set; }
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
     }
     public class q_ContactSchedule : QueryBase
     {
