@@ -317,7 +317,7 @@ var GirdForm = React.createClass({
 							<div className="table-filter">
 								<div className="form-inline">
 									<div className="form-group">
-										<label>日期區間</label> { }										
+										<label>訂單日期</label> { }										
 											<span className="has-feedback">
 												<InputDate id="start_date" 
 												onChange={this.changeGDValue} 
@@ -332,20 +332,20 @@ var GirdForm = React.createClass({
 												value={searchData.end_date} />
 											</span> { }
 
-										<label className="sr-only">媽媽姓名</label> { }
-										<input type="text" className="form-control" 
+										<label>媽媽姓名</label> { }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
 										placeholder="媽媽姓名..." /> { }
 
-										<label className="sr-only">用餐編號</label> { }
-										<input type="text" className="form-control" 
+										<label>用餐編號</label> { }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.meal_id}
 										onChange={this.changeGDValue.bind(this,'meal_id')}
 										placeholder="用餐編號..." /> { }
 
-										<label className="sr-only">是否轉單</label> { }
-										<select className="form-control" 
+										<label>是否轉單</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.is_receipt}
 												onChange={this.onSelectChange.bind(this,'is_receipt')}>
 											<option value="">是否轉單</option>
@@ -353,8 +353,8 @@ var GirdForm = React.createClass({
 											<option value="false">未轉單</option>
 										</select> { }
 
-										<label className="sr-only">是否結案</label> { }
-										<select className="form-control" 
+										<label>是否結案</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.is_close}
 												onChange={this.onSelectChange.bind(this,'is_close')}>
 											<option value="">是否結案</option>
@@ -362,12 +362,12 @@ var GirdForm = React.createClass({
 											<option value="false">未結案</option>
 										</select> { }
 
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -377,10 +377,10 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1">銷售單號</th>
-									<th className="col-xs-1">訂購時間</th>
-									<th className="col-xs-1">用餐編號</th>
-									<th className="col-xs-1">媽媽姓名</th>
+									<th className="col-xs-2">銷售單號</th>
+									<th className="col-xs-2">訂購時間</th>
+									<th className="col-xs-2">用餐編號</th>
+									<th className="col-xs-2">媽媽姓名</th>
 									<th className="col-xs-1">是否轉單</th>
 									<th className="col-xs-1">是否結案</th>
 								</tr>
@@ -430,14 +430,14 @@ var GirdForm = React.createClass({
 							        <div className="table-filter">
 							            <div className="form-inline">
 							                <div className="form-group">
-							                    <label for="">客戶名稱/餐編/媽媽姓名</label>
+							                    <label for="">客戶名稱/餐編/媽媽姓名</label> { }
 							                    <input type="text" className="form-control input-sm"
 							      			    value={searchBornData.word}
 												onChange={this.changeGDBornValue.bind(this,'word')}
 											 	placeholder="請擇一填寫" />
 							                </div>
 							                <div className="form-group">
-							                    <label for="">是否結案</label>
+							                    <label for="">是否結案</label> { }
 							                    <select className="form-control input-sm"
 							                    value={searchBornData.is_close}
 												onChange={this.changeGDBornValue.bind(this,'is_close')}>
@@ -514,7 +514,7 @@ var GirdForm = React.createClass({
 				{born_select_out_html}
 				<h3 className="title">{this.props.Caption}</h3>
 				<h4 className="title">{this.props.Caption} 主檔</h4>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 					<div className="col-xs-9">
 						<div className="form-group">
 							<label className="col-xs-2 control-label">銷售單號</label>
@@ -543,7 +543,6 @@ var GirdForm = React.createClass({
 							</div>
 							<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
 						</div>
-
 						<div className="form-group">
 							<label className="col-xs-2 control-label">選擇客戶</label>
 							<div className="col-xs-3">
@@ -610,99 +609,90 @@ var GirdForm = React.createClass({
 							</div>	
 						</div>
 						<div className="bg-warning">
-						<div className="form-group">
-							<label className="col-xs-2 control-label">連絡電話1</label>
-							<div className="col-xs-3">
-								<input type="tel" 
-								className="form-control"	
-								value={fieldData.tel_1}
-								onChange={this.changeFDValue.bind(this,'tel_1')}
-								maxLength="16"
-								disabled />
+							<div className="form-group">
+								<label className="col-xs-2 control-label">連絡電話1</label>
+								<div className="col-xs-3">
+									<input type="tel" 
+									className="form-control"	
+									value={fieldData.tel_1}
+									onChange={this.changeFDValue.bind(this,'tel_1')}
+									maxLength="16"
+									disabled />
+								</div>
+								<label className="col-xs-2 control-label">連絡電話2</label>
+								<div className="col-xs-3">
+									<input type="tel" 
+									className="form-control"	
+									value={fieldData.tel_2}
+									onChange={this.changeFDValue.bind(this,'tel_2')}
+									maxLength="16"
+									disabled />
+								</div>
+							</div>						
+							<div className="form-group">
+								<label className="col-xs-2 control-label">身分證字號</label>
+								<div className="col-xs-3">
+									<input type="text" 
+									className="form-control"	
+									value={fieldData.sno}
+									onChange={this.changeFDValue.bind(this,'sno')}
+									maxLength="10"
+									disabled />
+								</div>
+								<label className="col-xs-2 control-label">生日</label>
+								<div className="col-xs-3">
+									<span className="has-feedback">
+										<InputDate id="birthday" 
+										onChange={this.changeFDValue} 
+										field_name="birthday" 
+										value={fieldData.birthday}
+										disabled={true} />
+									</span>
+								</div>
 							</div>
-							<label className="col-xs-2 control-label">連絡電話2</label>
-							<div className="col-xs-3">
-								<input type="tel" 
-								className="form-control"	
-								value={fieldData.tel_2}
-								onChange={this.changeFDValue.bind(this,'tel_2')}
-								maxLength="16"
-								disabled />
+							<div className="form-group">
+								<label className="col-xs-2 control-label">送餐地址</label>
+									<TwAddress ver={1}
+									onChange={this.changeFDValue}
+									setFDValue={this.setFDValue}
+									zip_value={fieldData.tw_zip_1} 
+									city_value={fieldData.tw_city_1} 
+									country_value={fieldData.tw_country_1}
+									address_value={fieldData.tw_address_1}
+									zip_field="tw_zip_1"
+									city_field="tw_city_1"
+									country_field="tw_country_1"
+									address_field="tw_address_1"
+									disabled={true}/>
 							</div>
-						</div>						
-						<div className="form-group">
-							<label className="col-xs-2 control-label">身分證字號</label>
-							<div className="col-xs-3">
-								<input type="text" 
-								className="form-control"	
-								value={fieldData.sno}
-								onChange={this.changeFDValue.bind(this,'sno')}
-								maxLength="10"
-								disabled />
-							</div>
-							<label className="col-xs-2 control-label">生日</label>
-							<div className="col-xs-3">
-								<span className="has-feedback">
-									<InputDate id="birthday" 
-									onChange={this.changeFDValue} 
-									field_name="birthday" 
-									value={fieldData.birthday}
-									disabled={true} />
-								</span>
+							<div className="form-group">
+								<label className="col-xs-2 control-label">備用地址</label>
+									<TwAddress ver={1}
+									onChange={this.changeFDValue}
+									setFDValue={this.setFDValue}
+									zip_value={fieldData.tw_zip_2} 
+									city_value={fieldData.tw_city_2} 
+									country_value={fieldData.tw_country_2}
+									address_value={fieldData.tw_address_2}
+									zip_field="tw_zip_2"
+									city_field="tw_city_2"
+									country_field="tw_country_2"
+									address_field="tw_address_2"
+									disabled={true}/>
 							</div>
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">送餐地址</label>
-								<TwAddress ver={1}
-								onChange={this.changeFDValue}
-								setFDValue={this.setFDValue}
-								zip_value={fieldData.tw_zip_1} 
-								city_value={fieldData.tw_city_1} 
-								country_value={fieldData.tw_country_1}
-								address_value={fieldData.tw_address_1}
-								zip_field="tw_zip_1"
-								city_field="tw_city_1"
-								country_field="tw_country_1"
-								address_field="tw_address_1"
-								disabled={true}/>
-						</div>
-
-						<div className="form-group">
-							<label className="col-xs-2 control-label">備用地址</label>
-								<TwAddress ver={1}
-								onChange={this.changeFDValue}
-								setFDValue={this.setFDValue}
-								zip_value={fieldData.tw_zip_2} 
-								city_value={fieldData.tw_city_2} 
-								country_value={fieldData.tw_country_2}
-								address_value={fieldData.tw_address_2}
-								zip_field="tw_zip_2"
-								city_field="tw_city_2"
-								country_field="tw_country_2"
-								address_field="tw_address_2"
-								disabled={true}/>
-						</div>
-					</div>
-					</div>
-					<div className="col-xs-8">
-						<p className="text-right">
+						<div className="form-action text-right">
 							{save_out_html} { }
 							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
-						</p>
+						</div>
 					</div>
 				</form>
-				<div className="col-xs-12">
-					<hr className="condensed" />
-				</div>
+				<hr className="condensed" />
 				{/* ---是否結案按鈕start--- */}
-				<h4 className="title clearfix">
-					<div className="col-xs-8">
-						<span className="pull-left">是否結案：{fieldData.is_close?<strong className="text-primary">已結案</strong>:<strong className="text-danger">未結案</strong>}</span>
-						<span className="pull-right">
-							{/*<button className="btn-danger"><i className="fa-times"></i> 設為 未結案</button>*/}
-							{close_out_html}
-						</span>
-					</div>
+				<h4 className="title">
+					是否結案：{fieldData.is_close?<strong className="text-success">已結案</strong>:<strong className="text-danger">未結案</strong>} { }
+					{/*<button className="btn-danger"><i className="fa-times"></i> 設為 未結案</button>*/}
+					{close_out_html}
 				</h4>
 				{/* ---是否結案按鈕end--- */}
 				
@@ -980,13 +970,13 @@ var SubForm = React.createClass({
 			                    <div className="table-filter">
 			                        <div className="form-inline">
 			                            <div className="form-group">
-			                                <label for="">產品名稱</label>
+			                                <label for="">產品名稱</label> { }
 			                                <input type="text" className="form-control input-sm"
 			                            	value={searchProductData.name}
 											onChange={this.changeGDProductValue.bind(this,'name')} />
 			                            </div>
 			                            <div className="form-group">
-			                                <label for="">產品分類</label>
+			                                <label for="">產品分類</label> { }
 			                                <select className="form-control input-sm"
 			                                	value={searchProductData.product_type}
 												onChange={this.changeGDProductValue.bind(this,'product_type')}>
@@ -1024,7 +1014,7 @@ var SubForm = React.createClass({
 				                            			</label>
 				                            		</td>
 													<td>{itemData.product_name}</td>
-													<td  className="text-center"><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
+													<td><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
 													<td>{itemData.price}</td>
 												</tr>;
 											return product_out_html;
@@ -1296,8 +1286,8 @@ var SubForm = React.createClass({
 									</div>	
 								</div>
 								</form>
-								<div className="panel-footer">
-									<button className="btn-primary col-xs-offset-9"
+								<div className="panel-footer text-right">
+									<button className="btn-primary"
 									type="submit" form="form2">
 										<i className="fa-check"></i> 存檔確認
 									</button>
@@ -1315,7 +1305,7 @@ var SubForm = React.createClass({
 						<tbody>
 							<tr>
 								<th className="col-xs-1 text-center">編輯</th>
-								<th className="col-xs-2 text-center">產品分類</th>
+								<th className="col-xs-2">產品分類</th>
 								<th className="col-xs-4">產品名稱</th>
 								<th className="col-xs-1">單價</th>
 								<th className="col-xs-1">數量</th>
@@ -1335,7 +1325,7 @@ var SubForm = React.createClass({
 												<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.record_deatil_id)}><i className="fa-pencil"></i></button>
 												<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.record_deatil_id)}><i className="fa-trash"></i></button>
 											</td>
-											<td  className="text-center"><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
+											<td><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
 											<td>{itemData.product_name}</td>
 											<td>{itemData.price}</td>
 											<td>{itemData.qty}</td>

@@ -259,7 +259,7 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										 <label for="">產品名稱</label>{ }
+										 <label for="">產品名稱</label> { }
 										<input type="text" className="form-control input-sm" 
 										value={searchData.product_name}
 										onChange={this.changeGDValue.bind(this,'product_name')}
@@ -278,12 +278,12 @@ var GirdForm = React.createClass({
 										</select> { }
 
 
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">

@@ -314,19 +314,19 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">媽媽名稱</label> { }
-										<input type="text" className="form-control" 
+										<label>媽媽姓名</label> { }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
 										placeholder="媽媽姓名..." /> { }
 
-										<label className="sr-only">用餐編號</label> { }
-										<input type="text" className="form-control" 
+										<label>用餐編號</label> { }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.meal_id}
 										onChange={this.changeGDValue.bind(this,'meal_id')}
 										placeholder="用餐編號..." /> { }
 
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
@@ -386,15 +386,13 @@ var GirdForm = React.createClass({
 			if(this.state.isShowMealidSelect){
 				mealid_select_out_html = 					
 					<MdoalMealidSelect bsSize="xsmall" onRequestHide={this.closeSelectMealid}>
-							<div className="modal-header light">
-								<div className="pull-right">
-									<button onClick={this.closeSelectMealid} type="button"><i className="fa-times"></i></button>
-								</div>
-								<h4 className="modal-title">請選擇用餐編號 { }</h4>
+							<div className="modal-header">
+								<button className="close" onClick={this.closeSelectMealid} type="button">&times;</button>
+								<h4 className="modal-title">請選擇用餐編號</h4>
 							</div>
 							<div className="modal-body">
-							<div className="alert alert-warning"><p>此列表僅列出<strong className="text-danger">未結案且無客戶需求</strong>的客戶生產紀錄。</p></div>
-								<table>
+								<div className="alert alert-warning"><p>此列表僅列出<strong className="text-danger">未結案且無客戶需求</strong>的客戶生產紀錄。</p></div>
+								<table className="table-condensed">
 									<tbody>
 										<tr>
 											<th className="col-xs-1 text-center">選擇</th>
@@ -428,9 +426,12 @@ var GirdForm = React.createClass({
 				map_out_html=(<GirdCofE main_id={fieldData.customer_need_id} />);
 			}else{
 				map_out_html=(
-					<div className="col-xs-12">
-					<hr className="expanded" />
-					<strong className="col-xs-12 help-inline text-center">請確認新增完成後再選取對應!</strong>
+					<div>
+						<hr className="condensed" />
+						<h4 className="title">飲食需求設定</h4>
+						<div className="alert alert-warning">
+							請先按上方的 <strong>存檔確認</strong>，再進行設定。
+						</div>
 					</div>
 					);
 			}
@@ -440,43 +441,30 @@ var GirdForm = React.createClass({
 				{mealid_select_out_html}
                 <h3 className="title">{this.props.Caption}</h3>
                 <h4 className="title">{this.props.Caption} 編輯</h4>
-				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-				<div className="col-xs-8">
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
+				<div className="col-xs-9">
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">用餐編號</label>
-							<div className="col-xs-4">
-								<div className="input-group">
-									<input type="text" 
-									className="form-control"	
-									value={fieldData.meal_id}
-									onChange={this.changeFDValue.bind(this,'meal_id')}
-									required
-									disabled={true} />
-									<span className="input-group-btn">
-										<button type="button" onClick={this.showSelectMealid}>
-										...
-										</button>
-									</span>
-								</div>
-
+						<label className="col-xs-2 control-label">用餐編號</label>
+						<div className="col-xs-3">
+							<div className="input-group">
+								<input type="text" 
+								className="form-control"	
+								value={fieldData.meal_id}
+								onChange={this.changeFDValue.bind(this,'meal_id')}
+								required
+								disabled={true} />
+								<span className="input-group-btn">
+									<button type="button" onClick={this.showSelectMealid}>
+										<i className="fa-plus"></i>
+									</button>
+								</span>
 							</div>
-
-						<label className="col-xs-2 control-label">連絡電話1</label>
-						<div className="col-xs-4">
-							<input type="text" 							
-							className="form-control"	
-							value={fieldData.tel_1}
-							onChange={this.changeFDValue.bind(this,'tel_1')}
-							maxLength="15"
-							required
-							disabled />
 						</div>
+						<small className="help-inline col-xs-6"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
 					</div>
-
 					<div className="form-group">
-						<label className="col-xs-2 control-label">姓名</label>
-						<div className="col-xs-4">
+						<label className="col-xs-2 control-label">媽媽姓名</label>
+						<div className="col-xs-3">
 							<input type="text" 							
 							className="form-control"	
 							value={fieldData.name}
@@ -485,34 +473,48 @@ var GirdForm = React.createClass({
 							required
 							disabled />
 						</div>
-
-						<label className="col-xs-2 control-label">連絡電話2</label>
-						<div className="col-xs-4">
-							<input type="text" 							
-							className="form-control"
-							value={fieldData.tel_2}
-							onChange={this.changeFDValue.bind(this,'tel_2')}
-							maxLength="15"
-							required
-							disabled />
+					</div>
+					<div className="bg-warning">
+						<div className="form-group">
+							<label className="col-xs-2 control-label">連絡電話1</label>
+							<div className="col-xs-3">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.tel_1}
+								onChange={this.changeFDValue.bind(this,'tel_1')}
+								maxLength="15"
+								required
+								disabled />
+							</div>
+						</div>
+						<div className="form-group">
+							<label className="col-xs-2 control-label">連絡電話2</label>
+							<div className="col-xs-4">
+								<input type="text" 							
+								className="form-control"
+								value={fieldData.tel_2}
+								onChange={this.changeFDValue.bind(this,'tel_2')}
+								maxLength="15"
+								required
+								disabled />
+							</div>
+						</div>
+						<div className="form-group">
+							<label className="col-xs-2 control-label">送餐地址</label>
+							<TwAddress ver={1}
+							onChange={this.changeFDValue}
+							setFDValue={this.setFDValue}
+							zip_value={fieldData.tw_zip_1} 
+							city_value={fieldData.tw_city_1} 
+							country_value={fieldData.tw_country_1}
+							address_value={fieldData.tw_address_1}
+							zip_field="tw_zip_1"
+							city_field="tw_city_1"
+							country_field="tw_country_1"
+							address_field="tw_address_1"
+							disabled={true}/>
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">送餐地址</label>
-						<TwAddress ver={1}
-						onChange={this.changeFDValue}
-						setFDValue={this.setFDValue}
-						zip_value={fieldData.tw_zip_1} 
-						city_value={fieldData.tw_city_1} 
-						country_value={fieldData.tw_country_1}
-						address_value={fieldData.tw_address_1}
-						zip_field="tw_zip_1"
-						city_field="tw_city_1"
-						country_field="tw_country_1"
-						address_field="tw_address_1"
-						disabled={true}/>
-					</div>
-
 					<div className="form-group">
 						<label className="col-xs-2 control-label">備註</label>
 						<div className="col-xs-10">
@@ -522,11 +524,7 @@ var GirdForm = React.createClass({
 							maxLength="256"></textarea>
 						</div>
 					</div>
-
-				</div>
-				<div className="col-xs-12"></div>
-				<div className="col-xs-5">
-					<div className="text-right">
+					<div className="form-action text-right">
 						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
 						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
 					</div>
@@ -699,17 +697,17 @@ var GirdCofE = React.createClass({
 
 		outHtml =(
 			<div className="col-xs-12">
-			<hr className="expanded" />
+				<hr className="condensed" />
+				<h4 className="title">飲食需求設定</h4>
 				<div className="row">
 					<div className="col-xs-6">
 						<div className="table-responsive">
 							<table className="table-condensed">
 								<caption>
-								    <div className="form-inline break pull-right">
+								    <div className="form-inline pull-right">
 				                        <div className="form-group">
-				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
-				                           	value={searchData.name} 
-	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
+				                            <input type="text" className="form-control input-sm" placeholder="請輸入需求元素名稱"
+				                           	value={searchData.name} onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
 				                            
 				                            <select name="" id="" className="form-control input-sm"
 				                            onChange={this.queryChangeElementParam.bind(this,'is_correspond')}
@@ -753,13 +751,13 @@ var GirdCofE = React.createClass({
 											</div>
 				                        </div>
 				                    </div>
-				                    全部需求
+				                    需求元素 
 								</caption>
 								<tbody>
 									<tr>
 										<th>元素對應</th>
 										<th>餐別</th>
-										<th>名稱</th>
+										<th>需求元素</th>
 					                	<th className="text-center">加入</th>
 									</tr>
 									{
@@ -780,24 +778,23 @@ var GirdCofE = React.createClass({
 									}
 								</tbody>
 	        				</table>
-	        				<div className="form-inline text-center">
-								<ul className="pager list-inline list-unstyled">
-									<li><a href="#" onClick={this.LeftGridPrev}><i className="glyphicon glyphicon-arrow-left"></i> 上一頁</a></li>
-									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
-									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="glyphicon glyphicon-arrow-right"></i></a></li>
-								</ul>
-							</div>
+	        				<hr className="condensed" />
+							<ul className="pager list-inline">
+								<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-double-arrow-left"></i> 上一頁</a></li>
+								<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
+								<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-double-arrow-right"></i></a></li>
+							</ul>
 	        			</div>
         			</div>
 					<div className="col-xs-6">
 						<div className="table-responsive">
 							<table className="table-condensed">
-								<caption>已排入飲食需求</caption>
+								<caption>已加入飲食需求</caption>
 								<tbody>
 									<tr>
 										<th>元素對應</th>
 										<th>餐別</th>
-										<th>名稱</th>
+										<th>需求元素</th>
 					                	<th className="text-center">刪除</th>
 									</tr>
 									{

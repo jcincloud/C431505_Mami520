@@ -336,7 +336,7 @@ var GirdForm = React.createClass({
 										</select>
 									</div>
 									<div className="form-group">
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ } 搜尋</button>
 									</div>
 								</div>
 							</div>
@@ -838,225 +838,218 @@ var GirdSubForm = React.createClass({
 							</div>
 							<h4 className="modal-title">編輯 { } 生產紀錄</h4>
 						</div>*/}
-						<div className="modal-body">
+						<form className="form-horizontal"  onSubmit={this.detailHandleSubmit} id="form2">
+							<div className="modal-body">
 								{mealid_select_out_html}
-							<form className="form-horizontal"  onSubmit={this.detailHandleSubmit} id="form2">
-									{error_out_html}
-									<div className="form-group">
-										<label className="col-xs-2 control-label">用餐編號</label>
-										<div className="col-xs-3">
-										    <div className="input-group">
-					            				<input type="text" 
-												className="form-control"	
-												value={fieldDetailData.meal_id}
-												onChange={this.changeFDDValue.bind(this,'meal_id')}
-												required
-												disabled={this.state.detail_edit_type==3 || true} />
-				            					<span className="input-group-btn">
-				            						<a className="btn"
-													onClick={this.showSelectMealid}
-													disabled={this.state.detail_edit_type==3 || (fieldDetailData.have_record && fieldDetailData.meal_id!=null)}>
-													<i className="fa-plus"></i>
-													</a>
-				            					</span>
-				            				</div>
-										</div>
-										<small className="help-inline col-xs-7">請按 <i className="fa-plus"></i> 選取</small>
-									</div>
-									<div className="form-group">
-										<label className="col-xs-2 control-label">媽媽姓名</label>
-										<div className="col-xs-3">
-											<input type="text" 							
+								{error_out_html}
+								<div className="form-group">
+									<label className="col-xs-2 control-label">用餐編號</label>
+									<div className="col-xs-3">
+									    <div className="input-group">
+				            				<input type="text" 
 											className="form-control"	
-											value={fieldDetailData.mom_name}
-											onChange={this.changeFDDValue.bind(this,'mom_name')}
-											maxLength="64"
-											required 
-											disabled={this.state.detail_edit_type==3}/>
-										</div>
-										<small className="help-inline col-xs-7 text-danger">(必填)</small>
+											value={fieldDetailData.meal_id}
+											onChange={this.changeFDDValue.bind(this,'meal_id')}
+											required
+											disabled={this.state.detail_edit_type==3 || true} />
+			            					<span className="input-group-btn">
+			            						<a className="btn"
+												onClick={this.showSelectMealid}
+												disabled={this.state.detail_edit_type==3 || (fieldDetailData.have_record && fieldDetailData.meal_id!=null)}>
+												<i className="fa-plus"></i>
+												</a>
+			            					</span>
+			            				</div>
 									</div>
-									<div className="bg-warning">
-										<div className="form-group">
-											<label className="col-xs-2 control-label">聯絡電話1</label>
-											<div className="col-xs-3">
-												<input type="tel" 
-												className="form-control"	
-												value={fieldDetailData.tel_1}
-												onChange={this.changeFDDValue.bind(this,'tel_1')}
-												maxLength="16"
-												disabled={this.state.detail_edit_type==3} />
-											</div>
-											<label className="col-xs-2 control-label">聯絡電話2</label>
-											<div className="col-xs-4">
-												<input type="tel" 
-												className="form-control"	
-												value={fieldDetailData.tel_2}
-												onChange={this.changeFDDValue.bind(this,'tel_2')}
-												maxLength="16"
-												disabled={this.state.detail_edit_type==3} />
-											</div>
-										</div>
-
-										<div className="form-group">
-											<label className="col-xs-2 control-label">身分證字號</label>
-											<div className="col-xs-3">
-												<input type="text" 
-												className="form-control"	
-												value={fieldDetailData.sno}
-												onChange={this.changeFDDValue.bind(this,'sno')}
-												maxLength="10"
-												disabled={this.state.detail_edit_type==3} />
-											</div>
-											<label className="col-xs-2 control-label">生日</label>
-											<div className="col-xs-4">
-												<span className="has-feedback">
-													<InputDate id="birthday" 
-													onChange={this.changeFDDValue} 
-													field_name="birthday" 
-													value={fieldDetailData.birthday}
-													disabled={this.state.detail_edit_type==3} />
-												</span>
-											</div>
-										</div>
-
-										<div className="form-group">
-											<label className="col-xs-2 control-label">送餐地址</label>
-											<TwAddress ver={3}
-											onChange={this.changeFDDValue}
-											setFDValue={this.setFDValue}
-											zip_value={fieldDetailData.tw_zip_1} 
-											city_value={fieldDetailData.tw_city_1} 
-											country_value={fieldDetailData.tw_country_1}
-											address_value={fieldDetailData.tw_address_1}
-											zip_field="tw_zip_1"
-											city_field="tw_city_1"
-											country_field="tw_country_1"
-											address_field="tw_address_1"
-											disabled={this.state.detail_edit_type==3}/>
-											<div className="col-xs-1 text-danger">(必填)</div>
-										</div>
-
-										<div className="form-group">
-											<label className="col-xs-2 control-label">備用地址</label>
-											<TwAddress ver={3}
-											onChange={this.changeFDDValue}
-											setFDValue={this.setFDValue}
-											zip_value={fieldDetailData.tw_zip_2} 
-											city_value={fieldDetailData.tw_city_2} 
-											country_value={fieldDetailData.tw_country_2}
-											address_value={fieldDetailData.tw_address_2}
-											zip_field="tw_zip_2"
-											city_field="tw_city_2"
-											country_field="tw_country_2"
-											address_field="tw_address_2"
-											disabled={this.state.detail_edit_type==3}/>
-										</div>
+									<small className="help-inline col-xs-7"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
+								</div>
+								<div className="form-group">
+									<label className="col-xs-2 control-label">媽媽姓名</label>
+									<div className="col-xs-3">
+										<input type="text" 							
+										className="form-control"	
+										value={fieldDetailData.mom_name}
+										onChange={this.changeFDDValue.bind(this,'mom_name')}
+										maxLength="64"
+										required 
+										disabled={this.state.detail_edit_type==3}/>
 									</div>
+									<small className="help-inline col-xs-7 text-danger">(必填)</small>
+								</div>
+								<div className="bg-warning">
 									<div className="form-group">
-										<label className="col-xs-2 control-label">預產期</label>
+										<label className="col-xs-2 control-label">聯絡電話1</label>
 										<div className="col-xs-3">
-											<span className="has-feedback">
-												<InputDate id="expected_born_day" 
-												onChange={this.changeFDDValue} 
-												field_name="expected_born_day" 
-												value={fieldDetailData.expected_born_day}
-												disabled={this.state.detail_edit_type==3} />
-											</span>
+											<input type="tel" 
+											className="form-control"	
+											value={fieldDetailData.tel_1}
+											onChange={this.changeFDDValue.bind(this,'tel_1')}
+											maxLength="16"
+											disabled={this.state.detail_edit_type==3} />
 										</div>
-										<label className="col-xs-2 control-label">生產日期</label>
+										<label className="col-xs-2 control-label">聯絡電話2</label>
+										<div className="col-xs-4">
+											<input type="tel" 
+											className="form-control"	
+											value={fieldDetailData.tel_2}
+											onChange={this.changeFDDValue.bind(this,'tel_2')}
+											maxLength="16"
+											disabled={this.state.detail_edit_type==3} />
+										</div>
+									</div>
+
+									<div className="form-group">
+										<label className="col-xs-2 control-label">身分證字號</label>
+										<div className="col-xs-3">
+											<input type="text" 
+											className="form-control"	
+											value={fieldDetailData.sno}
+											onChange={this.changeFDDValue.bind(this,'sno')}
+											maxLength="10"
+											disabled={this.state.detail_edit_type==3} />
+										</div>
+										<label className="col-xs-2 control-label">生日</label>
 										<div className="col-xs-4">
 											<span className="has-feedback">
-												<InputDate id="born_day" 
+												<InputDate id="birthday" 
 												onChange={this.changeFDDValue} 
-												field_name="born_day" 
-												value={fieldDetailData.born_day}
-												required={true}
+												field_name="birthday" 
+												value={fieldDetailData.birthday}
 												disabled={this.state.detail_edit_type==3} />
 											</span>
 										</div>
+									</div>
+
+									<div className="form-group">
+										<label className="col-xs-2 control-label">送餐地址</label>
+										<TwAddress ver={3}
+										onChange={this.changeFDDValue}
+										setFDValue={this.setFDValue}
+										zip_value={fieldDetailData.tw_zip_1} 
+										city_value={fieldDetailData.tw_city_1} 
+										country_value={fieldDetailData.tw_country_1}
+										address_value={fieldDetailData.tw_address_1}
+										zip_field="tw_zip_1"
+										city_field="tw_city_1"
+										country_field="tw_country_1"
+										address_field="tw_address_1"
+										disabled={this.state.detail_edit_type==3}/>
 										<div className="col-xs-1 text-danger">(必填)</div>
 									</div>
 
 									<div className="form-group">
-										<label className="col-xs-2 control-label">產檢醫院</label>
-										<div className="col-xs-3">
-											<input type="text" 
-											className="form-control"	
-											value={fieldDetailData.checkup_hospital}
-											onChange={this.changeFDDValue.bind(this,'checkup_hospital')}
-											maxLength="50"
-											disabled={this.state.detail_edit_type==3} />
-										</div>
-										<label className="col-xs-2 control-label">生產醫院</label>
-										<div className="col-xs-4">
-											<input type="text" 
-											className="form-control"	
-											value={fieldDetailData.born_hospital}
-											onChange={this.changeFDDValue.bind(this,'born_hospital')}
-											maxLength="50"
-											disabled={this.state.detail_edit_type==3} />
-										</div>					
+										<label className="col-xs-2 control-label">備用地址</label>
+										<TwAddress ver={3}
+										onChange={this.changeFDDValue}
+										setFDValue={this.setFDValue}
+										zip_value={fieldDetailData.tw_zip_2} 
+										city_value={fieldDetailData.tw_city_2} 
+										country_value={fieldDetailData.tw_country_2}
+										address_value={fieldDetailData.tw_address_2}
+										zip_field="tw_zip_2"
+										city_field="tw_city_2"
+										country_field="tw_country_2"
+										address_field="tw_address_2"
+										disabled={this.state.detail_edit_type==3}/>
 									</div>
-									<div className="form-group">
-										<label className="col-xs-2 control-label">第幾胎</label>
-										<div className="col-xs-1">
-											<input type="text" 
-											className="form-control"	
-											value={fieldDetailData.born_frequency}
-											onChange={this.changeFDDValue.bind(this,'born_frequency')}
-											maxLength="5"
+								</div>
+								<div className="form-group">
+									<label className="col-xs-2 control-label">預產期</label>
+									<div className="col-xs-3">
+										<span className="has-feedback">
+											<InputDate id="expected_born_day" 
+											onChange={this.changeFDDValue} 
+											field_name="expected_born_day" 
+											value={fieldDetailData.expected_born_day}
 											disabled={this.state.detail_edit_type==3} />
-										</div>
-										<label className="col-xs-2 control-label">生產方式</label>
-										<div className="col-xs-2">
-											<select className="form-control" 
-											value={fieldDetailData.born_type}
-											onChange={this.changeFDDValue.bind(this,'born_type')}
-											disabled={this.state.detail_edit_type==3}>
-											{
-												CommData.BornType.map(function(itemData,i) {
-													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-												})
-											}
-											</select>
-										</div>										
-										<label className="col-xs-2 control-label">寶寶性別</label>
-										<div className="col-xs-2">
-											<select className="form-control" 
-											value={fieldDetailData.baby_sex}
-											onChange={this.changeFDDValue.bind(this,'baby_sex')}
-											disabled={this.state.detail_edit_type==3}>
-											{
-												CommData.SexType.map(function(itemData,i) {
-													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-												})
-											}
-											</select>
-										</div>
+										</span>
 									</div>
-
-									<div className="form-group">
-										<label className="col-xs-2 control-label">備註</label>
-										<div className="col-xs-9">
-											<textarea col="30" row="2" className="form-control"
-											value={fieldDetailData.memo}
-											onChange={this.changeFDDValue.bind(this,'memo')}
-											maxLength="256"
-											disabled={this.state.detail_edit_type==3}></textarea>
-										</div>
+									<label className="col-xs-2 control-label">生產日期</label>
+									<div className="col-xs-4">
+										<span className="has-feedback">
+											<InputDate id="born_day" 
+											onChange={this.changeFDDValue} 
+											field_name="born_day" 
+											value={fieldDetailData.born_day}
+											required={true}
+											disabled={this.state.detail_edit_type==3} />
+										</span>
 									</div>
-
-						<div className="modal-footer">
-							<div className="col-xs-4 col-xs-offset-3">
-		        				<button  type="submit" form="form2" className="btn-primary"><i className="fa-check"></i> 儲存</button>
-		       					<button className="col-xs-offset-1" type="button" onClick={this.closeEditDetail}><i className="fa-times"></i>關閉</button>
-		   					</div>
-						</div>
-
-							</form>
-
-						</div>
+									<div className="col-xs-1 text-danger">(必填)</div>
+								</div>
+								<div className="form-group">
+									<label className="col-xs-2 control-label">產檢醫院</label>
+									<div className="col-xs-3">
+										<input type="text" 
+										className="form-control"	
+										value={fieldDetailData.checkup_hospital}
+										onChange={this.changeFDDValue.bind(this,'checkup_hospital')}
+										maxLength="50"
+										disabled={this.state.detail_edit_type==3} />
+									</div>
+									<label className="col-xs-2 control-label">生產醫院</label>
+									<div className="col-xs-4">
+										<input type="text" 
+										className="form-control"	
+										value={fieldDetailData.born_hospital}
+										onChange={this.changeFDDValue.bind(this,'born_hospital')}
+										maxLength="50"
+										disabled={this.state.detail_edit_type==3} />
+									</div>					
+								</div>
+								<div className="form-group">
+									<label className="col-xs-2 control-label">第幾胎</label>
+									<div className="col-xs-1">
+										<input type="text" 
+										className="form-control"	
+										value={fieldDetailData.born_frequency}
+										onChange={this.changeFDDValue.bind(this,'born_frequency')}
+										maxLength="5"
+										disabled={this.state.detail_edit_type==3} />
+									</div>
+									<label className="col-xs-2 control-label">生產方式</label>
+									<div className="col-xs-2">
+										<select className="form-control" 
+										value={fieldDetailData.born_type}
+										onChange={this.changeFDDValue.bind(this,'born_type')}
+										disabled={this.state.detail_edit_type==3}>
+										{
+											CommData.BornType.map(function(itemData,i) {
+												return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+											})
+										}
+										</select>
+									</div>										
+									<label className="col-xs-2 control-label">寶寶性別</label>
+									<div className="col-xs-2">
+										<select className="form-control" 
+										value={fieldDetailData.baby_sex}
+										onChange={this.changeFDDValue.bind(this,'baby_sex')}
+										disabled={this.state.detail_edit_type==3}>
+										{
+											CommData.SexType.map(function(itemData,i) {
+												return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+											})
+										}
+										</select>
+									</div>
+								</div>
+								<div className="form-group">
+									<label className="col-xs-2 control-label">備註</label>
+									<div className="col-xs-9">
+										<textarea col="30" row="2" className="form-control"
+										value={fieldDetailData.memo}
+										onChange={this.changeFDDValue.bind(this,'memo')}
+										maxLength="256"
+										disabled={this.state.detail_edit_type==3}></textarea>
+									</div>
+								</div>
+							</div>
+							<div className="modal-footer">
+			        			<button  type="submit" form="form2" className="btn-primary"><i className="fa-check"></i> 儲存</button>
+			       				<button className="col-xs-offset-1" type="button" onClick={this.closeEditDetail}><i className="fa-times"></i>關閉</button>
+							</div>
+						</form>
 				</MdoaleditCustomerBorn>;
 			}
 
