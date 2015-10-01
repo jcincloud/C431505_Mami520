@@ -278,14 +278,14 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label for="">名稱/簡稱</label>
-										<input type="text" className="form-control" 
+										<label for="">名稱/簡稱</label> { }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
 										placeholder="名稱/簡稱..." /> { }
 
 										<label>狀態</label> { }
-										<select className="form-control" 
+										<select className="form-control input-sm" 
 												value={searchData.i_Hide}
 												onChange={this.onHideChange}>
 											<option value="">全部</option>
@@ -295,12 +295,12 @@ var GirdForm = React.createClass({
 										</select> { }
 
 
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i> { }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -353,9 +353,10 @@ var GirdForm = React.createClass({
 				map_out_html=(<GirdCofE ref="SubFrom" main_id={fieldData.dietary_need_id} is_correspond={fieldData.is_correspond}/>);
 			}else{
 				map_out_html=(
-					<div className="col-xs-12">
-					<hr className="expanded" />
-					<strong className="col-xs-12 help-inline text-center">請確認新增完成後再選取對應!</strong>
+					<div>
+						<hr className="condensed" />
+						<h4 className="title">需求元素對應設定 <small className="text-muted">需求元素設為 "有對應" 才需填寫!!</small></h4>
+						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 					</div>
 					);
 			}
@@ -365,7 +366,7 @@ var GirdForm = React.createClass({
                 <h3 className="title">{this.props.Caption}</h3>
                 <h4 className="title">{this.props.Caption} 編輯</h4>
 
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 				<div className="col-xs-9">
 					<div className="form-group">
 						<label className="col-xs-2 control-label">名稱</label>
@@ -419,6 +420,7 @@ var GirdForm = React.createClass({
 								</label>
 							</div>
 						</div>
+						<small className="col-xs-4 help-inline">ex. 不薑 / 不酒 (有對應)、清淡 / 素食 (無對應)</small>
 					</div>
 
 					<div className="form-group">
@@ -455,6 +457,7 @@ var GirdForm = React.createClass({
 								</label>
 							</div>
 						</div>
+						<small className="col-xs-4 help-inline">需求元素設為 "有對應" 才需填寫!</small>
 					</div>
 					<div className="form-group">
 						<label className="col-xs-2 control-label">狀態</label>
@@ -504,13 +507,11 @@ var GirdForm = React.createClass({
 							maxLength="256"></textarea>
 						</div>
 					</div>
-
-				</div>
-				<div className="col-xs-12"></div>
-				<div className="col-xs-5">
-					<div className="text-right">
-						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+					<div className="form-action text-right">
+						<div className="text-right">
+							<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+						</div>
 					</div>
 				</div>
 				</form>
@@ -655,8 +656,9 @@ var GirdCofE = React.createClass({
 		var searchData=this.state.searchData;
 
 		outHtml =(
-			<div className="col-xs-12">
-			<hr className="expanded" />
+			<div>
+			<hr className="condensed" />
+			<h4 className="title">需求元素對應設定 <small class="text-muted">需求元素設為 "有對應" 才需填寫!!</small></h4>
 				<div className="row">
 					<div className="col-xs-6">
 						<div className="table-responsive">
@@ -664,7 +666,7 @@ var GirdCofE = React.createClass({
 								<caption>
 								    <div className="form-inline break pull-right">
 				                        <div className="form-group">
-				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
+				                            <input type="text" className="form-control input-sm" placeholder="食材名稱"
 				                           	value={searchData.name} 
 	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
 				                            <select name="" id="" className="form-control input-sm"
@@ -680,12 +682,12 @@ var GirdCofE = React.createClass({
 
 				                        </div>
 				                    </div>
-				                    全部元素
+				                    食材
 								</caption>
 								<tbody>
 									<tr>
 										<th>分類</th>
-										<th>名稱</th>
+										<th>食材名稱</th>
 					                	<th className="text-center">加入</th>
 									</tr>
 									{
@@ -705,23 +707,22 @@ var GirdCofE = React.createClass({
 									}
 								</tbody>
 	        				</table>
-	        				<div className="form-inline text-center">
-								<ul className="pager list-inline list-unstyled">
-									<li><a href="#" onClick={this.LeftGridPrev}><i className="glyphicon glyphicon-arrow-left"></i> 上一頁</a></li>
-									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
-									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="glyphicon glyphicon-arrow-right"></i></a></li>
-								</ul>
-							</div>
+	        				<hr className="condensed" />
+							<ul className="pager list-inline">
+								<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-angle-double-left"></i> 上一頁</a></li>
+								<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
+								<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-angle-double-right"></i></a></li>
+							</ul>
 	        			</div>
         			</div>
 					<div className="col-xs-6">
 						<div className="table-responsive">
 							<table className="table-condensed">
-								<caption>已排入元素對應</caption>
+								<caption>已加入對應</caption>
 								<tbody>
 									<tr>
 										<th>分類</th>
-										<th>名稱</th>
+										<th>食材名稱</th>
 					                	<th className="text-center">刪除</th>
 									</tr>
 									{

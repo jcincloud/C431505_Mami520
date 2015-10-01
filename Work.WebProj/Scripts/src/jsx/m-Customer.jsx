@@ -287,7 +287,7 @@ var GirdForm = React.createClass({
 							<div className="table-filter">
 								<div className="form-inline">
 									<div className="form-group">
-					                    <label for="">客戶名稱/身分證號/電話</label>
+					                    <label for="">客戶名稱/身分證號/電話</label> { }
 					                    <input type="text" className="form-control input-sm"
                                                value={searchData.word}
                                                onChange={this.changeGDValue.bind(this,'word')}
@@ -305,10 +305,10 @@ var GirdForm = React.createClass({
 												<option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
 										    })
 										    }
-										</select> { }
+										</select>
 									</div>
 									<div className="form-group">
-										<label for="">送餐地址</label>
+										<label>地址</label> { }
 										<select className="form-control input-sm"
                                                 value={searchData.city}
                                                 onChange={this.onCityChange}>
@@ -333,7 +333,7 @@ var GirdForm = React.createClass({
 										</select>
 									</div>
 									<div className="form-group">
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
@@ -359,8 +359,7 @@ var GirdForm = React.createClass({
 							<tbody>
 							    {
 							    this.state.gridData.rows.map(function(itemData,i) {
-							    return
-								<GridRow key={i}
+							    return <GridRow key={i}
                                          ikey={i}
                                          primKey={itemData.customer_id}
                                          itemData={itemData}
@@ -514,10 +513,6 @@ var GirdForm = React.createClass({
                                       maxLength="256"></textarea>
 						</div>
 					</div>
-
-				</div>
-
-				<div className="col-xs-8">
 					<div className="form-action text-right">
 						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
 						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回列表</button>
