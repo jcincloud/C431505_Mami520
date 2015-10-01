@@ -281,6 +281,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\MealCalendar.cs" />
     <Compile Include="Models\DotWeb.Controller.cs" />
     <Compile Include="Models\DotWeb.Api.cs" />
     <Compile Include="Models\DotWeb.cs" />

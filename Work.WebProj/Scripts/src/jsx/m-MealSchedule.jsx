@@ -415,7 +415,6 @@ var MealCalendar = React.createClass({
     mixins: [React.addons.LinkedStateMixin], 
     getInitialState: function() {  
         return {
- 
         };  
     },
     getDefaultProps:function(){
@@ -464,169 +463,15 @@ var MealCalendar = React.createClass({
 
                     <hr className="condensed" />
 
-                    <div className="panel-group">
-                        <div className="panel">
-                            <div className="panel-heading">
-                                <h4 className="panel-title">
-                                    <a data-toggle="collapse" href="#calendar1">
-                                        <i className="fa-plus"></i> 2015 年 8 月
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="calendar1" className="panel-collapse collapse in">
-                                <div className="panel-body">
-                                    <table className="table-condensed">
-                                        <tr>
-                                            <th className="text-center">日</th>
-                                            <th className="text-center">一</th>
-                                            <th className="text-center">二</th>
-                                            <th className="text-center">三</th>
-                                            <th className="text-center">四</th>
-                                            <th className="text-center">五</th>
-                                            <th className="text-center">六</th>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <small className="text-muted">1</small>
-                                                <div className="meal">
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>早</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>午</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>晚</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <small className="text-muted">2</small>
-                                                <div className="meal">
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>早</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>晚</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <small className="text-muted">3</small>
-                                                <div className="meal">
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" disabled checked />
-                                                            <span>早 (已吃)</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" />
-                                                            <span className="text-danger">午 (停)</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span className="text-success">晚 (增)</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <small className="text-muted">4</small>
-                                                <div className="meal">
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>早</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>午</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>晚</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <small className="text-muted">5</small>
-                                                <div className="meal">
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>早</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>午</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>晚</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <small className="text-muted">6</small>
-                                                <div className="meal">
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>早</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>午</span>
-                                                        </label>
-                                                    </div>
-                                                    <div className="checkbox">
-                                                        <label>
-                                                            <input type="checkbox" checked />
-                                                            <span>晚</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <small className="text-muted">7</small>
-                                            </td>
-                                        </tr>                                       
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Calendar ref="Calendar1"
+                    year={2015}
+                    month={9} />
+                    <Calendar ref="Calendar2"
+                    year={2015}
+                    month={10} />
+                    <Calendar ref="Calendar3"
+                    year={2015}
+                    month={11} />
 
                     <div className="clearfix">
                         <p className="pull-left"><strong>開始送餐後(含送餐當日) 請勿任意修改用餐排程，如有異動會留下紀錄!!</strong></p>
@@ -747,6 +592,125 @@ var ChangeRecord = React.createClass({
                         </div>
                     </div>
 
+                </div>
+            );
+
+        return outHtml;
+    }
+});
+
+//每月日曆
+var Calendar = React.createClass({ 
+    mixins: [React.addons.LinkedStateMixin], 
+    getInitialState: function() {  
+        return {            
+            MonthObj:{weekInfo:[]},
+            Calendar_id:'calendar-'+this.props.month,
+            searchData:{main_id:null,month:this.props.month,year:this.props.year}
+        };  
+    },
+    getDefaultProps:function(){
+        return{ 
+            year:null,
+            month:null
+        };
+    },
+    componentDidMount:function(){
+        this.queryMonthObj();
+    },
+    shouldComponentUpdate:function(nextProps,nextState){
+        return true;
+    },
+    queryMonthObj:function(){
+        jqGet(gb_approot + 'api/GetAction/GetMealCalendar',this.state.searchData)
+        .done(function(data, textStatus, jqXHRdata) {
+            console.log(data);
+            this.setState({MonthObj:data});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });     
+    },
+    render: function() {
+        var outHtml = null;
+        var MonthObj=this.state.MonthObj;
+            outHtml =
+            (
+                <div className="panel-group">
+                   <div className="panel">
+                        <div className="panel-heading">
+                            <h4 className="panel-title">
+                                <a data-toggle="collapse"  href={'#'+this.state.Calendar_id}>
+                                    <i className="fa-plus"></i> {MonthObj.year} 年 {MonthObj.month} 月
+                                </a>
+                            </h4>
+                        </div>
+                        <div id={this.state.Calendar_id} className="panel-collapse collapse in">
+                            <div className="panel-body">
+                                <table className="table-condensed">
+                                    <tbody>
+                                        <tr>
+                                            <th className="text-center">日</th>
+                                            <th className="text-center">一</th>
+                                            <th className="text-center">二</th>
+                                            <th className="text-center">三</th>
+                                            <th className="text-center">四</th>
+                                            <th className="text-center">五</th>
+                                            <th className="text-center">六</th>
+                                        </tr>
+                                        {
+                                            MonthObj.weekInfo.map(function(weekObj,i) {                                                    
+                                                var week_out_html = 
+                                                    <tr key={MonthObj.month+'-'+i}>
+                                                    {
+                                                        weekObj.dayInfo.map(function(dayObj,i) {
+                                                            var day_out_html=null;
+                                                            if(dayObj.isNowMonth){                                                                                                                                    day_out_html = 
+                                                                day_out_html=
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')}>
+                                                                    <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
+                                                                    <div className="meal">
+                                                                        <div className="checkbox">
+                                                                            <label>
+                                                                                <input type="checkbox" checked />
+                                                                                <span>早</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div className="checkbox">
+                                                                            <label>
+                                                                                <input type="checkbox" checked />
+                                                                                <span>午</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div className="checkbox">
+                                                                            <label>
+                                                                                <input type="checkbox" checked />
+                                                                                <span>晚</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>;
+                                                            }else{
+                                                                day_out_html=
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')}>
+                                                                    <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
+                                                                </td>;
+                                                            }                                        
+
+                                                            return day_out_html;
+                                                        }.bind(this))
+                                                    }
+      
+                                                    </tr>;
+                                                return week_out_html;
+                                            }.bind(this))
+                                        }
+                                        
+                                    </tbody>                                     
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             );
 

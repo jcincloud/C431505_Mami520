@@ -60,5 +60,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<SendMsg> SendMsg { get; set; }
         public virtual DbSet<SendMsgOfCustomer> SendMsgOfCustomer { get; set; }
         public virtual DbSet<RecordDetail> RecordDetail { get; set; }
+        public virtual DbSet<DailyMeal> DailyMeal { get; set; }
     }
 }

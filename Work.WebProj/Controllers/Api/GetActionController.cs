@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using DotWeb.WebApp.Models;
+using Newtonsoft.Json;
 using ProcCore;
 using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
+using ProcCore.NetExtension;
 using ProcCore.WebCore;
 using System;
 using System.Collections;
@@ -419,6 +421,71 @@ namespace DotWeb.Api
                 return Ok(qr.ToList());
             }
             #endregion
+        }
+        #endregion
+        #region 用餐排程
+        public IHttpActionResult GetMealCalendar([FromUri]ParmGetMealCalendar parm)
+        {
+            MonthObject Mobj = null;
+            DateTime standard_day = DateTime.Parse(parm.year + "/" + parm.month + "/1");//基準日期(以此天為標準產生月曆)
+
+            using (db0 = getDB0())
+            {
+
+                //取得該月第一天及最後一天
+                var getCalendarFirstDay = standard_day.CalendarFirstDay();
+                var getCalendarLastDay = standard_day.CalendarLastDay();
+
+                //取得該月天數
+                var getDateSection = (getCalendarLastDay - getCalendarFirstDay).TotalDays + 1;
+
+                Mobj = new MonthObject()
+                {
+                    year = standard_day.Year,
+                    month = standard_day.Month
+                };
+
+                List<WeekObject> wObj = new List<WeekObject>();
+                WeekObject weekObject = null;
+                List<DayObject> dObj = new List<DayObject>();
+
+                for (int i = 0; i < getDateSection; i++)
+                {
+                    var setDayObj = getCalendarFirstDay.AddDays(i);
+
+                    if (setDayObj.DayOfWeek == DayOfWeek.Sunday) //遇到星期日 要製作新的Week物件
+                    {
+                        if (dObj.Count() > 0) //製作Week物件時 要將之前的資料取出來，但第一排第一天這時是不會有日期資料
+                        {
+                            weekObject.dayInfo = dObj.ToArray();
+                            dObj.Clear();
+                            wObj.Add(weekObject);
+                        }
+
+                        weekObject = new WeekObject(); //產生新的week物件
+                    }
+
+                    dObj.Add(new DayObject()
+                    {
+                        meal_day = setDayObj,
+                        isNowMonth = (setDayObj >= standard_day.MonthFirstDay() && setDayObj <= standard_day.MonthLastDay()),
+                        breakfast = MealState.CommonMeal,
+                        lunch = MealState.CommonMeal,
+                        dinner = MealState.CommonMeal
+                    });
+                }
+
+                if (dObj.Count() > 0)
+                {
+                    weekObject.dayInfo = dObj.ToArray();
+                    dObj.Clear();
+                    wObj.Add(weekObject);
+                }
+
+                Mobj.weekInfo = wObj.ToArray();
+
+                return Ok(Mobj);
+            }
         }
         #endregion
         #region 組合菜單對應基礎菜單
@@ -1218,6 +1285,12 @@ namespace DotWeb.Api
     {
         public int send_msg_id { get; set; }
         public int customer_id { get; set; }
+    }
+    public class ParmGetMealCalendar
+    {
+        public int main_id { get; set; }
+        public int year { get; set; }
+        public int month { get; set; }
     }
     #endregion
 }

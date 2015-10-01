@@ -15,6 +15,11 @@ namespace ProcCore.Business.DB0
     using Newtonsoft.Json;
     public partial class RecordDetail : BaseEntityTable
     {
+        public RecordDetail()
+        {
+            this.DailyMeal = new HashSet<DailyMeal>();
+        }
+    
         public int record_deatil_id { get; set; }
         public int product_record_id { get; set; }
         public int customer_id { get; set; }
@@ -58,5 +63,7 @@ namespace ProcCore.Business.DB0
         public virtual Product Product { get; set; }
     	[JsonIgnore]
         public virtual ProductRecord ProductRecord { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<DailyMeal> DailyMeal { get; set; }
     }
 }
