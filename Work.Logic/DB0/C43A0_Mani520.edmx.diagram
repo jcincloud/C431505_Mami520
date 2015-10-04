@@ -62,16 +62,18 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DeatilTelRecord" Width="1.5" PointX="12.125" PointY="27.625" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsg" Width="1.5" PointX="8.375" PointY="33" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsgOfCustomer" Width="1.5" PointX="10.625" PointY="7.625" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="23.125" PointY="16" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMeal" Width="1.5" PointX="25.375" PointY="18.25" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsg" Width="1.5" PointX="3.375" PointY="19.125" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMealChangeRecord" Width="1.5" PointX="27.625" PointY="18.5" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,4 +1,6 @@
 ﻿using DotWeb.Helpers;
+using DotWeb.WebApp.Models;
+using ProcCore;
 using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
 using ProcCore.WebCore;
@@ -7,6 +9,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -154,7 +157,7 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
-
+                #region 試吃、生產紀錄不重複驗證
                 if (md.product_type == (int)ProdyctType.Tryout)
                 {
                     //驗證一筆生產紀錄只能有一筆試吃
@@ -176,8 +179,18 @@ namespace DotWeb.Api
                         r.message = Resources.Res.Log_Check_RecordDetail_PostnatalMeal;
                         return Ok(r);
                     }
-                }
 
+                    md.real_breakfast = md.estimate_breakfast;
+                    md.real_lunch = md.estimate_lunch;
+                    md.real_dinner = md.estimate_dinner;
+
+                    md.real_estimate_meal_start = md.meal_start;
+                    md.real_estimate_meal_end = md.meal_end;
+                    md.real_estimate_breakfast = md.estimate_breakfast;
+                    md.real_estimate_lunch = md.estimate_lunch;
+                    md.real_estimate_dinner = md.estimate_dinner;
+                }
+                #endregion
 
                 md.sell_day = DateTime.Now;
 
@@ -187,6 +200,40 @@ namespace DotWeb.Api
                 md.i_Lang = "zh-TW";
                 db0.RecordDetail.Add(md);
                 await db0.SaveChangesAsync();
+
+                #region 新增用餐排程資料
+                if (md.product_type == (int)ProdyctType.PostnatalMeal & md.meal_start != null & md.meal_end != null)
+                {
+                    DateTime start = DateTime.Parse(md.meal_start.ToString());
+                    DateTime end = DateTime.Parse(md.meal_end.ToString());
+
+                    var getDateSection = (end - start).TotalDays + 1;
+                    for (int i = 0; i < getDateSection; i++)
+                    {
+                        var setDayObj = start.AddDays(i);
+                        #region use sql insert
+                        StringBuilder sb = new StringBuilder();
+                        Log.Write("Start...");
+                        var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID) values({0},{1},{2},{3},'{4}','{5}','{6}',{7});";
+                        sb.AppendFormat(sqlt, GetNewId(ProcCore.Business.CodeTable.DailyMeal)
+                                            , md.record_deatil_id
+                                            , md.customer_id
+                                            , md.born_id
+                                            , setDayObj.ToString("yyyy/MM/dd HH:mm:ss")
+                                            , this.UserId
+                                            , DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
+                                            , this.departmentId);
+                        Log.Write("Save...");
+                        var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
+                        sb.Clear();
+                        Log.Write("End...");
+                        Log.WriteToFile();
+                        #endregion
+                    }
+
+                }
+                #endregion
+
 
                 r.result = true;
                 r.id = md.born_id;
@@ -228,6 +275,18 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
+                    #region use sql delete
+                    StringBuilder sb = new StringBuilder();
+                    Log.Write("Start...");
+                    var sqlt = "DELETE FROM DailyMealChangeRecord WHERE record_deatil_id = {0};DELETE FROM DailyMeal WHERE record_deatil_id = {0}; ";
+                    sb.AppendFormat(sqlt, id);
+                    Log.Write("Delete...");
+                    var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
+                    sb.Clear();
+                    Log.Write("End...");
+                    Log.WriteToFile();
+                    #endregion
+
                     item = new RecordDetail() { record_deatil_id = id };
                     db0.RecordDetail.Attach(item);
                     db0.RecordDetail.Remove(item);

@@ -47,6 +47,12 @@ namespace ProcCore.Business.DB0
         Common = 3,//一般產品
         DiscountAndRefund = 4//折扣及退款
     }
+    public enum MealType
+    {
+        Breakfast = 1,
+        Lunch = 2,
+        Dinner = 3
+    }
     #region set CodeSheet
 
     public static class CodeSheet
@@ -354,6 +360,10 @@ namespace ProcCore.Business.DB0
         public string mom_name { get; set; }
         public string sno { get; set; }
         public string tel_1 { get; set; }
+
+        //用餐排程用
+        public DateTime real_meal_start { get; set; }
+        public DateTime real_meal_end { get; set; }
     }
     public partial class RecordDetail
     {
@@ -370,6 +380,10 @@ namespace ProcCore.Business.DB0
         public string tw_city_2 { get; set; }
         public string tw_country_2 { get; set; }
         public string tw_address_2 { get; set; }
+    }
+    public partial class DailyMealChangeRecord
+    {
+        public string user_name { get; set; }
     }
     /// <summary>
     /// 分類選單用

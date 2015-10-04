@@ -16,6 +16,7 @@ namespace ProcCore.Business
     {
         Base, Customer, CustomerBorn,
         Product, ProductRecord, RecordDetail,
+        DailyMeal, DailyMealChangeRecord,
         ElementFood, ConstituteFood, DailyMenu, DietaryNeed, CustomerNeed,
         Activity, GiftRecord,
         ContactSchedule, ScheduleDetail, DeatilTelRecord, SendMsg, Draft,

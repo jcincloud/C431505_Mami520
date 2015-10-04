@@ -14,6 +14,10 @@ namespace DotWeb.WebApp.Models
         public int prve_month { get; set; }
         public int next_year { get; set; }
         public int next_month { get; set; }
+        /// <summary>
+        /// 此用餐排程是否已開始用餐
+        /// </summary>
+        public bool isMealStart { get; set; }
 
         public WeekObject[] weekInfo { get; set; }
     }
@@ -27,10 +31,17 @@ namespace DotWeb.WebApp.Models
         public MealState breakfast { get; set; }
         public MealState lunch { get; set; }
         public MealState dinner { get; set; }
+        public int record_deatil_id { get; set; }
+        public int? daily_meal_id { get; set; }
+
         /// <summary>
         /// 日期是否屬於此月份
         /// </summary>
         public bool isNowMonth { get; set; }
+        /// <summary>
+        /// 日期是否有用餐排程資料
+        /// </summary>
+        public bool isHaveMeal { get; set; }
 
     }
     public enum MealState

@@ -23,11 +23,13 @@ namespace ProcCore.Business.DB0
         public int send_msg_id { get; set; }
         public int send_type { get; set; }
         public System.DateTime send_day { get; set; }
+        public System.TimeSpan send_time { get; set; }
         public Nullable<int> send_factor { get; set; }
         public string title { get; set; }
         public string send_content { get; set; }
         public Nullable<int> sort { get; set; }
         public bool is_complete { get; set; }
+        public bool is_quickly_send { get; set; }
         public bool is_send { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }

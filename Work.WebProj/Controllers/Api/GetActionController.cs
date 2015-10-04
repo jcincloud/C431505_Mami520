@@ -439,15 +439,21 @@ namespace DotWeb.Api
                 //取得該月天數
                 var getDateSection = (getCalendarLastDay - getCalendarFirstDay).TotalDays + 1;
 
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= DateTime.Now &&
+                                             x.record_deatil_id == parm.record_deatil_id);
+
                 Mobj = new MonthObject()
                 {
                     year = standard_day.Year,
-                    month = standard_day.Month
+                    month = standard_day.Month,
+                    isMealStart = check_meal_start
                 };
 
                 List<WeekObject> wObj = new List<WeekObject>();
                 WeekObject weekObject = null;
                 List<DayObject> dObj = new List<DayObject>();
+
+
 
                 for (int i = 0; i < getDateSection; i++)
                 {
@@ -464,14 +470,31 @@ namespace DotWeb.Api
 
                         weekObject = new WeekObject(); //產生新的week物件
                     }
-
+                    var check_meal = db0.DailyMeal.Where(x => x.meal_day.Year == setDayObj.Year &&
+                                                             x.meal_day.Month == setDayObj.Month &&
+                                                             x.meal_day.Day == setDayObj.Day &&
+                                                             x.record_deatil_id == parm.record_deatil_id).FirstOrDefault();
+                    bool haveMeal = false;
+                    MealState bState = MealState.NotShow, lState = MealState.NotShow, dState = MealState.NotShow;
+                    int? daily_meal_id = null;
+                    if (check_meal != null)
+                    {
+                        haveMeal = true;
+                        bState = (MealState)check_meal.breakfast_state;
+                        lState = (MealState)check_meal.lunch_state;
+                        dState = (MealState)check_meal.dinner_state;
+                        daily_meal_id = check_meal.daily_meal_id;
+                    }
                     dObj.Add(new DayObject()
                     {
                         meal_day = setDayObj,
                         isNowMonth = (setDayObj >= standard_day.MonthFirstDay() && setDayObj <= standard_day.MonthLastDay()),
-                        breakfast = MealState.CommonMeal,
-                        lunch = MealState.CommonMeal,
-                        dinner = MealState.CommonMeal
+                        isHaveMeal = haveMeal,
+                        breakfast = bState,
+                        lunch = lState,
+                        dinner = dState,
+                        record_deatil_id = parm.record_deatil_id,
+                        daily_meal_id = daily_meal_id
                     });
                 }
 
@@ -485,6 +508,372 @@ namespace DotWeb.Api
                 Mobj.weekInfo = wObj.ToArray();
 
                 return Ok(Mobj);
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> PostDailyMealState([FromBody]ParmPostDailyMealState parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = await db0.DailyMeal.FindAsync(parm.daily_meal_id);
+                var RecordDetailItem = await db0.RecordDetail.FindAsync(parm.record_deatil_id);
+                #region 早餐
+                if (parm.meal_type == (int)MealType.Breakfast)
+                {
+                    item.breakfast_state = parm.meal_state;
+                    if (parm.meal_state > 0)//增餐
+                    {
+                        RecordDetailItem.real_breakfast += 1;
+                        if (!parm.isMealStart)
+                        {
+                            RecordDetailItem.real_estimate_breakfast += 1;
+                        }
+                        else
+                        {//開始用餐後變動新增異動紀錄
+                            var changeRecord = new DailyMealChangeRecord()
+                            {
+                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                                daily_meal_id = parm.daily_meal_id,
+                                record_deatil_id = parm.record_deatil_id,
+                                change_time = DateTime.Now,
+                                meal_day = item.meal_day,
+                                meal_type = parm.meal_type,
+                                change_type = 1,
+                                i_InsertUserID = this.UserId,
+                                i_InsertDateTime = DateTime.Now,
+                                i_InsertDeptID = this.departmentId,
+                                i_Lang = "zh-TW"
+                            };
+                            db0.DailyMealChangeRecord.Add(changeRecord);
+                        }
+                    }
+                    else if (parm.meal_state < 0)//停餐
+                    {
+                        RecordDetailItem.real_breakfast -= 1;
+                        if (!parm.isMealStart)
+                        {
+                            RecordDetailItem.real_estimate_breakfast -= 1;
+                        }
+                        else
+                        {//開始用餐後變動新增異動紀錄
+                            var changeRecord = new DailyMealChangeRecord()
+                            {
+                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                                daily_meal_id = parm.daily_meal_id,
+                                record_deatil_id = parm.record_deatil_id,
+                                change_time = DateTime.Now,
+                                meal_day = item.meal_day,
+                                meal_type = parm.meal_type,
+                                change_type = -1,
+                                i_InsertUserID = this.UserId,
+                                i_InsertDateTime = DateTime.Now,
+                                i_InsertDeptID = this.departmentId,
+                                i_Lang = "zh-TW"
+                            };
+                            db0.DailyMealChangeRecord.Add(changeRecord);
+                        }
+                    }
+                }
+                #endregion
+                #region 午餐
+                if (parm.meal_type == (int)MealType.Lunch)
+                {
+                    item.lunch_state = parm.meal_state;
+                    if (parm.meal_state > 0)//增餐
+                    {
+                        RecordDetailItem.real_lunch += 1;
+                        if (!parm.isMealStart)
+                        {
+                            RecordDetailItem.real_estimate_lunch += 1;
+                        }
+                        else
+                        {//開始用餐後變動新增異動紀錄
+                            var changeRecord = new DailyMealChangeRecord()
+                            {
+                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                                daily_meal_id = parm.daily_meal_id,
+                                record_deatil_id = parm.record_deatil_id,
+                                change_time = DateTime.Now,
+                                meal_day = item.meal_day,
+                                meal_type = parm.meal_type,
+                                change_type = 1,
+                                i_InsertUserID = this.UserId,
+                                i_InsertDateTime = DateTime.Now,
+                                i_InsertDeptID = this.departmentId,
+                                i_Lang = "zh-TW"
+                            };
+                            db0.DailyMealChangeRecord.Add(changeRecord);
+                        }
+                    }
+                    else if (parm.meal_state < 0)//停餐
+                    {
+                        RecordDetailItem.real_lunch -= 1;
+                        if (!parm.isMealStart)
+                        {
+                            RecordDetailItem.real_estimate_lunch -= 1;
+                        }
+                        else
+                        {//開始用餐後變動新增異動紀錄
+                            var changeRecord = new DailyMealChangeRecord()
+                            {
+                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                                daily_meal_id = parm.daily_meal_id,
+                                record_deatil_id = parm.record_deatil_id,
+                                change_time = DateTime.Now,
+                                meal_day = item.meal_day,
+                                meal_type = parm.meal_type,
+                                change_type = -1,
+                                i_InsertUserID = this.UserId,
+                                i_InsertDateTime = DateTime.Now,
+                                i_InsertDeptID = this.departmentId,
+                                i_Lang = "zh-TW"
+                            };
+                            db0.DailyMealChangeRecord.Add(changeRecord);
+                        }
+                    }
+                }
+                #endregion
+                #region 晚餐
+                if (parm.meal_type == (int)MealType.Dinner)
+                {
+                    item.dinner_state = parm.meal_state;
+                    if (parm.meal_state > 0)//增餐
+                    {
+                        RecordDetailItem.real_dinner += 1;
+                        if (!parm.isMealStart)
+                        {
+                            RecordDetailItem.real_estimate_dinner += 1;
+                        }
+                        else
+                        {//開始用餐後變動新增異動紀錄
+                            var changeRecord = new DailyMealChangeRecord()
+                            {
+                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                                daily_meal_id = parm.daily_meal_id,
+                                record_deatil_id = parm.record_deatil_id,
+                                change_time = DateTime.Now,
+                                meal_day = item.meal_day,
+                                meal_type = parm.meal_type,
+                                change_type = 1,
+                                i_InsertUserID = this.UserId,
+                                i_InsertDateTime = DateTime.Now,
+                                i_InsertDeptID = this.departmentId,
+                                i_Lang = "zh-TW"
+                            };
+                            db0.DailyMealChangeRecord.Add(changeRecord);
+                        }
+                    }
+                    else if (parm.meal_state < 0)//停餐
+                    {
+                        RecordDetailItem.real_dinner -= 1;
+                        if (!parm.isMealStart)
+                        {
+                            RecordDetailItem.real_estimate_dinner -= 1;
+                        }
+                        else
+                        {//開始用餐後變動新增異動紀錄
+                            var changeRecord = new DailyMealChangeRecord()
+                            {
+                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                                daily_meal_id = parm.daily_meal_id,
+                                record_deatil_id = parm.record_deatil_id,
+                                change_time = DateTime.Now,
+                                meal_day = item.meal_day,
+                                meal_type = parm.meal_type,
+                                change_type = -1,
+                                i_InsertUserID = this.UserId,
+                                i_InsertDateTime = DateTime.Now,
+                                i_InsertDeptID = this.departmentId,
+                                i_Lang = "zh-TW"
+                            };
+                            db0.DailyMealChangeRecord.Add(changeRecord);
+                        }
+                    }
+                }
+                #endregion
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = RecordDetailItem.record_deatil_id;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> AddDailyMeal([FromBody]ParmAddDailyMeal parm)
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+                var item = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id && x.meal_day == parm.meal_day).FirstOrDefault();
+                var RecordDetailItem = await db0.RecordDetail.FindAsync(parm.record_deatil_id);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= DateTime.Now &&
+                                                               x.record_deatil_id == parm.record_deatil_id);
+                if (item == null & DateTime.Now <= parm.meal_day)
+                {
+                    item = new DailyMeal()
+                    {
+                        daily_meal_id = GetNewId(ProcCore.Business.CodeTable.DailyMeal),
+                        record_deatil_id = parm.record_deatil_id,
+                        customer_id = parm.customer_id,
+                        born_id = parm.born_id,
+                        meal_day = parm.meal_day,
+                        breakfast_state = (int)MealState.CommonNotMeal,
+                        lunch_state = (int)MealState.CommonNotMeal,
+                        dinner_state = (int)MealState.CommonNotMeal,
+                        i_InsertUserID = this.UserId,
+                        i_InsertDateTime = DateTime.Now,
+                        i_InsertDeptID = this.departmentId,
+                        i_Lang = "zh-TW"
+                    };
+                    db0.DailyMeal.Add(item);
+                    if (!check_meal_start)
+                    {
+                        if (RecordDetailItem.real_estimate_meal_start >= parm.meal_day)
+                            RecordDetailItem.real_estimate_meal_start = parm.meal_day;
+
+                        if (RecordDetailItem.real_estimate_meal_end <= parm.meal_day)
+                            RecordDetailItem.real_estimate_meal_end = parm.meal_day;
+
+                    }
+
+                }
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = item.daily_meal_id;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        public IHttpActionResult GetChangeRecord(int record_deatil_id)
+        {
+
+            using (db0 = getDB0())
+            {
+                bool isHaveRecord = false;
+                var items = db0.DailyMealChangeRecord.Where(x => x.record_deatil_id == record_deatil_id).ToList();
+                foreach (var item in items)
+                {
+                    string user_name = db0.AspNetUsers.Where(x => x.Id == item.i_InsertUserID).FirstOrDefault().user_name_c;
+                    item.user_name = user_name;
+                }
+
+                if (items.Count() > 0)
+                    isHaveRecord = true;
+
+                return Ok(new { isHaveRecord = isHaveRecord, Data = items });
+            }
+        }
+        public IHttpActionResult GetRecordDetail(int record_deatil_id)
+        {
+
+            using (db0 = getDB0())
+            {
+                #region 訂餐日期及餐數異動紀錄
+                #region 取得實際用餐起日及迄日
+                var getDMItem = db0.DailyMeal.Where(x => x.record_deatil_id == record_deatil_id);
+                DateTime start = getDMItem.OrderBy(x => x.meal_day).FirstOrDefault().meal_day;
+                DateTime end = getDMItem.OrderByDescending(x => x.meal_day).FirstOrDefault().meal_day;
+                #endregion
+                var item = db0.RecordDetail.Where(x => x.record_deatil_id == record_deatil_id)
+                                           .Select(x => new m_RecordDetail()
+                                           {
+                                               meal_start = x.meal_start,
+                                               real_estimate_meal_start = x.real_estimate_meal_start,
+                                               real_meal_start = start,
+                                               meal_end = x.meal_end,
+                                               real_estimate_meal_end = x.real_estimate_meal_end,
+                                               real_meal_end = end,
+                                               estimate_breakfast = x.estimate_breakfast,
+                                               estimate_lunch = x.estimate_lunch,
+                                               estimate_dinner = x.estimate_dinner,
+                                               real_estimate_breakfast = x.real_estimate_breakfast,
+                                               real_estimate_lunch = x.real_estimate_lunch,
+                                               real_estimate_dinner = x.real_estimate_dinner,
+                                               real_breakfast = x.real_breakfast,
+                                               real_lunch = x.real_lunch,
+                                               real_dinner = x.real_dinner
+                                           }).FirstOrDefault();
+                #endregion
+
+                int pause_meal = 0, add_meal = 0, estimate_total = 0, real_total = 0, already_eat = 0;
+                estimate_total = ((int)item.estimate_breakfast + (int)item.estimate_lunch + (int)item.estimate_dinner);
+                real_total = ((int)item.real_breakfast + (int)item.real_lunch + (int)item.real_dinner);
+                #region 增餐&停餐&已吃
+                var getDailyMeal = db0.DailyMeal.Where(x => x.record_deatil_id == record_deatil_id).ToList();
+                foreach (var i in getDailyMeal)
+                {
+                    #region 已吃
+                    if (i.meal_day <= DateTime.Now)
+                    {
+                        if (i.breakfast_state > 0)
+                            already_eat++;
+                        if (i.lunch_state > 0)
+                            already_eat++;
+                        if (i.dinner_state > 0)
+                            already_eat++;
+                    }
+                    #endregion
+                    #region 增餐
+                    if (i.breakfast_state == (int)MealState.AddMeal)
+                        add_meal++;
+                    if (i.lunch_state == (int)MealState.AddMeal)
+                        add_meal++;
+                    if (i.dinner_state == (int)MealState.AddMeal)
+                        add_meal++;
+                    #endregion
+                    #region 停餐
+                    if (i.breakfast_state == (int)MealState.PauseMeal)
+                        pause_meal++;
+                    if (i.lunch_state == (int)MealState.PauseMeal)
+                        pause_meal++;
+                    if (i.dinner_state == (int)MealState.PauseMeal)
+                        pause_meal++;
+                    #endregion
+                }
+                #endregion
+
+                var meal_count = new MealTotalCount()
+                {
+                    add_meal = add_meal,
+                    pause_meal = pause_meal,
+                    estimate_total = estimate_total,
+                    real_total = real_total,
+                    already_eat = already_eat,
+                    not_eat = real_total - already_eat
+                };
+                return Ok(new { meal_count = meal_count, record_detail = item });
+
             }
         }
         #endregion
@@ -1288,9 +1677,33 @@ namespace DotWeb.Api
     }
     public class ParmGetMealCalendar
     {
-        public int main_id { get; set; }
+        public int record_deatil_id { get; set; }
         public int year { get; set; }
         public int month { get; set; }
     }
+    public class ParmPostDailyMealState
+    {
+        public int daily_meal_id { get; set; }
+        public int record_deatil_id { get; set; }
+        public int meal_type { get; set; }
+        public int meal_state { get; set; }
+        public bool isMealStart { get; set; }
+    }
+    public class ParmAddDailyMeal
+    {
+        public int record_deatil_id { get; set; }
+        public int customer_id { get; set; }
+        public int born_id { get; set; }
+        public DateTime meal_day { get; set; }
+    }
     #endregion
+    public class MealTotalCount
+    {
+        public int pause_meal { get; set; }//停餐
+        public int add_meal { get; set; }//增餐
+        public int estimate_total { get; set; }//應排
+        public int real_total { get; set; }//已排
+        public int already_eat { get; set; }//已吃
+        public int not_eat { get; set; }//未吃
+    }
 }

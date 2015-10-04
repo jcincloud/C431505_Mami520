@@ -13,21 +13,15 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class DailyMeal : BaseEntityTable
+    public partial class DailyMealChangeRecord : BaseEntityTable
     {
-        public DailyMeal()
-        {
-            this.DailyMealChangeRecord = new HashSet<DailyMealChangeRecord>();
-        }
-    
-        public int daily_meal_id { get; set; }
+        public int change_record_id { get; set; }
         public int record_deatil_id { get; set; }
-        public int customer_id { get; set; }
-        public int born_id { get; set; }
+        public int daily_meal_id { get; set; }
+        public System.DateTime change_time { get; set; }
         public System.DateTime meal_day { get; set; }
-        public int breakfast_state { get; set; }
-        public int lunch_state { get; set; }
-        public int dinner_state { get; set; }
+        public int meal_type { get; set; }
+        public int change_type { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -38,8 +32,6 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual RecordDetail RecordDetail { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<DailyMealChangeRecord> DailyMealChangeRecord { get; set; }
+        public virtual DailyMeal DailyMeal { get; set; }
     }
 }

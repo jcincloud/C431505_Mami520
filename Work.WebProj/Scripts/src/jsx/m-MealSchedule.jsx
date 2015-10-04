@@ -394,11 +394,11 @@ var GirdForm = React.createClass({
             {/*---用餐排程---*/}
             <MealCalendar ref="MealCalendar"
             noneType={this.noneType}
-            product_record_id={fieldData.product_record_id}  />
-
-            {/*---異動紀錄---*/}
-            <ChangeRecord ref="ChangeRecord"
-            fieldData={fieldData} />
+            product_record_id={fieldData.product_record_id}
+            record_deatil_id={fieldData.record_deatil_id}
+            customer_id={fieldData.customer_id}
+            born_id={fieldData.born_id}
+            day={new Date(moment(fieldData.meal_start).format('YYYY/MM/DD'))}  />
 
             </div>
             );
@@ -415,19 +415,116 @@ var MealCalendar = React.createClass({
     mixins: [React.addons.LinkedStateMixin], 
     getInitialState: function() {  
         return {
+            ChangeRecord_list:[],
+            isHaveRecord:false,
+            RecordDetailData:{},
+            MealCount:{},
+            CalendarGrid:{indexYear:(this.props.day).getFullYear(),
+                          indexMonth:((this.props.day).getMonth()+1),
+                          nextYear:0,
+                          nextMonth:0,
+                          prveYear:0,
+                          prveMonth:0}
         };  
     },
-    getDefaultProps:function(){
-        return{ 
-            fdName:'fieldSubData',
-            gdName:'searchData',
-            apiPathName:gb_approot+'api/RecordDetail'
-        };
+    componentWillMount:function(){
+        //在輸出前觸發，只執行一次如果您在這個方法中呼叫 setState() ，會發現雖然 render() 再次被觸發了但它還是只執行一次。
+        this.setCalendarGrid();
     },
     componentDidMount:function(){
+        this.queryChangeRecord();
+        this.queryRecordDetail();
     },
     shouldComponentUpdate:function(nextProps,nextState){
         return true;
+    },
+    queryChangeRecord:function(){
+        jqGet(gb_approot + 'api/GetAction/GetChangeRecord',{record_deatil_id:this.props.record_deatil_id})
+        .done(function(data, textStatus, jqXHRdata) {
+            this.setState({ChangeRecord_list:data.Data,isHaveRecord:data.isHaveRecord});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });     
+    },
+    queryRecordDetail:function(){
+        jqGet(gb_approot + 'api/GetAction/GetRecordDetail',{record_deatil_id:this.props.record_deatil_id})
+        .done(function(data, textStatus, jqXHRdata) {
+            this.setState({RecordDetailData:data.record_detail,MealCount:data.meal_count});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });     
+    },
+    setCalendarGrid:function(){
+        var CalendarGrid=this.state.CalendarGrid;
+
+        if((CalendarGrid.indexMonth+1)>=13){
+            CalendarGrid.nextYear=CalendarGrid.indexYear+1;
+            CalendarGrid.nextMonth=1;
+        }else{
+            CalendarGrid.nextYear=CalendarGrid.indexYear;
+            CalendarGrid.nextMonth=CalendarGrid.indexMonth+1;
+        }
+
+        if((CalendarGrid.indexMonth-1)<=1){
+            CalendarGrid.prveYear=CalendarGrid.indexYear-1;
+            CalendarGrid.prveMonth=12;
+        }else{
+            CalendarGrid.prveYear=CalendarGrid.indexYear;
+            CalendarGrid.prveMonth=CalendarGrid.indexMonth-1;
+        }
+        this.setState({CalendarGrid:CalendarGrid});
+    },
+    setPrve3Month:function(){
+        var CalendarGrid=this.state.CalendarGrid;
+        //中
+        if((CalendarGrid.indexMonth-3)<=0){
+            CalendarGrid.indexYear=CalendarGrid.indexYear-1;
+            CalendarGrid.indexMonth=(CalendarGrid.indexMonth-3)+12;
+        }else{
+            CalendarGrid.indexMonth=CalendarGrid.indexMonth-3;
+        }
+        //上
+        if((CalendarGrid.prveMonth-3)<=0){
+            CalendarGrid.prveYear=CalendarGrid.prveYear-1;
+            CalendarGrid.prveMonth=(CalendarGrid.prveMonth-3)+12;
+        }else{
+            CalendarGrid.prveMonth=CalendarGrid.prveMonth-3;
+        }
+        //下
+        if((CalendarGrid.nextMonth-3)<=0){
+            CalendarGrid.nextYear=CalendarGrid.nextYear-1;
+            CalendarGrid.nextMonth=(CalendarGrid.nextMonth-3)+12;
+        }else{
+            CalendarGrid.nextMonth=CalendarGrid.nextMonth-3;
+        }
+        this.setState({CalendarGrid:CalendarGrid});
+    },
+    setNext3Month:function(){
+        var CalendarGrid=this.state.CalendarGrid;
+        //中
+        if((CalendarGrid.indexMonth+3)>=13){
+            CalendarGrid.indexYear=CalendarGrid.indexYear+1;
+            CalendarGrid.indexMonth=(CalendarGrid.indexMonth+3)-12;
+        }else{
+            CalendarGrid.indexMonth=CalendarGrid.indexMonth+3;
+        }
+        //上
+        if((CalendarGrid.prveMonth+3)>=13){
+            CalendarGrid.prveYear=CalendarGrid.prveYear+1;
+            CalendarGrid.prveMonth=(CalendarGrid.prveMonth+3)-12;
+        }else{
+            CalendarGrid.prveMonth=CalendarGrid.prveMonth+3;
+        }
+        //下
+        if((CalendarGrid.nextMonth+3)>=13){
+            CalendarGrid.nextYear=CalendarGrid.nextYear+1;
+            CalendarGrid.nextMonth=(CalendarGrid.nextMonth+3)-12;
+        }else{
+            CalendarGrid.nextMonth=CalendarGrid.nextMonth+3;
+        }
+        this.setState({CalendarGrid:CalendarGrid}); 
     },
     setProductRecord:function(){
         //返回產品銷售
@@ -435,43 +532,97 @@ var MealCalendar = React.createClass({
     },  
     render: function() {
         var outHtml = null;
-
+        var change_record_html=null;
+        if(this.state.isHaveRecord){
+            change_record_html=(
+                <table className="table-condensed">
+                    <tr>
+                        <th className="col-xs-4">異動時間</th>
+                        <th className="col-xs-3">用餐日期</th>
+                        <th className="col-xs-1 text-center">餐別</th>
+                        <th className="col-xs-2 text-center">停／增餐</th>
+                        <th className="col-xs-2 text-center">操作人員</th>
+                    </tr>
+                    <tbody>
+                        {
+                            this.state.ChangeRecord_list.map(function(itemData,i) {                                           
+                                var product_out_html = 
+                                    <tr key={itemData.change_record_id}>
+                                        <td>{moment(itemData.change_time).format('YYYY/MM/DD HH:mm:ss')}</td>
+                                        <td>{moment(itemData.meal_day).format('YYYY/MM/DD')}</td>
+                                        <td className="text-center"><StateForGrid stateData={CommData.MealType} id={itemData.meal_type} /></td>
+                                        <td className="text-center"><StateForGrid stateData={CommData.ChangeMealType} id={itemData.change_type} /></td>
+                                        <td className="text-center">{itemData.user_name}</td>
+                                    </tr>;
+                                return product_out_html;
+                            }.bind(this))
+                        }
+                    </tbody>
+                </table>
+                );
+        }else{
+            change_record_html=(
+                <div className="alert alert-warning">
+                    <i className="fa-exclamation-triangle"></i> 目前暫無資料
+                </div>
+                );
+        }
+        var RecordDetailData=this.state.RecordDetailData;
+        var MealCount=this.state.MealCount;
             outHtml =
             (
                 <div>
+                {/*---用餐排程start---*/}
                     <hr className="condensed" />
                     <h4 className="title">用餐排程</h4>
 
                     <div className="alert alert-warning">
-                        <p> 已停 <strong>6</strong> 餐／
-                            已增 <strong>2</strong> 餐／
-                            應排 <strong>77</strong> 餐／
-                            已排 <strong>77</strong> 餐／
-                            已吃 <strong>8</strong> 餐／
-                            未吃 <strong>69</strong> 餐</p>
+                        <p> 已停 <strong>{MealCount.pause_meal}</strong> 餐／
+                            已增 <strong>{MealCount.add_meal}</strong> 餐／
+                            應排 <strong>{MealCount.estimate_total}</strong> 餐／
+                            已排 <strong>{MealCount.real_total}</strong> 餐／
+                            已吃 <strong>{MealCount.already_eat}</strong> 餐／
+                            未吃 <strong>{MealCount.not_eat}</strong> 餐</p>
                         <p><strong className="text-default">黑色：正常</strong>／<strong className="text-danger">紅色：停餐</strong>／<strong className="text-success">綠色：增餐</strong></p>
                     </div>
 
                     <ul className="pager">
                         <li className="previous">
-                            <a href="">← 前 3 個月</a>
+                            <a onClick={this.setPrve3Month.bind(this)}>← 前 3 個月</a>
                         </li>
                         <li className="next">
-                            <a href="">後 3 個月 →</a>
+                            <a onClick={this.setNext3Month.bind(this)}>後 3 個月 →</a>
                         </li>
                     </ul>
 
                     <hr className="condensed" />
 
                     <Calendar ref="Calendar1"
-                    year={2015}
-                    month={9} />
+                    year={this.state.CalendarGrid.prveYear}
+                    month={this.state.CalendarGrid.prveMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />
+
                     <Calendar ref="Calendar2"
-                    year={2015}
-                    month={10} />
+                    year={this.state.CalendarGrid.indexYear}
+                    month={this.state.CalendarGrid.indexMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />
+
                     <Calendar ref="Calendar3"
-                    year={2015}
-                    month={11} />
+                    year={this.state.CalendarGrid.nextYear}
+                    month={this.state.CalendarGrid.nextMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />
 
                     <div className="clearfix">
                         <p className="pull-left"><strong>開始送餐後(含送餐當日) 請勿任意修改用餐排程，如有異動會留下紀錄!!</strong></p>
@@ -480,38 +631,8 @@ var MealCalendar = React.createClass({
                             <button type="button" className="btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
                         </p>
                     </div>
-
-                </div>
-            );
-
-        return outHtml;
-    }
-});
-
-//異動紀錄
-var ChangeRecord = React.createClass({ 
-    mixins: [React.addons.LinkedStateMixin], 
-    getInitialState: function() {  
-        return {
- 
-        };  
-    },
-    getDefaultProps:function(){
-        return{ 
-
-        };
-    },
-    componentDidMount:function(){
-    },
-    shouldComponentUpdate:function(nextProps,nextState){
-        return true;
-    },
-    render: function() {
-        var outHtml = null;
-
-            outHtml =
-            (
-                <div>
+                {/*---用餐排程end---*/}
+                {/*---異動紀錄start---*/}
                     <hr className="condensed" />
 
                     <h4 className="title">異動紀錄</h4>
@@ -524,35 +645,7 @@ var ChangeRecord = React.createClass({
                             </ul>{/*---tab-nav---*/}
                             <div className="tab-content">
                                 <div className="tab-pane active" id="changeLog1">
-                                
-                                    {/*---沒有資料的話，會出現這個---*/}
-                                    <div className="alert alert-warning">
-                                        <i className="fa-exclamation-triangle"></i> 目前暫無資料
-                                    </div>
-
-                                    <table className="table-condensed">
-                                        <tr>
-                                            <th className="col-xs-4">異動時間</th>
-                                            <th className="col-xs-3">用餐日期</th>
-                                            <th className="col-xs-1 text-center">餐別</th>
-                                            <th className="col-xs-2 text-center">停／增餐</th>
-                                            <th className="col-xs-2 text-center">操作人員</th>
-                                        </tr>
-                                        <tr>
-                                            <td>2015/00/00 00:00</td>
-                                            <td>2015/00/00</td>
-                                            <td className="text-center">早餐</td>
-                                            <td className="text-center">停餐</td>
-                                            <td className="text-center">XXX</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2015/00/00 00:00</td>
-                                            <td>2015/00/00</td>
-                                            <td className="text-center">早餐</td>
-                                            <td className="text-center">停餐</td>
-                                            <td className="text-center">XXX</td>
-                                        </tr>
-                                    </table>
+                                    {change_record_html}
                                 </div>
                                 <div className="tab-pane" id="changeLog2">
                                     <table className="table-condensed">
@@ -564,34 +657,34 @@ var ChangeRecord = React.createClass({
                                         </tr>
                                         <tr>
                                             <td className="text-right"><strong>原訂</strong></td>
-                                            <td>{moment(this.props.fieldData.meal_start).format('YYYY/MM/DD')}</td>
-                                            <td>{moment(this.props.fieldData.meal_end).format('YYYY/MM/DD')}</td>
-                                            <td>早 {this.props.fieldData.estimate_breakfast}／
-                                                午 {this.props.fieldData.estimate_lunch}／
-                                                晚 {this.props.fieldData.estimate_dinner}</td>
+                                            <td>{moment(RecordDetailData.meal_start).format('YYYY/MM/DD')}</td>
+                                            <td>{moment(RecordDetailData.meal_end).format('YYYY/MM/DD')}</td>
+                                            <td>早 {RecordDetailData.estimate_breakfast}／
+                                                午 {RecordDetailData.estimate_lunch}／
+                                                晚 {RecordDetailData.estimate_dinner}</td>
                                         </tr>
                                         <tr>
                                             <td className="text-right"><strong>實訂</strong></td>
-                                            <td>{moment(this.props.fieldData.real_estimate_meal_start).format('YYYY/MM/DD')}</td>
-                                            <td>{moment(this.props.fieldData.real_estimate_meal_end).format('YYYY/MM/DD')}</td>
-                                            <td>早 {this.props.fieldData.real_estimate_breakfast}／
-                                                午 {this.props.fieldData.real_estimate_lunch}／
-                                                晚 {this.props.fieldData.real_estimate_dinner}</td>
+                                            <td>{moment(RecordDetailData.real_estimate_meal_start).format('YYYY/MM/DD')}</td>
+                                            <td>{moment(RecordDetailData.real_estimate_meal_end).format('YYYY/MM/DD')}</td>
+                                            <td>早 {RecordDetailData.real_estimate_breakfast}／
+                                                午 {RecordDetailData.real_estimate_lunch}／
+                                                晚 {RecordDetailData.real_estimate_dinner}</td>
                                         </tr>
                                         <tr>
                                             <td className="text-right"><strong>實際</strong></td>
-                                            <td>{moment(this.props.fieldData.real_meal_start).format('YYYY/MM/DD')}</td>
-                                            <td>{moment(this.props.fieldData.real_meal_end).format('YYYY/MM/DD')}</td>
-                                            <td>早 {this.props.fieldData.real_breakfast}／
-                                                午 {this.props.fieldData.real_lunch}／
-                                                晚 {this.props.fieldData.real_dinner}</td>
+                                            <td>{moment(RecordDetailData.real_meal_start).format('YYYY/MM/DD')}</td>
+                                            <td>{moment(RecordDetailData.real_meal_end).format('YYYY/MM/DD')}</td>
+                                            <td>早 {RecordDetailData.real_breakfast}／
+                                                午 {RecordDetailData.real_lunch}／
+                                                晚 {RecordDetailData.real_dinner}</td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>{/*table-content*/}
                         </div>
                     </div>
-
+                {/*---異動紀錄end---*/}            
                 </div>
             );
 
@@ -606,7 +699,11 @@ var Calendar = React.createClass({
         return {            
             MonthObj:{weekInfo:[]},
             Calendar_id:'calendar-'+this.props.month,
-            searchData:{main_id:null,month:this.props.month,year:this.props.year}
+            searchData:{record_deatil_id:this.props.record_deatil_id,month:this.props.month,year:this.props.year},
+            dailyMealData:{ record_deatil_id:this.props.record_deatil_id,
+                            customer_id:this.props.customer_id,
+                            born_id:this.props.born_id,
+                            meal_day:null}
         };  
     },
     getDefaultProps:function(){
@@ -616,20 +713,52 @@ var Calendar = React.createClass({
         };
     },
     componentDidMount:function(){
-        this.queryMonthObj();
+        this.queryMonthObj(this.props.year,this.props.month);
     },
     shouldComponentUpdate:function(nextProps,nextState){
         return true;
     },
-    queryMonthObj:function(){
-        jqGet(gb_approot + 'api/GetAction/GetMealCalendar',this.state.searchData)
+    componentWillReceiveProps:function(nextProps){
+        //當元件收到新的 props 時被執行，這個方法在初始化時並不會被執行。使用的時機是在我們使用 setState() 並且呼叫 render() 之前您可以比對 props，舊的值在 this.props，而新值就從 nextProps 來。
+        if(nextProps.month!=this.props.month){
+            this.queryMonthObj(nextProps.year,nextProps.month);
+        }
+    },
+    queryMonthObj:function(year,month){
+        var searchData=this.state.searchData;
+        searchData.month=month;
+        searchData.year=year;
+
+        jqGet(gb_approot + 'api/GetAction/GetMealCalendar',searchData)
         .done(function(data, textStatus, jqXHRdata) {
-            console.log(data);
-            this.setState({MonthObj:data});
+            this.setState({MonthObj:data,searchData:searchData});
         }.bind(this))
         .fail(function( jqXHR, textStatus, errorThrown ) {
             showAjaxError(errorThrown);
         });     
+    },
+    addDailyMeal:function(meal_day,e){
+        var meal_day_f=new Date(moment(meal_day).format('YYYY/MM/DD'));//轉換日期格式
+        console.log(this.state.dailyMealData);
+        if(getNowDate()>=meal_day_f)
+        {//今天 >= 用餐日期 不可編輯
+            return;
+        }
+        if(!confirm('是否增加此天用餐排程?')){
+            return;
+        }
+        this.state.dailyMealData.meal_day=meal_day;
+
+        jqPost(gb_approot + 'api/GetAction/AddDailyMeal',this.state.dailyMealData)
+        .done(function(data, textStatus, jqXHRdata) {
+            if(data.result){
+                this.queryMonthObj();
+                this.props.queryRecordDetail();
+            }
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            //showAjaxError(errorThrown);
+        }); 
     },
     render: function() {
         var outHtml = null;
@@ -665,34 +794,48 @@ var Calendar = React.createClass({
                                                     {
                                                         weekObj.dayInfo.map(function(dayObj,i) {
                                                             var day_out_html=null;
-                                                            if(dayObj.isNowMonth){                                                                                                                                    day_out_html = 
+                                                            if(dayObj.isNowMonth && dayObj.isHaveMeal){                                                                                                                                    day_out_html = 
                                                                 day_out_html=
                                                                 <td key={moment(dayObj.meal_day).format('MM-DD')}>
                                                                     <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
                                                                     <div className="meal">
-                                                                        <div className="checkbox">
-                                                                            <label>
-                                                                                <input type="checkbox" checked />
-                                                                                <span>早</span>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="checkbox">
-                                                                            <label>
-                                                                                <input type="checkbox" checked />
-                                                                                <span>午</span>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="checkbox">
-                                                                            <label>
-                                                                                <input type="checkbox" checked />
-                                                                                <span>晚</span>
-                                                                            </label>
-                                                                        </div>
+                                                                        <MealCheckBox
+                                                                        meal_type={1}
+                                                                        meal_day={dayObj.meal_day}
+                                                                        meal_name={'早'}
+                                                                        meal_state={dayObj.breakfast}
+                                                                        daily_meal_id={dayObj.daily_meal_id}
+                                                                        record_deatil_id={dayObj.record_deatil_id}
+                                                                        isMealStart={MonthObj.isMealStart}
+                                                                        queryChangeRecord={this.props.queryChangeRecord}
+                                                                        queryRecordDetail={this.props.queryRecordDetail} />
+
+                                                                        <MealCheckBox
+                                                                        meal_type={2}
+                                                                        meal_day={dayObj.meal_day}
+                                                                        meal_name={'午'}
+                                                                        meal_state={dayObj.lunch}
+                                                                        daily_meal_id={dayObj.daily_meal_id}
+                                                                        record_deatil_id={dayObj.record_deatil_id}
+                                                                        isMealStart={MonthObj.isMealStart}
+                                                                        queryChangeRecord={this.props.queryChangeRecord}
+                                                                        queryRecordDetail={this.props.queryRecordDetail} />
+                                                                        
+                                                                        <MealCheckBox
+                                                                        meal_type={3}
+                                                                        meal_day={dayObj.meal_day}
+                                                                        meal_name={'晚'}
+                                                                        meal_state={dayObj.dinner}
+                                                                        daily_meal_id={dayObj.daily_meal_id}
+                                                                        record_deatil_id={dayObj.record_deatil_id}
+                                                                        isMealStart={MonthObj.isMealStart}
+                                                                        queryChangeRecord={this.props.queryChangeRecord}
+                                                                        queryRecordDetail={this.props.queryRecordDetail} />
                                                                     </div>
                                                                 </td>;
                                                             }else{
                                                                 day_out_html=
-                                                                <td key={moment(dayObj.meal_day).format('MM-DD')}>
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')} onClick={this.addDailyMeal.bind(this,dayObj.meal_day)}>
                                                                     <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
                                                                 </td>;
                                                             }                                        
@@ -711,6 +854,112 @@ var Calendar = React.createClass({
                             </div>
                         </div>
                     </div>
+                </div>
+            );
+
+        return outHtml;
+    }
+});
+
+//用餐checkbox
+var MealCheckBox = React.createClass({ 
+    mixins: [React.addons.LinkedStateMixin], 
+    getInitialState: function() {  
+        return {            
+            MealData:{  daily_meal_id:this.props.daily_meal_id,
+                        record_deatil_id:this.props.record_deatil_id,
+                        meal_type:this.props.meal_type,
+                        meal_state:this.props.meal_state,
+                        isMealStart:this.props.isMealStart},
+            isMealFinished:false //此日期已經用餐完畢
+        };  
+    },
+    getDefaultProps:function(){
+        return{ 
+            today:getNowDate(),
+            meal_day:null,
+            meal_state:0,
+            meal_type:0,//判斷 早餐:1 / 午餐:2 / 晚餐:3
+            meal_name:null,
+            daily_meal_id:0,
+            record_deatil_id:0,
+            isMealStart:false
+        };
+    },
+    componentDidMount:function(){
+    },
+    shouldComponentUpdate:function(nextProps,nextState){
+        return true;
+    },
+    changeMealValue:function(e){
+        var obj = this.state.MealData;
+        if(!this.props.isMealStart)
+        {//正式開始用餐前怎麼修改都不會出現異動紀錄
+            if(e.target.checked){
+                obj.meal_state=1;
+            }else{
+                obj.meal_state=-1;
+            }
+        }else{
+            if(e.target.checked){
+                obj.meal_state=2;
+            }else{
+                obj.meal_state=-2;
+            }
+        }
+        jqPost(gb_approot + 'api/GetAction/PostDailyMealState',this.state.MealData)
+        .done(function(data, textStatus, jqXHRdata) {
+            if(data.result){
+                if(this.props.isMealStart){
+                    this.props.queryChangeRecord();
+                }
+                this.props.queryRecordDetail();
+            }
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            //showAjaxError(errorThrown);
+        }); 
+
+
+        this.setState({MealData:obj});
+    },
+    render: function() {
+        var outHtml = null;
+        var name_out_html=null;
+        var MealData=this.state.MealData;
+        var meal_day=new Date(moment(this.props.meal_day).format('YYYY/MM/DD'));
+
+        if(this.props.today>=meal_day && this.props.meal_state>0)
+        {
+            name_out_html=(<span>{this.props.meal_name +'(已吃)'}</span>);
+        }
+        else if(MealData.meal_state==2)
+        {
+            name_out_html=(<span className="text-success">{this.props.meal_name +'(增)'}</span>);
+        }
+        else if(MealData.meal_state==-2)
+        {
+            name_out_html=(<span className="text-danger">{this.props.meal_name +'(停)'}</span>);
+        }
+        else
+        {
+            name_out_html=(<span>{this.props.meal_name}</span>);
+        }
+        if(this.props.today>=meal_day)
+        {//用餐日期 <= 今天 不可編輯
+            this.state.isMealFinished=true;
+        }
+            
+            outHtml =
+            (
+                <div className="checkbox">
+                    <label>
+                        <input type="checkbox"                             
+                        onChange={this.changeMealValue.bind(this)}
+                        checked={MealData.meal_state > 0}
+                        disabled={this.state.isMealFinished}  />
+                        {name_out_html}
+                     </label>
                 </div>
             );
 

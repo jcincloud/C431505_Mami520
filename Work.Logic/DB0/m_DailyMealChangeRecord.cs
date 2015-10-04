@@ -11,18 +11,14 @@ namespace ProcCore.Business.DB0
 {
     using System;
     using System.Collections.Generic;
-    public partial class m_SendMsg :BaseEntityTable {
-    public int send_msg_id { get; set; }
-    public int send_type { get; set; }
-    public System.DateTime send_day { get; set; }
-    public System.TimeSpan send_time { get; set; }
-    public Nullable<int> send_factor { get; set; }
-    public string title { get; set; }
-    public string send_content { get; set; }
-    public Nullable<int> sort { get; set; }
-    public bool is_complete { get; set; }
-    public bool is_quickly_send { get; set; }
-    public bool is_send { get; set; }
+    public partial class m_DailyMealChangeRecord :BaseEntityTable {
+    public int change_record_id { get; set; }
+    public int record_deatil_id { get; set; }
+    public int daily_meal_id { get; set; }
+    public System.DateTime change_time { get; set; }
+    public System.DateTime meal_day { get; set; }
+    public int meal_type { get; set; }
+    public int change_type { get; set; }
     public bool i_Hide { get; set; }
     public string i_InsertUserID { get; set; }
     public Nullable<int> i_InsertDeptID { get; set; }

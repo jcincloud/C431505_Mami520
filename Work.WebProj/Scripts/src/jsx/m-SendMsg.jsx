@@ -181,7 +181,7 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{send_type:1}});
+		this.setState({edit_type:1,fieldData:{send_type:1,send_time:'08:00:00'}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -376,6 +376,22 @@ var GirdForm = React.createClass({
 				        <small className="help-inline col-xs-2 text-danger">(必填)</small>
 				    </div>
 				    <div className="form-group">
+				        <label className="col-xs-2 control-label">發送時間</label>
+				            <div className="col-xs-3">
+								<select className="form-control" 
+								value={fieldData.send_time}
+								disabled={fieldData.is_send}
+								onChange={this.changeFDValue.bind(this,'send_time')}>
+								{
+									CommData.SendTimeData.map(function(itemData,i) {
+										return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+									})
+								}
+								</select>
+				            </div>
+				        <small className="help-inline col-xs-2 text-danger">(必填)</small>
+				    </div>
+				    <div className="form-group">
 						<label className="col-xs-2 control-label">狀態</label>
 						<div className="col-xs-3">
 							<div className="radio-inline">
@@ -400,6 +416,35 @@ var GirdForm = React.createClass({
 											onChange={this.changeFDValue.bind(this,'is_complete')}
 											/>
 									<span>草稿</span>
+								</label>
+							</div>
+						</div>	
+					</div>
+					<div className="form-group">
+						<label className="col-xs-2 control-label">快速發送</label>
+						<div className="col-xs-3">
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="is_quickly_send"
+											value={true}
+											checked={fieldData.is_quickly_send===true}
+											disabled={fieldData.is_send} 
+											onChange={this.changeFDValue.bind(this,'is_quickly_send')}
+									/>
+									<span>是</span>
+								</label>
+							</div>
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="is_quickly_send"
+											value={false}
+											checked={fieldData.is_quickly_send===false}
+											disabled={fieldData.is_send}
+											onChange={this.changeFDValue.bind(this,'is_quickly_send')}
+											/>
+									<span>否</span>
 								</label>
 							</div>
 						</div>	

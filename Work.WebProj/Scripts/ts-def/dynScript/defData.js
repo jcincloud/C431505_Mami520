@@ -511,6 +511,10 @@ var CommData;
         { id: 2, label: '午餐', className: 'label label-primary', code: 'straght' },
         { id: 3, label: '晚餐', className: 'label label-default', code: 'straght' }
     ];
+    CommData.ChangeMealType = [
+        { id: -1, label: '停餐', className: 'label label-danger', code: 'store' },
+        { id: 1, label: '增餐', className: 'label label-success', code: 'straght' }
+    ];
     CommData.ReceiveState = [
         { id: 1, label: '未領取', className: 'label label-danger', code: 'store' },
         { id: 2, label: '領取部分', className: 'label label-warning', code: 'straght' },
@@ -537,18 +541,19 @@ var CommData;
         { id: 3, label: '可麻油酒', className: 'label label-warning', code: 'straght' },
         { id: 4, label: '收尾款', className: 'label label-primary', code: 'straght' },
     ];
-    CommData.MonthsData = [
-        { id: 1, label: '1月' },
-        { id: 2, label: '2月' },
-        { id: 3, label: '3月' },
-        { id: 4, label: '4月' },
-        { id: 5, label: '5月' },
-        { id: 6, label: '6月' },
-        { id: 7, label: '7月' },
-        { id: 8, label: '8月' },
-        { id: 9, label: '9月' },
-        { id: 10, label: '10月' },
-        { id: 11, label: '11月' },
-        { id: 12, label: '12月' }
+    CommData.SendTimeData = [
+        { id: '08:00:00', label: '8:00' },
+        { id: '09:00:00', label: '9:00' },
+        { id: '10:00:00', label: '10:00' },
+        { id: '11:00:00', label: '11:00' },
+        { id: '12:00:00', label: '12:00' },
+        { id: '13:00:00', label: '13:00' },
+        { id: '14:00:00', label: '14:00' },
+        { id: '15:00:00', label: '15:00' },
+        { id: '16:00:00', label: '16:00' },
+        { id: '17:00:00', label: '17:00' },
+        { id: '18:00:00', label: '18:00' },
+        { id: '19:00:00', label: '19:00' },
+        { id: '20:00:00', label: '20:00' },
     ];
 })(CommData || (CommData = {}));
