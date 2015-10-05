@@ -291,7 +291,7 @@ namespace DotWeb.Api
 
                 var items = db0.Product
                     .OrderBy(x => new { x.sort })
-                    .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard, x.is_modify });
+                    .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard });
 
                 if (parm.name != null)
                 {
@@ -694,6 +694,10 @@ namespace DotWeb.Api
                         }
                     }
                 }
+                #endregion
+                #region 變更產品數量
+                RecordDetailItem.qty = (int)RecordDetailItem.real_breakfast * 0.3 + (int)RecordDetailItem.real_lunch * 0.35 + (int)RecordDetailItem.real_dinner * 0.35;
+                RecordDetailItem.subtotal = RecordDetailItem.qty * RecordDetailItem.price;
                 #endregion
 
                 await db0.SaveChangesAsync();

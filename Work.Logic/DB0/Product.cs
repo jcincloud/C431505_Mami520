@@ -26,7 +26,6 @@ namespace ProcCore.Business.DB0
         public double price { get; set; }
         public string standard { get; set; }
         public Nullable<int> sort { get; set; }
-        public bool is_modify { get; set; }
         public string memo { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }

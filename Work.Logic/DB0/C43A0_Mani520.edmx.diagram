@@ -55,7 +55,6 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_Activity" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_CustomerBorn" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.ContactSchedule" Width="1.5" PointX="9.875" PointY="22.5" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ContactSchedule_CustomerBorn" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.ScheduleDetail" Width="1.5" PointX="9.875" PointY="27.375" />
@@ -66,7 +65,6 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="23.125" PointY="16" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMeal" Width="1.5" PointX="25.375" PointY="18.25" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
@@ -74,6 +72,8 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMealChangeRecord" Width="1.5" PointX="27.625" PointY="18.5" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

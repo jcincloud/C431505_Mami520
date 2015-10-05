@@ -83,7 +83,6 @@ namespace DotWeb.Api
                 item.standard = md.standard;
                 item.sort = md.sort;
                 item.memo = md.memo;
-                item.is_modify = md.is_modify;
 
 
                 item.i_UpdateUserID = this.UserId;

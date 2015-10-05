@@ -752,7 +752,7 @@ var Calendar = React.createClass({
         jqPost(gb_approot + 'api/GetAction/AddDailyMeal',this.state.dailyMealData)
         .done(function(data, textStatus, jqXHRdata) {
             if(data.result){
-                this.queryMonthObj();
+                this.queryMonthObj(this.props.year,this.props.month);
                 this.props.queryRecordDetail();
             }
         }.bind(this))

@@ -53,7 +53,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<Draft> Draft { get; set; }
         public virtual DbSet<ProductRecord> ProductRecord { get; set; }
         public virtual DbSet<GiftRecord> GiftRecord { get; set; }
-        public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<ContactSchedule> ContactSchedule { get; set; }
         public virtual DbSet<ScheduleDetail> ScheduleDetail { get; set; }
         public virtual DbSet<DeatilTelRecord> DeatilTelRecord { get; set; }
@@ -62,5 +61,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<DailyMeal> DailyMeal { get; set; }
         public virtual DbSet<SendMsg> SendMsg { get; set; }
         public virtual DbSet<DailyMealChangeRecord> DailyMealChangeRecord { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
     }
 }

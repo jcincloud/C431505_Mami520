@@ -756,14 +756,21 @@ var SubForm = React.createClass({
 	detailHandleSubmit: function(e) {
 
 		e.preventDefault();
-
-		if(this.state.fieldSubData.product_id==null || this.state.fieldSubData.product_id==undefined){
+		var fieldSubData=this.state.fieldSubData;
+		if(fieldSubData.product_id==null || fieldSubData.product_id==undefined){
 			tosMessage(gb_title_from_invalid,'未選擇產品!!',3);
 			return;
 		}
+		if(fieldSubData.product_type==1){
+			fieldSubData.meal_end=fieldSubData.meal_start;
+			if(fieldSubData.estimate_breakfast==null && fieldSubData.estimate_lunch==null && fieldSubData.estimate_dinner==null){
+				tosMessage(gb_title_from_invalid,'產品為試吃時,請填寫試吃的用餐預計餐數!!',3);
+				return;
+			}
+		}
 
 		if(this.state.edit_sub_type==1){
-			jqPost(this.props.apiPathName,this.state.fieldSubData)
+			jqPost(this.props.apiPathName,fieldSubData)
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
 					if(data.message!=null){
@@ -783,7 +790,7 @@ var SubForm = React.createClass({
 			});
 		}		
 		else if(this.state.edit_sub_type==2){
-			jqPut(this.props.apiPathName,this.state.fieldSubData)
+			jqPut(this.props.apiPathName,fieldSubData)
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
 					if(data.message!=null){
@@ -889,12 +896,19 @@ var SubForm = React.createClass({
 	},
 	changeMealday:function(name,e){//計算日期天數
 		var obj = this.state.fieldSubData;
+		if(obj.isMealStart){
+			tosMessage(gb_title_from_invalid,'已開始正式用餐後,請勿變更預計用餐起日及迄日!!',3);
+			return;
+		}
+		console.log('hi');
+		var old_val=obj[name];//修改前
 		obj[name] = e.target.value;//先變更修改後的日期在計算
 
 		var diff_mealday=DiffDate(obj.meal_start,obj.meal_end);
 		obj.diff_day=diff_mealday.diff_day;
 		if(diff_mealday.result==-1){
 			tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
+			obj[name]=old_val;
 		}
 
 		this.setState({fieldSubData:obj});
@@ -938,7 +952,6 @@ var SubForm = React.createClass({
 				fSD.product_name=obj.product_name;
 				fSD.price=obj.price;
 				fSD.standard=obj.standard;
-				fSD.is_modify=obj.is_modify;
 				fSD.subtotal=fSD.qty*obj.price;
 			}
 		});
@@ -950,7 +963,7 @@ var SubForm = React.createClass({
 	setMealSchedule:function(record_deatil_id){
 		//設定用餐排程
 		document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
-	},	
+	},
 	render: function() {
 		var outHtml = null;
 		var fieldSubData = this.state.fieldSubData;//明細檔資料
@@ -1109,16 +1122,14 @@ var SubForm = React.createClass({
 												<input type="number" 
 												className="form-control"	
 												value={fieldSubData.price}
-												disabled={!fieldSubData.is_modify}
 												onChange={this.changePriceCount.bind(this,'price')} />
 											</div>
 											<label className="col-xs-1 control-label">數量</label>
 											<div className="col-xs-1">
-												<input type="number" 							
+												<input type="text"				
 												className="form-control"	
 												value={fieldSubData.qty}
 												onChange={this.changePriceCount.bind(this,'qty')}
-												min="1"
 												required/>
 											</div>
 											<small className="help-inline col-xs-2 text-danger">(必填)</small>
@@ -1158,7 +1169,8 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
-												required={fieldSubData.product_type==2 || fieldSubData.product_type==1} />
+												required={fieldSubData.product_type==2 || fieldSubData.product_type==1}
+												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>
@@ -1170,7 +1182,8 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
-												required={fieldSubData.product_type==2 || fieldSubData.product_type==1} />
+												required={fieldSubData.product_type==2}
+												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>
@@ -1195,6 +1208,7 @@ var SubForm = React.createClass({
 												value={fieldSubData.estimate_breakfast}
 												onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
 												required={fieldSubData.product_type==2}
+												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
 												min="0"/>
 											</div>
 										</div>
@@ -1206,6 +1220,7 @@ var SubForm = React.createClass({
 												value={fieldSubData.estimate_lunch}
 												onChange={this.changeMealCount.bind(this,'estimate_lunch')}
 												required={fieldSubData.product_type==2}
+												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
 												min="0"/>
 											</div>
 										</div>
@@ -1217,6 +1232,7 @@ var SubForm = React.createClass({
 												value={fieldSubData.estimate_dinner}
 												onChange={this.changeMealCount.bind(this,'estimate_dinner')}
 												required={fieldSubData.product_type==2}
+												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
 												min="0"/>
 											</div>
 										</div>

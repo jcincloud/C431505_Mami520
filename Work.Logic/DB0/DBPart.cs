@@ -380,6 +380,8 @@ namespace ProcCore.Business.DB0
         public string tw_city_2 { get; set; }
         public string tw_country_2 { get; set; }
         public string tw_address_2 { get; set; }
+        //用餐排程用
+        public bool isMealStart { get; set; }
     }
     public partial class DailyMealChangeRecord
     {
