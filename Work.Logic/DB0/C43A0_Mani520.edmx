@@ -5,6 +5,46 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="C43A0_Mani520Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccountsPayable">
+          <Key>
+            <PropertyRef Name="accounts_payable_id" />
+          </Key>
+          <Property Name="accounts_payable_id" Type="int" Nullable="false" />
+          <Property Name="product_record_id" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="estimate_payable" Type="float" Nullable="false" />
+          <Property Name="trial_payable" Type="float" Nullable="false" />
+          <Property Name="is_close" Type="bit" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AccountsPayableDetail">
+          <Key>
+            <PropertyRef Name="accounts_payable_detail_id" />
+          </Key>
+          <Property Name="accounts_payable_detail_id" Type="int" Nullable="false" />
+          <Property Name="accounts_payable_id" Type="int" Nullable="false" />
+          <Property Name="receipt_day" Type="smalldatetime" Nullable="false" />
+          <Property Name="meal_type" Type="int" Nullable="false" />
+          <Property Name="receipt_person" Type="int" Nullable="false" />
+          <Property Name="receipt_item" Type="int" Nullable="false" />
+          <Property Name="receipt_sn" Type="varchar" MaxLength="15" />
+          <Property Name="actual_receipt" Type="float" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+        </EntityType>
         <EntityType Name="Activity">
           <Key>
             <PropertyRef Name="activity_id" />
@@ -682,6 +722,30 @@
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
         </EntityType>
+        <Association Name="FK_AccountsPayable_ProductRecord">
+          <End Role="ProductRecord" Type="Self.ProductRecord" Multiplicity="1" />
+          <End Role="AccountsPayable" Type="Self.AccountsPayable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductRecord">
+              <PropertyRef Name="product_record_id" />
+            </Principal>
+            <Dependent Role="AccountsPayable">
+              <PropertyRef Name="product_record_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountsPayableDetail_AccountsPayable">
+          <End Role="AccountsPayable" Type="Self.AccountsPayable" Multiplicity="1" />
+          <End Role="AccountsPayableDetail" Type="Self.AccountsPayableDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountsPayable">
+              <PropertyRef Name="accounts_payable_id" />
+            </Principal>
+            <Dependent Role="AccountsPayableDetail">
+              <PropertyRef Name="accounts_payable_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_All_Category_L2_All_Category_L1">
           <End Role="All_Category_L1" Type="Self.All_Category_L1" Multiplicity="1" />
           <End Role="All_Category_L2" Type="Self.All_Category_L2" Multiplicity="*" />
@@ -1095,6 +1159,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="C43A0_Mani520ModelStoreContainer">
+          <EntitySet Name="AccountsPayable" EntityType="Self.AccountsPayable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AccountsPayableDetail" EntityType="Self.AccountsPayableDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="All_Category_L1" EntityType="Self.All_Category_L1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="All_Category_L2" EntityType="Self.All_Category_L2" Schema="dbo" store:Type="Tables" />
@@ -1134,6 +1200,14 @@
           <EntitySet Name="ScheduleDetail" EntityType="Self.ScheduleDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SendMsg" EntityType="Self.SendMsg" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SendMsgOfCustomer" EntityType="Self.SendMsgOfCustomer" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AccountsPayable_ProductRecord" Association="Self.FK_AccountsPayable_ProductRecord">
+            <End Role="ProductRecord" EntitySet="ProductRecord" />
+            <End Role="AccountsPayable" EntitySet="AccountsPayable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountsPayableDetail_AccountsPayable" Association="Self.FK_AccountsPayableDetail_AccountsPayable">
+            <End Role="AccountsPayable" EntitySet="AccountsPayable" />
+            <End Role="AccountsPayableDetail" EntitySet="AccountsPayableDetail" />
+          </AssociationSet>
           <AssociationSet Name="FK_All_Category_L2_All_Category_L1" Association="Self.FK_All_Category_L2_All_Category_L1">
             <End Role="All_Category_L1" EntitySet="All_Category_L1" />
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
@@ -1581,6 +1655,16 @@
           <AssociationSet Name="FK_RecordDetail_Product" Association="C43A0_Mani520Model.FK_RecordDetail_Product">
             <End Role="Product" EntitySet="Product" />
             <End Role="RecordDetail" EntitySet="RecordDetail" />
+          </AssociationSet>
+          <EntitySet Name="AccountsPayable" EntityType="C43A0_Mani520Model.AccountsPayable" />
+          <EntitySet Name="AccountsPayableDetail" EntityType="C43A0_Mani520Model.AccountsPayableDetail" />
+          <AssociationSet Name="FK_AccountsPayable_ProductRecord" Association="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord">
+            <End Role="ProductRecord" EntitySet="ProductRecord" />
+            <End Role="AccountsPayable" EntitySet="AccountsPayable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountsPayableDetail_AccountsPayable" Association="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable">
+            <End Role="AccountsPayable" EntitySet="AccountsPayable" />
+            <End Role="AccountsPayableDetail" EntitySet="AccountsPayableDetail" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="MealID">
@@ -2118,6 +2202,7 @@
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_ProductRecord_CustomerBorn" FromRole="ProductRecord" ToRole="CustomerBorn" />
           <NavigationProperty Name="GiftRecord" Relationship="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" FromRole="ProductRecord" ToRole="GiftRecord" />
           <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="ProductRecord" ToRole="RecordDetail" />
+          <NavigationProperty Name="AccountsPayable" Relationship="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord" FromRole="ProductRecord" ToRole="AccountsPayable" />
         </EntityType>
         <Association Name="FK_ProductRecord_Customer">
           <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
@@ -2532,6 +2617,73 @@
             </Principal>
             <Dependent Role="RecordDetail">
               <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AccountsPayable">
+          <Key>
+            <PropertyRef Name="accounts_payable_id" />
+          </Key>
+          <Property Name="accounts_payable_id" Type="Int32" Nullable="false" />
+          <Property Name="product_record_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="estimate_payable" Type="Double" Nullable="false" />
+          <Property Name="trial_payable" Type="Double" Nullable="false" />
+          <Property Name="is_close" Type="Boolean" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord" FromRole="AccountsPayable" ToRole="ProductRecord" />
+          <NavigationProperty Name="AccountsPayableDetail" Relationship="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" FromRole="AccountsPayable" ToRole="AccountsPayableDetail" />
+        </EntityType>
+        <EntityType Name="AccountsPayableDetail">
+          <Key>
+            <PropertyRef Name="accounts_payable_detail_id" />
+          </Key>
+          <Property Name="accounts_payable_detail_id" Type="Int32" Nullable="false" />
+          <Property Name="accounts_payable_id" Type="Int32" Nullable="false" />
+          <Property Name="receipt_day" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="meal_type" Type="Int32" Nullable="false" />
+          <Property Name="receipt_person" Type="Int32" Nullable="false" />
+          <Property Name="receipt_item" Type="Int32" Nullable="false" />
+          <Property Name="receipt_sn" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="actual_receipt" Type="Double" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="AccountsPayable" Relationship="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" FromRole="AccountsPayableDetail" ToRole="AccountsPayable" />
+        </EntityType>
+        <Association Name="FK_AccountsPayable_ProductRecord">
+          <End Type="C43A0_Mani520Model.ProductRecord" Role="ProductRecord" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.AccountsPayable" Role="AccountsPayable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductRecord">
+              <PropertyRef Name="product_record_id" />
+            </Principal>
+            <Dependent Role="AccountsPayable">
+              <PropertyRef Name="product_record_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountsPayableDetail_AccountsPayable">
+          <End Type="C43A0_Mani520Model.AccountsPayable" Role="AccountsPayable" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.AccountsPayableDetail" Role="AccountsPayableDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AccountsPayable">
+              <PropertyRef Name="accounts_payable_id" />
+            </Principal>
+            <Dependent Role="AccountsPayableDetail">
+              <PropertyRef Name="accounts_payable_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3247,6 +3399,48 @@
                 <ScalarProperty Name="product_name" ColumnName="product_name" />
                 <ScalarProperty Name="product_type" ColumnName="product_type" />
                 <ScalarProperty Name="product_id" ColumnName="product_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountsPayable">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.AccountsPayable">
+              <MappingFragment StoreEntitySet="AccountsPayable">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="is_close" ColumnName="is_close" />
+                <ScalarProperty Name="trial_payable" ColumnName="trial_payable" />
+                <ScalarProperty Name="estimate_payable" ColumnName="estimate_payable" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="product_record_id" ColumnName="product_record_id" />
+                <ScalarProperty Name="accounts_payable_id" ColumnName="accounts_payable_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AccountsPayableDetail">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.AccountsPayableDetail">
+              <MappingFragment StoreEntitySet="AccountsPayableDetail">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="actual_receipt" ColumnName="actual_receipt" />
+                <ScalarProperty Name="receipt_sn" ColumnName="receipt_sn" />
+                <ScalarProperty Name="receipt_item" ColumnName="receipt_item" />
+                <ScalarProperty Name="receipt_person" ColumnName="receipt_person" />
+                <ScalarProperty Name="meal_type" ColumnName="meal_type" />
+                <ScalarProperty Name="receipt_day" ColumnName="receipt_day" />
+                <ScalarProperty Name="accounts_payable_id" ColumnName="accounts_payable_id" />
+                <ScalarProperty Name="accounts_payable_detail_id" ColumnName="accounts_payable_detail_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -739,7 +739,6 @@ var Calendar = React.createClass({
     },
     addDailyMeal:function(meal_day,e){
         var meal_day_f=new Date(moment(meal_day).format('YYYY/MM/DD'));//轉換日期格式
-        console.log(this.state.dailyMealData);
         if(getNowDate()>=meal_day_f)
         {//今天 >= 用餐日期 不可編輯
             return;
@@ -833,12 +832,16 @@ var Calendar = React.createClass({
                                                                         queryRecordDetail={this.props.queryRecordDetail} />
                                                                     </div>
                                                                 </td>;
-                                                            }else{
+                                                            }else if(dayObj.isNowMonth){
                                                                 day_out_html=
                                                                 <td key={moment(dayObj.meal_day).format('MM-DD')} onClick={this.addDailyMeal.bind(this,dayObj.meal_day)}>
                                                                     <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
                                                                 </td>;
-                                                            }                                        
+                                                            }else{//非當月日期                                                                                                                         day_out_html=
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')} className="disabled">
+                                                                    <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
+                                                                </td>;
+                                                            }                                    
 
                                                             return day_out_html;
                                                         }.bind(this))
@@ -901,6 +904,9 @@ var MealCheckBox = React.createClass({
                 obj.meal_state=-1;
             }
         }else{
+            if(!confirm('是否變更此天用餐排程?')){
+                return;
+            }
             if(e.target.checked){
                 obj.meal_state=2;
             }else{

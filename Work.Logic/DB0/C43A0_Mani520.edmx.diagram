@@ -74,6 +74,10 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayable" Width="1.5" PointX="20.125" PointY="4.625" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayableDetail" Width="1.5" PointX="22.375" PointY="4.5" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

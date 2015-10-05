@@ -13,22 +13,19 @@ namespace ProcCore.Business.DB0
     using System.Collections.Generic;
     
     using Newtonsoft.Json;
-    public partial class ProductRecord : BaseEntityTable
+    public partial class AccountsPayable : BaseEntityTable
     {
-        public ProductRecord()
+        public AccountsPayable()
         {
-            this.GiftRecord = new HashSet<GiftRecord>();
-            this.RecordDetail = new HashSet<RecordDetail>();
-            this.AccountsPayable = new HashSet<AccountsPayable>();
+            this.AccountsPayableDetail = new HashSet<AccountsPayableDetail>();
         }
     
+        public int accounts_payable_id { get; set; }
         public int product_record_id { get; set; }
-        public string record_sn { get; set; }
-        public System.DateTime record_day { get; set; }
         public int customer_id { get; set; }
-        public int born_id { get; set; }
+        public double estimate_payable { get; set; }
+        public double trial_payable { get; set; }
         public bool is_close { get; set; }
-        public bool is_receipt { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -39,14 +36,8 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual Customer Customer { get; set; }
+        public virtual ProductRecord ProductRecord { get; set; }
     	[JsonIgnore]
-        public virtual CustomerBorn CustomerBorn { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<GiftRecord> GiftRecord { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<RecordDetail> RecordDetail { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<AccountsPayable> AccountsPayable { get; set; }
+        public virtual ICollection<AccountsPayableDetail> AccountsPayableDetail { get; set; }
     }
 }

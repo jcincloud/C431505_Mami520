@@ -898,17 +898,16 @@ var SubForm = React.createClass({
 		var obj = this.state.fieldSubData;
 		if(obj.isMealStart){
 			tosMessage(gb_title_from_invalid,'已開始正式用餐後,請勿變更預計用餐起日及迄日!!',3);
-			return;
-		}
-		console.log('hi');
-		var old_val=obj[name];//修改前
-		obj[name] = e.target.value;//先變更修改後的日期在計算
+		}else{
+			var old_val=obj[name];//修改前
+			obj[name] = e.target.value;//先變更修改後的日期在計算
 
-		var diff_mealday=DiffDate(obj.meal_start,obj.meal_end);
-		obj.diff_day=diff_mealday.diff_day;
-		if(diff_mealday.result==-1){
-			tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
-			obj[name]=old_val;
+			var diff_mealday=DiffDate(obj.meal_start,obj.meal_end);
+			obj.diff_day=diff_mealday.diff_day;
+			if(diff_mealday.result==-1){
+				tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
+				obj[name]=old_val;
+			}
 		}
 
 		this.setState({fieldSubData:obj});
