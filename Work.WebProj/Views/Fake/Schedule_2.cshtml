@@ -5,6 +5,16 @@
 }
 @section CSS {
 	<style>
+		.calendar td {
+            height: 93px;
+        }
+		.disabled {
+            background: #efefef;
+        }
+        .disabled .text-muted {
+            color:#B7B7B7;
+            text-shadow: 1px 1px 0px #fff;
+        }
 		.meal {
 			width: 6em;
 			margin:0 auto;
@@ -144,28 +154,8 @@
 						<th class="text-center">六</th>
 					</tr>
 					<tr>
-						<td>
+						<td class="disabled">@* 非當月的日期 class="disabled" *@
 							<small class="text-muted">1</small>
-							<div class="meal">
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" checked />
-										<span>早</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" checked />
-										<span>午</span>
-									</label>
-								</div>
-								<div class="checkbox">
-									<label>
-										<input type="checkbox" checked />
-										<span>晚</span>
-									</label>
-								</div>
-							</div>
 						</td>
 						<td>
 							<small class="text-muted">2</small>

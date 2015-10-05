@@ -7,6 +7,22 @@
 }
 @section IncludeCSS{
     <link rel="stylesheet" href="~/Content/css/bootstrap-datetimepicker-build.css" />
+    <style>
+        .calendar td {
+            height: 93px;
+        }
+        .disabled {
+            background: #efefef;
+        }
+        .disabled .text-muted {
+            color:#B7B7B7;
+            text-shadow: 1px 1px 0 #fff;
+        }
+        .meal {
+            width: 6em;
+            margin: 0 auto;
+        }
+    </style>
 }
 @section IncludeScript{
     @Html.Partial("Manage/JSGlobalVar")

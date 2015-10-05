@@ -203,7 +203,7 @@ var GirdForm = React.createClass({
                             <div className="table-filter">
                                 <div className="form-inline">
                                     <div className="form-group">
-                                        <label for="">用餐編號/媽媽姓名/身分證號/電話</label>
+                                        <label for="">用餐編號/媽媽姓名/身分證號/電話</label> { }
                                         <input type="text" className="form-control input-sm"
                                                value={searchData.word}
                                                onChange={this.changeGDValue.bind(this,'word')}
@@ -226,7 +226,7 @@ var GirdForm = React.createClass({
                                             </span> { }                                    
                                     </div>
                                     <div className="form-group">
-                                        <button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+                                        <button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
                                     </div>
                                 </div>
                             </div>
@@ -776,7 +776,7 @@ var Calendar = React.createClass({
                         </div>
                         <div id={this.state.Calendar_id} className="panel-collapse collapse in">
                             <div className="panel-body">
-                                <table className="table-condensed">
+                                <table className="table-condensed calendar">
                                     <tbody>
                                         <tr>
                                             <th className="text-center">日</th>
@@ -796,7 +796,7 @@ var Calendar = React.createClass({
                                                             var day_out_html=null;
                                                             if(dayObj.isNowMonth && dayObj.isHaveMeal){                                                                                                                                    day_out_html = 
                                                                 day_out_html=
-                                                                <td key={moment(dayObj.meal_day).format('MM-DD')}>
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')}> {/* 非當月的日期 class="disabled" */}
                                                                     <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
                                                                     <div className="meal">
                                                                         <MealCheckBox
