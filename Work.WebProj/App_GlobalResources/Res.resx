@@ -361,4 +361,10 @@
   <data name="Log_Check_RecordDetail_Tryout" xml:space="preserve">
     <value>此筆生產資料已有試吃產品存在!無法再新增試吃產品。</value>
   </data>
+  <data name="Log_Err_Insert_RepeatExist" xml:space="preserve">
+    <value>已有此筆客戶生產紀錄之每日電訪名單存在,請勿重複新增!</value>
+  </data>
+  <data name="Log_Err_PRecord_Delete_AccountsPayable" xml:space="preserve">
+    <value>此銷售已轉應收帳款,不可刪除!!</value>
+  </data>
 </root>

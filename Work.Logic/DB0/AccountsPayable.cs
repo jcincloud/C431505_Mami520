@@ -23,6 +23,7 @@ namespace ProcCore.Business.DB0
         public int accounts_payable_id { get; set; }
         public int product_record_id { get; set; }
         public int customer_id { get; set; }
+        public string record_sn { get; set; }
         public double estimate_payable { get; set; }
         public double trial_payable { get; set; }
         public bool is_close { get; set; }
@@ -35,6 +36,8 @@ namespace ProcCore.Business.DB0
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
     
+    	[JsonIgnore]
+        public virtual Customer Customer { get; set; }
     	[JsonIgnore]
         public virtual ProductRecord ProductRecord { get; set; }
     	[JsonIgnore]

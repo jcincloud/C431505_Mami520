@@ -164,6 +164,7 @@ namespace DotWeb.Api
                 md.i_Lang = "zh-TW";
 
                 db0.ProductRecord.Add(md);
+
                 await db0.SaveChangesAsync();
 
                 r.result = true;
@@ -192,12 +193,20 @@ namespace DotWeb.Api
                 foreach (var id in ids)
                 {
                     var check_gift = db0.GiftRecord.Any(x => x.product_record_id == id);
+                    var check_accounts_payable = db0.AccountsPayable.Any(x => x.product_record_id == id);
                     if (check_gift)
                     {
                         r.result = false;
                         r.message = Resources.Res.Log_Err_PRecord_Delete_GiftRecord;
                         return Ok(r);
                     }
+                    if (check_accounts_payable)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_PRecord_Delete_AccountsPayable;
+                        return Ok(r);
+                    }
+
                     item = new ProductRecord() { product_record_id = id };
                     db0.ProductRecord.Attach(item);
                     db0.ProductRecord.Remove(item);

@@ -114,6 +114,21 @@ namespace DotWeb.Api
                 db0 = getDB0();
 
                 item = await db0.RecordDetail.FindAsync(md.record_deatil_id);
+
+                #region 變更應收總額
+                if (item.ProductRecord.is_receipt)
+                {
+                    //轉應收後,產品明細檔有變動就要更新應收
+                    double getDetailTotal = db0.RecordDetail.Where(x => x.product_record_id == item.product_record_id).Sum(x => x.subtotal);
+                    var getAccountsPayable = db0.AccountsPayable.Where(x => x.product_record_id == item.product_record_id).FirstOrDefault();
+                    if (getAccountsPayable != null)
+                    {
+                        getAccountsPayable.estimate_payable = getDetailTotal + (md.subtotal - item.subtotal);
+                        getAccountsPayable.trial_payable = getDetailTotal + (md.subtotal - item.subtotal);
+                    }
+                }
+                #endregion
+
                 //一般產品
                 item.price = md.price;
                 item.qty = md.qty;
@@ -196,6 +211,26 @@ namespace DotWeb.Api
                     md.real_estimate_breakfast = md.estimate_breakfast;
                     md.real_estimate_lunch = md.estimate_lunch;
                     md.real_estimate_dinner = md.estimate_dinner;
+                }
+                #endregion
+
+
+                #region 變更應收總額
+                bool is_receipt = db0.ProductRecord.Where(x => x.product_record_id == md.product_record_id).FirstOrDefault().is_receipt;
+                if (is_receipt)
+                {
+                    //轉應收後,產品明細檔有變動就要更新應收
+                    double getDetailTotal = 0;
+                    bool check_detail = db0.RecordDetail.Any(x => x.product_record_id == md.product_record_id);
+                    if (check_detail)
+                        getDetailTotal = db0.RecordDetail.Where(x => x.product_record_id == md.product_record_id).Sum(x => x.subtotal);
+
+                    var getAccountsPayable = db0.AccountsPayable.Where(x => x.product_record_id == md.product_record_id).FirstOrDefault();
+                    if (getAccountsPayable != null)
+                    {
+                        getAccountsPayable.estimate_payable = getDetailTotal + md.subtotal;
+                        getAccountsPayable.trial_payable = getDetailTotal + md.subtotal;
+                    }
                 }
                 #endregion
 
@@ -320,6 +355,24 @@ namespace DotWeb.Api
             {
                 db0 = getDB0();
 
+                #region 變更應收總額
+                double getDetailTotal = 0;
+                var getItem = db0.RecordDetail.Where(x => x.record_deatil_id == ids.FirstOrDefault()).First();
+                if (getItem.ProductRecord.is_receipt)
+                {
+                    //轉應收後,產品明細檔有變動就要更新應收
+                    bool check_detail = db0.RecordDetail.Any(x => x.product_record_id == getItem.product_record_id);
+                    if (check_detail)
+                        getDetailTotal = db0.RecordDetail.Where(x => x.product_record_id == getItem.product_record_id).Sum(x => x.subtotal);
+
+                    var getAccountsPayable = db0.AccountsPayable.Where(x => x.product_record_id == getItem.product_record_id).FirstOrDefault();
+                    if (getAccountsPayable != null)
+                    {
+                        getAccountsPayable.estimate_payable = getDetailTotal - getItem.subtotal;
+                        getAccountsPayable.trial_payable = getDetailTotal - getItem.subtotal;
+                    }
+                }
+                #endregion
                 foreach (var id in ids)
                 {
                     #region use sql delete
@@ -334,10 +387,12 @@ namespace DotWeb.Api
                     Log.WriteToFile();
                     #endregion
 
-                    item = new RecordDetail() { record_deatil_id = id };
-                    db0.RecordDetail.Attach(item);
-                    db0.RecordDetail.Remove(item);
+                    //item = new RecordDetail() { record_deatil_id = id };
+                    //db0.RecordDetail.Attach(item);
+
+                    db0.RecordDetail.Remove(getItem);
                 }
+
 
                 await db0.SaveChangesAsync();
 

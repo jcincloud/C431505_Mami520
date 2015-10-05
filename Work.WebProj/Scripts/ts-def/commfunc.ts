@@ -306,6 +306,34 @@ function MealCount(Parm: ParmMealCount, B, L, D) {
     }
     return parseFloat(total.toFixed(2));
 }
+
+function formatMoney(s: string, d_point: number) {
+    /* 
+   * formatMoney(s,type) 
+   * 功能：金額按千位逗號分割 
+   * 參數：s，需要格式化的金額數值. 
+   * 參數：type,判斷格式化後的金額是否需要小數位. 
+   * 返回：返回格式化後的數值字元串. 
+   */
+    if (/[^0-9\.]/.test(s))
+        return "0";
+    if (s == null || s == "")
+        return "0";
+    s = s.toString().replace(/^(\d*)$/, "$1.");
+    s = (s + "00").replace(/(\d*\.\d\d)\d*/, "$1");
+    s = s.replace(".", ",");
+    var re = /(\d)(\d{3},)/;
+    while (re.test(s))
+        s = s.replace(re, "$1,$2");
+    s = s.replace(/,(\d\d)$/, ".$1");
+    if (d_point == 0) {// 不帶小數位(默認是有小數位) 
+        var a = s.split(".");
+        if (a[1] == "00") {
+            s = a[0];
+        }
+    }
+    return s;
+}
 interface ParmMealCount {
     breakfast: number;
     lunch: number;

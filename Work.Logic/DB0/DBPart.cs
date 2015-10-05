@@ -387,6 +387,18 @@ namespace ProcCore.Business.DB0
     {
         public string user_name { get; set; }
     }
+    public partial class m_AccountsPayable
+    {
+        public string customer_name { get; set; }
+        public string sno { get; set; }
+        public string tel_1 { get; set; }
+    }
+    public partial class AccountsPayable
+    {
+        public string customer_name { get; set; }
+        public string tel_1 { get; set; }
+        public string tel_2 { get; set; }
+    }
     /// <summary>
     /// 分類選單用
     /// </summary>
@@ -528,6 +540,14 @@ namespace ProcCore.Business.DB0
         public bool? is_complete { get; set; }
         public bool? is_send { get; set; }
         public int send_type { get; set; }
+    }
+    public class q_AccountsPayable : QueryBase
+    {
+        public string word { get; set; }
+    }
+    public class q_AccountsPayableDetail : QueryBase
+    {
+        public string word { get; set; }
     }
     #endregion
 

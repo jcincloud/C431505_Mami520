@@ -207,18 +207,72 @@ namespace DotWeb.Api
             try
             {
                 var getRecord = await db0.ProductRecord.FindAsync(parm.main_id);//產品銷售主檔
-                var getBorn = await db0.CustomerBorn.FindAsync(getRecord.born_id);//客戶生產紀錄
-                var getMealID = await db0.MealID.FindAsync(getBorn.meal_id);//用餐編號
+                                                                                //var getBorn = await db0.CustomerBorn.FindAsync(getRecord.born_id);//客戶生產紀錄
+                                                                                //var getMealID = await db0.MealID.FindAsync(getBorn.meal_id);//用餐編號
 
                 getRecord.is_close = true;
-                getBorn.is_close = true;
-                getMealID.i_Use = false;
+                //getBorn.is_close = true;
+                //getMealID.i_Use = false;
 
 
                 await db0.SaveChangesAsync();
 
                 r.result = true;
                 r.id = parm.main_id;
+                return Ok(r);
+
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> insertAccountsPayable([FromBody]ParminsertAccountsPayable parm)
+        {
+            ResultInfo r = new ResultInfo();
+            db0 = getDB0();
+            try
+            {
+                var getRecord = await db0.ProductRecord.FindAsync(parm.product_record_id);//產品銷售主檔
+                double getDetailTotal = 0;
+                bool check_detail = db0.RecordDetail.Any(x => x.product_record_id == parm.product_record_id);
+                if (check_detail)
+                    getDetailTotal = db0.RecordDetail.Where(x => x.product_record_id == parm.product_record_id).Sum(x => x.subtotal);
+
+                #region 產生應收帳款主檔
+                var item = db0.AccountsPayable.Where(x => x.product_record_id == parm.product_record_id).FirstOrDefault();
+                if (item == null)
+                {
+                    item = new AccountsPayable()
+                    {
+                        accounts_payable_id = GetNewId(ProcCore.Business.CodeTable.AccountsPayable),
+                        product_record_id = parm.product_record_id,
+                        customer_id = parm.customer_id,
+                        record_sn = parm.record_sn,
+                        estimate_payable = getDetailTotal,
+                        trial_payable = getDetailTotal,
+                        i_InsertUserID = this.UserId,
+                        i_InsertDateTime = DateTime.Now,
+                        i_InsertDeptID = this.departmentId,
+                        i_Lang = "zh-TW"
+                    };
+                    db0.AccountsPayable.Add(item);
+                }
+                #endregion
+
+                getRecord.is_receipt = true;
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = parm.product_record_id;
                 return Ok(r);
 
             }
@@ -695,10 +749,32 @@ namespace DotWeb.Api
                     }
                 }
                 #endregion
+
+                double old_subtotal = RecordDetailItem.subtotal;
+
                 #region 變更產品數量
-                RecordDetailItem.qty = (int)RecordDetailItem.real_breakfast * 0.3 + (int)RecordDetailItem.real_lunch * 0.35 + (int)RecordDetailItem.real_dinner * 0.35;
+                RecordDetailItem.qty = Math.Round((int)RecordDetailItem.real_breakfast * 0.3 + (int)RecordDetailItem.real_lunch * 0.35 + (int)RecordDetailItem.real_dinner * 0.35, 2);
                 RecordDetailItem.subtotal = RecordDetailItem.qty * RecordDetailItem.price;
                 #endregion
+
+                #region 變更應收帳款
+                if (RecordDetailItem.ProductRecord.is_receipt)
+                {
+                    //轉應收後,產品明細檔有變動就要更新應收
+                    double getDetailTotal = 0;
+                    bool check_detail = db0.RecordDetail.Any(x => x.product_record_id == RecordDetailItem.product_record_id);
+                    if (check_detail)
+                        getDetailTotal = db0.RecordDetail.Where(x => x.product_record_id == RecordDetailItem.product_record_id).Sum(x => x.subtotal);
+
+                    var getAccountsPayable = db0.AccountsPayable.Where(x => x.product_record_id == RecordDetailItem.product_record_id).FirstOrDefault();
+                    if (getAccountsPayable != null)
+                    {
+                        getAccountsPayable.estimate_payable = getDetailTotal + (RecordDetailItem.subtotal - old_subtotal);
+                        getAccountsPayable.trial_payable = getDetailTotal + (RecordDetailItem.subtotal - old_subtotal);
+                    }
+                }
+                #endregion
+
 
                 await db0.SaveChangesAsync();
 
@@ -1599,6 +1675,40 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        #region 應收帳款
+        public IHttpActionResult GetAccountsPayableDetail(int main_id)
+        {
+            #region 連接BusinessLogicLibary資料庫並取得資料
+
+            using (db0 = getDB0())
+            {
+                var qr = db0.AccountsPayableDetail
+                             .OrderBy(x => x.receipt_day)
+                             .Where(x => x.accounts_payable_id == main_id)
+                             .Select(x => new m_AccountsPayableDetail()
+                             {
+                                 accounts_payable_detail_id = x.accounts_payable_detail_id,
+                                 accounts_payable_id = x.accounts_payable_id,
+                                 receipt_day = x.receipt_day,
+                                 meal_type = x.meal_type,
+                                 receipt_person = x.receipt_person,
+                                 receipt_item = x.receipt_item,
+                                 receipt_sn = x.receipt_sn,
+                                 actual_receipt = x.actual_receipt
+                             }).AsQueryable();
+
+                double total = 0;
+                if (qr.Count() > 0)
+                {
+                    total = qr.Sum(x => x.actual_receipt);
+                }
+
+
+                return Ok(new { items = qr.ToList(), total = total });
+            }
+            #endregion
+        }
+        #endregion
     }
     #region Parm
     public class ParmChangeMealID
@@ -1699,6 +1809,12 @@ namespace DotWeb.Api
         public int customer_id { get; set; }
         public int born_id { get; set; }
         public DateTime meal_day { get; set; }
+    }
+    public class ParminsertAccountsPayable
+    {
+        public int product_record_id { get; set; }
+        public int customer_id { get; set; }
+        public string record_sn { get; set; }
     }
     #endregion
     public class MealTotalCount

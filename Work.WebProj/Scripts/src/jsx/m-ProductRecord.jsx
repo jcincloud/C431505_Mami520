@@ -283,6 +283,11 @@ var GirdForm = React.createClass({
 		if(!confirm('確定是否結案?')){
 			return;
 		}
+		if(!this.state.fieldData.is_receipt){
+			tosMessage(null, '未轉應收帳款前不可結案!!', 3);
+			return;
+		}
+
 		jqPost(gb_approot + 'api/GetAction/closeRecord',{main_id:this.state.fieldData.product_record_id})
 		.done(function(data, textStatus, jqXHRdata) {
 			var fieldData = this.state.fieldData;
@@ -299,6 +304,31 @@ var GirdForm = React.createClass({
 		this.setState({searchBornData:obj});
 		this.queryAllCustomerBorn();
 	},
+	insertAccountsPayable:function(){
+		//轉 應收帳款
+		if(!confirm('確定是否轉應收帳款?')){
+			return;
+		}
+		var parms={
+			product_record_id:this.state.fieldData.product_record_id,
+			customer_id:this.state.fieldData.customer_id,
+			record_sn:this.state.fieldData.record_sn
+		};
+
+		jqPost(gb_approot + 'api/GetAction/insertAccountsPayable',parms)
+		.done(function(data, textStatus, jqXHRdata) {
+			var fieldData = this.state.fieldData;
+			fieldData.is_receipt=data.result;
+			this.setState({fieldData:fieldData});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});	
+	},
+	setAccountsPayable:function(){
+        //檢視 應收帳款
+        document.location.href = gb_approot + 'Active/AccountsPayable?product_record_id=' + this.state.fieldData.product_record_id;
+    },
 	render: function() {
 		var outHtml = null;
 
@@ -491,9 +521,10 @@ var GirdForm = React.createClass({
 					</MdoalCustomerBornSelect>;
 			}
 
-			var save_out_html=null;
-			var close_out_html=null;
-			var detail_out_html=null;
+			var save_out_html=null;//儲存按鈕
+			var close_out_html=null;//結案按鈕
+			var receipt_out_html=null;//轉應收按鈕
+			var detail_out_html=null;//明細檔
 			if(this.state.edit_type==1){
 				save_out_html=<button type="submit" className="btn-primary"><i className="fa-check"></i> 儲存</button>;
 			}else{
@@ -503,9 +534,15 @@ var GirdForm = React.createClass({
 				main_id={fieldData.product_record_id}
 				customer_id={fieldData.customer_id}
 				born_id={fieldData.born_id}
-				meal_id={fieldData.meal_id} />;
+				meal_id={fieldData.meal_id}
+				is_close={fieldData.is_close} />;
 				if(!fieldData.is_close){
 					close_out_html=<button className="btn-success" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
+				}
+				if(fieldData.is_receipt){//轉應收後出現可檢視應收帳款按鈕
+					receipt_out_html=<button className="btn-info" type="button" onClick={this.setAccountsPayable.bind(this)}><i className="fa-search"></i> 檢視 應收帳款</button>;
+				}else{
+					receipt_out_html=<button className="btn-success" type="button" onClick={this.insertAccountsPayable.bind(this)}><i className="fa-check"></i>轉 應收帳款</button>;
 				}
 			}
 
@@ -693,6 +730,11 @@ var GirdForm = React.createClass({
 					是否結案：{fieldData.is_close?<strong className="text-success">已結案</strong>:<strong className="text-danger">未結案</strong>} { }
 					{/*<button className="btn-danger"><i className="fa-times"></i> 設為 未結案</button>*/}
 					{close_out_html}
+					<small className="help-inline text-danger">結案後，無法新增、修改及刪除產品明細</small>
+				</h4>
+				<h4 className="title">
+					是否轉應收：{fieldData.is_receipt?<strong className="text-success">已轉應收</strong>:<strong className="text-danger">未轉應收</strong>} { }
+					{receipt_out_html}
 				</h4>
 				{/* ---是否結案按鈕end--- */}
 				
@@ -1303,6 +1345,7 @@ var SubForm = React.createClass({
 								</form>
 								<div className="panel-footer text-right">
 									<button className="btn-primary"
+									disabled={this.props.is_close}
 									type="submit" form="form2">
 										<i className="fa-check"></i> 存檔確認
 									</button>
@@ -1338,7 +1381,7 @@ var SubForm = React.createClass({
 										<tr key={itemData.record_deatil_id}>
 											<td className="text-center">
 												<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.record_deatil_id)}><i className="fa-pencil"></i></button>
-												<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.record_deatil_id)}><i className="fa-trash"></i></button>
+												<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.record_deatil_id)} disabled={this.props.is_close}><i className="fa-trash"></i></button>
 											</td>
 											<td><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
 											<td>{itemData.product_name}</td>

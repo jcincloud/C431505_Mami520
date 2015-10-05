@@ -476,13 +476,6 @@
                 ]
             },
         ]
-    export var VisitDetailState = [
-        { id: 0, label: '無狀態', className: 'label label-default', code: 'none' },
-        { id: 1, label: '未拜訪', className: 'label label-warning', code: 'wait' },
-        { id: 2, label: '進行中', className: 'label label-primary', code: 'progress' },
-        { id: 3, label: '完成', className: 'label label-success', code: 'finish' },
-        { id: 4, label: '暫停', className: 'label label-danger', code: 'pause' }
-    ];
     export var CustomerType = [
         { id: 1, label: '自有客戶', className: 'label label-primary', code: 'store' },
         { id: 2, label: '醫院', className: 'label label-success', code: 'straght' },
@@ -510,8 +503,14 @@
     ];
     export var MealType = [
         { id: 1, label: '早餐', className: 'label label-success', code: 'store' },
-        { id: 2, label: '午餐', className: 'label label-primary', code: 'straght' },
-        { id: 3, label: '晚餐', className: 'label label-default', code: 'straght' }
+        { id: 2, label: '午餐', className: 'label label-info', code: 'straght' },
+        { id: 3, label: '晚餐', className: 'label label-primary', code: 'straght' }
+    ];
+    export var MealTypeByAccountsPayable = [
+        { id: 0, label: '無', className: 'label label-default', code: 'store' },
+        { id: 1, label: '早餐', className: 'label label-success', code: 'store' },
+        { id: 2, label: '午餐', className: 'label label-info', code: 'straght' },
+        { id: 3, label: '晚餐', className: 'label label-primary', code: 'straght' }
     ];
     export var ChangeMealType = [
         { id: -1, label: '停餐', className: 'label label-danger', code: 'store' },
@@ -543,6 +542,17 @@
         { id: 3, label: '可麻油酒', className: 'label label-warning', code: 'straght' },
         { id: 4, label: '收尾款', className: 'label label-primary', code: 'straght' },
     ];
+    export var ReceiptPersonType = [
+        { id: 1, label: '外送人員', className: 'label label-info', code: 'store' },
+        { id: 2, label: '櫃台人員', className: 'label label-primary', code: 'store' }
+    ];
+    export var ReceiptItemType = [
+        { id: 1, label: '訂金', className: 'label label-warning', code: 'store' },
+        { id: 2, label: '頭款', className: 'label label-success', code: 'store' },
+        { id: 3, label: '尾款', className: 'label label-primary', code: 'store' },
+        { id: 4, label: '一次付清', className: 'label label-info', code: 'store' }
+    ];
+
     export var SendTimeData = [
         { id: '08:00:00', label: '8:00' },
         { id: '09:00:00', label: '9:00' },

@@ -610,6 +610,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 已有此筆客戶生產紀錄之每日電訪名單存在,請勿重複新增! 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_Insert_RepeatExist {
+            get {
+                return ResourceManager.GetString("Log_Err_Insert_RepeatExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 該檔案類型禁止上傳。 的當地語系化字串。
         /// </summary>
         internal static string Log_Err_LimitedFileType {
@@ -678,6 +687,15 @@ namespace Resources {
         internal static string Log_Err_Password {
             get {
                 return ResourceManager.GetString("Log_Err_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 此銷售已轉應收帳款,不可刪除!! 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_PRecord_Delete_AccountsPayable {
+            get {
+                return ResourceManager.GetString("Log_Err_PRecord_Delete_AccountsPayable", resourceCulture);
             }
         }
         

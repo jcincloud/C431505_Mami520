@@ -12,8 +12,21 @@ namespace DotWeb.Areas.Active.Controllers
     public class AccountsPayableController : AdminController
     {
         #region Action and function section
-        public ActionResult Main()
+        public ActionResult Main(int? product_record_id)
         {
+            int id = 0;
+            db0 = getDB0();
+            if (product_record_id != null)
+            {
+                bool check = db0.AccountsPayable.Any(x => x.product_record_id == product_record_id);
+                if (check)
+                {//檢查是否有資料
+                    int main_id = db0.AccountsPayable.Where(x => x.product_record_id == product_record_id).First().accounts_payable_id;
+                    id = main_id;
+                }
+            }
+
+            ViewBag.main_id = id;
             ActionRun();
             return View();
         }
