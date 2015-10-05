@@ -837,7 +837,8 @@ var Calendar = React.createClass({
                                                                 <td key={moment(dayObj.meal_day).format('MM-DD')} onClick={this.addDailyMeal.bind(this,dayObj.meal_day)}>
                                                                     <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
                                                                 </td>;
-                                                            }else{//非當月日期                                                                                                                         day_out_html=
+                                                            }else{//非當月日期
+                                                                day_out_html=                                                                                                               day_out_html=
                                                                 <td key={moment(dayObj.meal_day).format('MM-DD')} className="disabled">
                                                                     <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
                                                                 </td>;
