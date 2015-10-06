@@ -343,8 +343,7 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<h3 className="title">{this.props.Caption}</h3>
-				<h4 className="title">{this.props.Caption} 列表</h4>
+				<h3 className="title">{this.props.Caption} 列表</h3>
 				<form onSubmit={this.handleSearch}>
 					<div className="table-responsive">
 						<div className="table-header">
@@ -553,8 +552,7 @@ var GirdForm = React.createClass({
 			outHtml=(
 			<div>
 				{born_select_out_html}
-				<h3 className="title">{this.props.Caption}</h3>
-				<h4 className="title">{this.props.Caption} 主檔</h4>
+				<h3 className="title">{this.props.Caption} 主檔</h3>
 				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 					<div className="col-xs-9">
 						<div className="form-group">
@@ -1343,7 +1341,7 @@ var SubForm = React.createClass({
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
 												required={fieldSubData.product_type==2 || fieldSubData.product_type==1}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2} />
+												disabled={(fieldSubData.product_type==1 || fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>
@@ -1356,7 +1354,7 @@ var SubForm = React.createClass({
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
 												required={fieldSubData.product_type==2}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2} />
+												disabled={(fieldSubData.product_type==1 || fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>

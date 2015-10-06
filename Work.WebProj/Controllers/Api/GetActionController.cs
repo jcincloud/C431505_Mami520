@@ -530,8 +530,8 @@ namespace DotWeb.Api
                 //取得該月天數
                 var getDateSection = (getCalendarLastDay - getCalendarFirstDay).TotalDays + 1;
 
-                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
-                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day < Yesterday &&
+                //var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day < DateTime.Now &&
                                              x.record_deatil_id == parm.record_deatil_id);
 
                 Mobj = new MonthObject()

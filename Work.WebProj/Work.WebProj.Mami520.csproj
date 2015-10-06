@@ -740,6 +740,7 @@
     <Content Include="Scripts\build\func\m-MealSchedule.js" />
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductRecord.js" />
+    <Content Include="Scripts\build\func\m-R01_DailyMeal.js" />
     <Content Include="Scripts\build\func\m-Roles.js" />
     <Content Include="Scripts\build\func\m-ScheduleDetail.js" />
     <Content Include="Scripts\build\func\m-SendMsg.js" />

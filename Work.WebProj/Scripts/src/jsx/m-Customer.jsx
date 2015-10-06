@@ -279,8 +279,7 @@ var GirdForm = React.createClass({
             outHtml =
 			(
 			<div>
-				<h3 className="title">{this.props.Caption}</h3>
-				<h4 className="title">{this.props.Caption} 列表</h4>
+				<h3 className="title">{this.props.Caption} 列表</h3>
 				<form onSubmit={this.handleSearch}>
 					<div className="table-responsive">
 						<div className="table-header">
@@ -387,8 +386,7 @@ var GirdForm = React.createClass({
 
             outHtml = (
 			<div>
-				<h3 className="title">{this.props.Caption}</h3>
-				<h4 className="title">{this.props.Caption} 編輯</h4>
+				<h3 className="title">{this.props.Caption} 編輯</h3>
 				<form className="form-horizontal" onSubmit={this.handleSubmit}>
 				<div className="col-xs-9">
 					<div className="form-group">

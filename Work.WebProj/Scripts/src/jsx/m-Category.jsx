@@ -642,8 +642,8 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-                <h3 className="title">{this.props.Caption}</h3>
-                <h4 className="title">{this.props.Caption} 列表</h4>
+                <h3 className="title">{this.props.Caption} 列表</h3>
+
 				<div className="alert alert-warning clear" role="alert">
 					<p>點選 <i className="fa-bars"></i> 並拖曳，可修改排列順序。</p>
 				</div>
