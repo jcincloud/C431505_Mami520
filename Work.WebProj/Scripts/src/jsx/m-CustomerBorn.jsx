@@ -861,7 +861,7 @@ var GirdSubForm = React.createClass({
 			            					</span>
 			            				</div>
 									</div>
-									<small className="help-inline col-xs-7"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
+									<small className="help-inline col-xs-7">請按 <i className="fa-plus"></i> 選取</small>
 								</div>
 								<div className="form-group">
 									<label className="col-xs-2 control-label">媽媽姓名</label>

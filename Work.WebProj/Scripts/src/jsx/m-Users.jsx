@@ -42,7 +42,7 @@ var GirdForm = React.createClass({
 
 		var role_description = [];
 		role_description['Managers'] = '管理者:所有功能';
-		role_description['Sales'] = '業務:客戶進貨登打、報表R01、報表R02';
+		role_description['Sales'] = '櫃台:基本資料維護';
 		return{	
 			fdName:'fieldData',
 			gdName:'searchData',
@@ -219,6 +219,13 @@ var GirdForm = React.createClass({
 		var roleObj = obj['role_array'];
 		var item = roleObj[index];
 		item.role_use = !item.role_use;
+		if(item.role_use){//只能有一個role
+			roleObj.forEach(function(object, i){
+	        	if(item!=object){
+	  				object.role_use=false;
+	        	}
+    		})
+		}
 		this.setState({fieldData:obj});
 	},
 	render: function() {
@@ -389,10 +396,6 @@ var GirdForm = React.createClass({
 								}.bind(this))
 							}
 							</div>
-						</div>
-
-						<div className="form-group">
-							<small className="col-xs-10 col-xs-offset-2 help-inline">兩種角色在平板端的功能皆相同，只有PC端才有差別</small>
 						</div>
 
 						<div className="form-action">

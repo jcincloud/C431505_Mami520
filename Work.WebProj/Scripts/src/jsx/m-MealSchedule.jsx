@@ -731,6 +731,7 @@ var Calendar = React.createClass({
 
         jqGet(gb_approot + 'api/GetAction/GetMealCalendar',searchData)
         .done(function(data, textStatus, jqXHRdata) {
+            console.log(data);
             this.setState({MonthObj:data,searchData:searchData});
         }.bind(this))
         .fail(function( jqXHR, textStatus, errorThrown ) {
@@ -881,6 +882,7 @@ var MealCheckBox = React.createClass({
     getDefaultProps:function(){
         return{ 
             today:getNowDate(),
+            Yesterday:addDate(getNowDate(),-1),
             meal_day:null,
             meal_state:0,
             meal_type:0,//判斷 早餐:1 / 午餐:2 / 晚餐:3
@@ -936,7 +938,7 @@ var MealCheckBox = React.createClass({
         var MealData=this.state.MealData;
         var meal_day=new Date(moment(this.props.meal_day).format('YYYY/MM/DD'));
 
-        if(this.props.today>=meal_day && this.props.meal_state>0)
+        if(this.props.Yesterday>=meal_day && this.props.meal_state>0)
         {
             name_out_html=(<span>{this.props.meal_name +'(已吃)'}</span>);
         }
@@ -952,8 +954,8 @@ var MealCheckBox = React.createClass({
         {
             name_out_html=(<span>{this.props.meal_name}</span>);
         }
-        if(this.props.today>=meal_day)
-        {//用餐日期 <= 今天 不可編輯
+        if(this.props.Yesterday>=meal_day)
+        {//用餐日期 < 今天 不可編輯
             this.state.isMealFinished=true;
         }
             

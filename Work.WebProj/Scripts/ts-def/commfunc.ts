@@ -306,7 +306,17 @@ function MealCount(Parm: ParmMealCount, B, L, D) {
     }
     return parseFloat(total.toFixed(2));
 }
-
+function addDate(date: Date, days: number): Date {
+    /*
+      Autohr:Ajoe
+      Date:2015/10/6
+      Description:日期加減天數
+      參數:date,要加減的日期.
+      參數:days,要加減的天數.
+    */
+    var r: Date = new Date(date.setDate(date.getDate() + days))
+    return r;
+}
 function formatMoney(s: string, d_point: number) {
     /* 
    * formatMoney(s,type) 

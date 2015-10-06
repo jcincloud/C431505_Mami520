@@ -250,6 +250,10 @@ function MealCount(Parm, B, L, D) {
     }
     return parseFloat(total.toFixed(2));
 }
+function addDate(date, days) {
+    var r = new Date(date.setDate(date.getDate() + days));
+    return r;
+}
 function formatMoney(s, d_point) {
     if (/[^0-9\.]/.test(s))
         return "0";

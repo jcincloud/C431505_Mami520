@@ -283,7 +283,7 @@ var GirdForm = React.createClass({
 			//用餐編號改變下方帶入的資料要一起變更
 			fieldData.name=data.mom_name;
 			fieldData.tel_1=data.tel_1;
-			fieldData.tel_1=data.tel_1;
+			fieldData.tel_2=data.tel_2;
 			fieldData.tw_zip_1=data.tw_zip_1;
 			fieldData.tw_city_1=data.tw_city_1;
 			fieldData.tw_country_1=data.tw_country_1;

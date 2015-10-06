@@ -871,7 +871,7 @@ var SubForm = React.createClass({
 										</div>
 										<div className="form-group">
 											<label className="col-xs-2 control-label">電訪內容(備註)</label>
-											<div className="col-xs-4">
+											<div className="col-xs-8">
 												<textarea col="30" rows="5" className="form-control"
 												value={fieldSubData.memo}
 												onChange={this.changeFDValue.bind(this,'memo')}

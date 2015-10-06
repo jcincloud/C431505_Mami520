@@ -290,9 +290,13 @@ var GirdForm = React.createClass({
 
 		jqPost(gb_approot + 'api/GetAction/closeRecord',{main_id:this.state.fieldData.product_record_id})
 		.done(function(data, textStatus, jqXHRdata) {
-			var fieldData = this.state.fieldData;
-			fieldData.is_close=data.result;
-			this.setState({fieldData:fieldData});
+			if(data.result){
+				var fieldData = this.state.fieldData;
+				fieldData.is_close=data.result;
+				this.setState({fieldData:fieldData});
+			}else{
+				tosMessage(null,data.message,3);
+			}
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
@@ -764,7 +768,9 @@ var SubForm = React.createClass({
 			checkAll:false,
 			isShowProductSelect:false,//控制選取產品視窗顯示
 			product_list:[],
-			parm:{breakfast:0,lunch:0,dinner:0}//計算用		
+			parm:{breakfast:0,lunch:0,dinner:0},//計算用
+			isShowMealidSelect:false,//控制選取用餐編號顯示
+			mealid_list:[]
 
 		};  
 	},
@@ -996,14 +1002,73 @@ var SubForm = React.createClass({
 				fSD.subtotal=fSD.qty*obj.price;
 			}
 		});
-		if(fSD.product_type==2 || fSD.product_type==1){
+		if(fSD.product_type==2 || fSD.product_type==1){//如果產品為試吃就儲存用餐編號
 			fSD.meal_id=this.props.meal_id;
 		}
 		this.setState({isShowProductSelect:false,fieldSubData:fSD});
 	},
+	setReleaseMealID:function(meal_id,record_deatil_id){
+		if(!confirm('確定釋放用餐編號?')){
+			return;
+		}
+		if(meal_id==null || meal_id==''){
+			tosMessage('操作錯誤提示','無用餐編號無法釋放!!',3);
+			return;
+		}
+		if(this.state.fieldSubData.is_release==true){
+			tosMessage('操作錯誤提示','用餐編號已釋放!!',3);
+			return;
+		}
+
+		jqPost(gb_approot + 'api/GetAction/releaseMealID',{record_deatil_id:record_deatil_id,meal_id:meal_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'完成用餐編號釋放',1);
+				var fieldSubData = this.state.fieldSubData;
+				fieldSubData.is_release=data.result;
+				this.setState({fieldSubData:fieldSubData});
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
 	setMealSchedule:function(record_deatil_id){
 		//設定用餐排程
 		document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
+	},
+	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
+		jqGet(gb_approot + 'api/GetAction/GetAllMealID',{})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({mealid_list:data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+	showSelectMealid:function(){
+		this.queryAllMealID();
+		this.setState({isShowMealidSelect:true});
+	},
+	closeSelectMealid:function(){
+		this.setState({isShowMealidSelect:false});
+	},
+	selectMealid:function(meal_id){
+		var fieldSubData = this.state.fieldSubData;//選取後變更mealid
+		jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldSubData.meal_id,new_id:meal_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			if(!data.result){
+				alert(data.message);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			//showAjaxError(errorThrown);
+		});
+
+		fieldSubData.meal_id=meal_id;
+		this.setState({isShowMealidSelect:false,fieldSubData:fieldSubData});
 	},
 	render: function() {
 		var outHtml = null;
@@ -1083,13 +1148,79 @@ var SubForm = React.createClass({
 				</ModalProductSelect>;
 		}
 
+		var MdoalMealidSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
+		var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
+		if(this.state.isShowMealidSelect){
+			mealid_select_out_html = 					
+				<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
+						<div className="modal-body">
+							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
+							<table>
+								<tbody>
+									<tr>
+										<th className="col-xs-1 text-center">選擇</th>
+										<th className="col-xs-4">用餐編號</th>
+									</tr>
+									{
+										this.state.mealid_list.map(function(itemData,i) {
+										
+											var mealid_out_html = 
+												<tr key={itemData.meal_id}>
+													<td className="text-center"><input type="checkbox" onClick={this.selectMealid.bind(this,itemData.meal_id)} /></td>
+													<td>{itemData.meal_id}</td>
+												</tr>;
+											return mealid_out_html;
+										}.bind(this))
+									}
+								</tbody>
+							</table>
+						</div>
+						<div className="modal-footer">
+							<button onClick={this.closeSelectMealid}><i className="fa-times"></i> { } 關閉</button>
+						</div>
+				</MdoalMealidSelect>;
+		}
+		//試吃及月子餐用的用餐編號
+		var meal_id_html=null;
+		if(fieldSubData.product_type==2 || fieldSubData.product_type==1){
+			meal_id_html=(
+				<div className="form-group">
+					{mealid_select_out_html}
+					<label className="col-xs-2 control-label">用餐編號</label>
+					<div className="col-xs-2">
+						<div className="input-group">
+				            <input type="text" 
+							className="form-control"	
+							value={fieldSubData.meal_id}
+							onChange={this.changeFDValue.bind(this,'meal_id')}
+							required
+							disabled={true} />
+			            	<span className="input-group-btn">
+			         			<a className="btn"
+								onClick={this.showSelectMealid}
+								disabled={this.state.edit_sub_type==2}>
+									<i className="fa-plus"></i>
+								</a>
+			            	</span>
+			        	</div>
+					</div>
+					<small className="help-inline col-xs-2">請按 <i className="fa-plus"></i> 選取</small>
+					<button className="btn-success" type="button" 
+					onClick={this.setReleaseMealID.bind(this,fieldSubData.meal_id,fieldSubData.record_deatil_id)}
+					disabled={this.state.edit_sub_type==1}>
+						<i className="fa-check"></i>釋放用餐編號
+					</button>
+				</div>
+				);
+		}
+
 
 
 			outHtml =
 			(
 				<div>
 					{product_select_out_html}
-			{/*---產品明細編輯start---*/}
+				{/*---產品明細編輯start---*/}
 					<h4 className="title">新增產品明細</h4>
 					<div className="row">
 						<div className="col-xs-9">
@@ -1202,6 +1333,7 @@ var SubForm = React.createClass({
 									</h5>
 								</div>
 								<div className="panel-body">
+									{meal_id_html}
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計送餐起日</label>
 										<div className="col-xs-6">

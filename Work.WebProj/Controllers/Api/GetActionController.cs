@@ -207,13 +207,17 @@ namespace DotWeb.Api
             try
             {
                 var getRecord = await db0.ProductRecord.FindAsync(parm.main_id);//產品銷售主檔
-                                                                                //var getBorn = await db0.CustomerBorn.FindAsync(getRecord.born_id);//客戶生產紀錄
-                                                                                //var getMealID = await db0.MealID.FindAsync(getBorn.meal_id);//用餐編號
+                //檢查是否有未釋放的用餐編號
+                var check_release = db0.RecordDetail.Any(x => x.product_record_id == getRecord.product_record_id &&
+                                                            x.is_release == false);
 
+                if (check_release)
+                {//如果有的話,提醒先釋放用餐編號在結案
+                    r.result = false;
+                    r.message = Resources.Res.Log_Err_PRecord_Close_Mealid;
+                    return Ok(r);
+                }
                 getRecord.is_close = true;
-                //getBorn.is_close = true;
-                //getMealID.i_Use = false;
-
 
                 await db0.SaveChangesAsync();
 
@@ -300,19 +304,8 @@ namespace DotWeb.Api
             try
             {
                 var getRecord = await db0.ProductRecord.FindAsync(parm.main_id);//產品銷售主檔
-                var getBorn = await db0.CustomerBorn.FindAsync(getRecord.born_id);//客戶生產紀錄
-                var getMealID = await db0.MealID.FindAsync(getBorn.meal_id);//用餐編號
 
                 getRecord.is_close = false;
-                getBorn.is_close = false;
-                if (getMealID.i_Use)
-                {
-                    r.result = false;
-                    r.message = "此用餐編號已被其他客戶使用!";
-                    return Ok(r);
-                }
-                getMealID.i_Use = true;
-
 
                 await db0.SaveChangesAsync();
 
@@ -391,6 +384,50 @@ namespace DotWeb.Api
                              }).AsQueryable();
 
                 return Ok(qr.ToList());
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> releaseMealID([FromBody]ParmReleaseMealID parm)
+        {
+            ResultInfo r = new ResultInfo();
+            db0 = getDB0();
+            try
+            {
+                var getRecordDetail = await db0.RecordDetail.FindAsync(parm.record_deatil_id);//產品銷售明細檔
+                var getMealID = await db0.MealID.FindAsync(parm.meal_id);//用餐編號
+                var getBorn = await db0.CustomerBorn.FindAsync(getRecordDetail.born_id);//生產紀錄
+                DateTime end = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id)
+                                .OrderByDescending(x => x.meal_day).FirstOrDefault().meal_day;
+                end = end.AddDays(1);
+                if (DateTime.Now < end)
+                {//未用餐完畢,不可釋放用餐編號
+                    r.result = false;
+                    r.message = Resources.Res.Log_Check_RecordDetail_MealEnd;
+                    return Ok(r);
+                }
+                if (getRecordDetail.is_release == false)
+                {
+                    getBorn.meal_id = null;
+                    getMealID.i_Use = false;
+                    getRecordDetail.is_release = true;
+                }
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = parm.record_deatil_id;
+                return Ok(r);
+
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
             }
             finally
             {
@@ -493,7 +530,8 @@ namespace DotWeb.Api
                 //取得該月天數
                 var getDateSection = (getCalendarLastDay - getCalendarFirstDay).TotalDays + 1;
 
-                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= DateTime.Now &&
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day < Yesterday &&
                                              x.record_deatil_id == parm.record_deatil_id);
 
                 Mobj = new MonthObject()
@@ -1815,6 +1853,11 @@ namespace DotWeb.Api
         public int product_record_id { get; set; }
         public int customer_id { get; set; }
         public string record_sn { get; set; }
+    }
+    public class ParmReleaseMealID
+    {
+        public int record_deatil_id { get; set; }
+        public string meal_id { get; set; }
     }
     #endregion
     public class MealTotalCount

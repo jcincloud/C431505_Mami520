@@ -213,6 +213,19 @@ namespace DotWeb.Api
                     md.real_estimate_dinner = md.estimate_dinner;
                 }
                 #endregion
+                if (md.product_type == (int)ProdyctType.PostnatalMeal || md.product_type == (int)ProdyctType.Tryout)
+                {
+                    if (md.meal_id == null)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_RecordDetail_Mealid;
+                        return Ok(r);
+                    }
+                    var getBorn = await db0.CustomerBorn.FindAsync(md.born_id);//更新生產紀錄用餐編號
+                    getBorn.meal_id = md.meal_id;
+                    //檢查用餐編號是否釋放過
+                    md.is_release = false;
+                }
 
 
                 #region 變更應收總額

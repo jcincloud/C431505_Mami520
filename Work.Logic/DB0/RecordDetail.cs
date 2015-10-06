@@ -48,6 +48,7 @@ namespace ProcCore.Business.DB0
         public Nullable<int> real_lunch { get; set; }
         public Nullable<int> real_dinner { get; set; }
         public string meal_memo { get; set; }
+        public Nullable<bool> is_release { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -60,10 +61,10 @@ namespace ProcCore.Business.DB0
     	[JsonIgnore]
         public virtual CustomerBorn CustomerBorn { get; set; }
     	[JsonIgnore]
-        public virtual ProductRecord ProductRecord { get; set; }
-    	[JsonIgnore]
         public virtual ICollection<DailyMeal> DailyMeal { get; set; }
     	[JsonIgnore]
         public virtual Product Product { get; set; }
+    	[JsonIgnore]
+        public virtual ProductRecord ProductRecord { get; set; }
     }
 }

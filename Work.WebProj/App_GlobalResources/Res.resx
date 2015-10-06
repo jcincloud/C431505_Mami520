@@ -367,4 +367,13 @@
   <data name="Log_Err_PRecord_Delete_AccountsPayable" xml:space="preserve">
     <value>此銷售已轉應收帳款,不可刪除!!</value>
   </data>
+  <data name="Log_Check_RecordDetail_MealEnd" xml:space="preserve">
+    <value>未用餐完畢,無法釋放用餐編號!!</value>
+  </data>
+  <data name="Log_Check_RecordDetail_Mealid" xml:space="preserve">
+    <value>未帶入用餐編號!!請選取用餐編號後再儲存。</value>
+  </data>
+  <data name="Log_Err_PRecord_Close_Mealid" xml:space="preserve">
+    <value>有未釋放的用餐編號,無法結案!請將用餐編號釋放後再結案。</value>
+  </data>
 </root>

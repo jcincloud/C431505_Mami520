@@ -520,6 +520,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 未用餐完畢,無法釋放用餐編號!! 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Check_RecordDetail_MealEnd {
+            get {
+                return ResourceManager.GetString("Log_Check_RecordDetail_MealEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 未帶入用餐編號!!請選取用餐編號後再儲存。 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Check_RecordDetail_Mealid {
+            get {
+                return ResourceManager.GetString("Log_Check_RecordDetail_Mealid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 此筆生產資料已有月子餐產品存在!無法再新增月子餐產品。 的當地語系化字串。
         /// </summary>
         internal static string Log_Check_RecordDetail_PostnatalMeal {
@@ -687,6 +705,15 @@ namespace Resources {
         internal static string Log_Err_Password {
             get {
                 return ResourceManager.GetString("Log_Err_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 有未釋放的用餐編號,無法結案!請將用餐編號釋放後再結案。 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_PRecord_Close_Mealid {
+            get {
+                return ResourceManager.GetString("Log_Err_PRecord_Close_Mealid", resourceCulture);
             }
         }
         

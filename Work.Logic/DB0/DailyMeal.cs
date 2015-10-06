@@ -38,8 +38,8 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual RecordDetail RecordDetail { get; set; }
-    	[JsonIgnore]
         public virtual ICollection<DailyMealChangeRecord> DailyMealChangeRecord { get; set; }
+    	[JsonIgnore]
+        public virtual RecordDetail RecordDetail { get; set; }
     }
 }

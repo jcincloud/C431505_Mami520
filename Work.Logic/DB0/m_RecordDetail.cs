@@ -40,6 +40,7 @@ namespace ProcCore.Business.DB0
     public Nullable<int> real_lunch { get; set; }
     public Nullable<int> real_dinner { get; set; }
     public string meal_memo { get; set; }
+    public Nullable<bool> is_release { get; set; }
     public bool i_Hide { get; set; }
     public string i_InsertUserID { get; set; }
     public Nullable<int> i_InsertDeptID { get; set; }
