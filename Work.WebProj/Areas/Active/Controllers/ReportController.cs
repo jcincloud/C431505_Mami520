@@ -10,32 +10,17 @@ namespace DotWeb.Areas.Active.Controllers
     public class ReportController : AdminController
     {
         #region Action and function section
-        public ActionResult Main()
+        public ActionResult DailyMeal()
         {
             ActionRun();
             return View();
         }
-        public ActionResult CustomerVisit()
+        public ActionResult ProductRecord()
         {
             ActionRun();
             return View();
         }
-        public ActionResult VisitProduct()
-        {
-            ActionRun();
-            return View();
-        }
-        public ActionResult CustomerProduct()
-        {
-            ActionRun();
-            return View();
-        }
-        public ActionResult ProductCustomer()
-        {
-            ActionRun();
-            return View();
-        }
-        public ActionResult CustomerAgent()
+        public ActionResult AccountsPayable()
         {
             ActionRun();
             return View();

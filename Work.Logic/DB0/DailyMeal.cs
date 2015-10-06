@@ -24,6 +24,7 @@ namespace ProcCore.Business.DB0
         public int record_deatil_id { get; set; }
         public int customer_id { get; set; }
         public int born_id { get; set; }
+        public int product_type { get; set; }
         public System.DateTime meal_day { get; set; }
         public int breakfast_state { get; set; }
         public int lunch_state { get; set; }
@@ -38,8 +39,8 @@ namespace ProcCore.Business.DB0
         public string i_Lang { get; set; }
     
     	[JsonIgnore]
-        public virtual ICollection<DailyMealChangeRecord> DailyMealChangeRecord { get; set; }
-    	[JsonIgnore]
         public virtual RecordDetail RecordDetail { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<DailyMealChangeRecord> DailyMealChangeRecord { get; set; }
     }
 }

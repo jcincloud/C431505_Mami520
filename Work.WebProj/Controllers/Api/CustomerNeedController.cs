@@ -20,7 +20,7 @@ namespace DotWeb.Api
                 item = await db0.CustomerNeed.FindAsync(id);
 
                 var getCustomerBorn = await db0.CustomerBorn.FindAsync(item.born_id);
-                //item.meal_id = getCustomerBorn.meal_id;
+                item.meal_id = getCustomerBorn.meal_id;
                 item.name = getCustomerBorn.mom_name;
                 item.tel_1 = getCustomerBorn.tel_1;
                 item.tel_2 = getCustomerBorn.tel_2;

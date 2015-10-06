@@ -269,7 +269,7 @@ namespace DotWeb.Api
                         #region use sql insert
                         StringBuilder sb = new StringBuilder();
                         Log.Write("Start...");
-                        var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID) values({0},{1},{2},{3},'{4}','{5}','{6}',{7});";
+                        var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID,product_type) values({0},{1},{2},{3},'{4}','{5}','{6}',{7},{8});";
                         sb.AppendFormat(sqlt, GetNewId(ProcCore.Business.CodeTable.DailyMeal)
                                             , md.record_deatil_id
                                             , md.customer_id
@@ -277,7 +277,8 @@ namespace DotWeb.Api
                                             , setDayObj.ToString("yyyy/MM/dd HH:mm:ss")
                                             , this.UserId
                                             , DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
-                                            , this.departmentId);
+                                            , this.departmentId
+                                            , md.product_type);
                         Log.Write("Save...");
                         var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
                         sb.Clear();
@@ -307,7 +308,7 @@ namespace DotWeb.Api
                     #region use sql insert
                     StringBuilder sb = new StringBuilder();
                     Log.Write("Start...");
-                    var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID,breakfast_state,lunch_state,dinner_state) values({0},{1},{2},{3},'{4}','{5}','{6}',{7},{8},{9},{10});";
+                    var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID,breakfast_state,lunch_state,dinner_state,product_type) values({0},{1},{2},{3},'{4}','{5}','{6}',{7},{8},{9},{10},{11});";
                     sb.AppendFormat(sqlt, GetNewId(ProcCore.Business.CodeTable.DailyMeal)
                                         , md.record_deatil_id
                                         , md.customer_id
@@ -318,7 +319,8 @@ namespace DotWeb.Api
                                         , this.departmentId
                                         , breakfast_state
                                         , lunch_state
-                                        , dinner_state);
+                                        , dinner_state
+                                        , md.product_type);
                     Log.Write("Save...");
                     var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
                     sb.Clear();

@@ -63,11 +63,9 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsgOfCustomer" Width="1.5" PointX="10.625" PointY="7.625" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMeal" Width="1.5" PointX="25.375" PointY="18.25" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsg" Width="1.5" PointX="3.375" PointY="19.125" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMealChangeRecord" Width="1.5" PointX="27.625" PointY="18.5" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayableDetail" Width="1.5" PointX="22.375" PointY="5.25" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayable" Width="1.5" PointX="20.25" PointY="5.25" />
@@ -76,9 +74,11 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="26.125" PointY="7.75" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMeal" Width="1.5" PointX="28.375" PointY="9.875" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -203,6 +203,7 @@
     <Compile Include="Areas\Active\Controllers\CommunicationController.cs" />
     <Compile Include="Areas\Active\Controllers\AccountsPayableController.cs" />
     <Compile Include="Areas\Active\Controllers\ProductController.cs" />
+    <Compile Include="Areas\Active\Controllers\ReportController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
     <Content Include="Areas\Active\Views\Product\Main.cshtml" />
@@ -213,11 +214,6 @@
     <Content Include="Areas\Active\Views\Tablet\Visit_list.cshtml" />
     <Content Include="Areas\Active\Views\Tablet\Visit_content.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main.cshtml" />
-    <Content Include="Areas\Active\Views\Report\CustomerVisit.cshtml" />
-    <Content Include="Areas\Active\Views\Report\VisitProduct.cshtml" />
-    <Content Include="Areas\Active\Views\Report\CustomerProduct.cshtml" />
-    <Content Include="Areas\Active\Views\Report\ProductCustomer.cshtml" />
-    <Content Include="Areas\Active\Views\Report\CustomerAgent.cshtml" />
     <Content Include="Areas\Active\Views\Tablet\VisitView.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main2.cshtml" />
     <Content Include="Areas\Active\Views\Stock\Main3.cshtml" />
@@ -239,6 +235,7 @@
     <Content Include="Areas\Active\Views\Communication\SendMsgByFactor.cshtml" />
     <Content Include="Areas\Active\Views\MealSchedule\Main.cshtml" />
     <Content Include="Areas\Active\Views\AccountsPayable\Main.cshtml" />
+    <Content Include="Areas\Active\Views\Report\DailyMeal.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -1047,6 +1044,7 @@
     </None>
     <Content Include="Scripts\src\jsx\m-GiftRecord.jsx" />
     <Content Include="Scripts\src\jsx\m-AccountsPayable.jsx" />
+    <Content Include="Scripts\src\jsx\m-R01_DailyMeal.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
