@@ -879,6 +879,8 @@ namespace DotWeb.Api
                         record_deatil_id = parm.record_deatil_id,
                         customer_id = parm.customer_id,
                         born_id = parm.born_id,
+                        meal_id= RecordDetailItem.meal_id,
+                        product_type = RecordDetailItem.product_type,
                         meal_day = parm.meal_day,
                         breakfast_state = (int)MealState.CommonNotMeal,
                         lunch_state = (int)MealState.CommonNotMeal,
@@ -1791,19 +1793,52 @@ namespace DotWeb.Api
             try
             {
                 R01_DailyMeal data = new R01_DailyMeal();
+                //取得正在用餐日期內的客戶生產編號
+                var all_born_id = db0.RecordDetail.Where(x => x.product_type == (int)ProdyctType.PostnatalMeal &&
+                                                              (x.real_meal_start >= parm.meal_day && parm.meal_day <= x.real_meal_end))
+                                                      .Select(x => new { x.born_id, x.meal_id });
 
 
+                //取得今天用餐排程
+                var getDailyMeal = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day && x.product_type == (int)ProdyctType.PostnatalMeal).ToList();
 
-                //取得今天有用餐的客戶生產編號
-                var getCustomer = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day);
-                var born_id = getCustomer.Select(x => x.born_id);
-                //取得客戶需求
-                var getCustomerNeed = db0.CustomerNeed.Where(x => born_id.Contains(x.born_id));
 
-                #region 特殊飲食
                 List<Require> special_diet = new List<Require>();
 
-                #endregion
+                foreach (var item in getDailyMeal)
+                {
+                    if (item.breakfast_state > 0 || item.lunch_state > 0 || item.dinner_state > 0)
+                    {//只要三餐有一餐有,就列特殊飲食
+                        //取得該客戶需求元素id
+                        var dietary_need_id = db0.CustomerOfDietaryNeed.Where(x => x.CustomerNeed.born_id == item.born_id).Select(x=>x.dietary_need_id);
+
+                        #region 特殊飲食
+                        //未對應
+                        var not_correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & !x.is_correspond).ToList();
+                        foreach (var dn_item in not_correspond) {
+                            var check_r = special_diet.Any(x => x.dietary_need_id == dn_item.dietary_need_id);
+                            if (check_r)
+                            {
+
+                            }
+                            else {
+                                List<string> meal_id = new List<string>();
+                                meal_id.Add(item.meal_id);
+                                var s = new Require()
+                                {
+                                    dietary_need_id=dn_item.dietary_need_id,
+                                    require_name=dn_item.short_name,
+                                    count=1,
+                                    meal_id= meal_id
+                                };
+
+                            }
+                        }
+                        #endregion
+
+                    }
+                }
+
                 #region 取得三餐菜單
                 MealDiet breakfast = new MealDiet();
                 MealDiet lunch = new MealDiet();
@@ -2002,6 +2037,7 @@ namespace DotWeb.Api
     }
     public class Require
     {
+        public int dietary_need_id { get; set; }
         public string require_name { get; set; }
         public int count { get; set; }
         public List<string> meal_id { get; set; }

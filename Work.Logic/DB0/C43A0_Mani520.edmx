@@ -299,6 +299,7 @@
           <Property Name="record_deatil_id" Type="int" Nullable="false" />
           <Property Name="customer_id" Type="int" Nullable="false" />
           <Property Name="born_id" Type="int" Nullable="false" />
+          <Property Name="meal_id" Type="varchar" MaxLength="4" />
           <Property Name="product_type" Type="int" Nullable="false" />
           <Property Name="meal_day" Type="smalldatetime" Nullable="false" />
           <Property Name="breakfast_state" Type="int" Nullable="false" />
@@ -2706,6 +2707,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="DailyMeal" ToRole="RecordDetail" />
           <NavigationProperty Name="DailyMealChangeRecord" Relationship="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" FromRole="DailyMeal" ToRole="DailyMealChangeRecord" />
+          <Property Name="meal_id" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_DailyMeal_RecordDetail">
           <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="1" />
@@ -3473,6 +3475,7 @@
           <EntitySetMapping Name="DailyMeal">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMeal">
               <MappingFragment StoreEntitySet="DailyMeal">
+                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
