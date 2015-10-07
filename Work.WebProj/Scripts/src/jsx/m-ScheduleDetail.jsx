@@ -34,7 +34,7 @@ var GirdForm = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
-			searchData:{title:null},
+			searchData:{title:null,start_date:moment(Date()).format('YYYY/MM/DD'),end_date:moment(Date()).format('YYYY/MM/DD')},
 			searchBornData:{word:null,is_close:null},
 			edit_type:0,
 			checkAll:false,
@@ -317,14 +317,31 @@ var GirdForm = React.createClass({
 											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
 											})
 										}
-							            </select>
-
-										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+							            </select>			
 									</div>
+									<div className="form-group">
+					                    <label for="">預計電訪日期</label>
+										<span className="has-feedback">
+											<InputDate id="start_date" 
+											onChange={this.changeGDValue} 
+											field_name="start_date" 
+											value={searchData.start_date} />
+										</span> { }
+										<label>~</label> { }
+										<span className="has-feedback">
+											<InputDate id="end_date" 
+											onChange={this.changeGDValue} 
+											field_name="end_date" 
+											value={searchData.end_date} />
+										</span> { }
+					                </div>
+									<div className="form-group">
+										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+					                </div>					                
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -465,7 +482,7 @@ var GirdForm = React.createClass({
 				{born_select_out_html}
 				<h3 className="title">{this.props.Caption} 主檔</h3>
 
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 					<div className="col-xs-9">
 						<div className="form-group">
 							<label className="col-xs-2 control-label">選擇客戶</label>

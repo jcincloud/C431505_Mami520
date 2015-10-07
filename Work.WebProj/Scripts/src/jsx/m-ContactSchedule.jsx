@@ -311,7 +311,7 @@ var GirdForm = React.createClass({
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">

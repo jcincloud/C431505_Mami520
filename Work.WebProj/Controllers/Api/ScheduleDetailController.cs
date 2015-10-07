@@ -62,6 +62,11 @@ namespace DotWeb.Api
                                       x.CustomerBorn.tel_1.Contains(q.word) ||
                                       x.CustomerBorn.tel_2.Contains(q.word));
                 }
+                if (q.start_date != null && q.end_date != null)
+                {
+                    DateTime end = ((DateTime)q.end_date).AddDays(1);
+                    qr = qr.Where(x => x.tel_day >= q.start_date && x.tel_day < end);
+                }
                 var result = qr.Select(x => new m_ScheduleDetail()
                 {
                     schedule_id = x.schedule_id,

@@ -5,46 +5,32 @@ var GirdForm = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
-			searchData:{meal_day:getNowDate()}//預設帶今天
+			searchData:{meal_day:moment(Date()).format('YYYY/MM/DD')}//預設帶今天
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
 			fdName:'fieldData',
 			gdName:'searchData',
-			apiPathName:gb_approot+'api/GetAction/GetCustomerVisit'
+			apiPathName:gb_approot+'api/GetAction/GetDailyMealInfo'
 		};
 	},	
 	componentDidMount:function(){
+		this.queryGridData();
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
 	},
 	handleSearch:function(e){
 		e.preventDefault();
-		this.queryGridData(0);
+		this.queryGridData();
 		return;
 	},
-	gridData:function(page){
-
-		var parms = {
-			page:0
-		};
-
-		if(page==0){
-			parms.page=this.state.gridData.page;
-		}else{
-			parms.page=page;
-		}
-
-		$.extend(parms, this.state.searchData);
-
-		return jqGet(this.props.apiPathName,parms);
-	},
-	queryGridData:function(page){
-		this.gridData(page)
+	queryGridData:function(){
+		jqGet(this.props.apiPathName,this.state.searchData)
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({gridData:data});
+			console.log(data);
+			this.setState({fieldData:data});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -110,6 +96,7 @@ var GirdForm = React.createClass({
 	render: function() {
 		var outHtml = null;
 		var searchData=this.state.searchData;
+		var fieldData=this.state.fieldData;
 			outHtml =
 			(
 			<div>
@@ -159,50 +146,84 @@ var GirdForm = React.createClass({
 					</tr>
 				</table>
 				<hr />
-				<table>
-					<tr className="warning">
-						<td colSpan="2"><strong>早餐</strong></td>
-					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
-				</table>
+				<MealDiet ref="Breakfast"
+				MealDietData={fieldData.breakfast}
+				MealName={'早餐'} />
 				<hr />
-				<table>
-					<tr className="warning">
-						<td colSpan="2"><strong>午餐</strong></td>
-					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
-				</table>
+				<MealDiet ref="Lunch"
+				MealDietData={fieldData.lunch}
+				MealName={'午餐'} />
 				<hr />
-				<table>
-					<tr className="warning">
-						<td colSpan="2"><strong>晚餐</strong></td>
-					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
-				</table>
+				<MealDiet ref="Dinner"
+				MealDietData={fieldData.dinner}
+				MealName={'晚餐'} />
 				{/*---報表end---*/}
 			</div>
 			);
+		return outHtml;
+	}
+});
+
+//每日菜單-早餐、午餐、晚餐
+var MealDiet = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			MealName:null,
+			MealDietData:{isHaveData:false}
+		};
+	},	
+	componentDidMount:function(){
+		console.log(this.props.MealDietData);
+	},
+	shouldComponentUpdate:function(nextProps,nextState){
+		return true;
+	},
+	render: function() {
+		var outHtml = null;
+		var MealDietData=this.props.MealDietData;
+		if(MealDietData.isHaveData){//先判斷有無資料
+			outHtml =
+			(
+			<div>
+				<table>
+					<tr className="warning">
+						<td colSpan="2"><strong>{this.props.MealName}</strong></td>
+					</tr>
+					<tr>
+						<td><strong>麻油雞</strong></td>
+						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
+					</tr>
+					<tr>
+						<td><strong>麻油雞</strong></td>
+						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
+					</tr>
+				</table>
+			</div>
+			);
+		}else{
+			outHtml =
+			(
+			<div>
+				<table>
+					<tr className="warning">
+						<td colSpan="2"><strong>{this.props.MealName}</strong></td>
+					</tr>
+					<tr>
+						<td>
+							<div className="alert alert-default">
+			                    <i className="fa-exclamation-triangle"></i> 目前尚無安排菜單
+			                </div>
+                		</td>
+					</tr>
+				</table>
+			</div>
+			);
+		}
 		return outHtml;
 	}
 });

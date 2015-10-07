@@ -453,7 +453,7 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
-        public IHttpActionResult GetAllRecord(int? old_id)
+        public IHttpActionResult GetAllRecord([FromUri]ParmGetAllRecord parm)
         {
             db0 = getDB0();
             try
@@ -476,12 +476,38 @@ namespace DotWeb.Api
                         x.CustomerBorn.born_frequency,
                         x.record_day,
                         x.CustomerBorn.tel_1,
-                        x.CustomerBorn.tel_2
+                        x.CustomerBorn.tel_2,
+                        x.CustomerBorn.sno,
+                        x.CustomerBorn.birthday,
+                        x.CustomerBorn.tw_zip_1,
+                        x.CustomerBorn.tw_zip_2,
+                        x.CustomerBorn.tw_city_1,
+                        x.CustomerBorn.tw_city_2,
+                        x.CustomerBorn.tw_country_1,
+                        x.CustomerBorn.tw_country_2,
+                        x.CustomerBorn.tw_address_1,
+                        x.CustomerBorn.tw_address_2
                     });
 
-                if (old_id != null)
+                if (parm.old_id != null)
                 {
-                    items = items.Where(x => x.product_record_id != old_id);//過濾目前已選擇的id
+                    items = items.Where(x => x.product_record_id != parm.old_id);//過濾目前已選擇的id
+                }
+                if (parm.is_close != null)
+                {
+                    items = items.Where(x => x.is_close == parm.is_close);
+                }
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.record_sn.Contains(parm.word) ||
+                                            x.mom_name.Contains(parm.word) ||
+                                            x.customer_name.Contains(parm.word) ||
+                                            x.sno.Contains(parm.word));
+                }
+                if (parm.start_date != null && parm.end_date != null)
+                {
+                    DateTime end = ((DateTime)parm.end_date).AddDays(1);
+                    items = items.Where(x => x.record_day >= parm.start_date && x.record_day < end);
                 }
 
                 return Ok(items.ToList());
@@ -1747,6 +1773,52 @@ namespace DotWeb.Api
             #endregion
         }
         #endregion
+        #region 取得報表列印資料
+        /// <summary>
+        /// R01 每日菜單報表
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        public IHttpActionResult GetDailyMealInfo([FromUri]ParmGetDailyMealInfo parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                R01_DailyMeal data = new R01_DailyMeal();
+                #region 取得三餐菜單
+                MealDiet breakfast = new MealDiet();
+                MealDiet lunch = new MealDiet();
+                MealDiet dinner = new MealDiet();
+                var getDailyMenu = db0.DailyMenu.Where(x => x.day == parm.meal_day);
+
+                foreach (var item in getDailyMenu)
+                {
+                    if (item.meal_type == (int)MealType.Breakfast)
+                    {
+                        breakfast.isHaveData = true;
+                    }
+                    if (item.meal_type == (int)MealType.Lunch)
+                    {
+                        lunch.isHaveData = true;
+                    }
+                    if (item.meal_type == (int)MealType.Dinner)
+                    {
+                        dinner.isHaveData = true;
+                    }
+                }
+                data.breakfast = breakfast;
+                data.lunch = lunch;
+                data.dinner = dinner;
+                #endregion
+
+                return Ok(data);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
     }
     #region Parm
     public class ParmChangeMealID
@@ -1859,6 +1931,14 @@ namespace DotWeb.Api
         public int record_deatil_id { get; set; }
         public string meal_id { get; set; }
     }
+    public class ParmGetAllRecord
+    {
+        public int? old_id { get; set; }
+        public bool? is_close { get; set; }
+        public string word { get; set; }
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
+    }
     #endregion
     public class MealTotalCount
     {
@@ -1869,4 +1949,31 @@ namespace DotWeb.Api
         public int already_eat { get; set; }//已吃
         public int not_eat { get; set; }//未吃
     }
+    #region R01
+    public class ParmGetDailyMealInfo
+    {
+        public DateTime meal_day { get; set; }
+    }
+    public class R01_DailyMeal
+    {
+        public Matters matters { get; set; }
+        public Diet diet { get; set; }
+        public MealDiet breakfast { get; set; }
+        public MealDiet lunch { get; set; }
+        public MealDiet dinner { get; set; }
+    }
+    public class Matters
+    {
+    }
+    public class Diet
+    {
+    }
+    public class MealDiet
+    {
+        /// <summary>
+        /// 判斷是否有排每日菜單
+        /// </summary>
+        public bool isHaveData { get; set; }
+    }
+    #endregion
 }

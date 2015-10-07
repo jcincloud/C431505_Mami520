@@ -284,16 +284,29 @@ namespace ProcCore.Business.DB0
     }
     public partial class m_GiftRecord
     {
-        public string name { get; set; }
+        public string mom_name { get; set; }
         public string activity_name { get; set; }
+        public string sno { get; set; }
+        public string tel_1 { get; set; }
     }
     public partial class GiftRecord
     {
         public DateTime record_day { get; set; }
         public string customer_name { get; set; }
         public string name { get; set; }
+        public string sno { get; set; }
+        public DateTime? birthday { get; set; }
         public string tel_1 { get; set; }
         public string tel_2 { get; set; }
+        public string tw_zip_1 { get; set; }
+        public string tw_city_1 { get; set; }
+        public string tw_country_1 { get; set; }
+        public string tw_address_1 { get; set; }
+        public string tw_zip_2 { get; set; }
+        public string tw_city_2 { get; set; }
+        public string tw_country_2 { get; set; }
+        public string tw_address_2 { get; set; }
+
         public double totle_price { get; set; }
     }
     public partial class m_ContactSchedule
@@ -497,6 +510,7 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
+        public bool? i_Hide { get; set; }
     }
     public class q_CustomerNeed : QueryBase
     {
@@ -529,6 +543,8 @@ namespace ProcCore.Business.DB0
     {
         public int? tel_reason { get; set; }
         public string word { get; set; }
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
     }
     public class q_DeatilTelRecord : QueryBase
     {

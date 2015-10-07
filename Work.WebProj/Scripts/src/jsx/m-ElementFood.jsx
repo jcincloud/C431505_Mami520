@@ -27,7 +27,7 @@
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.Filter(this.props.itemData.category_id,'category')}</td>
 					<td>{this.props.itemData.element_name}</td>
-					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
+					<td>{this.props.itemData.i_Hide?<span className="label label-default">停用</span>:<span className="label label-primary">啟用</span>}</td>
 				</tr>
 			);
 		}
@@ -263,17 +263,17 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">基礎菜單名稱</label> { }
-										<input type="text" className="form-control" 
+										<label for="">食材名稱</label>
+										<input type="text" className="form-control input-sm" 
 										value={searchData.element_name}
 										onChange={this.changeGDValue.bind(this,'element_name')}
-										placeholder="基礎菜單名稱..." /> { }
+										placeholder="食材名稱..." /> { }
 
-										<label className="sr-only">分類</label> { }
-										<select className="form-control" 
+										<label>分類</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.category_id}
 												onChange={this.onCategoryChange}>
-											<option value="">選擇分類</option>
+											<option value="">全部</option>
 										{
 											this.state.category.map(function(itemData,i) {
 												return <option key={i} value={itemData.val}>{itemData.Lname}</option>
@@ -281,13 +281,13 @@ var GirdForm = React.createClass({
 										}
 										</select> { }
 
-										<label className="sr-only">狀態</label> { }
-										<select className="form-control" 
+										<label>狀態</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.i_Hide}
 												onChange={this.onHideChange}>
-											<option value="">選擇狀態</option>
-											<option value="true">隱藏</option>
-											<option value="false">顯示</option>
+											<option value="">全部</option>
+											<option value="true">停用</option>
+											<option value="false">啟用</option>
 
 										</select> { }
 
@@ -297,7 +297,7 @@ var GirdForm = React.createClass({
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -307,9 +307,9 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1">分類</th>
-									<th className="col-xs-2">基礎菜單名稱</th>
-									<th className="col-xs-1">狀態</th>
+					                <th className="col-xs-1">分類</th>
+					                <th className="col-xs-3">食材名稱</th>
+					                <th className="col-xs-6">狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -351,13 +351,11 @@ var GirdForm = React.createClass({
 			<div>
                 <h3 className="title">{this.props.Caption} 編輯</h3>
 
-				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-				<div className="col-xs-2"></div>
-				<div className="col-xs-4">
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
+				<div className="col-xs-9">
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">分類</label>
-						<div className="col-xs-10">
+						<label className="col-xs-2 control-label">分類</label>
+						<div className="col-xs-4">
 							<select className="form-control" 
 							value={fieldData.category_id}
 							onChange={this.changeFDValue.bind(this,'category_id')}>
@@ -368,11 +366,12 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
 
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">名稱</label>
-						<div className="col-xs-10">
+						<label className="col-xs-2 control-label">食材名稱</label>
+						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
 							value={fieldData.element_name}
@@ -380,23 +379,12 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
-					</div>
-
-					<div className="form-group">
-						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-6">
-							<input type="number" 
-							className="form-control"	
-							value={fieldData.sort}
-							onChange={this.changeFDValue.bind(this,'sort')}
-							 />
-						</div>
-						<small className="col-xs-4 help-inline">數字越大越前面</small>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
 
 					<div className="form-group">
 						<label className="col-xs-2 control-label">狀態</label>
-						<div className="col-xs-10">
+						<div className="col-xs-4">
 							<div className="radio-inline">
 								<label>
 									<input type="radio" 
@@ -405,7 +393,7 @@ var GirdForm = React.createClass({
 											checked={fieldData.i_Hide===true} 
 											onChange={this.changeFDValue.bind(this,'i_Hide')}
 									/>
-									<span>隱藏</span>
+									<span>停用</span>
 								</label>
 							</div>
 							<div className="radio-inline">
@@ -416,29 +404,43 @@ var GirdForm = React.createClass({
 											checked={fieldData.i_Hide===false} 
 											onChange={this.changeFDValue.bind(this,'i_Hide')}
 											/>
-									<span>顯示</span>
+									<span>啟用</span>
 								</label>
 							</div>
 						</div>
 					</div>
 					<div className="form-group">
+						<label className="col-xs-2 control-label">排序</label>
+						<div className="col-xs-4">
+							<input type="number" 
+							className="form-control"	
+							value={fieldData.sort}
+							onChange={this.changeFDValue.bind(this,'sort')}
+							 />
+						</div>
+						<small className="col-xs-4 help-inline">數字越大越前面</small>
+					</div>
+					<div className="form-group">
 						<label className="col-xs-2 control-label">備註</label>
-						<div className="col-xs-10">
-							<textarea col="30" row="2" className="form-control"
+						<div className="col-xs-4">
+							<textarea col="30" rows="3" className="form-control"
 							value={fieldData.memo}
 							onChange={this.changeFDValue.bind(this,'memo')}
 							maxLength="256"></textarea>
 						</div>
 					</div>
-
-				</div>
-
-				<div className="col-xs-8">
-					<div className="form-action text-center">
+					<div className="form-action text-right">
 						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
 						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
 					</div>
 				</div>
+				{/*<div className="col-xs-8">
+					<div className="form-action text-center">
+						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+					</div>
+				</div>*/}
+
 				</form>
 			</div>
 			);

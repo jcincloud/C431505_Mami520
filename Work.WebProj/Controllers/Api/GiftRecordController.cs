@@ -25,8 +25,18 @@ namespace DotWeb.Api
                 item.record_day = item.ProductRecord.record_day;
                 item.customer_name = getCustomer.customer_name;
                 item.name = item.CustomerBorn.mom_name;
+                item.sno = item.CustomerBorn.sno;
+                item.birthday = item.CustomerBorn.birthday;
                 item.tel_1 = item.CustomerBorn.tel_1;
                 item.tel_2 = item.CustomerBorn.tel_2;
+                item.tw_zip_1 = item.CustomerBorn.tw_zip_1;
+                item.tw_city_1 = item.CustomerBorn.tw_city_1;
+                item.tw_country_1 = item.CustomerBorn.tw_country_1;
+                item.tw_address_1 = item.CustomerBorn.tw_address_1;
+                item.tw_zip_2 = item.CustomerBorn.tw_zip_2;
+                item.tw_city_2 = item.CustomerBorn.tw_city_2;
+                item.tw_country_2 = item.CustomerBorn.tw_country_2;
+                item.tw_address_2 = item.CustomerBorn.tw_address_2;
 
                 r = new ResultInfo<GiftRecord>() { data = item };
             }
@@ -45,7 +55,10 @@ namespace DotWeb.Api
 
                 if (q.name != null)
                 {
-                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.name));
+                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.name) ||
+                                       x.record_sn.Contains(q.name) ||
+                                       x.CustomerBorn.sno.Contains(q.name) ||
+                                       x.CustomerBorn.tel_1.Contains(q.name));
                 }
 
                 if (q.activity_name != null)
@@ -63,7 +76,9 @@ namespace DotWeb.Api
                     gift_record_id = x.gift_record_id,
                     product_record_id = x.product_record_id,
                     record_sn = x.record_sn,
-                    name = x.CustomerBorn.mom_name,
+                    mom_name = x.CustomerBorn.mom_name,
+                    sno=x.CustomerBorn.sno,
+                    tel_1=x.CustomerBorn.tel_1,
                     activity_name = x.Activity.activity_name,
                     receive_state = x.receive_state
                 });

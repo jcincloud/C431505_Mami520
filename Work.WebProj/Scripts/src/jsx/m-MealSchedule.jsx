@@ -477,51 +477,53 @@ var MealCalendar = React.createClass({
     },
     setPrve3Month:function(){
         var CalendarGrid=this.state.CalendarGrid;
+        var prve=1;
         //中
-        if((CalendarGrid.indexMonth-3)<=0){
+        if((CalendarGrid.indexMonth-prve)<=0){
             CalendarGrid.indexYear=CalendarGrid.indexYear-1;
-            CalendarGrid.indexMonth=(CalendarGrid.indexMonth-3)+12;
+            CalendarGrid.indexMonth=(CalendarGrid.indexMonth-prve)+12;
         }else{
-            CalendarGrid.indexMonth=CalendarGrid.indexMonth-3;
+            CalendarGrid.indexMonth=CalendarGrid.indexMonth-prve;
         }
         //上
-        if((CalendarGrid.prveMonth-3)<=0){
+        if((CalendarGrid.prveMonth-prve)<=0){
             CalendarGrid.prveYear=CalendarGrid.prveYear-1;
-            CalendarGrid.prveMonth=(CalendarGrid.prveMonth-3)+12;
+            CalendarGrid.prveMonth=(CalendarGrid.prveMonth-prve)+12;
         }else{
-            CalendarGrid.prveMonth=CalendarGrid.prveMonth-3;
+            CalendarGrid.prveMonth=CalendarGrid.prveMonth-prve;
         }
         //下
-        if((CalendarGrid.nextMonth-3)<=0){
+        if((CalendarGrid.nextMonth-prve)<=0){
             CalendarGrid.nextYear=CalendarGrid.nextYear-1;
-            CalendarGrid.nextMonth=(CalendarGrid.nextMonth-3)+12;
+            CalendarGrid.nextMonth=(CalendarGrid.nextMonth-prve)+12;
         }else{
-            CalendarGrid.nextMonth=CalendarGrid.nextMonth-3;
+            CalendarGrid.nextMonth=CalendarGrid.nextMonth-prve;
         }
         this.setState({CalendarGrid:CalendarGrid});
     },
     setNext3Month:function(){
         var CalendarGrid=this.state.CalendarGrid;
+        var next=1;
         //中
-        if((CalendarGrid.indexMonth+3)>=13){
+        if((CalendarGrid.indexMonth+next)>=13){
             CalendarGrid.indexYear=CalendarGrid.indexYear+1;
-            CalendarGrid.indexMonth=(CalendarGrid.indexMonth+3)-12;
+            CalendarGrid.indexMonth=(CalendarGrid.indexMonth+next)-12;
         }else{
-            CalendarGrid.indexMonth=CalendarGrid.indexMonth+3;
+            CalendarGrid.indexMonth=CalendarGrid.indexMonth+next;
         }
         //上
-        if((CalendarGrid.prveMonth+3)>=13){
+        if((CalendarGrid.prveMonth+next)>=13){
             CalendarGrid.prveYear=CalendarGrid.prveYear+1;
-            CalendarGrid.prveMonth=(CalendarGrid.prveMonth+3)-12;
+            CalendarGrid.prveMonth=(CalendarGrid.prveMonth+next)-12;
         }else{
-            CalendarGrid.prveMonth=CalendarGrid.prveMonth+3;
+            CalendarGrid.prveMonth=CalendarGrid.prveMonth+next;
         }
         //下
-        if((CalendarGrid.nextMonth+3)>=13){
+        if((CalendarGrid.nextMonth+next)>=13){
             CalendarGrid.nextYear=CalendarGrid.nextYear+1;
-            CalendarGrid.nextMonth=(CalendarGrid.nextMonth+3)-12;
+            CalendarGrid.nextMonth=(CalendarGrid.nextMonth+next)-12;
         }else{
-            CalendarGrid.nextMonth=CalendarGrid.nextMonth+3;
+            CalendarGrid.nextMonth=CalendarGrid.nextMonth+next;
         }
         this.setState({CalendarGrid:CalendarGrid}); 
     },
@@ -587,10 +589,10 @@ var MealCalendar = React.createClass({
 
                     <ul className="pager">
                         <li className="previous">
-                            <a onClick={this.setPrve3Month.bind(this)}>← 前 3 個月</a>
+                            <a onClick={this.setPrve3Month.bind(this)}>← 前 1 個月</a>
                         </li>
                         <li className="next">
-                            <a onClick={this.setNext3Month.bind(this)}>後 3 個月 →</a>
+                            <a onClick={this.setNext3Month.bind(this)}>後 1 個月 →</a>
                         </li>
                     </ul>
 

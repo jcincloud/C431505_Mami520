@@ -261,11 +261,11 @@ var GirdForm = React.createClass({
 												value={searchData.end_date} />
 											</span> { }
 
-										<label className="sr-only">餐別</label> { }
-										<select className="form-control" 
+										<label>餐別</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.meal_type}
 												onChange={this.onCategoryChange}>
-											<option value="">選擇餐別</option>
+											<option value="">全部</option>
 										{
 											CommData.MealType.map(function(itemData,i) {
 												return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
@@ -278,7 +278,7 @@ var GirdForm = React.createClass({
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -331,9 +331,10 @@ var GirdForm = React.createClass({
 				map_out_html=(<GirdDofC main_id={fieldData.dail_menu_id} main_name={fieldData.meal_type} />);
 			}else{
 				map_out_html=(
-					<div className="col-xs-12">
-					<hr className="expanded" />
-					<strong className="col-xs-12 help-inline text-center">請確認新增完成後再選取對應!</strong>
+					<div>
+						<hr className="condensed" />
+						<h4 className="title">每日菜單對應設定</h4>
+						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 					</div>
 					);
 			}
@@ -342,7 +343,7 @@ var GirdForm = React.createClass({
 			<div>
                 <h3 className="title">{this.props.Caption} 編輯</h3>
 				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 					<div className="form-group">
 						<label className="col-xs-1 control-label text-danger">選擇日期</label>
 						<div className="col-xs-2">
@@ -520,8 +521,9 @@ var GirdDofC = React.createClass({
 		var searchData=this.state.searchData;
 
 		outHtml =(
-			<div className="col-xs-12">
-			<hr className="expanded" />
+			<div>
+				<hr className="condensed" />
+				<h4 className="title">每日菜單對應設定</h4>
 				<div className="row">
 					<div className="col-xs-6">
 						<div className="table-responsive">

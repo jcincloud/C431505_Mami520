@@ -44,6 +44,11 @@ namespace DotWeb.Api
                     qr = qr.Where(x => x.start_date <= end && x.end_date >= q.start_date);
                 }
 
+                if (q.i_Hide != null)
+                {
+                    qr = qr.Where(x => x.i_Hide == q.i_Hide);
+                }
+
                 var result = qr.Select(x => new m_Activity()
                 {
                     activity_id = x.activity_id,
