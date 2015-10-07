@@ -889,6 +889,8 @@ namespace DotWeb.Api
                         i_Lang = "zh-TW"
                     };
                     db0.DailyMeal.Add(item);
+                    #region 變更實際(實訂)用餐起日及迄日
+                    #region 實訂
                     if (!check_meal_start)
                     {
                         if (RecordDetailItem.real_estimate_meal_start >= parm.meal_day)
@@ -898,6 +900,15 @@ namespace DotWeb.Api
                             RecordDetailItem.real_estimate_meal_end = parm.meal_day;
 
                     }
+                    #endregion
+                    #region 實際
+                    if (RecordDetailItem.real_meal_start >= parm.meal_day)
+                        RecordDetailItem.real_meal_start = parm.meal_day;
+
+                    if (RecordDetailItem.real_meal_end <= parm.meal_day)
+                        RecordDetailItem.real_meal_end = parm.meal_day;
+                    #endregion
+                    #endregion
 
                 }
 
@@ -944,20 +955,15 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 #region 訂餐日期及餐數異動紀錄
-                #region 取得實際用餐起日及迄日
-                var getDMItem = db0.DailyMeal.Where(x => x.record_deatil_id == record_deatil_id);
-                DateTime start = getDMItem.OrderBy(x => x.meal_day).FirstOrDefault().meal_day;
-                DateTime end = getDMItem.OrderByDescending(x => x.meal_day).FirstOrDefault().meal_day;
-                #endregion
                 var item = db0.RecordDetail.Where(x => x.record_deatil_id == record_deatil_id)
                                            .Select(x => new m_RecordDetail()
                                            {
                                                meal_start = x.meal_start,
                                                real_estimate_meal_start = x.real_estimate_meal_start,
-                                               real_meal_start = start,
+                                               real_meal_start = x.real_meal_start,
                                                meal_end = x.meal_end,
                                                real_estimate_meal_end = x.real_estimate_meal_end,
-                                               real_meal_end = end,
+                                               real_meal_end = x.real_meal_end,
                                                estimate_breakfast = x.estimate_breakfast,
                                                estimate_lunch = x.estimate_lunch,
                                                estimate_dinner = x.estimate_dinner,
@@ -1785,11 +1791,27 @@ namespace DotWeb.Api
             try
             {
                 R01_DailyMeal data = new R01_DailyMeal();
+
+
+
+                //取得今天有用餐的客戶生產編號
+                var getCustomer = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day);
+                var born_id = getCustomer.Select(x => x.born_id);
+                //取得客戶需求
+                var getCustomerNeed = db0.CustomerNeed.Where(x => born_id.Contains(x.born_id));
+
+                #region 特殊飲食
+                List<Require> special_diet = new List<Require>();
+
+                #endregion
                 #region 取得三餐菜單
                 MealDiet breakfast = new MealDiet();
                 MealDiet lunch = new MealDiet();
                 MealDiet dinner = new MealDiet();
+                //取得當日菜單
                 var getDailyMenu = db0.DailyMenu.Where(x => x.day == parm.meal_day);
+
+
 
                 foreach (var item in getDailyMenu)
                 {
@@ -1957,23 +1979,32 @@ namespace DotWeb.Api
     public class R01_DailyMeal
     {
         public Matters matters { get; set; }
-        public Diet diet { get; set; }
+        public List<Require> special_diet { get; set; }
         public MealDiet breakfast { get; set; }
         public MealDiet lunch { get; set; }
         public MealDiet dinner { get; set; }
     }
+    /// <summary>
+    /// 當日事項
+    /// </summary>
     public class Matters
     {
     }
-    public class Diet
-    {
-    }
+    /// <summary>
+    /// 早餐、午餐、晚餐
+    /// </summary>
     public class MealDiet
     {
         /// <summary>
         /// 判斷是否有排每日菜單
         /// </summary>
         public bool isHaveData { get; set; }
+    }
+    public class Require
+    {
+        public string require_name { get; set; }
+        public int count { get; set; }
+        public List<string> meal_id { get; set; }
     }
     #endregion
 }

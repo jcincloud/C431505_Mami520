@@ -732,7 +732,6 @@ var Calendar = React.createClass({
 
         jqGet(gb_approot + 'api/GetAction/GetMealCalendar',searchData)
         .done(function(data, textStatus, jqXHRdata) {
-            console.log(data);
             this.setState({MonthObj:data,searchData:searchData});
         }.bind(this))
         .fail(function( jqXHR, textStatus, errorThrown ) {

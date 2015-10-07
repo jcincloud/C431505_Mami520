@@ -373,10 +373,6 @@ namespace ProcCore.Business.DB0
         public string mom_name { get; set; }
         public string sno { get; set; }
         public string tel_1 { get; set; }
-
-        //用餐排程用
-        public DateTime real_meal_start { get; set; }
-        public DateTime real_meal_end { get; set; }
     }
     public partial class RecordDetail
     {

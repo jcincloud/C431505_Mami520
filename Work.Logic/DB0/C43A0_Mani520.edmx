@@ -651,6 +651,8 @@
           <Property Name="real_estimate_breakfast" Type="int" />
           <Property Name="real_estimate_lunch" Type="int" />
           <Property Name="real_estimate_dinner" Type="int" />
+          <Property Name="real_meal_start" Type="smalldatetime" />
+          <Property Name="real_meal_end" Type="smalldatetime" />
           <Property Name="real_breakfast" Type="int" />
           <Property Name="real_lunch" Type="int" />
           <Property Name="real_dinner" Type="int" />
@@ -2642,6 +2644,8 @@
           <NavigationProperty Name="Product" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="RecordDetail" ToRole="Product" />
           <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="RecordDetail" ToRole="ProductRecord" />
           <NavigationProperty Name="DailyMeal" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="RecordDetail" ToRole="DailyMeal" />
+          <Property Name="real_meal_start" Type="DateTime" Precision="0" />
+          <Property Name="real_meal_end" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_RecordDetail_CustomerBorn">
           <End Type="C43A0_Mani520Model.CustomerBorn" Role="CustomerBorn" Multiplicity="1" />
@@ -3424,6 +3428,8 @@
           <EntitySetMapping Name="RecordDetail">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.RecordDetail">
               <MappingFragment StoreEntitySet="RecordDetail">
+                <ScalarProperty Name="real_meal_end" ColumnName="real_meal_end" />
+                <ScalarProperty Name="real_meal_start" ColumnName="real_meal_start" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />

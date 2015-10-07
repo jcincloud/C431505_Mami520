@@ -201,7 +201,8 @@ namespace DotWeb.Api
                         r.message = Resources.Res.Log_Check_RecordDetail_PostnatalMeal;
                         return Ok(r);
                     }
-
+                    md.real_meal_start = md.meal_start;
+                    md.real_meal_end = md.meal_end;
                     md.real_breakfast = md.estimate_breakfast;
                     md.real_lunch = md.estimate_lunch;
                     md.real_dinner = md.estimate_dinner;

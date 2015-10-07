@@ -5,7 +5,7 @@ var GirdForm = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
-			searchData:{meal_day:moment(Date()).format('YYYY/MM/DD')}//預設帶今天
+			searchData:{meal_day:format_Date(getNowDate())}//預設帶今天
 		};  
 	},
 	getDefaultProps:function(){
@@ -119,7 +119,7 @@ var GirdForm = React.createClass({
 					</div>
 				</div>
 				<hr />
-				<h4 className="title">{moment(searchData.meal_day).format('YYYY/MM/DD')}</h4>
+				<h4 className="title">{searchData.meal_day}</h4>
 				{/*---搜尋end---*/}
 				{/*---報表start---*/}
 				<table>
@@ -174,7 +174,7 @@ var MealDiet = React.createClass({
 	getDefaultProps:function(){
 		return{	
 			MealName:null,
-			MealDietData:{isHaveData:false}
+			MealDietData:{}
 		};
 	},	
 	componentDidMount:function(){
@@ -198,10 +198,6 @@ var MealDiet = React.createClass({
 						<td><strong>麻油雞</strong></td>
 						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
 					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
 				</table>
 			</div>
 			);
@@ -215,7 +211,7 @@ var MealDiet = React.createClass({
 					</tr>
 					<tr>
 						<td>
-							<div className="alert alert-default">
+							<div className="alert alert-default text-warning">
 			                    <i className="fa-exclamation-triangle"></i> 目前尚無安排菜單
 			                </div>
                 		</td>
