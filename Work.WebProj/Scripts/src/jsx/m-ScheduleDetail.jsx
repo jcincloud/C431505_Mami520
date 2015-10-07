@@ -912,35 +912,39 @@ var SubForm = React.createClass({
 
 				{/*---產谝明細列表start---*/}
 					<h4 className="title">電訪紀錄</h4>
-					<table className="table-condensed">
-						<tbody>
-							<tr>
-								<th className="col-xs-1 text-center">編輯</th>
-								<th className="col-xs-2 text-center">時間</th>
-								<th className="col-xs-1 text-center">原因</th>
-								<th className="col-xs-4">內容</th>
-								<th className="col-xs-1 text-center">狀態</th>
-								<th className="col-xs-1">人員</th>
-							</tr>
-							{
-								this.state.gridSubData.map(function(itemData,i) {
-									var sub_out_html = 
-										<tr key={itemData.deatil_tel_record_id}>
-											<td className="text-center">
-												<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.deatil_tel_record_id)}><i className="fa-pencil"></i></button>
-												<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.deatil_tel_record_id)}><i className="fa-trash"></i></button>
-											</td>
-											<td className="text-center">{moment(itemData.tel_datetime).format('YYYY/MM/DD hh:mm:ss')}</td>
-											<td className="text-center"><StateForGrid stateData={CommData.TelReasonByDetail} id={this.props.tel_reason} /></td>
-											<td>{itemData.memo}</td>
-											<td className="text-center"><StateForGrid stateData={CommData.TelState} id={itemData.tel_state} /></td>
-											<td>{itemData.user_name}</td>			
-										</tr>;
-										return sub_out_html;
-								}.bind(this))
-							}
-						</tbody>
-					</table>
+					<div className="row">
+						<div className="col-xs-9">
+							<table className="table-condensed">
+								<tbody>
+									<tr>
+										{/*<th className="col-xs-1 text-center">編輯</th>*/}
+										<th className="col-xs-3 text-center">時間</th>
+										<th className="col-xs-2 text-center">原因</th>
+										<th className="col-xs-4">內容</th>
+										<th className="col-xs-1 text-center">狀態</th>
+										<th className="col-xs-2">人員</th>
+									</tr>
+									{
+										this.state.gridSubData.map(function(itemData,i) {
+											var sub_out_html = 
+												<tr key={itemData.deatil_tel_record_id}>
+													{/*<td className="text-center">
+														<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.deatil_tel_record_id)}><i className="fa-pencil"></i></button>
+														<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.deatil_tel_record_id)}><i className="fa-trash"></i></button>
+													</td>*/}
+													<td className="text-center"><strong>{moment(itemData.tel_datetime).format('YYYY/MM/DD hh:mm:ss')}</strong></td>
+													<td className="text-center"><StateForGrid stateData={CommData.TelReasonByDetail} id={this.props.tel_reason} /></td>
+													<td>{itemData.memo}</td>
+													<td className="text-center"><StateForGrid stateData={CommData.TelState} id={itemData.tel_state} /></td>
+													<td>{itemData.user_name}</td>			
+												</tr>;
+												return sub_out_html;
+										}.bind(this))
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
 				{/*---產品明細列表end---*/}
 				</div>
 			);

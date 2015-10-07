@@ -257,27 +257,27 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">標題</label> { }
-										<input type="text" className="form-control" 
+										<label>標題</label> { }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.title}
 										onChange={this.changeGDValue.bind(this,'title')}
 										placeholder="標題名稱..." /> { }
 
-										<label className="sr-only">狀態</label> { }
-										<select className="form-control" 
+										<label>狀態</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.is_complete}
 												onChange={this.changeGDValue.bind(this,'is_complete')}>
-											<option value="">選擇狀態</option>
+											<option value="">全部</option>
 											<option value="true">完稿</option>
 											<option value="false">草稿</option>
 
 										</select> { }
 
-										<label className="sr-only">發佈狀態</label> { }
-										<select className="form-control" 
+										<label>發佈狀態</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.is_send}
 												onChange={this.changeGDValue.bind(this,'is_send')}>
-											<option value="">選擇發佈狀態</option>
+											<option value="">全部</option>
 											<option value="true">發佈成功</option>
 											<option value="false">發佈待</option>
 
@@ -288,7 +288,7 @@ var GirdForm = React.createClass({
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -344,9 +344,10 @@ var GirdForm = React.createClass({
 				map_out_html=(<GirdSofC main_id={fieldData.send_msg_id} is_send={fieldData.is_send} />);
 			}else{
 				map_out_html=(
-					<div className="col-xs-12">
-					<hr className="expanded" />
-					<strong className="col-xs-12 help-inline text-center">請確認新增完成後再選取對應!</strong>
+					<div>
+						<hr className="condensed" />
+						<h4 className="title">發送訊息對應設定</h4>
+						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 					</div>
 					);
 			}
@@ -359,7 +360,7 @@ var GirdForm = React.createClass({
                 <h3 className="title">{this.props.Caption} 編輯</h3>
 
 				{send_out_html}
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 				<div className="col-xs-9">
 				    <div className="form-group">
 				        <label className="col-xs-2 control-label">發送日期</label>
@@ -631,8 +632,9 @@ var GirdSofC = React.createClass({
 		var searchData=this.state.searchData;
 
 		outHtml =(
-			<div className="col-xs-12">
+			<div>
 			<hr className="expanded" />
+			<h4 className="title">發送訊息對應設定</h4>
 				<div className="row">
 					<div className="col-xs-6">
 						<div className="table-responsive">

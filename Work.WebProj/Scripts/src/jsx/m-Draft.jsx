@@ -234,17 +234,17 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label className="sr-only">文案名稱</label> { }
-										<input type="text" className="form-control" 
+										<label>文案名稱</label> { }
+										<input type="text" className="form-control input-sm" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
 										placeholder="文案名稱..." /> { }
 
-										<label className="sr-only">狀態</label> { }
-										<select className="form-control" 
+										<label>狀態</label> { }
+										<select className="form-control input-sm" 
 												value={searchData.i_Hide}
 												onChange={this.onHideChange}>
-											<option value="">選擇狀態</option>
+											<option value="">全部</option>
 											<option value="true">隱藏</option>
 											<option value="false">顯示</option>
 
@@ -256,7 +256,7 @@ var GirdForm = React.createClass({
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table-condensed">
 							<thead>
 								<tr>
 									<th className="col-xs-1 text-center">
@@ -308,11 +308,10 @@ var GirdForm = React.createClass({
 			<div>
                 <h3 className="title">{this.props.Caption} 編輯</h3>
 
-				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-				<div className="col-xs-8">
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
+				<div className="col-xs-9">
 					<div className="form-group">
-						<label className="col-xs-2 control-label text-danger">文案名稱</label>
+						<label className="col-xs-2 control-label">文案名稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -321,8 +320,11 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
+					</div>
+					<div className="form-group">
 						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-2">
+						<div className="col-xs-4">
 							<input type="number" 
 							className="form-control"	
 							value={fieldData.sort}
@@ -331,18 +333,9 @@ var GirdForm = React.createClass({
 						</div>
 						<small className="col-xs-2 help-inline">數字越大越前面</small>
 					</div>
-
 					<div className="form-group">
-						<label className="col-xs-2 control-label">標題</label>
-						<div className="col-xs-4">
-							<input type="text" 							
-							className="form-control"	
-							value={fieldData.draft_title}
-							onChange={this.changeFDValue.bind(this,'draft_title')}
-							maxLength="64" />
-						</div>
 						<label className="col-xs-2 control-label">狀態</label>
-						<div className="col-xs-3">
+						<div className="col-xs-4">
 							<div className="radio-inline">
 								<label>
 									<input type="radio" 
@@ -367,21 +360,27 @@ var GirdForm = React.createClass({
 							</div>
 						</div>
 					</div>
-
+					<div className="form-group">
+						<label className="col-xs-2 control-label">標題</label>
+						<div className="col-xs-4">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.draft_title}
+							onChange={this.changeFDValue.bind(this,'draft_title')}
+							maxLength="64" />
+						</div>
+					</div>
 					<div className="form-group">
 						<label className="col-xs-2 control-label">內容</label>
-						<div className="col-xs-10">
-							<textarea col="30" row="2" className="form-control"
+						<div className="col-xs-8">
+							<textarea col="30" rows="3" className="form-control"
 							value={fieldData.draft_content}
 							onChange={this.changeFDValue.bind(this,'draft_content')}
 							maxLength="500"></textarea>
 						</div>
 					</div>
 
-				</div>
-
-				<div className="col-xs-8">
-					<div className="form-action text-center">
+					<div className="form-action text-right">
 						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
 						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
 					</div>
