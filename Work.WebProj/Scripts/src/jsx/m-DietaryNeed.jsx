@@ -309,9 +309,9 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1">需求元素名稱</th>
-									<th className="col-xs-1">需求元素簡稱</th>
-									<th className="col-xs-1">狀態</th>
+									<th className="col-xs-3">需求元素名稱</th>
+									<th className="col-xs-2">需求元素簡稱</th>
+									<th className="col-xs-5">狀態</th>
 								</tr>
 							</thead>
 							<tbody>

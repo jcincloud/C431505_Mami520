@@ -317,9 +317,8 @@ var GirdForm = React.createClass({
 											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
 											})
 										}
-							            </select>			
-									</div>
-									<div className="form-group">
+							            </select>
+							            <br />
 					                    <label for="">預計電訪日期</label>
 										<span className="has-feedback">
 											<InputDate id="start_date" 
@@ -334,8 +333,6 @@ var GirdForm = React.createClass({
 											field_name="end_date" 
 											value={searchData.end_date} />
 										</span> { }
-					                </div>
-									<div className="form-group">
 										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 					                </div>					                
 								</div>

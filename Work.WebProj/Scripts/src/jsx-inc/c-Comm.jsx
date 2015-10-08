@@ -419,7 +419,7 @@ var InputDate = React.createClass({
 			<div>
 				<input 
 					type="date" 
-					className="form-control datetimepicker"
+					className="form-control input-sm datetimepicker"
 					id={this.props.id}
 					name={this.props.field_name}
 					value={this.props.value!=undefined ? moment(this.props.value).format('YYYY-MM-DD'):''}

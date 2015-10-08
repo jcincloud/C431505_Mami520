@@ -289,7 +289,7 @@ var GirdForm = React.createClass({
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
 									<th className="col-xs-2">日期</th>
-									<th className="col-xs-2">餐別</th>
+									<th className="col-xs-8">餐別</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -342,10 +342,9 @@ var GirdForm = React.createClass({
 			outHtml=(
 			<div>
                 <h3 className="title">{this.props.Caption} 編輯</h3>
-				<div className="alert alert-warning"><p><strong className="text-danger">紅色標題</strong> 為必填項目。</p></div>
 				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 					<div className="form-group">
-						<label className="col-xs-1 control-label text-danger">選擇日期</label>
+						<label className="col-xs-1 control-label">選擇日期</label>
 						<div className="col-xs-2">
 							<span className="has-feedback">
 								<InputDate id="day" 
@@ -354,8 +353,9 @@ var GirdForm = React.createClass({
 								value={fieldData.day} />
 							</span>
 						</div>
+						<small className="help-inline col-xs-1 text-danger">(必填)</small>
 
-						<label className="col-xs-1 control-label text-danger">選擇餐別</label>
+						<label className="col-xs-1 control-label">選擇餐別</label>
 						<div className="col-xs-2">
 							<select className="form-control" 
 							value={fieldData.meal_type}
@@ -368,6 +368,7 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
+						<small className="help-inline col-xs-1 text-danger">(必填)</small>
 						<div className="col-xs-4 pull-right">
 							<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
 							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
