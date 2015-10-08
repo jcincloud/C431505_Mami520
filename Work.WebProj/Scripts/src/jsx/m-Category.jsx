@@ -648,7 +648,7 @@ var GirdForm = React.createClass({
 					<p>點選 <i className="fa-bars"></i> 並拖曳，可修改排列順序。</p>
 				</div>
 				<form onSubmit={this.handleSearch}>
-					<div className="table-responsive">
+					
 						<table>
 							<thead>
 								<tr>
@@ -673,7 +673,6 @@ var GirdForm = React.createClass({
 								}.bind(this))
 								}
 						</table>
-					</div>
 					<GridNavPage 
 					StartCount={this.state.gridData.startcount}
 					EndCount={this.state.gridData.endcount}

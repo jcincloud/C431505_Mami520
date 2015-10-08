@@ -295,7 +295,7 @@ var GirdForm = React.createClass({
 				<h3 className="title">{this.props.Caption} 列表</h3>
 
 				<form onSubmit={this.handleSearch}>
-					<div className="table-responsive">
+					
 						<div className="table-header">
 							<div className="table-filter">
 								<div className="form-inline">
@@ -343,7 +343,6 @@ var GirdForm = React.createClass({
 								}
 							</tbody>
 						</table>
-					</div>
 					<GridNavPage 
 					StartCount={this.state.gridData.startcount}
 					EndCount={this.state.gridData.endcount}

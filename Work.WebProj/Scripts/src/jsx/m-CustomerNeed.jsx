@@ -308,7 +308,7 @@ var GirdForm = React.createClass({
                 <h3 className="title">{this.props.Caption} 列表</h3>
 
 				<form onSubmit={this.handleSearch}>
-					<div className="table-responsive">
+					
 						<div className="table-header">
 							<div className="table-filter">
 								<div className="form-inline">
@@ -362,7 +362,6 @@ var GirdForm = React.createClass({
 								}
 							</tbody>
 						</table>
-					</div>
 					<GridNavPage 
 					StartCount={this.state.gridData.startcount}
 					EndCount={this.state.gridData.endcount}
@@ -701,7 +700,7 @@ var GirdCofE = React.createClass({
 				<h4 className="title">飲食需求設定</h4>
 				<div className="row">
 					<div className="col-xs-6">
-						<div className="table-responsive">
+						
 							<table className="table-condensed">
 								<caption>
 								    <div className="form-inline pull-right">
@@ -784,10 +783,9 @@ var GirdCofE = React.createClass({
 								<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
 								<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-double-arrow-right"></i></a></li>
 							</ul>
-	        			</div>
         			</div>
 					<div className="col-xs-6">
-						<div className="table-responsive">
+						
 							<table className="table-condensed">
 								<caption>已加入飲食需求</caption>
 								<tbody>
@@ -815,7 +813,6 @@ var GirdCofE = React.createClass({
 									}
 								</tbody>
 	        				</table>
-        				</div>
         			</div>
 				</div>
 			</div>
