@@ -142,7 +142,7 @@ namespace DotWeb.Areas.Base.Controllers
                 }
                 else
                 {
-                    getLoginResult.url = Url.Content("~/Active/Stock");
+                    getLoginResult.url = Url.Content("~/Active/Customer");
                 }
             }
 

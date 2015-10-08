@@ -408,8 +408,7 @@ var GirdForm = React.createClass({
                                     onChange={this.changeFDValue.bind(this,'customer_type')}>
 							    {
 							    CommData.CustomerType.map(function(itemData,i) {
-							    return
-									<option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+							    return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
 							    })
 							    }
 							</select>

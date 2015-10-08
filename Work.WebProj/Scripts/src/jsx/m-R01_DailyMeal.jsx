@@ -5,6 +5,9 @@ var GirdForm = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
+			matters:{start_meal:{breakfast:[],lunch:[],dinner:[]},
+					end_meal:{breakfast:[],lunch:[],dinner:[]},
+					pause_meal:{breakfast:[],lunch:[],dinner:[]}},
 			special_diet:[],
 			breakfast:{dishs:[],isHaveData:false},
 			lunch:{dishs:[],isHaveData:false},
@@ -34,7 +37,13 @@ var GirdForm = React.createClass({
 		jqGet(this.props.apiPathName,this.state.searchData)
 		.done(function(data, textStatus, jqXHRdata) {
 			console.log(data);
-			this.setState({breakfast:data.breakfast,lunch:data.lunch,dinner:data.dinner,special_diet:data.special_diet});
+			this.setState({
+				matters:data.matters,
+				breakfast:data.breakfast,
+				lunch:data.lunch,
+				dinner:data.dinner,
+				special_diet:data.special_diet
+			});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -79,6 +88,7 @@ var GirdForm = React.createClass({
 	render: function() {
 		var outHtml = null;
 		var searchData=this.state.searchData;
+		var matters=this.state.matters;
 		//沒有排餐顯示之html
 		var no_data_html=				
 				(<tr>
@@ -213,13 +223,97 @@ var GirdForm = React.createClass({
 						<td><strong>當日事項</strong></td>
 					</tr>
 					<tr>
-						<td>停早(2)：<span className="label label-success">A001</span>　停午(2)：<span className="label label-success">A001</span>　停晚(2)：<span className="label label-success">A001</span></td>
+						<td>
+						停早({matters.pause_meal.breakfast.length})：
+			            {
+			                matters.pause_meal.breakfast.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						停午({matters.pause_meal.lunch.length})：
+			            {
+			                matters.pause_meal.lunch.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						停晚({matters.pause_meal.dinner.length})：
+			            {
+			                matters.pause_meal.dinner.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						</td>
 					</tr>
 					<tr>
-						<td>早開始(2)：<span className="label label-success">A001</span>　午開始(2)：<span className="label label-success">A001</span>　晚開始(2)：<span className="label label-success">A001</span></td>
+						<td>
+						早開始({matters.start_meal.breakfast.length})：
+			            {
+			                matters.start_meal.breakfast.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						午開始({matters.start_meal.lunch.length})：
+			            {
+			                matters.start_meal.lunch.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						晚開始({matters.start_meal.dinner.length})：
+			            {
+			                matters.start_meal.dinner.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						</td>
 					</tr>
 					<tr>
-						<td>早結束(2)：<span className="label label-success">A001</span>　午結束(2)：<span className="label label-success">A001</span>　晚結束(2)：<span className="label label-success">A001</span></td>
+						<td>
+						早結束({matters.end_meal.breakfast.length})：
+			            {
+			                matters.end_meal.breakfast.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						午結束({matters.end_meal.lunch.length})：
+			            {
+			                matters.end_meal.lunch.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						晚結束({matters.end_meal.dinner.length})：
+			            {
+			                matters.end_meal.dinner.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						</td>
 					</tr>
 				</table>
 				<hr />

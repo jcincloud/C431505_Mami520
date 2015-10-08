@@ -818,7 +818,7 @@ namespace DotWeb.Api
 
                 #region 變更產品數量
                 RecordDetailItem.qty = Math.Round((int)RecordDetailItem.real_breakfast * 0.3 + (int)RecordDetailItem.real_lunch * 0.35 + (int)RecordDetailItem.real_dinner * 0.35, 2);
-                RecordDetailItem.subtotal = RecordDetailItem.qty * RecordDetailItem.price;
+                RecordDetailItem.subtotal = Math.Round(RecordDetailItem.qty * RecordDetailItem.price);
                 #endregion
 
                 #region 變更應收帳款
@@ -1796,40 +1796,96 @@ namespace DotWeb.Api
                 Matters matters = new Matters();
 
                 //取得正在用餐日期內的客戶生產編號
-                var all_born_id = db0.RecordDetail.Where(x => x.product_type == (int)ProdyctType.PostnatalMeal &&
-                                                              (x.real_meal_start >= parm.meal_day && parm.meal_day <= x.real_meal_end))
+                var all_born_id = db0.RecordDetail.Where(x => x.product_type == (int)ProdyctType.PostnatalMeal & x.real_meal_start <= parm.meal_day & x.real_meal_end >= parm.meal_day & x.is_release == false)
                                                       .OrderBy(x => x.meal_id)
                                                       .Select(x => new { x.born_id, x.meal_id, x.real_meal_start, x.real_meal_end }).ToList();
-                #region 塞空資料
+
+                MealDay pause_meal = new MealDay();
                 MealDay start_meal = new MealDay();
                 MealDay end_meal = new MealDay();
-                List<string> Empty_MealIdData = new List<string>();
-                start_meal.breakfast = Empty_MealIdData;
-                start_meal.lunch = Empty_MealIdData;
-                start_meal.dinner = Empty_MealIdData;
+                #region 塞空資料
+                pause_meal.breakfast = new List<string>();
+                pause_meal.lunch = new List<string>();
+                pause_meal.dinner = new List<string>();
+                start_meal.breakfast = new List<string>();
+                start_meal.lunch = new List<string>();
+                start_meal.dinner = new List<string>();
+                end_meal.breakfast = new List<string>();
+                end_meal.lunch = new List<string>();
+                end_meal.dinner = new List<string>();
                 #endregion
                 foreach (var born_id in all_born_id)
                 {
-                    DailyMeal getDMItem = db0.DailyMeal.Where(x => x.born_id == born_id.born_id && x.meal_day == parm.meal_day).FirstOrDefault();
-                    #region 開始
-                    if (born_id.real_meal_start == parm.meal_day)//開始用餐日期為當日
+                    #region 停餐
+                    var pause_DailyMeal = db0.DailyMeal.Where(x => x.born_id == born_id.born_id &
+                                                                x.product_type == (int)ProdyctType.PostnatalMeal &
+                                                                x.meal_day == parm.meal_day).FirstOrDefault();
+                    if (pause_DailyMeal == null)
                     {
-                        if (getDMItem.breakfast_state > 0)
+                        pause_meal.breakfast.Add(born_id.meal_id);
+                        pause_meal.lunch.Add(born_id.meal_id);
+                        pause_meal.dinner.Add(born_id.meal_id);
+                    }
+                    else
+                    {
+                        if (pause_DailyMeal.breakfast_state <= 0)
+                            pause_meal.breakfast.Add(born_id.meal_id);
+                        if (pause_DailyMeal.lunch_state <= 0)
+                            pause_meal.lunch.Add(born_id.meal_id);
+                        if (pause_DailyMeal.dinner_state <= 0)
+                            pause_meal.dinner.Add(born_id.meal_id);
+                    }
+                    #endregion
+
+                    #region 開始
+                    var start_DailyMeal = db0.DailyMeal.Where(x => x.born_id == born_id.born_id &
+                                                                   x.product_type == (int)ProdyctType.PostnatalMeal &
+                                                                  (x.breakfast_state > 0 || x.lunch_state > 0 || x.dinner_state > 0))
+                                                       .OrderBy(x => x.meal_day).FirstOrDefault();
+                    if (start_DailyMeal.meal_day == parm.meal_day)//開始用餐日期為當日
+                    {
+                        if (start_DailyMeal.breakfast_state > 0)
                         {
                             start_meal.breakfast.Add(born_id.meal_id);
                         }
-                        else if (getDMItem.lunch_state > 0)
+                        else if (start_DailyMeal.lunch_state > 0)
                         {
                             start_meal.lunch.Add(born_id.meal_id);
+
                         }
-                        else if (getDMItem.dinner_state > 0)
+                        else if (start_DailyMeal.dinner_state > 0)
                         {
                             start_meal.dinner.Add(born_id.meal_id);
                         }
                     }
                     #endregion
-                }
 
+                    #region 結束
+                    var end_DailyMeal = db0.DailyMeal.Where(x => x.born_id == born_id.born_id &
+                                            x.product_type == (int)ProdyctType.PostnatalMeal &
+                                            (x.breakfast_state > 0 || x.lunch_state > 0 || x.dinner_state > 0))
+                                            .OrderByDescending(x => x.meal_day).FirstOrDefault();
+                    if (end_DailyMeal.meal_day == parm.meal_day)//結束用餐日期為當日
+                    {
+                        if (end_DailyMeal.dinner_state > 0)
+                        {
+                            end_meal.dinner.Add(born_id.meal_id);
+                        }
+                        else if (end_DailyMeal.lunch_state > 0)
+                        {
+                            end_meal.lunch.Add(born_id.meal_id);
+                        }
+                        else if (end_DailyMeal.breakfast_state > 0)
+                        {
+                            end_meal.breakfast.Add(born_id.meal_id);
+                        }
+                    }
+                    #endregion
+                }
+                matters.pause_meal = pause_meal;
+                matters.start_meal = start_meal;
+                matters.end_meal = end_meal;
+                
 
                 //取得今天用餐排程
                 var getDailyMeal = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day && x.product_type == (int)ProdyctType.PostnatalMeal).OrderBy(x => x.meal_id).ToList();
@@ -2045,7 +2101,7 @@ namespace DotWeb.Api
                     }
                 }
 
-
+                data.matters = matters;
                 data.special_diet = special_diet;
                 data.breakfast = breakfast;
                 data.lunch = lunch;
