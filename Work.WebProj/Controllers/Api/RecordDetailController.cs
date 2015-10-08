@@ -214,7 +214,7 @@ namespace DotWeb.Api
                     md.real_estimate_dinner = md.estimate_dinner;
                 }
                 #endregion
-                if (md.product_type == (int)ProdyctType.PostnatalMeal || md.product_type == (int)ProdyctType.Tryout)
+                if (md.product_type == (int)ProdyctType.PostnatalMeal)
                 {
                     if (md.meal_id == null)
                     {

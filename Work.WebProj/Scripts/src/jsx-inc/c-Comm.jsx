@@ -391,7 +391,8 @@ var InputDate = React.createClass({
 			onChange:null,
 			field_name:null,
 			required:false,
-			disabled:false
+			disabled:false,
+			ver:1
 		};
 	},
 	componentDidMount:function(){
@@ -414,8 +415,24 @@ var InputDate = React.createClass({
 		this.props.onChange(this.props.field_name,e);
 	},
 	render:function(){
-
-		return (
+		var out_html=null;
+		if(this.props.ver==1){
+			out_html=(
+			<div>
+				<input 
+					type="date" 
+					className="form-control datetimepicker"
+					id={this.props.id}
+					name={this.props.field_name}
+					value={this.props.value!=undefined ? moment(this.props.value).format('YYYY-MM-DD'):''}
+					onChange={this.onChange}
+					required={this.props.required}
+					disabled={this.props.disabled} />
+					<i className="fa-calendar form-control-feedback"></i>
+			</div>
+				);
+		}else if(this.props.ver==2){
+		out_html=(
 			<div>
 				<input 
 					type="date" 
@@ -428,7 +445,10 @@ var InputDate = React.createClass({
 					disabled={this.props.disabled} />
 					<i className="fa-calendar form-control-feedback"></i>
 			</div>
-			);
+				);
+		}
+
+		return out_html;
 		}
 });
 

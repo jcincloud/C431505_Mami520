@@ -2065,6 +2065,16 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        public async Task<IHttpActionResult> GetInsertRoles()
+        {
+            var system_roles = await roleManager.Roles.Where(x => x.Name != "Admins").ToListAsync();
+            IList<RoleArray> obj = new List<RoleArray>();
+            foreach (var role in system_roles)
+            {
+                obj.Add(new RoleArray() { role_id = role.Id, role_name = role.Name, role_use = false });
+            }
+            return Ok(obj);
+        }
     }
     #region Parm
     public class ParmChangeMealID

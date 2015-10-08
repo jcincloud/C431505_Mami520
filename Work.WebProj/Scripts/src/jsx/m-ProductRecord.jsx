@@ -352,14 +352,14 @@ var GirdForm = React.createClass({
 									<div className="form-group">
 										<label>訂單日期</label> { }										
 											<span className="has-feedback">
-												<InputDate id="start_date" 
+												<InputDate id="start_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="start_date" 
 												value={searchData.start_date} />
 											</span> { }
 										<label>~</label> { }
 											<span className="has-feedback">
-												<InputDate id="end_date" 
+												<InputDate id="end_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="end_date" 
 												value={searchData.end_date} />
@@ -999,7 +999,7 @@ var SubForm = React.createClass({
 				fSD.subtotal=fSD.qty*obj.price;
 			}
 		});
-		if(fSD.product_type==2 || fSD.product_type==1){//如果產品為試吃就儲存用餐編號
+		if(fSD.product_type==2){//如果產品為月子餐就儲存用餐編號
 			fSD.meal_id=this.props.meal_id;
 		}
 		this.setState({isShowProductSelect:false,fieldSubData:fSD});
@@ -1177,9 +1177,9 @@ var SubForm = React.createClass({
 						</div>
 				</MdoalMealidSelect>;
 		}
-		//試吃及月子餐用的用餐編號
+		//月子餐用的用餐編號
 		var meal_id_html=null;
-		if(fieldSubData.product_type==2 || fieldSubData.product_type==1){
+		if(fieldSubData.product_type==2){
 			meal_id_html=(
 				<div className="form-group">
 					{mealid_select_out_html}

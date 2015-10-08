@@ -180,7 +180,7 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{}});
+		this.setState({edit_type:1,fieldData:{is_breakfast:true,is_lunch:true,is_dinner:true}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})

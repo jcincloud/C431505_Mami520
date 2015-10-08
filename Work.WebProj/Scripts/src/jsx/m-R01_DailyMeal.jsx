@@ -192,7 +192,7 @@ var GirdForm = React.createClass({
 								<div className="form-group">
 									<label for="">選擇日期</label>
 									<span className="has-feedback">
-										<InputDate id="meal_day" 
+										<InputDate id="meal_day" ver={2}
 										onChange={this.changeGDValue} 
 										field_name="meal_day" 
 										value={searchData.meal_day} />

@@ -321,14 +321,14 @@ var GirdForm = React.createClass({
 							            <br />
 					                    <label for="">預計電訪日期</label>
 										<span className="has-feedback">
-											<InputDate id="start_date" 
+											<InputDate id="start_date" ver={2}
 											onChange={this.changeGDValue} 
 											field_name="start_date" 
 											value={searchData.start_date} />
 										</span> { }
 										<label>~</label> { }
 										<span className="has-feedback">
-											<InputDate id="end_date" 
+											<InputDate id="end_date" ver={2}
 											onChange={this.changeGDValue} 
 											field_name="end_date" 
 											value={searchData.end_date} />
