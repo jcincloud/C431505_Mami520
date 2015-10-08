@@ -341,10 +341,10 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1">用餐編號</th>
-									<th className="col-xs-1">媽媽姓名</th>
-									<th className="col-xs-1">電話1</th>
-									<th className="col-xs-1">電話2</th>
+									<th className="col-xs-2">用餐編號</th>
+									<th className="col-xs-2">媽媽姓名</th>
+									<th className="col-xs-3">電話1</th>
+									<th className="col-xs-3">電話2</th>
 								</tr>
 							</thead>
 							<tbody>

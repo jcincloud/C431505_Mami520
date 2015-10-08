@@ -469,9 +469,14 @@ th.ordered, th.ordered[class*="col-"] {
       content:"\f00c";
       background:lighten($brand-primary,46%);
     }
-    &:disabled + span:before {
-      background:#ddd;
-      border:1px solid #ccc;
+    &:disabled + span {
+      color: $text-muted;
+      &:before{
+        color:#ADADAD;
+        text-shadow: 1px 1px 0 #fff;
+        background:#ddd;
+        border:1px solid #ccc;
+      }
     }
   }
 }
