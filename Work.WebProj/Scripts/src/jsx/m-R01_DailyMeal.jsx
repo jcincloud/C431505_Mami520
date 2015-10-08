@@ -5,6 +5,10 @@ var GirdForm = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
+			special_diet:[],
+			breakfast:{dishs:[],isHaveData:false},
+			lunch:{dishs:[],isHaveData:false},
+			dinner:{dishs:[],isHaveData:false},
 			searchData:{meal_day:format_Date(getNowDate())}//預設帶今天
 		};  
 	},
@@ -30,28 +34,7 @@ var GirdForm = React.createClass({
 		jqGet(this.props.apiPathName,this.state.searchData)
 		.done(function(data, textStatus, jqXHRdata) {
 			console.log(data);
-			this.setState({fieldData:data});
-		}.bind(this))
-		.fail(function(jqXHR, textStatus, errorThrown) {
-			showAjaxError(errorThrown);
-		});
-	},
-	insertType:function(){
-		this.setState({edit_type:1,fieldData:{}});
-	},
-	updateType:function(id){
-		jqGet(this.props.apiPathName,{id:id})
-		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:2,fieldData:data.data});
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			showAjaxError(errorThrown);
-		});
-	},
-	noneType:function(){
-		this.gridData(0)
-		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:0,gridData:data});
+			this.setState({breakfast:data.breakfast,lunch:data.lunch,dinner:data.dinner,special_diet:data.special_diet});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -96,28 +79,131 @@ var GirdForm = React.createClass({
 	render: function() {
 		var outHtml = null;
 		var searchData=this.state.searchData;
-		var fieldData=this.state.fieldData;
+		//沒有排餐顯示之html
+		var no_data_html=				
+				(<tr>
+					<td colSpan="2">
+						<div className="alert alert-default text-warning">
+			                <i className="fa-exclamation-triangle"></i> 目前尚無安排菜單
+			            </div>
+               		</td>
+				</tr>);
+
+		var breakfast=[];
+		if(this.state.breakfast.isHaveData){
+	        this.state.breakfast.dishs.map(function(itemData,i) {                                           
+	            var dishs_out_html = 
+	                <tr key={'breakfast-'+itemData.constitute_id}>
+	                    <td><strong>{itemData.dish_name}</strong></td>
+	                    <td>
+			            {
+			                itemData.meal_diet.map(function(meal_diet,i) {                                           
+			                    return (
+                                    <span key={meal_diet.dietary_need_id}>
+                                    	{'  '+meal_diet.require_name+'('+meal_diet.count+')：'}
+			                        {
+			                            meal_diet.meal_id.map(function(meal_id,i) {                                           
+			                                return (
+			                                	<span>
+			                                		<span className="label label-warning">{meal_id}</span> { }
+			                                	</span>);
+			                            }.bind(this))
+			                        }
+                                    </span>);
+			                }.bind(this))
+			            }	                    
+	                    </td>                          	
+	                </tr>;
+	            breakfast.push(dishs_out_html);
+	        }.bind(this))
+		}else{
+			breakfast.push(no_data_html);
+		}
+		var lunch=[];
+		if(this.state.lunch.isHaveData){
+	        this.state.lunch.dishs.map(function(itemData,i) {                                           
+	            var dishs_out_html = 
+	                <tr key={'lunch-'+itemData.constitute_id}>
+	                    <td><strong>{itemData.dish_name}</strong></td>
+	                    <td>
+			            {
+			                itemData.meal_diet.map(function(meal_diet,i) {                                           
+			                    return (
+                                    <span key={meal_diet.dietary_need_id}>
+                                    	{'  '+meal_diet.require_name+'('+meal_diet.count+')：'}
+			                        {
+			                            meal_diet.meal_id.map(function(meal_id,i) {                                           
+			                                return (
+			                                	<span>
+			                                		<span className="label label-warning">{meal_id}</span> { }
+			                                	</span>);
+			                            }.bind(this))
+			                        }
+                                    </span>);
+			                }.bind(this))
+			            }	                    
+	                    </td>                          	
+	                </tr>;
+	            lunch.push(dishs_out_html);
+	        }.bind(this))
+		}else{
+			lunch.push(no_data_html);
+		}
+
+		var dinner=[];
+		if(this.state.dinner.isHaveData){
+	        this.state.dinner.dishs.map(function(itemData,i) {                                           
+	            var dishs_out_html = 
+	                <tr key={'dinner-'+itemData.constitute_id}>
+	                    <td><strong>{itemData.dish_name}</strong></td>
+	                    <td>
+			            {
+			                itemData.meal_diet.map(function(meal_diet,i) {                                           
+			                    return (
+                                    <span key={meal_diet.dietary_need_id}>
+                                    	{'  '+meal_diet.require_name+'('+meal_diet.count+')：'}
+			                        {
+			                            meal_diet.meal_id.map(function(meal_id,i) {                                           
+			                                return (
+			                                	<span>
+			                                		<span className="label label-warning">{meal_id}</span> { }
+			                                	</span>);
+			                            }.bind(this))
+			                        }
+                                    </span>);
+			                }.bind(this))
+			            }	                    
+	                    </td>                          	
+	                </tr>;
+	            dinner.push(dishs_out_html);
+	        }.bind(this))
+		}else{
+			dinner.push(no_data_html);
+		}
 			outHtml =
 			(
 			<div>
 			    <h3 className="title">{this.props.Caption}</h3>
 				{/*---搜尋start---*/}
-				<div className="table-header">
-					<div className="table-filter">
-						<div className="form-inline">
-							<div className="form-group">
-								<label for="">選擇日期</label>
-								<span className="has-feedback">
-									<InputDate id="meal_day" 
-									onChange={this.changeGDValue} 
-									field_name="meal_day" 
-									value={searchData.meal_day} />
-								</span> { }
+				<form onSubmit={this.handleSearch}>
+					<div className="table-header">
+						<div className="table-filter">
+							<div className="form-inline">
+								<div className="form-group">
+									<label for="">選擇日期</label>
+									<span className="has-feedback">
+										<InputDate id="meal_day" 
+										onChange={this.changeGDValue} 
+										field_name="meal_day" 
+										value={searchData.meal_day} />
+									</span> { }
+								</div>
+								<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button> { }
+								<button className="btn-success btn-sm" type="button"><i className="fa-print"></i> 列印</button>
 							</div>
-							<button className="btn-success btn-sm"><i className="fa-print"></i> 列印</button>
 						</div>
 					</div>
-				</div>
+				</form>
 				<hr />
 				<h4 className="title">{searchData.meal_day}</h4>
 				{/*---搜尋end---*/}
@@ -142,84 +228,51 @@ var GirdForm = React.createClass({
 						<td><strong>特殊飲食</strong></td>
 					</tr>
 					<tr>
-						<td>去油(2)：<span className="label label-danger">A001</span>　清淡(2)：<span className="label label-danger">A001</span>　蛋奶素(2)：<span className="label label-danger">A001</span></td>
+						<td>
+						{
+                            this.state.special_diet.map(function(itemData,i) {                                           
+                                var special_out_html = 
+                                    <span key={itemData.dietary_need_id}>
+                                    	{'  '+itemData.require_name+'('+itemData.count+')：'}
+			                        {
+			                            itemData.meal_id.map(function(meal_id,i) {                                           
+			                                return (
+			                                	<span>
+			                                		<span className="label label-danger">{meal_id}</span> { }
+			                                	</span>);
+			                            }.bind(this))
+			                        }
+                                    </span>;
+                                return special_out_html;
+                            }.bind(this))
+                        }
+						</td>
 					</tr>
 				</table>
 				<hr />
-				<MealDiet ref="Breakfast"
-				MealDietData={fieldData.breakfast}
-				MealName={'早餐'} />
+				<table>
+					<tr className="warning">
+						<td colSpan="2"><strong>早餐</strong></td>
+					</tr>
+					<tbody>{breakfast}</tbody>
+				</table>
 				<hr />
-				<MealDiet ref="Lunch"
-				MealDietData={fieldData.lunch}
-				MealName={'午餐'} />
+				<table>
+					<tr className="warning">
+						<td colSpan="2"><strong>午餐</strong></td>
+					</tr>
+					<tbody>{lunch}</tbody>
+				</table>
 				<hr />
-				<MealDiet ref="Dinner"
-				MealDietData={fieldData.dinner}
-				MealName={'晚餐'} />
+				<table>
+					<tr className="warning">
+						<td colSpan="2"><strong>晚餐</strong></td>
+					</tr>
+					<tbody>{dinner}</tbody>
+				</table>
 				{/*---報表end---*/}
 			</div>
 			);
-		return outHtml;
-	}
-});
-
-//每日菜單-早餐、午餐、晚餐
-var MealDiet = React.createClass({
-	mixins: [React.addons.LinkedStateMixin], 
-	getInitialState: function() {  
-		return {
-		};  
-	},
-	getDefaultProps:function(){
-		return{	
-			MealName:null,
-			MealDietData:{}
-		};
-	},	
-	componentDidMount:function(){
-		console.log(this.props.MealDietData);
-	},
-	shouldComponentUpdate:function(nextProps,nextState){
-		return true;
-	},
-	render: function() {
-		var outHtml = null;
-		var MealDietData=this.props.MealDietData;
-		if(MealDietData.isHaveData){//先判斷有無資料
-			outHtml =
-			(
-			<div>
-				<table>
-					<tr className="warning">
-						<td colSpan="2"><strong>{this.props.MealName}</strong></td>
-					</tr>
-					<tr>
-						<td><strong>麻油雞</strong></td>
-						<td>不薑(2)：<span className="label label-warning">A001</span>　不酒(2)：<span className="label label-warning">A001</span></td>
-					</tr>
-				</table>
-			</div>
-			);
-		}else{
-			outHtml =
-			(
-			<div>
-				<table>
-					<tr className="warning">
-						<td colSpan="2"><strong>{this.props.MealName}</strong></td>
-					</tr>
-					<tr>
-						<td>
-							<div className="alert alert-default text-warning">
-			                    <i className="fa-exclamation-triangle"></i> 目前尚無安排菜單
-			                </div>
-                		</td>
-					</tr>
-				</table>
-			</div>
-			);
-		}
 		return outHtml;
 	}
 });

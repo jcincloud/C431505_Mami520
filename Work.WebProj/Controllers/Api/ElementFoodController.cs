@@ -30,7 +30,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.ElementFood
-                    .OrderByDescending(x => x.sort).AsQueryable();
+                    .OrderByDescending(x => new { c_sort = x.All_Category_L2.sort, x.sort }).AsQueryable();
 
 
                 if (q.element_name != null)
