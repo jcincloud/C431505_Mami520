@@ -1007,21 +1007,4 @@ namespace DotWeb.Areas.Base.Controllers
             }
         }
     }
-    public class PQList
-    {
-        public int p_id { get; set; }
-        public decimal qty { get; set; }
-    }
-    public class SalesList
-    {
-        public string Name { get; set; }
-        public IList<ProductList> items { get; set; }
-    }
-    public class ProductList
-    {
-        public int product_id { get; set; }
-        public string product_name { get; set; }
-        public bool have { get; set; }
-        public decimal Sum { get; set; }
-    }
 }

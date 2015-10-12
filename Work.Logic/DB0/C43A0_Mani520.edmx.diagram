@@ -72,13 +72,13 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayable_Customer" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="26.125" PointY="7.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMeal" Width="1.5" PointX="28.375" PointY="9.875" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="26.125" PointY="7.375" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMeal" Width="1.5" PointX="28.375" PointY="9.875" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

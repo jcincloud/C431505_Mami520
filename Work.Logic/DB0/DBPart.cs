@@ -303,6 +303,7 @@ namespace ProcCore.Business.DB0
         public string tw_address_2 { get; set; }
         //用餐排程用
         public bool isMealStart { get; set; }
+        //public int meal_select_state { get; set; }
     }
     public partial class DailyMealChangeRecord
     {

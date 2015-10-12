@@ -659,6 +659,7 @@
           <Property Name="real_dinner" Type="int" />
           <Property Name="meal_memo" Type="nvarchar" MaxLength="256" />
           <Property Name="is_release" Type="bit" />
+          <Property Name="tryout_mealtype" Type="varchar" MaxLength="50" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="i_InsertDeptID" Type="int" />
@@ -1670,10 +1671,19 @@
             <End Role="AccountsPayable" EntitySet="AccountsPayable" />
             <End Role="AccountsPayableDetail" EntitySet="AccountsPayableDetail" />
           </AssociationSet>
+          <EntitySet Name="DailyMeal" EntityType="C43A0_Mani520Model.DailyMeal" />
+          <AssociationSet Name="FK_DailyMealChangeRecord_DailyMeal" Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal">
+            <End Role="DailyMeal" EntitySet="DailyMeal" />
+            <End Role="DailyMealChangeRecord" EntitySet="DailyMealChangeRecord" />
+          </AssociationSet>
           <EntitySet Name="RecordDetail" EntityType="C43A0_Mani520Model.RecordDetail" />
           <AssociationSet Name="FK_RecordDetail_CustomerBorn" Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn">
             <End Role="CustomerBorn" EntitySet="CustomerBorn" />
             <End Role="RecordDetail" EntitySet="RecordDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DailyMeal_RecordDetail" Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail">
+            <End Role="RecordDetail" EntitySet="RecordDetail" />
+            <End Role="DailyMeal" EntitySet="DailyMeal" />
           </AssociationSet>
           <AssociationSet Name="FK_RecordDetail_Product" Association="C43A0_Mani520Model.FK_RecordDetail_Product">
             <End Role="Product" EntitySet="Product" />
@@ -1682,15 +1692,6 @@
           <AssociationSet Name="FK_RecordDetail_ProductRecord" Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord">
             <End Role="ProductRecord" EntitySet="ProductRecord" />
             <End Role="RecordDetail" EntitySet="RecordDetail" />
-          </AssociationSet>
-          <EntitySet Name="DailyMeal" EntityType="C43A0_Mani520Model.DailyMeal" />
-          <AssociationSet Name="FK_DailyMeal_RecordDetail" Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail">
-            <End Role="RecordDetail" EntitySet="RecordDetail" />
-            <End Role="DailyMeal" EntitySet="DailyMeal" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DailyMealChangeRecord_DailyMeal" Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal">
-            <End Role="DailyMeal" EntitySet="DailyMeal" />
-            <End Role="DailyMealChangeRecord" EntitySet="DailyMealChangeRecord" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="MealID">
@@ -2600,6 +2601,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DailyMeal">
+          <Key>
+            <PropertyRef Name="daily_meal_id" />
+          </Key>
+          <Property Name="daily_meal_id" Type="Int32" Nullable="false" />
+          <Property Name="record_deatil_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="born_id" Type="Int32" Nullable="false" />
+          <Property Name="product_type" Type="Int32" Nullable="false" />
+          <Property Name="meal_day" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="breakfast_state" Type="Int32" Nullable="false" />
+          <Property Name="lunch_state" Type="Int32" Nullable="false" />
+          <Property Name="dinner_state" Type="Int32" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="DailyMealChangeRecord" Relationship="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" FromRole="DailyMeal" ToRole="DailyMealChangeRecord" />
+          <Property Name="meal_id" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="DailyMeal" ToRole="RecordDetail" />
+        </EntityType>
+        <Association Name="FK_DailyMealChangeRecord_DailyMeal">
+          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.DailyMealChangeRecord" Role="DailyMealChangeRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DailyMeal">
+              <PropertyRef Name="daily_meal_id" />
+            </Principal>
+            <Dependent Role="DailyMealChangeRecord">
+              <PropertyRef Name="daily_meal_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="RecordDetail">
           <Key>
             <PropertyRef Name="record_deatil_id" />
@@ -2628,11 +2666,14 @@
           <Property Name="real_estimate_breakfast" Type="Int32" />
           <Property Name="real_estimate_lunch" Type="Int32" />
           <Property Name="real_estimate_dinner" Type="Int32" />
+          <Property Name="real_meal_start" Type="DateTime" Precision="0" />
+          <Property Name="real_meal_end" Type="DateTime" Precision="0" />
           <Property Name="real_breakfast" Type="Int32" />
           <Property Name="real_lunch" Type="Int32" />
           <Property Name="real_dinner" Type="Int32" />
           <Property Name="meal_memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="is_release" Type="Boolean" />
+          <Property Name="tryout_mealtype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="i_Hide" Type="Boolean" Nullable="false" />
           <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="i_InsertDeptID" Type="Int32" />
@@ -2642,11 +2683,9 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" FromRole="RecordDetail" ToRole="CustomerBorn" />
+          <NavigationProperty Name="DailyMeal" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="RecordDetail" ToRole="DailyMeal" />
           <NavigationProperty Name="Product" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="RecordDetail" ToRole="Product" />
           <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="RecordDetail" ToRole="ProductRecord" />
-          <NavigationProperty Name="DailyMeal" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="RecordDetail" ToRole="DailyMeal" />
-          <Property Name="real_meal_start" Type="DateTime" Precision="0" />
-          <Property Name="real_meal_end" Type="DateTime" Precision="0" />
         </EntityType>
         <Association Name="FK_RecordDetail_CustomerBorn">
           <End Type="C43A0_Mani520Model.CustomerBorn" Role="CustomerBorn" Multiplicity="1" />
@@ -2657,6 +2696,18 @@
             </Principal>
             <Dependent Role="RecordDetail">
               <PropertyRef Name="born_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DailyMeal_RecordDetail">
+          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RecordDetail">
+              <PropertyRef Name="record_deatil_id" />
+            </Principal>
+            <Dependent Role="DailyMeal">
+              <PropertyRef Name="record_deatil_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2681,55 +2732,6 @@
             </Principal>
             <Dependent Role="RecordDetail">
               <PropertyRef Name="product_record_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="DailyMeal">
-          <Key>
-            <PropertyRef Name="daily_meal_id" />
-          </Key>
-          <Property Name="daily_meal_id" Type="Int32" Nullable="false" />
-          <Property Name="record_deatil_id" Type="Int32" Nullable="false" />
-          <Property Name="customer_id" Type="Int32" Nullable="false" />
-          <Property Name="born_id" Type="Int32" Nullable="false" />
-          <Property Name="product_type" Type="Int32" Nullable="false" />
-          <Property Name="meal_day" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="breakfast_state" Type="Int32" Nullable="false" />
-          <Property Name="lunch_state" Type="Int32" Nullable="false" />
-          <Property Name="dinner_state" Type="Int32" Nullable="false" />
-          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
-          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_InsertDeptID" Type="Int32" />
-          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_UpdateDeptID" Type="Int32" />
-          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="DailyMeal" ToRole="RecordDetail" />
-          <NavigationProperty Name="DailyMealChangeRecord" Relationship="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" FromRole="DailyMeal" ToRole="DailyMealChangeRecord" />
-          <Property Name="meal_id" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <Association Name="FK_DailyMeal_RecordDetail">
-          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="1" />
-          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RecordDetail">
-              <PropertyRef Name="record_deatil_id" />
-            </Principal>
-            <Dependent Role="DailyMeal">
-              <PropertyRef Name="record_deatil_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DailyMealChangeRecord_DailyMeal">
-          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="1" />
-          <End Type="C43A0_Mani520Model.DailyMealChangeRecord" Role="DailyMealChangeRecord" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DailyMeal">
-              <PropertyRef Name="daily_meal_id" />
-            </Principal>
-            <Dependent Role="DailyMealChangeRecord">
-              <PropertyRef Name="daily_meal_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3427,11 +3429,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RecordDetail">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.RecordDetail">
-              <MappingFragment StoreEntitySet="RecordDetail">
-                <ScalarProperty Name="real_meal_end" ColumnName="real_meal_end" />
-                <ScalarProperty Name="real_meal_start" ColumnName="real_meal_start" />
+          <EntitySetMapping Name="DailyMeal">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMeal">
+              <MappingFragment StoreEntitySet="DailyMeal">
+                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3440,11 +3441,37 @@
                 <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
                 <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
                 <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="dinner_state" ColumnName="dinner_state" />
+                <ScalarProperty Name="lunch_state" ColumnName="lunch_state" />
+                <ScalarProperty Name="breakfast_state" ColumnName="breakfast_state" />
+                <ScalarProperty Name="meal_day" ColumnName="meal_day" />
+                <ScalarProperty Name="product_type" ColumnName="product_type" />
+                <ScalarProperty Name="born_id" ColumnName="born_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="record_deatil_id" ColumnName="record_deatil_id" />
+                <ScalarProperty Name="daily_meal_id" ColumnName="daily_meal_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecordDetail">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.RecordDetail">
+              <MappingFragment StoreEntitySet="RecordDetail">
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="tryout_mealtype" ColumnName="tryout_mealtype" />
                 <ScalarProperty Name="is_release" ColumnName="is_release" />
                 <ScalarProperty Name="meal_memo" ColumnName="meal_memo" />
                 <ScalarProperty Name="real_dinner" ColumnName="real_dinner" />
                 <ScalarProperty Name="real_lunch" ColumnName="real_lunch" />
                 <ScalarProperty Name="real_breakfast" ColumnName="real_breakfast" />
+                <ScalarProperty Name="real_meal_end" ColumnName="real_meal_end" />
+                <ScalarProperty Name="real_meal_start" ColumnName="real_meal_start" />
                 <ScalarProperty Name="real_estimate_dinner" ColumnName="real_estimate_dinner" />
                 <ScalarProperty Name="real_estimate_lunch" ColumnName="real_estimate_lunch" />
                 <ScalarProperty Name="real_estimate_breakfast" ColumnName="real_estimate_breakfast" />
@@ -3469,30 +3496,6 @@
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="product_record_id" ColumnName="product_record_id" />
                 <ScalarProperty Name="record_deatil_id" ColumnName="record_deatil_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DailyMeal">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMeal">
-              <MappingFragment StoreEntitySet="DailyMeal">
-                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
-                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
-                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
-                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
-                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
-                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
-                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
-                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
-                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="dinner_state" ColumnName="dinner_state" />
-                <ScalarProperty Name="lunch_state" ColumnName="lunch_state" />
-                <ScalarProperty Name="breakfast_state" ColumnName="breakfast_state" />
-                <ScalarProperty Name="meal_day" ColumnName="meal_day" />
-                <ScalarProperty Name="product_type" ColumnName="product_type" />
-                <ScalarProperty Name="born_id" ColumnName="born_id" />
-                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-                <ScalarProperty Name="record_deatil_id" ColumnName="record_deatil_id" />
-                <ScalarProperty Name="daily_meal_id" ColumnName="daily_meal_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

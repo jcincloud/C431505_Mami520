@@ -759,7 +759,7 @@ var SubForm = React.createClass({
 	getInitialState: function() {  
 		return {
 			gridSubData:[],
-			fieldSubData:{},
+			fieldSubData:{tryout_array:[]},
 			searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
 			edit_sub_type:0,//預設皆為新增狀態
 			checkAll:false,
@@ -802,14 +802,15 @@ var SubForm = React.createClass({
 
 		e.preventDefault();
 		var fieldSubData=this.state.fieldSubData;
+
 		if(fieldSubData.product_id==null || fieldSubData.product_id==undefined){
 			tosMessage(gb_title_from_invalid,'未選擇產品!!',3);
 			return;
 		}
 		if(fieldSubData.product_type==1){
-			fieldSubData.meal_end=fieldSubData.meal_start;
-			if(fieldSubData.estimate_breakfast==null && fieldSubData.estimate_lunch==null && fieldSubData.estimate_dinner==null){
-				tosMessage(gb_title_from_invalid,'產品為試吃時,請填寫試吃的用餐預計餐數!!',3);
+			//fieldSubData.meal_end=fieldSubData.meal_start;
+			if(!fieldSubData.tryout_array[0]['value'] && !fieldSubData.tryout_array[1]['value'] && !fieldSubData.tryout_array[2]['value']){
+				tosMessage(gb_title_from_invalid,'產品為試吃時,請選擇試吃的餐別!!',3);
 				return;
 			}
 		}
@@ -899,7 +900,12 @@ var SubForm = React.createClass({
 			customer_id:this.props.customer_id,
 			born_id:this.props.born_id,
 			qty:1,
-			subtotal:0
+			subtotal:0,
+			tryout_array:[
+			{id:1,name:'breakfast',name_c:'早餐',value:false},
+			{id:2,name:'lunch',name_c:'午餐',value:false},
+			{id:3,name:'dinner',name_c:'晚餐',value:false}
+			]
 		}});
 	},
 	updateSubType:function(id,e){
@@ -911,7 +917,18 @@ var SubForm = React.createClass({
 			//計算點數
 			data.data.estimate_count=MealCount(this.state.parm,data.data.estimate_breakfast,data.data.estimate_lunch,data.data.estimate_dinner);
 			data.data.real_count=MealCount(this.state.parm,data.data.real_breakfast,data.data.real_lunch,data.data.real_dinner);
-			
+			//試吃餐別
+			data.data.tryout_array=[
+			{id:1,name:'breakfast',name_c:'早餐',value:false},
+			{id:2,name:'lunch',name_c:'午餐',value:false},
+			{id:3,name:'dinner',name_c:'晚餐',value:false}
+			];
+			data.data.tryout_array.forEach(function(object, i){
+	        	if(object.name==data.data.tryout_mealtype){
+	  				object.value=true;
+	        	}
+    		})
+
 			this.setState({edit_sub_type:2,fieldSubData:data.data});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -1066,6 +1083,34 @@ var SubForm = React.createClass({
 
 		fieldSubData.meal_id=meal_id;
 		this.setState({isShowMealidSelect:false,fieldSubData:fieldSubData});
+	},
+	onMealChange:function(index,e){
+		var obj = this.state.fieldSubData;
+		var arrayObj=obj['tryout_array'];
+		var item = arrayObj[index];
+		item.value = !item.value;
+		
+		var array="";
+		if(obj.product_type==1){//如果為試吃,只能有一個餐別
+			array=item.name;
+			arrayObj.forEach(function(object, i){
+	        	if(item!=object){
+	  				object.value=false;
+	        	}
+    		})
+		}else{
+			arrayObj.forEach(function(object, i){
+	        	if(object.value){
+	        		if(array.length==0){
+						array=object.name;
+	        		}else{
+						array=array+","+object.name;
+	        		}	  				
+	        	}
+    		})
+		}
+		obj.tryout_mealtype=array;
+		this.setState({fieldSubData:obj});
 	},
 	render: function() {
 		var outHtml = null;
@@ -1340,7 +1385,7 @@ var SubForm = React.createClass({
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
 												required={fieldSubData.product_type==2 || fieldSubData.product_type==1}
-												disabled={(fieldSubData.product_type==1 || fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
+												disabled={(fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>
@@ -1353,7 +1398,7 @@ var SubForm = React.createClass({
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
 												required={fieldSubData.product_type==2}
-												disabled={(fieldSubData.product_type==1 || fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
+												disabled={(fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>
@@ -1378,7 +1423,6 @@ var SubForm = React.createClass({
 												value={fieldSubData.estimate_breakfast}
 												onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
 												required={fieldSubData.product_type==2}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
 												min="0"/>
 											</div>
 										</div>
@@ -1390,7 +1434,6 @@ var SubForm = React.createClass({
 												value={fieldSubData.estimate_lunch}
 												onChange={this.changeMealCount.bind(this,'estimate_lunch')}
 												required={fieldSubData.product_type==2}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
 												min="0"/>
 											</div>
 										</div>
@@ -1402,7 +1445,6 @@ var SubForm = React.createClass({
 												value={fieldSubData.estimate_dinner}
 												onChange={this.changeMealCount.bind(this,'estimate_dinner')}
 												required={fieldSubData.product_type==2}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
 												min="0"/>
 											</div>
 										</div>
@@ -1460,7 +1502,28 @@ var SubForm = React.createClass({
 											onChange={this.changeFDValue.bind(this,'real_count')}
 											min="0" disabled/>
 										</div>
-									</div>										
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">試吃餐別</label>
+										<div className="col-xs-6">
+										{
+											fieldSubData.tryout_array.map(function(itemData,i) {
+												var out_check = 							
+												<div className="checkbox-inline" key={itemData.id}>
+													<label>
+														<input  type="checkbox" 
+																checked={itemData.value}
+																onChange={this.onMealChange.bind(this,i)}
+														 />
+														{itemData.name_c}
+													</label>
+												</div>;
+												return out_check;
+
+											}.bind(this))
+										}
+										</div>
+									</div>							
 									<div className="form-group">
 										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
 										<div className="col-xs-6">

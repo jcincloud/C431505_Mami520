@@ -44,11 +44,14 @@ namespace ProcCore.Business.DB0
         public Nullable<int> real_estimate_breakfast { get; set; }
         public Nullable<int> real_estimate_lunch { get; set; }
         public Nullable<int> real_estimate_dinner { get; set; }
+        public Nullable<System.DateTime> real_meal_start { get; set; }
+        public Nullable<System.DateTime> real_meal_end { get; set; }
         public Nullable<int> real_breakfast { get; set; }
         public Nullable<int> real_lunch { get; set; }
         public Nullable<int> real_dinner { get; set; }
         public string meal_memo { get; set; }
         public Nullable<bool> is_release { get; set; }
+        public string tryout_mealtype { get; set; }
         public bool i_Hide { get; set; }
         public string i_InsertUserID { get; set; }
         public Nullable<int> i_InsertDeptID { get; set; }
@@ -57,16 +60,14 @@ namespace ProcCore.Business.DB0
         public Nullable<int> i_UpdateDeptID { get; set; }
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
-        public Nullable<System.DateTime> real_meal_start { get; set; }
-        public Nullable<System.DateTime> real_meal_end { get; set; }
     
     	[JsonIgnore]
         public virtual CustomerBorn CustomerBorn { get; set; }
     	[JsonIgnore]
+        public virtual ICollection<DailyMeal> DailyMeal { get; set; }
+    	[JsonIgnore]
         public virtual Product Product { get; set; }
     	[JsonIgnore]
         public virtual ProductRecord ProductRecord { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<DailyMeal> DailyMeal { get; set; }
     }
 }

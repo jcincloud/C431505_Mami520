@@ -143,6 +143,21 @@ namespace DotWeb.Api
                 item.estimate_lunch = md.estimate_lunch;
                 item.meal_memo = md.meal_memo;
 
+                if (item.product_type == (int)ProdyctType.Tryout)
+                {
+                    item.tryout_mealtype = md.tryout_mealtype;
+                    var getDailyMeal = db0.DailyMeal.Where(x => x.record_deatil_id == md.record_deatil_id).FirstOrDefault();
+                    if (getDailyMeal != null)
+                    {
+                        getDailyMeal.meal_day = (DateTime)md.meal_start;
+
+                        getDailyMeal.breakfast_state = md.tryout_mealtype == "breakfast" ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                        getDailyMeal.lunch_state = md.tryout_mealtype == "lunch" ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                        getDailyMeal.dinner_state = md.tryout_mealtype == "dinner" ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                    }
+
+                }
+
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
                 item.i_UpdateDeptID = this.departmentId;
@@ -168,7 +183,7 @@ namespace DotWeb.Api
             ResultInfo r = new ResultInfo();
 
             md.record_deatil_id = GetNewId(ProcCore.Business.CodeTable.RecordDetail);
-
+            string[] tmp_tryout_mealtype = md.tryout_mealtype.Split(',');
             if (!ModelState.IsValid)
             {
                 r.message = ModelStateErrorPack();
@@ -191,6 +206,10 @@ namespace DotWeb.Api
                         return Ok(r);
                     }
                 }
+                else
+                {
+                    md.tryout_mealtype = null;
+                }
                 if (md.product_type == (int)ProdyctType.PostnatalMeal)
                 {
                     //驗證一筆生產紀錄只能有一筆月子餐
@@ -212,10 +231,8 @@ namespace DotWeb.Api
                     md.real_estimate_breakfast = md.estimate_breakfast;
                     md.real_estimate_lunch = md.estimate_lunch;
                     md.real_estimate_dinner = md.estimate_dinner;
-                }
-                #endregion
-                if (md.product_type == (int)ProdyctType.PostnatalMeal)
-                {
+
+                    #region 檢查用餐編號
                     if (md.meal_id == null)
                     {
                         r.result = false;
@@ -226,7 +243,9 @@ namespace DotWeb.Api
                     getBorn.meal_id = md.meal_id;
                     //檢查用餐編號是否釋放過
                     md.is_release = false;
+                    #endregion
                 }
+                #endregion
 
 
                 #region 變更應收總額
@@ -263,14 +282,48 @@ namespace DotWeb.Api
                     DateTime start = DateTime.Parse(md.meal_start.ToString());
                     DateTime end = DateTime.Parse(md.meal_end.ToString());
 
+                    int breakfast_state = (int)MealState.CommonMeal;
+                    int lunch_state = (int)MealState.CommonMeal;
+                    int dinner_state = (int)MealState.CommonMeal;
+
+                    if (tmp_tryout_mealtype.Count() > 0)
+                    {
+                        breakfast_state = tmp_tryout_mealtype.Contains("breakfast") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                        lunch_state = tmp_tryout_mealtype.Contains("lunch") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                        dinner_state = tmp_tryout_mealtype.Contains("dinner") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                    }
+
+
                     var getDateSection = (end - start).TotalDays + 1;
                     for (int i = 0; i < getDateSection; i++)
                     {
                         var setDayObj = start.AddDays(i);
+
+                        #region 特殊排餐
+                        //if (md.meal_select_state == 1)
+                        //{//基數天用餐
+                        //    if (setDayObj.Day % 2 == 0)
+                        //    {
+                        //        breakfast_state = (int)MealState.CommonNotMeal;
+                        //        lunch_state = (int)MealState.CommonNotMeal;
+                        //        dinner_state = (int)MealState.CommonNotMeal;
+                        //    }
+                        //}
+                        //else if (md.meal_select_state == 2)
+                        //{//偶數天用餐
+                        //    if (setDayObj.Day % 2 != 0)
+                        //    {
+                        //        breakfast_state = (int)MealState.CommonNotMeal;
+                        //        lunch_state = (int)MealState.CommonNotMeal;
+                        //        dinner_state = (int)MealState.CommonNotMeal;
+                        //    }
+                        //}
+                        #endregion
+
                         #region use sql insert
                         StringBuilder sb = new StringBuilder();
                         Log.Write("Start...");
-                        var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID,product_type,meal_id) values({0},{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}');";
+                        var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID,product_type,meal_id,breakfast_state,lunch_state,dinner_state) values({0},{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}',{10},{11},{12});";
                         sb.AppendFormat(sqlt, GetNewId(ProcCore.Business.CodeTable.DailyMeal)
                                             , md.record_deatil_id
                                             , md.customer_id
@@ -280,7 +333,10 @@ namespace DotWeb.Api
                                             , DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")
                                             , this.departmentId
                                             , md.product_type
-                                            , md.meal_id);
+                                            , md.meal_id
+                                            , breakfast_state
+                                            , lunch_state
+                                            , dinner_state);
                         Log.Write("Save...");
                         var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
                         sb.Clear();
@@ -300,11 +356,11 @@ namespace DotWeb.Api
                     int breakfast_state = (int)MealState.CommonNotMeal;
                     int lunch_state = (int)MealState.CommonNotMeal;
                     int dinner_state = (int)MealState.CommonNotMeal;
-                    if (md.estimate_breakfast != null & md.estimate_breakfast > 0)
+                    if (md.tryout_mealtype == "breakfast")
                         breakfast_state = (int)MealState.CommonMeal;
-                    if (md.estimate_lunch != null & md.estimate_lunch > 0)
+                    if (md.tryout_mealtype == "lunch")
                         lunch_state = (int)MealState.CommonMeal;
-                    if (md.estimate_dinner != null & md.estimate_dinner > 0)
+                    if (md.tryout_mealtype == "dinner")
                         dinner_state = (int)MealState.CommonMeal;
 
                     #region use sql insert

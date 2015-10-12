@@ -62,7 +62,7 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<AccountsPayableDetail> AccountsPayableDetail { get; set; }
         public virtual DbSet<AccountsPayable> AccountsPayable { get; set; }
-        public virtual DbSet<RecordDetail> RecordDetail { get; set; }
         public virtual DbSet<DailyMeal> DailyMeal { get; set; }
+        public virtual DbSet<RecordDetail> RecordDetail { get; set; }
     }
 }

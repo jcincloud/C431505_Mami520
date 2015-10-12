@@ -131,12 +131,12 @@ namespace DotWeb.Api
 
             md.born_id = GetNewId(ProcCore.Business.CodeTable.CustomerBorn);
 
-            if (!ModelState.IsValid)
-            {
-                r.message = ModelStateErrorPack();
-                r.result = false;
-                return Ok(r);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    r.message = ModelStateErrorPack();
+            //    r.result = false;
+            //    return Ok(r);
+            //}
             try
             {
                 #region working a
