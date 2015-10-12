@@ -204,6 +204,7 @@
     <Compile Include="Areas\Active\Controllers\AccountsPayableController.cs" />
     <Compile Include="Areas\Active\Controllers\ProductController.cs" />
     <Compile Include="Areas\Active\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Base\Controllers\ExcelReportController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
     <Content Include="Areas\Active\Views\Product\Main.cshtml" />
@@ -236,6 +237,8 @@
     <Content Include="Areas\Active\Views\MealSchedule\Main.cshtml" />
     <Content Include="Areas\Active\Views\AccountsPayable\Main.cshtml" />
     <Content Include="Areas\Active\Views\Report\DailyMeal.cshtml" />
+    <Content Include="Areas\Active\Views\Report\ProductRecord.cshtml" />
+    <Content Include="Areas\Active\Views\Report\AccountsPayable.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />

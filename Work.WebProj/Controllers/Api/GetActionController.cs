@@ -1885,7 +1885,7 @@ namespace DotWeb.Api
                 matters.pause_meal = pause_meal;
                 matters.start_meal = start_meal;
                 matters.end_meal = end_meal;
-                
+
 
                 //取得今天用餐排程
                 var getDailyMeal = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day && x.product_type == (int)ProdyctType.PostnatalMeal).OrderBy(x => x.meal_id).ToList();
@@ -1894,10 +1894,9 @@ namespace DotWeb.Api
                 MealDiet breakfast = new MealDiet();
                 MealDiet lunch = new MealDiet();
                 MealDiet dinner = new MealDiet();
-                List<Dish> dishs = new List<Dish>();
-                breakfast.dishs = dishs;
-                lunch.dishs = dishs;
-                dinner.dishs = dishs;
+                breakfast.dishs = new List<Dish>();
+                lunch.dishs = new List<Dish>();
+                dinner.dishs = new List<Dish>();
 
                 #region 取得三餐菜單
                 //取得當日菜單
@@ -1905,7 +1904,7 @@ namespace DotWeb.Api
                 foreach (var DailyMenu_item in getDailyMenu)
                 {
                     #region 取得對應組合菜單
-                    dishs = new List<Dish>();
+                    List<Dish> dishs = new List<Dish>();
                     var constitute_id = db0.DailyMenuOfConstitute.Where(x => x.dail_menu_id == DailyMenu_item.dail_menu_id).Select(x => new { x.constitute_id, x.ConstituteFood.constitute_name }).ToList();
                     foreach (var id in constitute_id)
                     {

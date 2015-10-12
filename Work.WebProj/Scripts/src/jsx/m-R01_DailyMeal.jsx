@@ -80,7 +80,7 @@ var GirdForm = React.createClass({
 		$.extend(parms, this.state.searchData);
 
 		var url_parms = $.param(parms);
-		var print_url = gb_approot + 'Base/ExcelReport/downloadExcel_CustomerVisit?' + url_parms;
+		var print_url = gb_approot + 'Base/ExcelReport/downloadExcel_DailyMeal?' + url_parms;
 
 		this.setState({download_src:print_url});
 		return;
@@ -209,7 +209,7 @@ var GirdForm = React.createClass({
 									</span> { }
 								</div>
 								<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button> { }
-								<button className="btn-success btn-sm" type="button"><i className="fa-print"></i> 列印</button>
+								<button className="btn-success btn-sm" type="button" onClick={this.excelPrint}><i className="fa-print"></i> 列印</button>
 							</div>
 						</div>
 					</div>
@@ -365,6 +365,7 @@ var GirdForm = React.createClass({
 					<tbody>{dinner}</tbody>
 				</table>
 				{/*---報表end---*/}
+				<iframe src={this.state.download_src} style={ {visibility:'hidden',display:'none'} } />
 			</div>
 			);
 		return outHtml;
