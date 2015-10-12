@@ -2119,6 +2119,140 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
+        /// <summary>
+        /// R02 產品銷售紀錄報表
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        public async Task<IHttpActionResult> GetProductRecord([FromUri]ParmGetProductRecord parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                int page_size = 10;
+
+                var items = from x in db0.RecordDetail
+                            orderby x.ProductRecord.record_sn descending
+                            select (new R02_RecordDetail()
+                            {
+                                product_record_id = x.product_record_id,
+                                record_deatil_id = x.record_deatil_id,
+                                born_id = x.born_id,
+                                record_sn = x.ProductRecord.record_sn,
+                                customer_name = x.ProductRecord.Customer.customer_name,
+                                sell_day = x.sell_day,
+                                product_type = x.product_type,
+                                product_name = x.product_name,
+                                qty = x.qty,
+                                price = x.price,
+                                subtotal = x.subtotal,
+                                user_id = x.i_InsertUserID
+                            });
+
+                if (parm.start_date != null && parm.end_date != null)
+                {
+                    DateTime end = ((DateTime)parm.end_date).AddDays(1);
+                    items = items.Where(x => x.sell_day >= parm.start_date && x.sell_day < end);
+                }
+
+                if (parm.product_type != null)
+                {
+                    items = items.Where(x => x.product_type == parm.product_type);
+                }
+
+                if (parm.product_name != null)
+                {
+                    items = items.Where(x => x.product_name.Contains(parm.product_name));
+                }
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.record_sn.Contains(parm.word) ||
+                                             x.customer_name.Contains(parm.word));
+                }
+
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+                foreach (var item in resultItems)
+                {
+                    string User_Name = db0.AspNetUsers.FirstOrDefault(x => x.Id == item.user_id).user_name_c;
+                    item.user_name = User_Name;
+                }
+
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        /// <summary>
+        /// R03 應收帳款報表
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        public async Task<IHttpActionResult> GetAccountsPayable([FromUri]ParmGetAccountsPayable parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                int page_size = 10;
+
+                var items = from x in db0.AccountsPayable
+                            orderby x.record_sn descending
+                            select (new R03_AccountsPayable()
+                            {
+                                product_record_id = x.product_record_id,
+                                accounts_payable_id = x.accounts_payable_id,
+                                customer_id = x.customer_id,
+                                record_sn = x.ProductRecord.record_sn,
+                                customer_name = x.Customer.customer_name,
+                                record_day = x.ProductRecord.record_day,
+                                estimate_payable = x.estimate_payable
+                            });
+
+                if (parm.start_date != null && parm.end_date != null)
+                {
+                    DateTime end = ((DateTime)parm.end_date).AddDays(1);
+                    items = items.Where(x => x.record_day >= parm.start_date && x.record_day < end);
+                }
+
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.record_sn.Contains(parm.word) ||
+                                             x.customer_name.Contains(parm.word));
+                }
+
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+                foreach (var item in resultItems)
+                {
+                    item.total_money = db0.AccountsPayableDetail.Where(x => x.accounts_payable_id == item.accounts_payable_id).Sum(x => x.actual_receipt);
+                }
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
         #endregion
         public async Task<IHttpActionResult> GetInsertRoles()
         {
@@ -2320,6 +2454,54 @@ namespace DotWeb.Api
         public int constitute_id { get; set; }//組合菜單編號
         public string dish_name { get; set; }
         public List<Require> meal_diet { get; set; }
+    }
+    #endregion
+    #region R02
+    public class R02_RecordDetail
+    {
+        public int product_record_id { get; set; }
+        public int record_deatil_id { get; set; }
+        public int born_id { get; set; }
+        public string record_sn { get; set; }
+        public string customer_name { get; set; }
+        public DateTime sell_day { get; set; }
+        public int product_type { get; set; }
+        public string product_name { get; set; }
+        public double qty { get; set; }
+        public double price { get; set; }
+        public double subtotal { get; set; }
+        public string user_id { get; set; }
+        public string user_name { get; set; }
+    }
+    public class ParmGetProductRecord
+    {
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
+        public int? product_type { get; set; }
+        public string product_name { get; set; }
+        public string word { get; set; }
+        public int page { get; set; }
+    }
+    #endregion
+    #region R03
+    public class R03_AccountsPayable
+    {
+        public int product_record_id { get; set; }
+        public int accounts_payable_detail_id { get; set; }
+        public int accounts_payable_id { get; set; }
+        public int customer_id { get; set; }
+        public string record_sn { get; set; }
+        public string customer_name { get; set; }
+        public DateTime record_day { get; set; }
+        public double estimate_payable { get; set; }
+        public double total_money { get; set; }
+    }
+    public class ParmGetAccountsPayable
+    {
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
+        public string word { get; set; }
+        public int page { get; set; }
     }
     #endregion
 }

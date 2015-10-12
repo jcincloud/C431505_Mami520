@@ -57,66 +57,18 @@ namespace ProcCore.Business.DB0
 
     public static class CodeSheet
     {
-        public static List<i_Code> visitdetail_state = new List<i_Code>()
+        public static List<i_Code> product_type = new List<i_Code>()
         {
-            new i_Code{ Code = 0, Value = "無狀態", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "未拜訪", LangCode = "wait" },
-            new i_Code{ Code = 2, Value = "進行中", LangCode = "progress" },
-            new i_Code{ Code = 3, Value = "完成", LangCode = "finish" },
-            new i_Code{ Code = 4, Value = "暫停", LangCode = "pause" }
+            new i_Code{ Code = 1, Value = "試吃", LangCode = "wait" },
+            new i_Code{ Code = 2, Value = "月子餐", LangCode = "progress" },
+            new i_Code{ Code = 3, Value = "一般產品", LangCode = "finish" },
+            new i_Code{ Code = 4, Value = "折扣&退款", LangCode = "pause" }
         };
-        public static List<i_Code> customer_type = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "店家", LangCode = "store" },
-            new i_Code{ Code = 2, Value = "直客", LangCode = "straght" }
-        };
-        public static List<i_Code> channel_type = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "即飲", LangCode = "" },
-            new i_Code{ Code = 2, Value = "外帶", LangCode = "" }
-        };
-        public static List<i_Code> store_type = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "LS", LangCode = "" },
-            new i_Code{ Code = 2, Value = "Beer Store", LangCode = "" },
-            new i_Code{ Code = 3, Value = "Dancing", LangCode = "" },
-            new i_Code{ Code = 4, Value = "Bar", LangCode = "" },
-            new i_Code{ Code = 5, Value = "Cafe", LangCode = "" },
-            new i_Code{ Code = 6, Value = "Bistro", LangCode = "" },
-            new i_Code{ Code = 7, Value = "Restaurant", LangCode = "" }
-        };
-        public static List<i_Code> store_level = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "G", LangCode = "" },
-            new i_Code{ Code = 2, Value = "S", LangCode = "" },
-            new i_Code{ Code = 3, Value = "B", LangCode = "" }
-        };
-        public static List<i_Code> evaluate = new List<i_Code>()
-        {
-            new i_Code{ Code = null, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "A", LangCode = "" },
-            new i_Code{ Code = 2, Value = "B", LangCode = "" },
-            new i_Code{ Code = 3, Value = "C", LangCode = "" }
-        };
-        public static string GetStateVal(int code)
+
+        public static string GetProductTypeVal(int code)
         {
             string Val = string.Empty;
-            foreach (var item in visitdetail_state)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetCustomerTypeVal(int code)
-        {
-            string Val = string.Empty;
-            foreach (var item in customer_type)
+            foreach (var item in product_type)
             {
                 if (item.Code == code)
                     Val = item.Value;
@@ -124,46 +76,6 @@ namespace ProcCore.Business.DB0
             return Val;
         }
 
-        public static string GetChannelTypeVal(int code)
-        {
-            string Val = string.Empty;
-            foreach (var item in channel_type)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetStoreTypeVal(int code)
-        {
-            string Val = string.Empty;
-            foreach (var item in store_type)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetStoreLevelVal(int? code)
-        {
-            string Val = string.Empty;
-            foreach (var item in store_level)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetEvaluateVal(int? code)
-        {
-            string Val = string.Empty;
-            foreach (var item in evaluate)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
     }
     public class i_Code
     {

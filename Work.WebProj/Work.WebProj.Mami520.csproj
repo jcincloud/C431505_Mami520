@@ -744,6 +744,8 @@
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductRecord.js" />
     <Content Include="Scripts\build\func\m-R01_DailyMeal.js" />
+    <Content Include="Scripts\build\func\m-R02_ProductRecord.js" />
+    <Content Include="Scripts\build\func\m-R03_AccountsPayable.js" />
     <Content Include="Scripts\build\func\m-Roles.js" />
     <Content Include="Scripts\build\func\m-ScheduleDetail.js" />
     <Content Include="Scripts\build\func\m-SendMsg.js" />
@@ -1049,6 +1051,8 @@
     <Content Include="Scripts\src\jsx\m-GiftRecord.jsx" />
     <Content Include="Scripts\src\jsx\m-AccountsPayable.jsx" />
     <Content Include="Scripts\src\jsx\m-R01_DailyMeal.jsx" />
+    <Content Include="Scripts\src\jsx\m-R02_ProductRecord.jsx" />
+    <Content Include="Scripts\src\jsx\m-R03_AccountsPayable.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

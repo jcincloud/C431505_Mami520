@@ -653,41 +653,253 @@ namespace DotWeb.Areas.Base.Controllers
                 db0.Dispose();
             }
         }
+        public FileResult downloadExcel_ProductRecord(ParmGetProductRecord parm)
+        {
+            ExcelPackage excel = null;
+            MemoryStream fs = null;
+            var db0 = getDB0();
+            try
+            {
 
-        public void setCellBackgroundColor_MonthHead(ExcelWorksheet sheet, int row, int column)
-        {
-            sheet.Cells[row, column].Style.Font.Size = 14;//文字大小設定14
-            sheet.Cells[row, column].Style.Font.Name = "微軟正黑體";
-            sheet.Cells[row, column].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            sheet.Cells[row, column].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DeepSkyBlue);
-        }
-        public void setCellBackgroundColor_Green(ExcelWorksheet sheet, int row, int start_column, int end_column)
-        {
-            for (; start_column <= end_column; start_column++)
+                fs = new MemoryStream();
+                excel = new ExcelPackage(fs);
+                excel.Workbook.Worksheets.Add("ProductRecordData");
+                ExcelWorksheet sheet = excel.Workbook.Worksheets["ProductRecordData"];
+
+                sheet.View.TabSelected = true;
+                #region 取得產品銷售明細
+                string date_range = "(All)";
+                var items = from x in db0.RecordDetail
+                            orderby x.ProductRecord.record_sn descending
+                            select (new R02_RecordDetail()
+                            {
+                                product_record_id = x.product_record_id,
+                                record_deatil_id = x.record_deatil_id,
+                                born_id = x.born_id,
+                                record_sn = x.ProductRecord.record_sn,
+                                customer_name = x.ProductRecord.Customer.customer_name,
+                                sell_day = x.sell_day,
+                                product_type = x.product_type,
+                                product_name = x.product_name,
+                                qty = x.qty,
+                                price = x.price,
+                                subtotal = x.subtotal,
+                                user_id = x.i_InsertUserID
+                            });
+
+                if (parm.product_type != null)
+                {
+                    items = items.Where(x => x.product_type == parm.product_type);
+                }
+
+                if (parm.product_name != null)
+                {
+                    items = items.Where(x => x.product_name.Contains(parm.product_name));
+                }
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.record_sn.Contains(parm.word) ||
+                                             x.customer_name.Contains(parm.word));
+                }
+
+                if (parm.start_date != null && parm.end_date != null)
+                {
+                    DateTime end = ((DateTime)parm.end_date).AddDays(1);
+                    items = items.Where(x => x.sell_day >= parm.start_date && x.sell_day < end);
+                    date_range = "(" + ((DateTime)parm.start_date).ToString("yyyy/MM/dd") + "~" + ((DateTime)parm.end_date).ToString("yyyy/MM/dd") + ")";
+                }
+
+
+                var getPrintVal = items.ToList();
+                foreach (var item in getPrintVal)
+                {
+                    string User_Name = db0.AspNetUsers.FirstOrDefault(x => x.Id == item.user_id).user_name_c;
+                    item.user_name = User_Name;
+                }
+
+                #endregion
+
+
+                #region Excel Handle
+
+                int detail_row = 3;
+
+                #region 標題
+                sheet.Cells[1, 1].Value = "R02產品銷售明細報表" + date_range;
+                sheet.Cells[1, 1, 1, 9].Merge = true;
+                sheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                sheet.Cells[2, 1].Value = "[銷售單號]";
+                sheet.Cells[2, 2].Value = "[銷售日期]";
+                sheet.Cells[2, 3].Value = "[客戶名稱]";
+                sheet.Cells[2, 4].Value = "[產品分類]";
+                sheet.Cells[2, 5].Value = "[產品名稱]";
+                sheet.Cells[2, 6].Value = "[數量]";
+                sheet.Cells[2, 7].Value = "[售價]";
+                sheet.Cells[2, 8].Value = "[小計]";
+                sheet.Cells[2, 9].Value = "[經手人]";
+                setFontColor_blue(sheet, 2, 1, 9);
+                #endregion
+
+                #region 內容
+                foreach (var item in getPrintVal)
+                {
+
+                    sheet.Cells[detail_row, 1].Value = item.record_sn;
+                    sheet.Cells[detail_row, 2].Value = item.sell_day.ToString("yyyy/MM/dd");
+                    sheet.Cells[detail_row, 3].Value = item.customer_name;
+                    sheet.Cells[detail_row, 4].Value = CodeSheet.GetProductTypeVal(item.product_type);
+                    sheet.Cells[detail_row, 5].Value = item.product_name;
+                    sheet.Cells[detail_row, 6].Value = item.qty;
+                    sheet.Cells[detail_row, 7].Value = item.price;
+                    sheet.Cells[detail_row, 8].Value = item.subtotal;
+                    sheet.Cells[detail_row, 9].Value = item.user_name;
+
+                    detail_row++;
+                }
+                #endregion
+
+                #region excel排版
+                int startColumn = sheet.Dimension.Start.Column;
+                int endColumn = sheet.Dimension.End.Column;
+                for (int j = startColumn; j <= endColumn; j++)
+                {
+                    //sheet.Column(j).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;//靠左對齊
+                    //sheet.Column(j).Width = 30;//固定寬度寫法
+                    sheet.Column(j).AutoFit();//依內容fit寬度
+                }//End for
+                #endregion
+                //sheet.Cells.Calculate(); //要對所以Cell做公計計算 否則樣版中的公式值是不會變的
+
+                #endregion
+
+                string filename = "R02產品銷售明細報表" + "[" + DateTime.Now.ToString("yyyyMMddHHmm") + "].xlsx";
+                excel.Save();
+                fs.Position = 0;
+                return File(fs, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+            }
+            catch (Exception ex)
             {
-                sheet.Cells[row, start_column].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                sheet.Cells[row, start_column].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
+                Console.Write(ex.Message);
+                return null;
+            }
+            finally
+            {
+                db0.Dispose();
             }
         }
-        public void setFontColor_Label(ExcelWorksheet sheet, int row, int start_column, int end_column)
+        public FileResult downloadExcel_AccountsPayable(ParmGetAccountsPayable parm)
         {
-            for (; start_column <= end_column; start_column++)
+            ExcelPackage excel = null;
+            MemoryStream fs = null;
+            var db0 = getDB0();
+            try
             {
-                sheet.Cells[row, start_column].Style.Font.Bold = true;
-                sheet.Cells[row, start_column].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                sheet.Cells[row, start_column].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+                fs = new MemoryStream();
+                excel = new ExcelPackage(fs);
+                excel.Workbook.Worksheets.Add("AccountsPayableData");
+                ExcelWorksheet sheet = excel.Workbook.Worksheets["AccountsPayableData"];
+
+                sheet.View.TabSelected = true;
+                #region 取得應收帳款
+                string date_range = "(All)";
+                var items = from x in db0.AccountsPayable
+                            orderby x.record_sn descending
+                            select (new R03_AccountsPayable()
+                            {
+                                product_record_id = x.product_record_id,
+                                accounts_payable_id = x.accounts_payable_id,
+                                customer_id = x.customer_id,
+                                record_sn = x.ProductRecord.record_sn,
+                                customer_name = x.Customer.customer_name,
+                                record_day = x.ProductRecord.record_day,
+                                estimate_payable = x.estimate_payable
+                            });
+
+                if (parm.start_date != null && parm.end_date != null)
+                {
+                    DateTime end = ((DateTime)parm.end_date).AddDays(1);
+                    items = items.Where(x => x.record_day >= parm.start_date && x.record_day < end);
+                    date_range = "(" + ((DateTime)parm.start_date).ToString("yyyy/MM/dd") + "~" + ((DateTime)parm.end_date).ToString("yyyy/MM/dd") + ")";
+                }
+
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.record_sn.Contains(parm.word) ||
+                                             x.customer_name.Contains(parm.word));
+                }
+
+
+                var getPrintVal = items.ToList();
+                foreach (var item in getPrintVal)
+                {
+                    item.total_money = db0.AccountsPayableDetail.Where(x => x.accounts_payable_id == item.accounts_payable_id).Sum(x => x.actual_receipt);
+                }
+
+                #endregion
+
+
+                #region Excel Handle
+
+                int detail_row = 3;
+
+                #region 標題
+                sheet.Cells[1, 1].Value = "R03應收帳款報表" + date_range;
+                sheet.Cells[1, 1, 1, 5].Merge = true;
+                sheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                sheet.Cells[2, 1].Value = "[來源銷售單號]";
+                sheet.Cells[2, 2].Value = "[來源銷售日期]";
+                sheet.Cells[2, 3].Value = "[客戶名稱]";
+                sheet.Cells[2, 4].Value = "[實際應收金額]";
+                sheet.Cells[2, 5].Value = "[實際已收金額]";
+                setFontColor_blue(sheet, 2, 1, 5);
+                #endregion
+
+                #region 內容
+                foreach (var item in getPrintVal)
+                {
+
+                    sheet.Cells[detail_row, 1].Value = item.record_sn;
+                    sheet.Cells[detail_row, 2].Value = item.record_day.ToString("yyyy/MM/dd");
+                    sheet.Cells[detail_row, 3].Value = item.customer_name;
+                    sheet.Cells[detail_row, 4].Value = item.estimate_payable;
+                    sheet.Cells[detail_row, 5].Value = item.total_money;
+
+
+                    detail_row++;
+                }
+                #endregion
+
+                #region excel排版
+                int startColumn = sheet.Dimension.Start.Column;
+                int endColumn = sheet.Dimension.End.Column;
+                for (int j = startColumn; j <= endColumn; j++)
+                {
+                    //sheet.Column(j).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;//靠左對齊
+                    //sheet.Column(j).Width = 30;//固定寬度寫法
+                    sheet.Column(j).AutoFit();//依內容fit寬度
+                }//End for
+                #endregion
+                //sheet.Cells.Calculate(); //要對所以Cell做公計計算 否則樣版中的公式值是不會變的
+
+                #endregion
+
+                string filename = "R03應收帳款報表" + "[" + DateTime.Now.ToString("yyyyMMddHHmm") + "].xlsx";
+                excel.Save();
+                fs.Position = 0;
+                return File(fs, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                return null;
+            }
+            finally
+            {
+                db0.Dispose();
             }
         }
-        public void setFontColor_LabelBord(ExcelWorksheet sheet, int row, int start_column, int end_column)
-        {
-            for (; start_column <= end_column; start_column++)
-            {
-                sheet.Cells[row, start_column].Style.Font.Bold = true;
-                sheet.Cells[row, start_column].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
-                sheet.Cells[row, start_column].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                sheet.Cells[row, start_column].Style.Border.BorderAround(OfficeOpenXml.Style.ExcelBorderStyle.Thin);//儲存格框線
-            }
-        }
+
         public void setFontColor_green(ExcelWorksheet sheet, int row, int column)
         {
             //文字顏色
@@ -768,6 +980,16 @@ namespace DotWeb.Areas.Base.Controllers
                 //背景色
                 sheet.Cells[row, start_column].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 sheet.Cells[row, start_column].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+            }
+        }
+
+        public void setFontColor_blue(ExcelWorksheet sheet, int row, int start_column, int end_column)
+        {
+            for (; start_column <= end_column; start_column++)
+            {
+                sheet.Cells[row, start_column].Style.Font.Bold = true;
+                sheet.Cells[row, start_column].Style.Font.Color.SetColor(System.Drawing.Color.Blue);
+                sheet.Cells[row, start_column].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             }
         }
         /// <summary>
