@@ -181,9 +181,19 @@ namespace DotWeb.Api
         public async Task<IHttpActionResult> Post([FromBody]RecordDetail md)
         {
             ResultInfo r = new ResultInfo();
-
+            string[] tmp_tryout_mealtype = new string[] { };
+            if (md.tryout_mealtype != null && md.tryout_mealtype.Length > 0)
+            {
+                if (md.tryout_mealtype.IndexOf(",") == -1)
+                {
+                    tmp_tryout_mealtype = new string[] { md.tryout_mealtype };
+                }
+                else
+                {
+                    tmp_tryout_mealtype = md.tryout_mealtype.Split(',');
+                }
+            }
             md.record_deatil_id = GetNewId(ProcCore.Business.CodeTable.RecordDetail);
-            string[] tmp_tryout_mealtype = md.tryout_mealtype.Split(',');
             if (!ModelState.IsValid)
             {
                 r.message = ModelStateErrorPack();
@@ -300,24 +310,54 @@ namespace DotWeb.Api
                         var setDayObj = start.AddDays(i);
 
                         #region 特殊排餐
-                        //if (md.meal_select_state == 1)
-                        //{//基數天用餐
-                        //    if (setDayObj.Day % 2 == 0)
-                        //    {
-                        //        breakfast_state = (int)MealState.CommonNotMeal;
-                        //        lunch_state = (int)MealState.CommonNotMeal;
-                        //        dinner_state = (int)MealState.CommonNotMeal;
-                        //    }
-                        //}
-                        //else if (md.meal_select_state == 2)
-                        //{//偶數天用餐
-                        //    if (setDayObj.Day % 2 != 0)
-                        //    {
-                        //        breakfast_state = (int)MealState.CommonNotMeal;
-                        //        lunch_state = (int)MealState.CommonNotMeal;
-                        //        dinner_state = (int)MealState.CommonNotMeal;
-                        //    }
-                        //}
+                        if (md.meal_select_state == 1)
+                        {//基數天用餐
+                            if (setDayObj.Day % 2 == 0)
+                            {
+                                breakfast_state = (int)MealState.CommonNotMeal;
+                                lunch_state = (int)MealState.CommonNotMeal;
+                                dinner_state = (int)MealState.CommonNotMeal;
+                            }
+                            else
+                            {
+                                if (tmp_tryout_mealtype.Count() > 0)
+                                {
+                                    breakfast_state = tmp_tryout_mealtype.Contains("breakfast") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                                    lunch_state = tmp_tryout_mealtype.Contains("lunch") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                                    dinner_state = tmp_tryout_mealtype.Contains("dinner") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                                }
+                                else
+                                {
+                                    breakfast_state = (int)MealState.CommonMeal;
+                                    lunch_state = (int)MealState.CommonMeal;
+                                    dinner_state = (int)MealState.CommonMeal;
+                                }
+                            }
+                        }
+                        else if (md.meal_select_state == 2)
+                        {//偶數天用餐
+                            if (setDayObj.Day % 2 != 0)
+                            {
+                                breakfast_state = (int)MealState.CommonNotMeal;
+                                lunch_state = (int)MealState.CommonNotMeal;
+                                dinner_state = (int)MealState.CommonNotMeal;
+                            }
+                            else
+                            {
+                                if (tmp_tryout_mealtype.Count() > 0)
+                                {
+                                    breakfast_state = tmp_tryout_mealtype.Contains("breakfast") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                                    lunch_state = tmp_tryout_mealtype.Contains("lunch") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                                    dinner_state = tmp_tryout_mealtype.Contains("dinner") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
+                                }
+                                else
+                                {
+                                    breakfast_state = (int)MealState.CommonMeal;
+                                    lunch_state = (int)MealState.CommonMeal;
+                                    dinner_state = (int)MealState.CommonMeal;
+                                }
+                            }
+                        }
                         #endregion
 
                         #region use sql insert

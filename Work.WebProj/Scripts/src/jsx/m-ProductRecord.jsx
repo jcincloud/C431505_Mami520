@@ -759,7 +759,7 @@ var SubForm = React.createClass({
 	getInitialState: function() {  
 		return {
 			gridSubData:[],
-			fieldSubData:{tryout_array:[]},
+			fieldSubData:{},
 			searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
 			edit_sub_type:0,//預設皆為新增狀態
 			checkAll:false,
@@ -767,8 +767,12 @@ var SubForm = React.createClass({
 			product_list:[],
 			parm:{breakfast:0,lunch:0,dinner:0},//計算用
 			isShowMealidSelect:false,//控制選取用餐編號顯示
-			mealid_list:[]
-
+			mealid_list:[],
+			tryout_array:[
+				{name:'breakfast',value:false},
+				{name:'lunch',value:false},
+				{name:'dinner',value:false}
+			]
 		};  
 	},
 	getDefaultProps:function(){
@@ -777,7 +781,8 @@ var SubForm = React.createClass({
 			gdName:'searchData',
 			apiPathName:gb_approot+'api/RecordDetail',
 			initPathName:gb_approot+'Active/Product/aj_Init',
-			apiGridPathName:gb_approot+'api/GetAction/GetAllRecordDetail'
+			apiGridPathName:gb_approot+'api/GetAction/GetAllRecordDetail',
+			tryout_name:['早餐','午餐','晚餐']
 		};
 	},
 	componentDidMount:function(){
@@ -814,7 +819,7 @@ var SubForm = React.createClass({
 				return;
 			}
 		}
-
+		console.log(fieldSubData);
 		if(this.state.edit_sub_type==1){
 			jqPost(this.props.apiPathName,fieldSubData)
 			.done(function(data, textStatus, jqXHRdata) {
@@ -901,11 +906,8 @@ var SubForm = React.createClass({
 			born_id:this.props.born_id,
 			qty:1,
 			subtotal:0,
-			tryout_array:[
-			{id:1,name:'breakfast',name_c:'早餐',value:false},
-			{id:2,name:'lunch',name_c:'午餐',value:false},
-			{id:3,name:'dinner',name_c:'晚餐',value:false}
-			]
+			tryout_mealtype:null,
+			meal_select_state:0
 		}});
 	},
 	updateSubType:function(id,e){
@@ -918,18 +920,14 @@ var SubForm = React.createClass({
 			data.data.estimate_count=MealCount(this.state.parm,data.data.estimate_breakfast,data.data.estimate_lunch,data.data.estimate_dinner);
 			data.data.real_count=MealCount(this.state.parm,data.data.real_breakfast,data.data.real_lunch,data.data.real_dinner);
 			//試吃餐別
-			data.data.tryout_array=[
-			{id:1,name:'breakfast',name_c:'早餐',value:false},
-			{id:2,name:'lunch',name_c:'午餐',value:false},
-			{id:3,name:'dinner',name_c:'晚餐',value:false}
-			];
-			data.data.tryout_array.forEach(function(object, i){
+			var tryout_array=this.state.tryout_array;
+			tryout_array.forEach(function(object, i){
 	        	if(object.name==data.data.tryout_mealtype){
 	  				object.value=true;
 	        	}
     		})
 
-			this.setState({edit_sub_type:2,fieldSubData:data.data});
+			this.setState({edit_sub_type:2,fieldSubData:data.data,tryout_array:tryout_array});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
@@ -1086,7 +1084,7 @@ var SubForm = React.createClass({
 	},
 	onMealChange:function(index,e){
 		var obj = this.state.fieldSubData;
-		var arrayObj=obj['tryout_array'];
+		var arrayObj=this.state.tryout_array;
 		var item = arrayObj[index];
 		item.value = !item.value;
 		
@@ -1110,7 +1108,7 @@ var SubForm = React.createClass({
     		})
 		}
 		obj.tryout_mealtype=array;
-		this.setState({fieldSubData:obj});
+		this.setState({fieldSubData:obj,tryout_array:arrayObj});
 	},
 	render: function() {
 		var outHtml = null;
@@ -1414,6 +1412,19 @@ var SubForm = React.createClass({
 										<small className="help-inline col-xs-4">系統自動計算</small>
 									</div>
 									<div className="form-group">
+										<label className="col-xs-2 control-label">特殊排餐</label>
+										<div className="col-xs-4">
+											<select className="form-control" 
+											value={fieldSubData.meal_select_state}
+											onChange={this.changeFDValue.bind(this,'meal_select_state')}
+											disabled={this.state.edit_sub_type==2 || fieldSubData.product_type!=2}>
+											<option value="0">無</option>
+											<option value="1">基數天排餐</option>
+											<option value="2">偶數天排餐</option>
+											</select>
+										</div>
+									</div>
+									<div className="form-group">
 										<label className="col-xs-2 control-label">預計餐數</label>
 										<div className="col-xs-2">
 											<div className="input-group">
@@ -1507,15 +1518,15 @@ var SubForm = React.createClass({
 										<label className="col-xs-2 control-label">試吃餐別</label>
 										<div className="col-xs-6">
 										{
-											fieldSubData.tryout_array.map(function(itemData,i) {
+											this.state.tryout_array.map(function(itemData,i) {
 												var out_check = 							
-												<div className="checkbox-inline" key={itemData.id}>
+												<div className="checkbox-inline" key={i}>
 													<label>
 														<input  type="checkbox" 
 																checked={itemData.value}
 																onChange={this.onMealChange.bind(this,i)}
 														 />
-														{itemData.name_c}
+														{this.props.tryout_name[i]}
 													</label>
 												</div>;
 												return out_check;
