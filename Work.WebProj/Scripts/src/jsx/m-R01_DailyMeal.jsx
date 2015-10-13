@@ -7,7 +7,8 @@ var GirdForm = React.createClass({
 			fieldData:{},
 			matters:{start_meal:{breakfast:[],lunch:[],dinner:[]},
 					end_meal:{breakfast:[],lunch:[],dinner:[]},
-					pause_meal:{breakfast:[],lunch:[],dinner:[]}},
+					pause_meal:{breakfast:[],lunch:[],dinner:[]},
+					tryout_meal:{breakfast:0,lunch:0,dinner:0}},
 			special_diet:[],
 			breakfast:{dishs:[],isHaveData:false},
 			lunch:{dishs:[],isHaveData:false},
@@ -313,6 +314,13 @@ var GirdForm = React.createClass({
 			                        </span>);
 			                }.bind(this))
 			            }
+						</td>
+					</tr>
+					<tr>
+						<td>
+						早試吃({matters.tryout_meal.breakfast})、
+						午試吃({matters.tryout_meal.lunch})、
+						晚試吃({matters.tryout_meal.dinner})
 						</td>
 					</tr>
 				</table>

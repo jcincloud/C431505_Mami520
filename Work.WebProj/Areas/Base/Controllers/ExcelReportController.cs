@@ -42,6 +42,7 @@ namespace DotWeb.Areas.Base.Controllers
                 MealDay pause_meal = new MealDay();
                 MealDay start_meal = new MealDay();
                 MealDay end_meal = new MealDay();
+                MealDaybyTryout tryout_meal = new MealDaybyTryout();
                 #region 塞空資料
                 pause_meal.breakfast = new List<string>();
                 pause_meal.lunch = new List<string>();
@@ -121,9 +122,17 @@ namespace DotWeb.Areas.Base.Controllers
                     }
                     #endregion
                 }
+                #region 試吃
+                var tryout_DailyMeal = db0.DailyMeal.Where(x => x.product_type == (int)ProdyctType.Tryout &
+                                                                 x.meal_day == parm.meal_day);
+                tryout_meal.breakfast = tryout_DailyMeal.Where(x => x.breakfast_state > 0).Count();
+                tryout_meal.lunch = tryout_DailyMeal.Where(x => x.lunch_state > 0).Count();
+                tryout_meal.dinner = tryout_DailyMeal.Where(x => x.dinner_state > 0).Count();
+                #endregion
                 matters.pause_meal = pause_meal;
                 matters.start_meal = start_meal;
                 matters.end_meal = end_meal;
+                matters.tryout_meal = tryout_meal;
 
 
                 //取得今天用餐排程
@@ -362,10 +371,10 @@ namespace DotWeb.Areas.Base.Controllers
                 setGreenTitle(sheet, 2, 1, 6);
                 #endregion
                 #region 特殊飲食
-                sheet.Cells[7, 1].Value = "[特殊飲食]";
-                sheet.Cells[7, 1, 7, 6].Merge = true;
-                setFontColor_red(sheet, 7, 1);
-                setRedTitle(sheet, 7, 1, 6);
+                sheet.Cells[detail_row, 1].Value = "[特殊飲食]";
+                sheet.Cells[detail_row, 1, detail_row, 6].Merge = true;
+                setFontColor_red(sheet, detail_row, 1);
+                setRedTitle(sheet, detail_row, 1, 6);
                 #endregion
                 #endregion
 
@@ -461,9 +470,28 @@ namespace DotWeb.Areas.Base.Controllers
                 #endregion
                 #endregion
 
+
+                #region 試吃
+                #region 早
+                string t_breakfast = "早試吃(" + data.matters.tryout_meal.breakfast + ")";
+                sheet.Cells[6, 1].Value = t_breakfast;
+                sheet.Cells[6, 1, 6, 2].Merge = true;
+                #endregion
+                #region 午
+                string t_lunch = "午試吃(" + data.matters.tryout_meal.lunch + ")";
+                sheet.Cells[6, 3].Value = t_lunch;
+                sheet.Cells[6, 3, 6, 4].Merge = true;
+                #endregion
+                #region 晚
+                string t_dinner = "晚試吃(" + data.matters.tryout_meal.dinner + ")";
+                sheet.Cells[6, 5].Value = t_dinner;
+                sheet.Cells[6, 5, 6, 6].Merge = true;
+                #endregion
+                #endregion
                 #endregion
 
                 #region 特殊飲食
+                detail_row += 1;
                 foreach (var i in data.special_diet)
                 {
                     sheet.Cells[detail_row, 1].Value = i.require_name + "(" + i.count + "):";

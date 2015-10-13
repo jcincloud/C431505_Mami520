@@ -1803,6 +1803,7 @@ namespace DotWeb.Api
                 MealDay pause_meal = new MealDay();
                 MealDay start_meal = new MealDay();
                 MealDay end_meal = new MealDay();
+                MealDaybyTryout tryout_meal = new MealDaybyTryout();
                 #region 塞空資料
                 pause_meal.breakfast = new List<string>();
                 pause_meal.lunch = new List<string>();
@@ -1882,9 +1883,17 @@ namespace DotWeb.Api
                     }
                     #endregion
                 }
+                #region 試吃
+                var tryout_DailyMeal = db0.DailyMeal.Where(x => x.product_type == (int)ProdyctType.Tryout &
+                                                                 x.meal_day == parm.meal_day);
+                tryout_meal.breakfast = tryout_DailyMeal.Where(x => x.breakfast_state > 0).Count();
+                tryout_meal.lunch = tryout_DailyMeal.Where(x => x.lunch_state > 0).Count();
+                tryout_meal.dinner = tryout_DailyMeal.Where(x => x.dinner_state > 0).Count();
+                #endregion
                 matters.pause_meal = pause_meal;
                 matters.start_meal = start_meal;
                 matters.end_meal = end_meal;
+                matters.tryout_meal = tryout_meal;
 
 
                 //取得今天用餐排程
@@ -2415,6 +2424,7 @@ namespace DotWeb.Api
         public MealDay pause_meal { get; set; }
         public MealDay start_meal { get; set; }
         public MealDay end_meal { get; set; }
+        public MealDaybyTryout tryout_meal { get; set; }
     }
     /// <summary>
     /// 一天三餐
@@ -2424,6 +2434,12 @@ namespace DotWeb.Api
         public List<string> breakfast { get; set; }
         public List<string> lunch { get; set; }
         public List<string> dinner { get; set; }
+    }
+    public class MealDaybyTryout
+    {
+        public int breakfast { get; set; }
+        public int lunch { get; set; }
+        public int dinner { get; set; }
     }
     /// <summary>
     /// 早餐、午餐、晚餐

@@ -769,9 +769,9 @@ var SubForm = React.createClass({
 			isShowMealidSelect:false,//控制選取用餐編號顯示
 			mealid_list:[],
 			tryout_array:[
-				{name:'breakfast',value:false},
-				{name:'lunch',value:false},
-				{name:'dinner',value:false}
+				{name:'breakfast',name_c:'早餐',value:false},
+				{name:'lunch',name_c:'午餐',value:false},
+				{name:'dinner',name_c:'晚餐',value:false}
 			]
 		};  
 	},
@@ -781,8 +781,7 @@ var SubForm = React.createClass({
 			gdName:'searchData',
 			apiPathName:gb_approot+'api/RecordDetail',
 			initPathName:gb_approot+'Active/Product/aj_Init',
-			apiGridPathName:gb_approot+'api/GetAction/GetAllRecordDetail',
-			tryout_name:['早餐','午餐','晚餐']
+			apiGridPathName:gb_approot+'api/GetAction/GetAllRecordDetail'
 		};
 	},
 	componentDidMount:function(){
@@ -813,13 +812,16 @@ var SubForm = React.createClass({
 			return;
 		}
 		if(fieldSubData.product_type==1){
-			//fieldSubData.meal_end=fieldSubData.meal_start;
-			if(!fieldSubData.tryout_array[0]['value'] && !fieldSubData.tryout_array[1]['value'] && !fieldSubData.tryout_array[2]['value']){
+			if(!this.state.tryout_array[0]['value'] && !this.state.tryout_array[1]['value'] && !this.state.tryout_array[2]['value']){
 				tosMessage(gb_title_from_invalid,'產品為試吃時,請選擇試吃的餐別!!',3);
 				return;
 			}
+			if(fieldSubData.tryout_mealtype.indexOf(',')!=-1){
+				tosMessage(gb_title_from_invalid,'試吃僅能選擇一項餐別!!',3);
+				return;
+			}
 		}
-		console.log(fieldSubData);
+
 		if(this.state.edit_sub_type==1){
 			jqPost(this.props.apiPathName,fieldSubData)
 			.done(function(data, textStatus, jqXHRdata) {
@@ -1526,7 +1528,7 @@ var SubForm = React.createClass({
 																checked={itemData.value}
 																onChange={this.onMealChange.bind(this,i)}
 														 />
-														{this.props.tryout_name[i]}
+														{itemData.name_c}
 													</label>
 												</div>;
 												return out_check;
@@ -1551,7 +1553,8 @@ var SubForm = React.createClass({
 									disabled={this.props.is_close}
 									type="submit" form="form2">
 										<i className="fa-check"></i> 存檔確認
-									</button>
+									</button> { }
+									<button type="button" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button>
 								</div>
 							</div>
 						</div>
