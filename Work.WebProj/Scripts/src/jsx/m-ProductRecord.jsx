@@ -20,6 +20,7 @@
 					<td>{moment(this.props.itemData.record_day).format('YYYY/MM/DD')}</td>
 					<td>{this.props.itemData.meal_id}</td>
 					<td>{this.props.itemData.name}</td>
+					<td>{this.props.itemData.tel_1}</td>
 					<td>{this.props.itemData.is_receipt?<span className="label label-primary">已轉單</span>:<span className="label label-danger">未轉單</span>}</td>			
 					<td>{this.props.itemData.is_close?<span className="label label-primary">結案</span>:<span className="label label-danger">未結案</span>}</td>			
 				</tr>
@@ -365,17 +366,17 @@ var GirdForm = React.createClass({
 												value={searchData.end_date} />
 											</span> { }
 
-										<label>媽媽姓名</label> { }
+										<label>媽媽姓名/用餐編號/電話</label> { }
 										<input type="text" className="form-control input-sm" 
-										value={searchData.name}
-										onChange={this.changeGDValue.bind(this,'name')}
-										placeholder="媽媽姓名..." /> { }
+										value={searchData.word}
+										onChange={this.changeGDValue.bind(this,'word')}
+										placeholder="請擇一填寫..." /> { }
 
-										<label>用餐編號</label> { }
+										{/*<label>用餐編號</label> { }
 										<input type="text" className="form-control input-sm" 
 										value={searchData.meal_id}
 										onChange={this.changeGDValue.bind(this,'meal_id')}
-										placeholder="用餐編號..." /> { }
+										placeholder="用餐編號..." /> { }*/}
 
 										<label>是否轉單</label> { }
 										<select className="form-control input-sm" 
@@ -412,8 +413,9 @@ var GirdForm = React.createClass({
 									<th className="col-xs-1 text-center">修改</th>
 									<th className="col-xs-2">銷售單號</th>
 									<th className="col-xs-2">訂購時間</th>
-									<th className="col-xs-2">用餐編號</th>
+									<th className="col-xs-1">用餐編號</th>
 									<th className="col-xs-2">媽媽姓名</th>
+									<th className="col-xs-1">電話1</th>
 									<th className="col-xs-1">是否轉單</th>
 									<th className="col-xs-1">是否結案</th>
 								</tr>

@@ -558,7 +558,8 @@ var GirdSubForm = React.createClass({
 					}else{
 						tosMessage(null,'新增完成',1);
 					}
-					this.updateDetailType(data.id);
+					//this.updateDetailType(data.id);
+					this.closeEditDetail();//新增完直接關閉
 				}else{
 					tosMessage(null,data.message,3);
 				}
@@ -576,6 +577,7 @@ var GirdSubForm = React.createClass({
 					}else{
 						tosMessage(null,'修改完成',1);
 					}
+					this.closeEditDetail();//修改完直接關閉
 				}else{
 					tosMessage(null,data.message,3);
 				}

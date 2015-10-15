@@ -49,7 +49,8 @@ namespace DotWeb.Api
                     product_name = x.product_name,
                     product_type = x.product_type,
                     price = x.price,
-                    standard = x.standard
+                    standard = x.standard,
+                    i_Hide=x.i_Hide
                 });
 
 
@@ -83,6 +84,7 @@ namespace DotWeb.Api
                 item.standard = md.standard;
                 item.sort = md.sort;
                 item.memo = md.memo;
+                item.i_Hide = md.i_Hide;
 
 
                 item.i_UpdateUserID = this.UserId;
@@ -152,6 +154,13 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
+                    bool check_rd = db0.RecordDetail.Any(x => x.product_id == id);
+                    if (check_rd)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_Delete_Product;
+                        return Ok(r);
+                    }
                     item = new Product() { product_id = id };
                     db0.Product.Attach(item);
                     db0.Product.Remove(item);

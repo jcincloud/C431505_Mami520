@@ -447,6 +447,7 @@ var SubForm = React.createClass({
 			accounts_payable_id:this.props.main_id,
 			customer_id:this.props.customer_id,
 			meal_type:0,
+			receipt_day:format_Date(getNowDate()),
 			receipt_person:1,
 			receipt_item:1,
 			receipt_sn:null,

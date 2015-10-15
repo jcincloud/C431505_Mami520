@@ -20,6 +20,7 @@
 					<td><StateForGrid stateData={CommData.ProductType} id={this.props.itemData.product_type} /></td>
 					<td>{this.props.itemData.price}</td>
 					<td>{this.props.itemData.standard}</td>
+					<td>{this.props.itemData.i_Hide?<span className="label label-default">停用</span>:<span className="label label-primary">啟用</span>}</td>
 				</tr>
 			);
 		}
@@ -296,6 +297,7 @@ var GirdForm = React.createClass({
 									<th className="col-xs-1">產品分類</th>
 									<th className="col-xs-1">售價</th>
 									<th className="col-xs-3">規格</th>
+									<th className="col-xs-1">狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -385,7 +387,7 @@ var GirdForm = React.createClass({
 							onChange={this.changeFDValue.bind(this,'price')} />
 						</div>
 						<small className="help-inline col-xs-6 text-danger">(必填)</small>
-					</div>				
+					</div>
 					<div className="form-group">
 
 						<label className="col-xs-2 control-label">排序</label>
@@ -397,7 +399,34 @@ var GirdForm = React.createClass({
 							 />
 						</div>
 						<small className="col-xs-6 help-inline">數字愈大愈前面，未填寫視為 0</small>
-					</div>	
+					</div>
+					<div className="form-group">
+						<label className="col-xs-2 control-label">狀態</label>
+						<div className="col-xs-4">
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="i_Hide"
+											value={true}
+											checked={fieldData.i_Hide===true} 
+											onChange={this.changeFDValue.bind(this,'i_Hide')}
+									/>
+									<span>停用</span>
+								</label>
+							</div>
+							<div className="radio-inline">
+								<label>
+									<input type="radio" 
+											name="i_Hide"
+											value={false}
+											checked={fieldData.i_Hide===false} 
+											onChange={this.changeFDValue.bind(this,'i_Hide')}
+											/>
+									<span>啟用</span>
+								</label>
+							</div>
+						</div>
+					</div>					
 					<div className="form-group">
 						<label className="col-xs-2 control-label">備註</label>
 						<div className="col-xs-10">

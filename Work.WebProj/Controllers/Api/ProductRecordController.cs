@@ -51,7 +51,13 @@ namespace DotWeb.Api
                 var qr = db0.ProductRecord
                     .OrderByDescending(x => x.record_day).AsQueryable();
 
-
+                if (q.word != null)
+                {
+                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.word) ||
+                                       x.CustomerBorn.meal_id.Contains(q.word) ||
+                                       x.CustomerBorn.tel_1.Contains(q.word) ||
+                                       x.CustomerBorn.tel_2.Contains(q.word));
+                }
                 if (q.name != null)
                 {
                     qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.name));
@@ -85,7 +91,8 @@ namespace DotWeb.Api
                     record_sn = x.record_sn,
                     record_day = x.record_day,
                     name = x.CustomerBorn.mom_name,
-                    meal_id = x.CustomerBorn.meal_id
+                    meal_id = x.CustomerBorn.meal_id,
+                    tel_1=x.CustomerBorn.tel_1
                 });
 
 

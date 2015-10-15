@@ -592,6 +592,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 此筆產品已在銷售紀錄使用，無法刪除！！ 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_Delete_Product {
+            get {
+                return ResourceManager.GetString("Log_Err_Delete_Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 檔案數量超過限制。 的當地語系化字串。
         /// </summary>
         internal static string Log_Err_FileCountOver {

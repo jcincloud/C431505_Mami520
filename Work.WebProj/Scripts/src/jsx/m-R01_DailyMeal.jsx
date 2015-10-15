@@ -86,6 +86,15 @@ var GirdForm = React.createClass({
 		this.setState({download_src:print_url});
 		return;
 	},
+	test:function(){
+		jqPost(gb_approot + 'api/GetAction/test',{})
+		.done(function(data, textStatus, jqXHRdata) {
+
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
 	render: function() {
 		var outHtml = null;
 		var searchData=this.state.searchData;

@@ -338,6 +338,7 @@ namespace DotWeb.Api
 
                 var items = db0.Product
                     .OrderBy(x => new { x.sort })
+                    .Where(x => !x.i_Hide)
                     .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard });
 
                 if (parm.name != null)
@@ -2272,6 +2273,48 @@ namespace DotWeb.Api
                 obj.Add(new RoleArray() { role_id = role.Id, role_name = role.Name, role_use = false });
             }
             return Ok(obj);
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> test()
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+
+                for (var i = 1; i <= 100; i++)
+                {
+                    string id = "T" + i.ToString().PadLeft(3, '0');
+                    var item = new MealID()
+                    {
+                        meal_id = id
+                    };
+                    db0.MealID.Add(item);
+                }
+
+
+
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = 0;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
         }
     }
     #region Parm
