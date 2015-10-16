@@ -937,7 +937,7 @@ var MealCheckBox = React.createClass({
         var MealData=this.state.MealData;
         var meal_day=new Date(moment(this.props.meal_day).format('YYYY/MM/DD'));
 
-        if(this.props.today>=meal_day && this.props.meal_state>0)
+        if(this.props.Yesterday>=meal_day && this.props.meal_state>0)
         {
             name_out_html=(<span className="disabled">{this.props.meal_name +'(已吃)'}</span>);
         }
@@ -953,7 +953,7 @@ var MealCheckBox = React.createClass({
         {
             name_out_html=(<span>{this.props.meal_name}</span>);
         }
-        if(this.props.today>=meal_day)
+        if(this.props.Yesterday>=meal_day)
         {//用餐日期 < 今天 不可編輯
             this.state.isMealFinished=true;
         }

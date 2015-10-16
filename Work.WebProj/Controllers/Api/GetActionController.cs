@@ -557,8 +557,8 @@ namespace DotWeb.Api
                 //取得該月天數
                 var getDateSection = (getCalendarLastDay - getCalendarFirstDay).TotalDays + 1;
 
-                //var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
-                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day < DateTime.Now &&
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day < Yesterday &&
                                              x.record_deatil_id == parm.record_deatil_id);
 
                 Mobj = new MonthObject()
@@ -640,6 +640,10 @@ namespace DotWeb.Api
                 db0 = getDB0();
                 var item = await db0.DailyMeal.FindAsync(parm.daily_meal_id);
                 var RecordDetailItem = await db0.RecordDetail.FindAsync(parm.record_deatil_id);
+
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= Yesterday &&
+                                                               x.record_deatil_id == parm.record_deatil_id);
                 #region 早餐
                 if (parm.meal_type == (int)MealType.Breakfast)
                 {
@@ -647,7 +651,7 @@ namespace DotWeb.Api
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_breakfast += 1;
-                        if (!parm.isMealStart)
+                        if (!check_meal_start)
                         {
                             RecordDetailItem.real_estimate_breakfast += 1;
                         }
@@ -673,7 +677,7 @@ namespace DotWeb.Api
                     else if (parm.meal_state < 0)//停餐
                     {
                         RecordDetailItem.real_breakfast -= 1;
-                        if (!parm.isMealStart)
+                        if (!check_meal_start)
                         {
                             RecordDetailItem.real_estimate_breakfast -= 1;
                         }
@@ -705,7 +709,7 @@ namespace DotWeb.Api
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_lunch += 1;
-                        if (!parm.isMealStart)
+                        if (!check_meal_start)
                         {
                             RecordDetailItem.real_estimate_lunch += 1;
                         }
@@ -731,7 +735,7 @@ namespace DotWeb.Api
                     else if (parm.meal_state < 0)//停餐
                     {
                         RecordDetailItem.real_lunch -= 1;
-                        if (!parm.isMealStart)
+                        if (!check_meal_start)
                         {
                             RecordDetailItem.real_estimate_lunch -= 1;
                         }
@@ -763,7 +767,7 @@ namespace DotWeb.Api
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_dinner += 1;
-                        if (!parm.isMealStart)
+                        if (!check_meal_start)
                         {
                             RecordDetailItem.real_estimate_dinner += 1;
                         }
@@ -789,7 +793,7 @@ namespace DotWeb.Api
                     else if (parm.meal_state < 0)//停餐
                     {
                         RecordDetailItem.real_dinner -= 1;
-                        if (!parm.isMealStart)
+                        if (!check_meal_start)
                         {
                             RecordDetailItem.real_estimate_dinner -= 1;
                         }
@@ -870,8 +874,11 @@ namespace DotWeb.Api
                 db0 = getDB0();
                 var item = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id && x.meal_day == parm.meal_day).FirstOrDefault();
                 var RecordDetailItem = await db0.RecordDetail.FindAsync(parm.record_deatil_id);
-                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= DateTime.Now &&
+
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= Yesterday &&
                                                                x.record_deatil_id == parm.record_deatil_id);
+
                 if (item == null & DateTime.Now <= parm.meal_day)
                 {
                     item = new DailyMeal()
@@ -984,10 +991,11 @@ namespace DotWeb.Api
                 real_total = ((int)item.real_breakfast + (int)item.real_lunch + (int)item.real_dinner);
                 #region 增餐&停餐&已吃
                 var getDailyMeal = db0.DailyMeal.Where(x => x.record_deatil_id == record_deatil_id).ToList();
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
                 foreach (var i in getDailyMeal)
                 {
                     #region 已吃
-                    if (i.meal_day <= DateTime.Now)
+                    if (i.meal_day <= Yesterday)
                     {
                         if (i.breakfast_state > 0)
                             already_eat++;
