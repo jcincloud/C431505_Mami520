@@ -109,6 +109,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>C43A0_Mani520.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DB0\Company.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB0\ConstituteFood.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
@@ -207,6 +210,9 @@
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_AspNetUsers.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_Company.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_ConstituteFood.cs">

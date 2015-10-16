@@ -121,6 +121,7 @@ namespace DotWeb.Api
             try
             {
                 #region working
+                md.company_id = this.companyId;
                 foreach (var role in md.role_array)
                 {
                     if (role.role_use)

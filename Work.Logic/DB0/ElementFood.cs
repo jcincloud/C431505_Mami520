@@ -34,6 +34,7 @@ namespace ProcCore.Business.DB0
         public Nullable<int> i_UpdateDeptID { get; set; }
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
+        public int company_id { get; set; }
     
     	[JsonIgnore]
         public virtual All_Category_L2 All_Category_L2 { get; set; }

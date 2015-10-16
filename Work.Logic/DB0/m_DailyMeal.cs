@@ -30,5 +30,6 @@ namespace ProcCore.Business.DB0
     public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
     public string i_Lang { get; set; }
     public string meal_id { get; set; }
+    public int company_id { get; set; }
     }
 }

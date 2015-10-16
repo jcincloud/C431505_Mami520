@@ -68,6 +68,7 @@ namespace DotWeb.Controller
         protected string UserId; //指的是廠商登錄帳號
         protected string aspUserId;
         protected int departmentId;
+        protected int companyId;
         protected int defPageSize = 0;
         //訂義取得本次執行 Controller Area Action名稱
         protected string getController = string.Empty;
@@ -107,7 +108,7 @@ namespace DotWeb.Controller
                 ViewBag.RoleName = role.Name;
 
                 this.departmentId = aspnet_user.department_id;
-
+                this.companyId = aspnet_user.company_id;
 
 
                 this.isTablet = (new WebInfo()).isTablet();
@@ -157,6 +158,7 @@ namespace DotWeb.Controller
 
             this.aspUserId = User.Identity.GetUserId();
             this.departmentId = int.Parse(Request.Cookies[CommWebSetup.Cookie_DepartmentId].Value);
+            this.companyId = int.Parse(Request.Cookies[CommWebSetup.Cookie_CompanyId].Value);
 
             Log.SetupBasePath = System.Web.HttpContext.Current.Server.MapPath("~\\_Code\\Log\\");
             Log.Enabled = true;
@@ -712,6 +714,7 @@ namespace DotWeb.Controller
             var o = base.openLogic();
             o.AspUserID = aspUserId;
             o.DepartmentId = departmentId;
+            o.CompanyId = companyId;
             o.Lang = getNowLnag();
             return o;
         }

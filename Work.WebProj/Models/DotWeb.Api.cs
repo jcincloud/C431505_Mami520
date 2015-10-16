@@ -20,6 +20,7 @@ namespace DotWeb.Api
         protected int defPageSize = 10;
         protected string aspUserId;
         protected int departmentId;
+        protected int companyId;
         protected string UserId; //指的是廠商登錄帳號
         protected string LoginUserFlag = string.Empty;
 
@@ -37,6 +38,7 @@ namespace DotWeb.Api
                 ApplicationUser aspnet_user = UserManager.FindById(aspnet_user_id);
                 this.UserId = aspnet_user.Id;
                 this.departmentId = aspnet_user.department_id;
+                this.companyId = aspnet_user.company_id;
                 var asp_net_roles = aspnet_user.Roles.Select(x => x.RoleId);
             }
         }

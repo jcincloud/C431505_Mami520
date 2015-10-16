@@ -265,6 +265,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.AccountsPayable.Add(item);
@@ -669,6 +670,7 @@ namespace DotWeb.Api
                                 i_InsertUserID = this.UserId,
                                 i_InsertDateTime = DateTime.Now,
                                 i_InsertDeptID = this.departmentId,
+                                company_id = this.companyId,
                                 i_Lang = "zh-TW"
                             };
                             db0.DailyMealChangeRecord.Add(changeRecord);
@@ -695,6 +697,7 @@ namespace DotWeb.Api
                                 i_InsertUserID = this.UserId,
                                 i_InsertDateTime = DateTime.Now,
                                 i_InsertDeptID = this.departmentId,
+                                company_id = this.companyId,
                                 i_Lang = "zh-TW"
                             };
                             db0.DailyMealChangeRecord.Add(changeRecord);
@@ -727,6 +730,7 @@ namespace DotWeb.Api
                                 i_InsertUserID = this.UserId,
                                 i_InsertDateTime = DateTime.Now,
                                 i_InsertDeptID = this.departmentId,
+                                company_id = this.companyId,
                                 i_Lang = "zh-TW"
                             };
                             db0.DailyMealChangeRecord.Add(changeRecord);
@@ -753,6 +757,7 @@ namespace DotWeb.Api
                                 i_InsertUserID = this.UserId,
                                 i_InsertDateTime = DateTime.Now,
                                 i_InsertDeptID = this.departmentId,
+                                company_id = this.companyId,
                                 i_Lang = "zh-TW"
                             };
                             db0.DailyMealChangeRecord.Add(changeRecord);
@@ -785,6 +790,7 @@ namespace DotWeb.Api
                                 i_InsertUserID = this.UserId,
                                 i_InsertDateTime = DateTime.Now,
                                 i_InsertDeptID = this.departmentId,
+                                company_id = this.companyId,
                                 i_Lang = "zh-TW"
                             };
                             db0.DailyMealChangeRecord.Add(changeRecord);
@@ -811,6 +817,7 @@ namespace DotWeb.Api
                                 i_InsertUserID = this.UserId,
                                 i_InsertDateTime = DateTime.Now,
                                 i_InsertDeptID = this.departmentId,
+                                company_id = this.companyId,
                                 i_Lang = "zh-TW"
                             };
                             db0.DailyMealChangeRecord.Add(changeRecord);
@@ -896,6 +903,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.DailyMeal.Add(item);
@@ -1117,6 +1125,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.ConstituteOfElement.Add(item);
@@ -1255,6 +1264,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.DailyMenuOfConstitute.Add(item);
@@ -1393,6 +1403,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.DietaryNeedOfElement.Add(item);
@@ -1544,6 +1555,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.CustomerOfDietaryNeed.Add(item);
@@ -1696,6 +1708,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.SendMsgOfCustomer.Add(item);
@@ -2234,7 +2247,8 @@ namespace DotWeb.Api
                                 record_sn = x.ProductRecord.record_sn,
                                 customer_name = x.Customer.customer_name,
                                 record_day = x.ProductRecord.record_day,
-                                estimate_payable = x.estimate_payable
+                                estimate_payable = x.estimate_payable,
+                                total_money = 0
                             });
 
                 if (parm.start_date != null && parm.end_date != null)
@@ -2254,7 +2268,8 @@ namespace DotWeb.Api
                 var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
                 foreach (var item in resultItems)
                 {
-                    item.total_money = db0.AccountsPayableDetail.Where(x => x.accounts_payable_id == item.accounts_payable_id).Sum(x => x.actual_receipt);
+                    if (db0.AccountsPayableDetail.Any(x => x.accounts_payable_id == item.accounts_payable_id))
+                        item.total_money = db0.AccountsPayableDetail.Where(x => x.accounts_payable_id == item.accounts_payable_id).Sum(x => x.actual_receipt);
                 }
                 return Ok(new
                 {

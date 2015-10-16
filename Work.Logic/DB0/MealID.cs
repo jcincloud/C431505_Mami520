@@ -19,5 +19,13 @@ namespace ProcCore.Business.DB0
         public string memo { get; set; }
         public bool i_Use { get; set; }
         public bool i_Hide { get; set; }
+        public string i_InsertUserID { get; set; }
+        public Nullable<int> i_InsertDeptID { get; set; }
+        public Nullable<System.DateTime> i_InsertDateTime { get; set; }
+        public string i_UpdateUserID { get; set; }
+        public Nullable<int> i_UpdateDeptID { get; set; }
+        public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
+        public string i_Lang { get; set; }
+        public int company_id { get; set; }
     }
 }

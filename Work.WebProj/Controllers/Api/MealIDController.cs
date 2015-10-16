@@ -84,6 +84,10 @@ namespace DotWeb.Api
                 item.i_Use = md.i_Use;
                 item.memo = md.memo;
 
+                item.i_UpdateUserID = this.UserId;
+                item.i_UpdateDateTime = DateTime.Now;
+                item.i_UpdateDeptID = this.departmentId;
+
                 await db0.SaveChangesAsync();
                 r.result = true;
                 r.aspnetid = md.meal_id;//暫時用aspnetid
@@ -122,6 +126,10 @@ namespace DotWeb.Api
                     r.result = false;
                     return Ok(r);
                 }
+                md.i_InsertUserID = this.UserId;
+                md.i_InsertDateTime = DateTime.Now;
+                md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
 
                 db0.MealID.Add(md);
                 await db0.SaveChangesAsync();

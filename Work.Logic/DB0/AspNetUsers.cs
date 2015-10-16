@@ -35,7 +35,10 @@ namespace ProcCore.Business.DB0
         public string UserName { get; set; }
         public string user_name_c { get; set; }
         public int sort { get; set; }
+        public int company_id { get; set; }
     
+    	[JsonIgnore]
+        public virtual Company Company { get; set; }
     	[JsonIgnore]
         public virtual Department Department { get; set; }
     	[JsonIgnore]

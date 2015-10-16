@@ -11,22 +11,10 @@ namespace ProcCore.Business.DB0
 {
     using System;
     using System.Collections.Generic;
-    
-    using Newtonsoft.Json;
-    public partial class AspNetRoles : BaseEntityTable
-    {
-        public AspNetRoles()
-        {
-            this.Menu = new HashSet<Menu>();
-            this.AspNetUsers = new HashSet<AspNetUsers>();
-        }
-    
-        public string Id { get; set; }
-        public string Name { get; set; }
-    
-    	[JsonIgnore]
-        public virtual ICollection<Menu> Menu { get; set; }
-    	[JsonIgnore]
-        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
+    public partial class m_Company :BaseEntityTable {
+    public int company_id { get; set; }
+    public string company_sn { get; set; }
+    public string company_name { get; set; }
+    public bool i_Hide { get; set; }
     }
 }
