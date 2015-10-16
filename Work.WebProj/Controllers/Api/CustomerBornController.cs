@@ -37,7 +37,7 @@ namespace DotWeb.Api
             {
                 var items = (from x in db0.CustomerBorn
                              orderby x.born_day descending
-                             where x.customer_id == q.main_id
+                             where x.customer_id == q.main_id & x.company_id == this.companyId
                              select new m_CustomerBorn()
                              {
                                  customer_id = x.customer_id,

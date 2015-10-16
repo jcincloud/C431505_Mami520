@@ -31,6 +31,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.AccountsPayableDetail
+                    .Where(x => x.company_id == this.companyId)
                     .OrderBy(x => x.receipt_day).AsQueryable();
 
 

@@ -27,7 +27,7 @@ namespace DotWeb.Api
             {
                 var items = db0.MealID
                     .OrderBy(x => x.meal_id)
-                    .Where(x => !x.i_Use & !x.i_Hide)
+                    .Where(x => !x.i_Use & !x.i_Hide & x.company_id == this.companyId)
                     .Select(x => new { x.meal_id });
 
                 return Ok(items.ToList());
@@ -42,8 +42,8 @@ namespace DotWeb.Api
             db0 = getDB0();
             try
             {
-                var check_old = db0.MealID.Any(x => x.meal_id == parm.old_id);
-                var check_new = db0.MealID.Any(x => x.meal_id == parm.new_id & !x.i_Use);
+                var check_old = db0.MealID.Any(x => x.meal_id == parm.old_id & x.company_id == this.companyId);
+                var check_new = db0.MealID.Any(x => x.meal_id == parm.new_id & !x.i_Use & x.company_id == this.companyId);
 
                 if (!check_new)
                 {//如果發先新id已被使用
@@ -51,10 +51,10 @@ namespace DotWeb.Api
                 }
                 if (check_old)
                 {
-                    var old_item = await db0.MealID.FindAsync(parm.old_id);
+                    var old_item = await db0.MealID.FindAsync(parm.old_id, this.companyId);
                     old_item.i_Use = false;//將舊id改回未使用狀態
                 }
-                var new_item = await db0.MealID.FindAsync(parm.new_id);
+                var new_item = await db0.MealID.FindAsync(parm.new_id, this.companyId);
                 new_item.i_Use = true;
 
                 await db0.SaveChangesAsync();
@@ -70,10 +70,10 @@ namespace DotWeb.Api
             db0 = getDB0();
             try
             {
-                bool check_born = db0.CustomerBorn.Any(x => x.born_id == parm.born_id);//先檢查此筆生產存不存在
+                bool check_born = db0.CustomerBorn.Any(x => x.born_id == parm.born_id & x.company_id == this.companyId);//先檢查此筆生產存不存在
                 if (parm.meal_id != null)//有選用餐編號才改
                 {
-                    var meal_item = await db0.MealID.FindAsync(parm.meal_id);
+                    var meal_item = await db0.MealID.FindAsync(parm.meal_id, this.companyId);
                     if (!check_born || parm.born_id == null)
                     {
                         meal_item.i_Use = false;
@@ -83,7 +83,7 @@ namespace DotWeb.Api
                         var born_item = await db0.CustomerBorn.FindAsync(parm.born_id);
                         if (born_item.meal_id != parm.meal_id)
                         {
-                            var old_item = await db0.MealID.FindAsync(born_item.meal_id);
+                            var old_item = await db0.MealID.FindAsync(born_item.meal_id, this.companyId);
                             if (old_item.i_Use)
                             {//如果舊id已經被其他人用
                                 born_item.meal_id = parm.meal_id;//換成新id
@@ -118,16 +118,16 @@ namespace DotWeb.Api
                 IQueryable<int> born_id = null;
                 if (main_id != null)
                 {
-                    born_id = db0.CustomerNeed.Where(x => x.customer_need_id != main_id).Select(x => x.born_id);
+                    born_id = db0.CustomerNeed.Where(x => x.customer_need_id != main_id & x.company_id == this.companyId).Select(x => x.born_id);
                 }
                 else
                 {
-                    born_id = db0.CustomerNeed.Select(x => x.born_id);
+                    born_id = db0.CustomerNeed.Where(x => x.company_id == this.companyId).Select(x => x.born_id);
                 }
 
                 var items = db0.CustomerBorn
                     .OrderBy(x => x.meal_id)
-                    .Where(x => !x.is_close & !born_id.Contains(x.born_id))
+                    .Where(x => !x.is_close & !born_id.Contains(x.born_id) & x.company_id == this.companyId)
                     .Select(x => new { x.customer_id, x.born_id, x.meal_id, x.mom_name, x.born_frequency });
 
                 if (old_id != null)
@@ -165,6 +165,7 @@ namespace DotWeb.Api
             {
 
                 var items = db0.CustomerBorn
+                    .Where(x => x.company_id == this.companyId)
                     .OrderBy(x => new { x.customer_id, x.meal_id })
                     .Select(x => new { x.customer_id, x.born_id, x.Customer.customer_sn, x.Customer.customer_name, x.meal_id, x.mom_name, x.born_frequency, x.is_close });
 
@@ -339,7 +340,7 @@ namespace DotWeb.Api
 
                 var items = db0.Product
                     .OrderBy(x => new { x.sort })
-                    .Where(x => !x.i_Hide)
+                    .Where(x => !x.i_Hide & x.company_id == this.companyId)
                     .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard });
 
                 if (parm.name != null)
@@ -373,7 +374,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.RecordDetail
                              .OrderByDescending(x => x.sell_day)
-                             .Where(x => x.product_record_id == q.main_id)
+                             .Where(x => x.product_record_id == q.main_id & x.company_id == this.companyId)
                              .Select(x => new m_RecordDetail()
                              {
                                  product_record_id = x.product_record_id,
@@ -400,7 +401,7 @@ namespace DotWeb.Api
             try
             {
                 var getRecordDetail = await db0.RecordDetail.FindAsync(parm.record_deatil_id);//產品銷售明細檔
-                var getMealID = await db0.MealID.FindAsync(parm.meal_id);//用餐編號
+                var getMealID = await db0.MealID.FindAsync(parm.meal_id, this.companyId);//用餐編號
                 var getBorn = await db0.CustomerBorn.FindAsync(getRecordDetail.born_id);//生產紀錄
                 DateTime end = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id)
                                 .OrderByDescending(x => x.meal_day).FirstOrDefault().meal_day;
@@ -445,7 +446,7 @@ namespace DotWeb.Api
             {
                 var items = db0.Activity
                     .OrderByDescending(x => x.sort)
-                    .Where(x => !x.i_Hide)
+                    .Where(x => !x.i_Hide & x.company_id == this.companyId)
                     .Select(x => new option() { val = x.activity_id, Lname = x.activity_name });
 
                 return Ok(items.ToList());
@@ -461,11 +462,11 @@ namespace DotWeb.Api
             try
             {
                 //一筆生產紀錄只能有一筆禮品贈送紀錄
-                var born_id = db0.GiftRecord.Select(x => x.born_id).AsQueryable();
+                var born_id = db0.GiftRecord.Where(x => x.company_id == this.companyId).Select(x => x.born_id).AsQueryable();
 
                 var items = db0.ProductRecord
                     .OrderByDescending(x => x.record_day)
-                    .Where(x => !born_id.Contains(x.born_id))
+                    .Where(x => !born_id.Contains(x.born_id) & x.company_id == this.companyId)
                     .Select(x => new
                     {
                         x.product_record_id,
@@ -529,7 +530,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.ScheduleDetail
                              .OrderBy(x => x.tel_day)
-                             .Where(x => x.schedule_id == main_id)
+                             .Where(x => x.schedule_id == main_id & x.company_id == this.companyId)
                              .Select(x => new m_ScheduleDetail()
                              {
                                  schedule_detail_id = x.schedule_detail_id,
@@ -1054,11 +1055,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var element_id = db0.ConstituteOfElement
-                    .Where(x => x.constitute_id == parm.main_id)
+                    .Where(x => x.constitute_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.element_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
+                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
 
 
                 if (parm.name != null)
@@ -1096,7 +1097,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.ConstituteOfElement
                             join y in db0.ElementFood on x.element_id equals y.element_id
-                            where x.constitute_id == main_id
+                            where x.constitute_id == main_id & x.company_id == this.companyId
                             select new { x.element_id, y.category_id, y.element_name };
 
                 return Ok(items.ToList());
@@ -1194,11 +1195,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var constitute_id = db0.DailyMenuOfConstitute
-                    .Where(x => x.dail_menu_id == parm.main_id)
+                    .Where(x => x.dail_menu_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.constitute_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.ConstituteFood.Where(x => !constitute_id.Contains(x.constitute_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.constitute_id, x.category_id, x.constitute_name });
+                var items = db0.ConstituteFood.Where(x => !constitute_id.Contains(x.constitute_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.constitute_id, x.category_id, x.constitute_name });
 
 
                 if (parm.name != null)
@@ -1235,7 +1236,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.DailyMenuOfConstitute
                             join y in db0.ConstituteFood on x.constitute_id equals y.constitute_id
-                            where x.dail_menu_id == main_id
+                            where x.dail_menu_id == main_id & x.company_id == this.companyId
                             select new { x.constitute_id, y.category_id, y.constitute_name };
 
                 return Ok(items.ToList());
@@ -1333,11 +1334,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var element_id = db0.DietaryNeedOfElement
-                    .Where(x => x.dietary_need_id == parm.main_id)
+                    .Where(x => x.dietary_need_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.element_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
+                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
 
 
                 if (parm.name != null)
@@ -1374,7 +1375,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.DietaryNeedOfElement
                             join y in db0.ElementFood on x.element_id equals y.element_id
-                            where x.dietary_need_id == main_id
+                            where x.dietary_need_id == main_id & x.company_id == this.companyId
                             select new { x.element_id, y.category_id, y.element_name };
 
                 return Ok(items.ToList());
@@ -1472,11 +1473,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var dietary_need_id = db0.CustomerOfDietaryNeed
-                    .Where(x => x.customer_need_id == parm.main_id)
+                    .Where(x => x.customer_need_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.dietary_need_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.DietaryNeed.Where(x => !dietary_need_id.Contains(x.dietary_need_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.dietary_need_id, x.name, x.is_correspond, x.is_breakfast, x.is_lunch, x.is_dinner });
+                var items = db0.DietaryNeed.Where(x => !dietary_need_id.Contains(x.dietary_need_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.dietary_need_id, x.name, x.is_correspond, x.is_breakfast, x.is_lunch, x.is_dinner });
 
 
                 if (parm.name != null)
@@ -1526,7 +1527,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.CustomerOfDietaryNeed
                             join y in db0.DietaryNeed on x.dietary_need_id equals y.dietary_need_id
-                            where x.customer_need_id == main_id
+                            where x.customer_need_id == main_id & x.company_id == this.companyId
                             select new { x.dietary_need_id, y.name, y.is_correspond, y.is_breakfast, y.is_lunch, y.is_dinner };
 
                 return Ok(items.ToList());
@@ -1638,10 +1639,10 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var customer_id = db0.SendMsgOfCustomer
-                    .Where(x => x.send_msg_id == parm.main_id)
+                    .Where(x => x.send_msg_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.customer_id);
 
-                var items = db0.Customer.Where(x => !customer_id.Contains(x.customer_id)).OrderByDescending(x => x.customer_id).Select(x => new { x.customer_id, x.customer_name, x.customer_type });
+                var items = db0.Customer.Where(x => !customer_id.Contains(x.customer_id) & x.company_id == this.companyId).OrderByDescending(x => x.customer_id).Select(x => new { x.customer_id, x.customer_name, x.customer_type });
 
 
                 if (parm.name != null)
@@ -1679,7 +1680,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.SendMsgOfCustomer
                             join y in db0.Customer on x.customer_id equals y.customer_id
-                            where x.send_msg_id == main_id
+                            where x.send_msg_id == main_id & x.company_id == this.companyId
                             select new { x.customer_id, y.customer_name, y.customer_type };
 
                 return Ok(items.ToList());
@@ -1778,7 +1779,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.AccountsPayableDetail
                              .OrderBy(x => x.receipt_day)
-                             .Where(x => x.accounts_payable_id == main_id)
+                             .Where(x => x.accounts_payable_id == main_id & x.company_id == this.companyId)
                              .Select(x => new m_AccountsPayableDetail()
                              {
                                  accounts_payable_detail_id = x.accounts_payable_detail_id,
@@ -1818,7 +1819,7 @@ namespace DotWeb.Api
                 Matters matters = new Matters();
 
                 //取得正在用餐日期內的客戶生產編號
-                var all_born_id = db0.RecordDetail.Where(x => x.product_type == (int)ProdyctType.PostnatalMeal & x.real_meal_start <= parm.meal_day & x.real_meal_end >= parm.meal_day & x.is_release == false)
+                var all_born_id = db0.RecordDetail.Where(x => x.product_type == (int)ProdyctType.PostnatalMeal & x.real_meal_start <= parm.meal_day & x.real_meal_end >= parm.meal_day & x.is_release == false & x.company_id == this.companyId)
                                                       .OrderBy(x => x.meal_id)
                                                       .Select(x => new { x.born_id, x.meal_id, x.real_meal_start, x.real_meal_end }).ToList();
 
@@ -1919,7 +1920,7 @@ namespace DotWeb.Api
 
 
                 //取得今天用餐排程
-                var getDailyMeal = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day && x.product_type == (int)ProdyctType.PostnatalMeal).OrderBy(x => x.meal_id).ToList();
+                var getDailyMeal = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day && x.product_type == (int)ProdyctType.PostnatalMeal & x.company_id == this.companyId).OrderBy(x => x.meal_id).ToList();
 
                 List<Require> special_diet = new List<Require>();
                 MealDiet breakfast = new MealDiet();
@@ -1931,12 +1932,12 @@ namespace DotWeb.Api
 
                 #region 取得三餐菜單
                 //取得當日菜單
-                var getDailyMenu = db0.DailyMenu.Where(x => x.day == parm.meal_day).ToList();
+                var getDailyMenu = db0.DailyMenu.Where(x => x.day == parm.meal_day & x.company_id == this.companyId).ToList();
                 foreach (var DailyMenu_item in getDailyMenu)
                 {
                     #region 取得對應組合菜單
                     List<Dish> dishs = new List<Dish>();
-                    var constitute_id = db0.DailyMenuOfConstitute.Where(x => x.dail_menu_id == DailyMenu_item.dail_menu_id).Select(x => new { x.constitute_id, x.ConstituteFood.constitute_name }).ToList();
+                    var constitute_id = db0.DailyMenuOfConstitute.Where(x => x.dail_menu_id == DailyMenu_item.dail_menu_id & x.company_id == this.companyId).Select(x => new { x.constitute_id, x.ConstituteFood.constitute_name }).ToList();
                     foreach (var id in constitute_id)
                     {
                         List<Require> Empty_RequireData = new List<Require>();
@@ -1972,11 +1973,11 @@ namespace DotWeb.Api
                     if (DailyMeal_Item.breakfast_state > 0 || DailyMeal_Item.lunch_state > 0 || DailyMeal_Item.dinner_state > 0)
                     {//只要三餐有一餐有,就列特殊飲食
                         //取得該客戶需求元素id
-                        var dietary_need_id = db0.CustomerOfDietaryNeed.Where(x => x.CustomerNeed.born_id == DailyMeal_Item.born_id).Select(x => x.dietary_need_id);
+                        var dietary_need_id = db0.CustomerOfDietaryNeed.Where(x => x.CustomerNeed.born_id == DailyMeal_Item.born_id & x.company_id == this.companyId).Select(x => x.dietary_need_id);
 
                         #region 無對應特殊飲食習慣
                         //未對應
-                        var no_correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & !x.is_correspond).ToList();
+                        var no_correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & !x.is_correspond & x.company_id == this.companyId).ToList();
                         foreach (var dn_item in no_correspond)
                         {
                             //檢查此特殊飲食是否出現過
@@ -2005,7 +2006,7 @@ namespace DotWeb.Api
 
                         #region 有對應特殊飲食習慣
                         //有對應
-                        var correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & x.is_correspond).ToList();
+                        var correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & x.is_correspond & x.company_id == this.companyId).ToList();
                         foreach (var dn_item in correspond)
                         {
                             #region 早餐
@@ -2164,6 +2165,7 @@ namespace DotWeb.Api
 
                 var items = from x in db0.RecordDetail
                             orderby x.ProductRecord.record_sn descending
+                            where x.company_id==this.companyId
                             select (new R02_RecordDetail()
                             {
                                 product_record_id = x.product_record_id,
@@ -2239,6 +2241,7 @@ namespace DotWeb.Api
 
                 var items = from x in db0.AccountsPayable
                             orderby x.record_sn descending
+                            where x.company_id==this.companyId
                             select (new R03_AccountsPayable()
                             {
                                 product_record_id = x.product_record_id,

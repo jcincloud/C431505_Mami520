@@ -45,12 +45,13 @@ namespace DotWeb.Api
 
             var items = UserManager.Users
                 .OrderBy(x => x.UserName)
-                .Select(x => new { x.Id, x.user_name_c, x.UserName, x.Email })
-                .Where(x => x.UserName != "admin");
+                .Select(x => new { x.Id, x.user_name_c, x.UserName, x.Email, x.company_id })
+                .Where(x => x.UserName != "admin" & x.company_id==this.companyId);
 
-            if (q.UserName != null) {
-                items = items.Where(x => x.user_name_c.Contains(q.UserName));
-            }
+                if (q.UserName != null)
+                {
+                    items = items.Where(x => x.user_name_c.Contains(q.UserName));
+                }
 
             int page = (q.page == null ? 1 : (int)q.page);
             int startRecord = PageCount.PageInfo(page, this.defPageSize, items.Count());

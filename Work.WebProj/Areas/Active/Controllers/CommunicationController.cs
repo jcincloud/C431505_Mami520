@@ -49,7 +49,7 @@ namespace DotWeb.Areas.Active.Controllers
             {
                 return defJSON(new
                 {
-                    options_draft = db0.Draft.Where(x => !x.i_Hide).OrderByDescending(x=>x.sort).Select(x => new option() { val = x.draft_id, Lname = x.draft_name })
+                    options_draft = db0.Draft.Where(x => !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x=>x.sort).Select(x => new option() { val = x.draft_id, Lname = x.draft_name })
                 });
             }
         }

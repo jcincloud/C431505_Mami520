@@ -56,7 +56,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.RecordDetail
-                    .Where(x => x.product_type == (int)ProdyctType.PostnatalMeal)
+                    .Where(x => x.product_type == (int)ProdyctType.PostnatalMeal & x.company_id == this.companyId)
                     .OrderByDescending(x => x.sell_day).AsQueryable();
 
 

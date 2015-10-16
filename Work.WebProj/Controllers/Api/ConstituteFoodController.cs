@@ -30,6 +30,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.ConstituteFood
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => new { c_sort = x.All_Category_L2.sort, x.sort }).AsQueryable();
 
 

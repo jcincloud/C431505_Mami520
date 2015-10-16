@@ -40,7 +40,9 @@ namespace DotWeb.Api
 
             using (db0 = getDB0())
             {
-                var qr = db0.CustomerNeed.OrderBy(x=>x.CustomerBorn.mom_name).AsQueryable();
+                var qr = db0.CustomerNeed
+                    .Where(x => x.company_id == this.companyId)
+                    .OrderBy(x=>x.CustomerBorn.mom_name).AsQueryable();
 
 
                 if (q.name != null)

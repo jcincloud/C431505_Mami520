@@ -31,6 +31,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.MealID
+                    .Where(x => x.company_id == this.companyId)
                     .OrderBy(x => x.meal_id).AsQueryable();
 
                 if (q.meal_id != null)
@@ -78,7 +79,7 @@ namespace DotWeb.Api
             {
                 db0 = getDB0();
 
-                item = await db0.MealID.FindAsync(md.meal_id);
+                item = await db0.MealID.FindAsync(md.meal_id, md.company_id);
                 item.meal_id = md.meal_id;
                 item.i_Hide = md.i_Hide;
                 item.i_Use = md.i_Use;
@@ -120,7 +121,7 @@ namespace DotWeb.Api
                 #region working a
                 db0 = getDB0();
 
-                if (db0.MealID.Any(x => x.meal_id == md.meal_id))
+                if (db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId))
                 {
                     r.message = "此用餐編號已存在!";
                     r.result = false;
@@ -130,6 +131,7 @@ namespace DotWeb.Api
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
                 md.company_id = this.companyId;
+                md.i_Lang = "zh-TW";
 
                 db0.MealID.Add(md);
                 await db0.SaveChangesAsync();
@@ -174,7 +176,7 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    item = new MealID() { meal_id = id };
+                    item = new MealID() { meal_id = id, company_id = this.companyId };
                     db0.MealID.Attach(item);
                     db0.MealID.Remove(item);
                 }

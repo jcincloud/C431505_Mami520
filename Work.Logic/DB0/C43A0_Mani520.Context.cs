@@ -34,7 +34,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<i_SN> i_SN { get; set; }
         public virtual DbSet<i_UserLoginLog> i_UserLoginLog { get; set; }
         public virtual DbSet<Menu> Menu { get; set; }
-        public virtual DbSet<MealID> MealID { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<CustomerBorn> CustomerBorn { get; set; }
         public virtual DbSet<All_Category_L1> All_Category_L1 { get; set; }
@@ -65,5 +64,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<RecordDetail> RecordDetail { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Company> Company { get; set; }
+        public virtual DbSet<MealID> MealID { get; set; }
     }
 }

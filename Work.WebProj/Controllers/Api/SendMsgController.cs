@@ -31,7 +31,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.SendMsg
-                    .Where(x => x.send_type == q.send_type)
+                    .Where(x => x.send_type == q.send_type & x.company_id==this.companyId)
                     .OrderByDescending(x => x.sort).AsQueryable();
 
 

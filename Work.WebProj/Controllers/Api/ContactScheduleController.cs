@@ -48,6 +48,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.ContactSchedule
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => x.schedule_id).AsQueryable();
 
 

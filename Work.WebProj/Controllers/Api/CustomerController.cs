@@ -31,6 +31,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.Customer
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => x.customer_id).AsQueryable();
 
                 if (q.word != null)
