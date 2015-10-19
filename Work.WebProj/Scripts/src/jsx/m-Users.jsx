@@ -19,6 +19,7 @@
 					<td>{this.props.itemData.user_name_c}</td>					
 					<td>{this.props.itemData.UserName}</td>
 					<td>{this.props.itemData.Email}</td>
+					<td>{this.props.itemData.company_name}</td>
 				</tr>
 			);
 		}
@@ -285,7 +286,8 @@ var GirdForm = React.createClass({
 									<th className="col-xs-1 text-center">修改</th>
 									<th className="col-xs-2">姓名</th>
 									<th className="col-xs-2">帳號</th>
-									<th className="col-xs-7">Email</th>
+									<th className="col-xs-4">Email</th>
+									<th className="col-xs-3">公司名稱</th>
 								</tr>
 							</thead>
 							<tbody>

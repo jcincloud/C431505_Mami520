@@ -330,7 +330,15 @@ namespace ProcCore.Business.DB0
         public int val { get; set; }
         public string Lname { get; set; }
     }
-
+    public class UserList
+    {
+        public string Id { get; set; }
+        public string user_name_c { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public int company_id { get; set; }
+        public string company_name { get; set; }
+    }
 
     #endregion
 
