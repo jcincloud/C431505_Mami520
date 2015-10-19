@@ -242,6 +242,7 @@
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
+    <Compile Include="Areas\Base\Controllers\MenuController.cs" />
     <Compile Include="Areas\Base\Controllers\UsersController.cs" />
     <Compile Include="Areas\Base\BaseAreaRegistration.cs" />
     <Content Include="Content\bootstrap\css\bootstrap-theme.css" />
@@ -252,6 +253,7 @@
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Base\Views\Login\index.tablet.cshtml" />
     <Content Include="Areas\Base\Views\Users\Company.cshtml" />
+    <Content Include="Areas\Base\Views\Menu\Main.cshtml" />
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
@@ -259,6 +261,7 @@
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
     <Compile Include="Controllers\Api\AccountsPayableController.cs" />
+    <Compile Include="Controllers\Api\MenuController.cs" />
     <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\SendMsgController.cs" />
     <Compile Include="Controllers\Api\ContactScheduleController.cs" />
@@ -744,6 +747,7 @@
     <Content Include="Scripts\build\func\m-login.js" />
     <Content Include="Scripts\build\func\m-MealID.js" />
     <Content Include="Scripts\build\func\m-MealSchedule.js" />
+    <Content Include="Scripts\build\func\m-Menu.js" />
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductRecord.js" />
     <Content Include="Scripts\build\func\m-R01_DailyMeal.js" />
@@ -1057,6 +1061,7 @@
     <Content Include="Scripts\src\jsx\m-R02_ProductRecord.jsx" />
     <Content Include="Scripts\src\jsx\m-R03_AccountsPayable.jsx" />
     <Content Include="Scripts\src\jsx\m-Company.jsx" />
+    <Content Include="Scripts\src\jsx\m-Menu.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1203,6 +1208,7 @@
     <Content Include="Areas\Active\Views\Communication\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\MealSchedule\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\AccountsPayable\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Base\Views\Menu\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -339,7 +339,16 @@ namespace ProcCore.Business.DB0
         public int company_id { get; set; }
         public string company_name { get; set; }
     }
+    public partial class Menu : BaseEntityTable {
 
+        public IList<MenuRoleArray> role_array { get; set; }
+    }
+    public class MenuRoleArray
+    {
+        public string role_id { get; set; }
+        public bool role_use { get; set; }
+        public string role_name { get; set; }
+    }
     #endregion
 
     #region q_Model_Define
@@ -488,6 +497,11 @@ namespace ProcCore.Business.DB0
     {
         public string word { get; set; }
         public bool? i_Hide { get; set; }
+    }
+    public class q_Menu : QueryBase
+    {
+        public string word { get; set; }
+        public bool? is_folder { get; set; }
     }
     #endregion
 
