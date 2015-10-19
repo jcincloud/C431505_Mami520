@@ -118,7 +118,8 @@ namespace DotWeb.Api
 
                     if (get_now_role == null && role.role_use) //要新增的權限
                     {
-                        item.AspNetRoles.Add(new AspNetRoles() { Id = role.role_id });
+                        var asp_role = db0.AspNetRoles.Where(x => x.Id == role.role_id).FirstOrDefault();
+                        item.AspNetRoles.Add(asp_role);
                     }
                 }
 
@@ -156,7 +157,8 @@ namespace DotWeb.Api
                 {
                     if (role.role_use)
                     {
-                        md.AspNetRoles.Add(new AspNetRoles() { Id = role.role_id});
+                        var asp_role = db0.AspNetRoles.Where(x => x.Id == role.role_id).FirstOrDefault();
+                        md.AspNetRoles.Add(asp_role);
                     }
                 }
 
