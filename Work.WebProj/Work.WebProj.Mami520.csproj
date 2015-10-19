@@ -251,6 +251,7 @@
     <Content Include="Content\bootstrap\css\page.css" />
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Base\Views\Login\index.tablet.cshtml" />
+    <Content Include="Areas\Base\Views\Users\Company.cshtml" />
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
@@ -258,6 +259,7 @@
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
     <Compile Include="Controllers\Api\AccountsPayableController.cs" />
+    <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\SendMsgController.cs" />
     <Compile Include="Controllers\Api\ContactScheduleController.cs" />
     <Compile Include="Controllers\Api\DeatilTelRecordController.cs" />
@@ -728,6 +730,7 @@
     <Content Include="Scripts\build\func\m-Activity.js" />
     <Content Include="Scripts\build\func\m-Category.js" />
     <Content Include="Scripts\build\func\m-ChangePassword.js" />
+    <Content Include="Scripts\build\func\m-Company.js" />
     <Content Include="Scripts\build\func\m-ConstituteFood.js" />
     <Content Include="Scripts\build\func\m-ContactSchedule.js" />
     <Content Include="Scripts\build\func\m-Customer.js" />
@@ -1053,6 +1056,7 @@
     <Content Include="Scripts\src\jsx\m-R01_DailyMeal.jsx" />
     <Content Include="Scripts\src\jsx\m-R02_ProductRecord.jsx" />
     <Content Include="Scripts\src\jsx\m-R03_AccountsPayable.jsx" />
+    <Content Include="Scripts\src\jsx\m-Company.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

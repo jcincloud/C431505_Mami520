@@ -46,12 +46,16 @@ namespace DotWeb.Api
             var items = UserManager.Users
                 .OrderBy(x => x.UserName)
                 .Select(x => new { x.Id, x.user_name_c, x.UserName, x.Email, x.company_id })
-                .Where(x => x.UserName != "admin" & x.company_id==this.companyId);
+                .Where(x => x.UserName != "admin");
 
-                if (q.UserName != null)
-                {
-                    items = items.Where(x => x.user_name_c.Contains(q.UserName));
-                }
+            if (q.UserName != null)
+            {
+                items = items.Where(x => x.user_name_c.Contains(q.UserName));
+            }
+            if (this.RoleName != "Admins")
+            {
+                items = items.Where(x => x.company_id == this.companyId);
+            }
 
             int page = (q.page == null ? 1 : (int)q.page);
             int startRecord = PageCount.PageInfo(page, this.defPageSize, items.Count());
@@ -80,6 +84,11 @@ namespace DotWeb.Api
                 item.Email = md.Email;
                 item.user_name_c = md.user_name_c;
                 item.sort = md.sort;
+
+                if (this.RoleName == "Admins")
+                {
+                    item.company_id = md.company_id;
+                }
 
                 var roles = item.Roles;
 
@@ -122,7 +131,11 @@ namespace DotWeb.Api
             try
             {
                 #region working
-                md.company_id = this.companyId;
+                if (this.RoleName != "Admins")
+                {
+                    md.company_id = this.companyId;
+                }
+
                 foreach (var role in md.role_array)
                 {
                     if (role.role_use)

@@ -23,6 +23,7 @@ namespace DotWeb.Api
         protected int companyId;
         protected string UserId; //指的是廠商登錄帳號
         protected string LoginUserFlag = string.Empty;
+        protected String RoleName = string.Empty;
 
         protected C43A0_Mani520Entities db0;
 
@@ -40,6 +41,11 @@ namespace DotWeb.Api
                 this.departmentId = aspnet_user.department_id;
                 this.companyId = aspnet_user.company_id;
                 var asp_net_roles = aspnet_user.Roles.Select(x => x.RoleId);
+
+                var db0 = getDB0();
+
+                var getRoles = db0.AspNetUsers.FirstOrDefault(x => x.Id == this.UserId).AspNetRoles.Select(x => x.Name).FirstOrDefault();
+                RoleName = getRoles;
             }
         }
 

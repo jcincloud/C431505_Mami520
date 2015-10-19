@@ -21,7 +21,8 @@ namespace ProcCore.Business
         Activity, GiftRecord,
         ContactSchedule, ScheduleDetail, DeatilTelRecord, SendMsg, Draft,
         AccountsPayable, AccountsPayableDetail,
-        All_Category_L1, All_Category_L2
+        All_Category_L1, All_Category_L2,
+        Company
     }
     public enum SNType
     {

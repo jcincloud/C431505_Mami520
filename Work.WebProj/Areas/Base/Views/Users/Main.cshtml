@@ -7,7 +7,7 @@
 @section IncludeScript{
     @Html.Partial("Manage/JSGlobalVar")
     <script>
-        var a = '@Html.Lang("customer_name")';
+        var Role = '@ViewBag.RoleName';
     </script>
     <script src="~/Scripts/build/comminc.js"></script>
     <script src="~/Scripts/build/func/m-Users.js"></script>

@@ -351,7 +351,7 @@ var GirdForm = React.createClass({
 									<th className="col-xs-1">客戶分類</th>
 									<th className="col-xs-2">身分證號</th>
 									<th className="col-xs-3">送餐地址</th>
-									<th className="col-xs-2">電話1</th>
+									<th className="col-xs-1">電話1</th>
 									<th className="col-xs-1">電話2</th>
 								</tr>
 							</thead>
@@ -500,6 +500,24 @@ var GirdForm = React.createClass({
                                        address_field="tw_address_2" />
 						</div>
 					</div>
+                    <div className="form-group">
+                        <label className="col-xs-2 control-label">APP帳號</label>
+                        <div className="col-xs-3">
+                            <input type="text"
+                            className="form-control"
+                            value={fieldData.app_account}
+                            onChange={this.changeFDValue.bind(this,'app_account')}
+                            maxLength="16" />
+                        </div>
+                        <label className="col-xs-2 control-label">APP密碼</label>
+                        <div className="col-xs-3">
+                            <input type="password"
+                            className="form-control"
+                            value={fieldData.app_password}
+                            onChange={this.changeFDValue.bind(this,'app_password')}
+                            maxLength="16" />
+                        </div>
+                    </div>
 					<div className="form-group">
 						<label className="col-xs-2 control-label">備註</label>
 						<div className="col-xs-8">

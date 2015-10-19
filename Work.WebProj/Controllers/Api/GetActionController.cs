@@ -1908,7 +1908,7 @@ namespace DotWeb.Api
                 }
                 #region 試吃
                 var tryout_DailyMeal = db0.DailyMeal.Where(x => x.product_type == (int)ProdyctType.Tryout &
-                                                                 x.meal_day == parm.meal_day);
+                                                                 x.meal_day == parm.meal_day & x.company_id == this.companyId);
                 tryout_meal.breakfast = tryout_DailyMeal.Where(x => x.breakfast_state > 0).Count();
                 tryout_meal.lunch = tryout_DailyMeal.Where(x => x.lunch_state > 0).Count();
                 tryout_meal.dinner = tryout_DailyMeal.Where(x => x.dinner_state > 0).Count();
@@ -2165,7 +2165,7 @@ namespace DotWeb.Api
 
                 var items = from x in db0.RecordDetail
                             orderby x.ProductRecord.record_sn descending
-                            where x.company_id==this.companyId
+                            where x.company_id == this.companyId
                             select (new R02_RecordDetail()
                             {
                                 product_record_id = x.product_record_id,
@@ -2241,7 +2241,7 @@ namespace DotWeb.Api
 
                 var items = from x in db0.AccountsPayable
                             orderby x.record_sn descending
-                            where x.company_id==this.companyId
+                            where x.company_id == this.companyId
                             select (new R03_AccountsPayable()
                             {
                                 product_record_id = x.product_record_id,

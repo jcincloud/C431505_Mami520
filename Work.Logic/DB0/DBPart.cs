@@ -476,6 +476,11 @@ namespace ProcCore.Business.DB0
     {
         public string word { get; set; }
     }
+    public class q_Company : QueryBase
+    {
+        public string word { get; set; }
+        public bool? i_Hide { get; set; }
+    }
     #endregion
 
     #region c_Model_Define
