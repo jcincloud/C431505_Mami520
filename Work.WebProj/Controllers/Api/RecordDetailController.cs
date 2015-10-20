@@ -223,13 +223,13 @@ namespace DotWeb.Api
                 if (md.product_type == (int)ProdyctType.PostnatalMeal)
                 {
                     //驗證一筆生產紀錄只能有一筆月子餐
-                    var check_PostnatalMeal = db0.RecordDetail.Any(x => x.born_id == md.born_id & x.product_type == (int)ProdyctType.PostnatalMeal);
-                    if (check_PostnatalMeal)
-                    {
-                        r.result = false;
-                        r.message = Resources.Res.Log_Check_RecordDetail_PostnatalMeal;
-                        return Ok(r);
-                    }
+                    //var check_PostnatalMeal = db0.RecordDetail.Any(x => x.born_id == md.born_id & x.product_type == (int)ProdyctType.PostnatalMeal);
+                    //if (check_PostnatalMeal)
+                    //{
+                    //    r.result = false;
+                    //    r.message = Resources.Res.Log_Check_RecordDetail_PostnatalMeal;
+                    //    return Ok(r);
+                    //}
                     md.real_meal_start = md.meal_start;
                     md.real_meal_end = md.meal_end;
                     md.real_breakfast = md.estimate_breakfast;
@@ -243,12 +243,12 @@ namespace DotWeb.Api
                     md.real_estimate_dinner = md.estimate_dinner;
 
                     #region 檢查用餐編號
-                    if (md.meal_id == null)
-                    {
-                        r.result = false;
-                        r.message = Resources.Res.Log_Check_RecordDetail_Mealid;
-                        return Ok(r);
-                    }
+                    //if (md.meal_id == null)
+                    //{
+                    //    r.result = false;
+                    //    r.message = Resources.Res.Log_Check_RecordDetail_Mealid;
+                    //    return Ok(r);
+                    //}
                     var getBorn = await db0.CustomerBorn.FindAsync(md.born_id);//更新生產紀錄用餐編號
                     getBorn.meal_id = md.meal_id;
                     //檢查用餐編號是否釋放過
@@ -288,7 +288,7 @@ namespace DotWeb.Api
                 await db0.SaveChangesAsync();
 
                 #region 新增用餐排程資料
-                if (md.product_type == (int)ProdyctType.PostnatalMeal & md.meal_start != null & md.meal_end != null)
+                if (md.product_type == (int)ProdyctType.PostnatalMeal & md.meal_start != null & md.meal_end != null & md.meal_id!=null)
                 {
                     DateTime start = DateTime.Parse(md.meal_start.ToString());
                     DateTime end = DateTime.Parse(md.meal_end.ToString());

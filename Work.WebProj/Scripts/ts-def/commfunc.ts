@@ -40,7 +40,7 @@ function isValidJSONDate(value: string, userFormat) {
             m > 0 && m < 13 &&
             y && y.length === 4 &&
             d > 0 && d <= (new Date(y, m, 0)).getDate()
-            )
+        )
     }
 
     return isDate(theDate, theFormat)
@@ -61,9 +61,9 @@ function obj_prop_date(obj: any) {
 
     return obj;
 }
-function stand_date(getDateStr: string) {
-    var d = new Date(getDateStr);
-    var r = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate;
+function stand_date(d: Date): string {
+    var r: string = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+
     return r;
 }
 function format_Date(date: Date): string {
@@ -220,7 +220,7 @@ function getBrower() {
 
 var replace_br: RegExp = /(?:\\[rn]|[\r\n]+)+/g; //將換行碼換成<br/>的樣板
 
-function checkTelReg(tel: string) {
+function checkTelReg(tel: string): Object {
     /*
       Autohr:Ajoe
       Date:2015/9/8
@@ -248,7 +248,7 @@ function checkTwID(id) {
         var city = new Array(
             1, 10, 19, 28, 37, 46, 55, 64, 39, 73, 82, 2, 11,
             20, 48, 29, 38, 47, 56, 65, 74, 83, 21, 3, 12, 30
-            )
+        )
         id = id.toUpperCase();
         // 使用「正規表達式」檢驗格式
         if (id.search(/^[A-Z](1|2)\d{8}$/i) == -1) {
@@ -318,7 +318,10 @@ function addDate(date: Date, days: number): Date {
       參數:date,要加減的日期.
       參數:days,要加減的天數.
     */
-    var r: Date = new Date(date.setDate(date.getDate() + days))
+    var a: number = date.valueOf();
+    a = a + days * 60 * 60 * 1000;
+    var r: Date = new Date(a)
+
     return r;
 }
 function formatMoney(s: string, d_point: number) {
