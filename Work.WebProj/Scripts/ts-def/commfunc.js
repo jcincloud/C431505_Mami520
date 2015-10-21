@@ -46,9 +46,8 @@ function obj_prop_date(obj) {
     }
     return obj;
 }
-function stand_date(getDateStr) {
-    var d = new Date(getDateStr);
-    var r = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate;
+function stand_date(d) {
+    var r = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     return r;
 }
 function format_Date(date) {
@@ -255,7 +254,9 @@ function MealCount(Parm, B, L, D) {
     return parseFloat(total.toFixed(2));
 }
 function addDate(date, days) {
-    var r = new Date(date.setDate(date.getDate() + days));
+    var a = date.valueOf();
+    a = a + (days * 24 * 60 * 60 * 1000);
+    var r = new Date(a);
     return r;
 }
 function formatMoney(s, d_point) {

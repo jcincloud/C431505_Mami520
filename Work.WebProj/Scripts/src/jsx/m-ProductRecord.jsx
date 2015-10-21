@@ -911,7 +911,11 @@ var SubForm = React.createClass({
 			qty:1,
 			subtotal:0,
 			tryout_mealtype:null,
-			meal_select_state:0
+			meal_select_state:0,
+			meal_id:null,
+			meal_start:null,
+			meal_end:null,
+			isDailyMealAdd:false
 		}});
 	},
 	updateSubType:function(id,e){
@@ -930,7 +934,7 @@ var SubForm = React.createClass({
 	  				object.value=true;
 	        	}
     		})
-
+			console.log(data);
 			this.setState({edit_sub_type:2,fieldSubData:data.data,tryout_array:tryout_array});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -971,9 +975,28 @@ var SubForm = React.createClass({
 			if(diff_mealday.result==-1){
 				tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
 				obj[name]=old_val;
+			}else{
+				obj.estimate_breakfast=diff_mealday.diff_day;
+				obj.estimate_lunch=diff_mealday.diff_day;
+				obj.estimate_dinner=diff_mealday.diff_day;
 			}
 		}
 
+		this.setState({fieldSubData:obj});
+	},
+	changeMealDayCount:function(e){
+		var obj = this.state.fieldSubData;
+		if(obj.meal_start!=null & (e.target.value!=null & e.target.value!='')){
+			var tmp_date = new Date(obj.meal_start);
+			var end_date=addDate(tmp_date,parseInt(e.target.value)-1);
+
+			obj.meal_end=format_Date(end_date);
+			obj.estimate_breakfast=parseInt(e.target.value);
+			obj.estimate_lunch=parseInt(e.target.value);
+			obj.estimate_dinner=parseInt(e.target.value);
+		}
+
+		obj.diff_day=e.target.value;
 		this.setState({fieldSubData:obj});
 	},
 	changePriceCount:function(name,e){
@@ -1242,7 +1265,7 @@ var SubForm = React.createClass({
 			            	<span className="input-group-btn">
 			         			<a className="btn"
 								onClick={this.showSelectMealid}
-								disabled={this.state.edit_sub_type==2}>
+								disabled={this.state.edit_sub_type==2 & fieldSubData.meal_id!=null}>
 									<i className="fa-plus"></i>
 								</a>
 			            	</span>
@@ -1251,14 +1274,12 @@ var SubForm = React.createClass({
 					<small className="help-inline col-xs-2">請按 <i className="fa-plus"></i> 選取</small>
 					<button className="btn-success" type="button" 
 					onClick={this.setReleaseMealID.bind(this,fieldSubData.meal_id,fieldSubData.record_deatil_id)}
-					disabled={this.state.edit_sub_type==1}>
+					disabled={this.state.edit_sub_type==1 || fieldSubData.meal_id==null}>
 						<i className="fa-check"></i>釋放用餐編號
 					</button>
 				</div>
 				);
 		}
-
-
 
 			outHtml =
 			(
@@ -1386,8 +1407,8 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
-												required={fieldSubData.product_type==2 || fieldSubData.product_type==1}
-												disabled={(fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
+												required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined)|| fieldSubData.product_type==1}
+												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>
@@ -1399,8 +1420,8 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
-												required={fieldSubData.product_type==2}
-												disabled={(fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
+												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
 										</div>										
 									</div>
@@ -1410,8 +1431,9 @@ var SubForm = React.createClass({
 											<input type="number" 							
 											className="form-control"	
 											value={fieldSubData.diff_day}
-											onChange={this.changeFDValue.bind(this,'diff_day')}
-											min="0" disabled/>
+											onChange={this.changeMealDayCount.bind(this)}
+											min="0"
+											disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}/>
 										</div>
 										<small className="help-inline col-xs-4">系統自動計算</small>
 									</div>
@@ -1421,7 +1443,7 @@ var SubForm = React.createClass({
 											<select className="form-control" 
 											value={fieldSubData.meal_select_state}
 											onChange={this.changeFDValue.bind(this,'meal_select_state')}
-											disabled={this.state.edit_sub_type==2 || fieldSubData.product_type!=2}>
+											disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}>
 											<option value="0">無</option>
 											<option value="1">基數天排餐</option>
 											<option value="2">偶數天排餐</option>
@@ -1437,7 +1459,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_breakfast}
 												onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
-												required={fieldSubData.product_type==2}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
 												min="0"/>
 											</div>
 										</div>
@@ -1448,7 +1470,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_lunch}
 												onChange={this.changeMealCount.bind(this,'estimate_lunch')}
-												required={fieldSubData.product_type==2}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
 												min="0"/>
 											</div>
 										</div>
@@ -1459,7 +1481,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_dinner}
 												onChange={this.changeMealCount.bind(this,'estimate_dinner')}
-												required={fieldSubData.product_type==2}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
 												min="0"/>
 											</div>
 										</div>

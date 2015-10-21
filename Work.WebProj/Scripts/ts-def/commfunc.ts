@@ -318,8 +318,9 @@ function addDate(date: Date, days: number): Date {
       參數:date,要加減的日期.
       參數:days,要加減的天數.
     */
+ 
     var a: number = date.valueOf();
-    a = a + days * 60 * 60 * 1000;
+    a = a + (days * 24 * 60 * 60 * 1000);
     var r: Date = new Date(a)
 
     return r;

@@ -305,6 +305,8 @@ namespace ProcCore.Business.DB0
         //用餐排程用
         public bool isMealStart { get; set; }
         public int meal_select_state { get; set; }
+        //判斷是否已新增用餐排程
+        public bool isDailyMealAdd { get; set; }
     }
     public partial class DailyMealChangeRecord
     {
