@@ -1407,7 +1407,7 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
-												required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined)|| fieldSubData.product_type==1}
+												required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!='')|| fieldSubData.product_type==1}
 												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
 										</div>										
@@ -1420,7 +1420,7 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
-												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
 										</div>										
@@ -1459,7 +1459,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_breakfast}
 												onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
-												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												min="0"/>
 											</div>
 										</div>
@@ -1470,7 +1470,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_lunch}
 												onChange={this.changeMealCount.bind(this,'estimate_lunch')}
-												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												min="0"/>
 											</div>
 										</div>
@@ -1481,7 +1481,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_dinner}
 												onChange={this.changeMealCount.bind(this,'estimate_dinner')}
-												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												min="0"/>
 											</div>
 										</div>
