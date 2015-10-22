@@ -520,6 +520,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 此用餐編號不存在!請重新選擇用餐編號。 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Check_MealId_Exist {
+            get {
+                return ResourceManager.GetString("Log_Check_MealId_Exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類似 此用餐編號已被使用!請重新選擇用餐編號。 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Check_MealId_Use {
+            get {
+                return ResourceManager.GetString("Log_Check_MealId_Use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 未用餐完畢,無法釋放用餐編號!! 的當地語系化字串。
         /// </summary>
         internal static string Log_Check_RecordDetail_MealEnd {

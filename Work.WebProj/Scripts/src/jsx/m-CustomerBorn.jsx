@@ -841,7 +841,7 @@ var GirdSubForm = React.createClass({
 							<div className="modal-body">
 								{mealid_select_out_html}
 								{error_out_html}
-								<div className="form-group">
+								{/*<div className="form-group">
 									<label className="col-xs-2 control-label">用餐編號</label>
 									<div className="col-xs-3">
 									    <div className="input-group">
@@ -861,7 +861,7 @@ var GirdSubForm = React.createClass({
 			            				</div>
 									</div>
 									<small className="help-inline col-xs-7">請按 <i className="fa-plus"></i> 選取</small>
-								</div>
+								</div>*/}
 								<div className="form-group">
 									<label className="col-xs-2 control-label">媽媽姓名</label>
 									<div className="col-xs-3">

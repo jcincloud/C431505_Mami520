@@ -211,12 +211,12 @@ namespace DotWeb.Api
                 {
                     item = db0.CustomerBorn.Find(id);
 
-                    //刪除生產紀錄要自動釋放用餐編號(如果未結案)
-                    bool check_mealid = db0.MealID.Any(x => x.meal_id == item.meal_id);
+                    //刪除生產紀錄要自動釋放用餐編號
+                    bool check_mealid = db0.MealID.Any(x => x.meal_id == item.meal_id & x.company_id == this.companyId);
                     if (check_mealid)
                     {
-                        var getMealid = db0.MealID.Find(item.meal_id);
-                        if (!item.is_close & getMealid.i_Use)
+                        var getMealid = db0.MealID.Find(item.meal_id, this.companyId);
+                        if (getMealid.i_Use)
                             getMealid.i_Use = false;
                     }
 
