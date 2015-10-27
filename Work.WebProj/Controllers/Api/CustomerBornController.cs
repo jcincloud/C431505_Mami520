@@ -63,6 +63,27 @@ namespace DotWeb.Api
                 db0 = getDB0();
 
                 item = await db0.CustomerBorn.FindAsync(md.born_id);
+
+                #region 驗證MealId
+                //if (md.meal_id != null)
+                //{
+                //    bool check_exist = db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId);
+                //    if (!check_exist)
+                //    {
+                //        r.result = false;
+                //        r.message = Resources.Res.Log_Check_MealId_Exist;
+                //        return Ok(r);
+                //    }
+                //    var item_mealId = db0.MealID.Find(md.meal_id, this.companyId);
+                //    if (item_mealId.i_Use)
+                //    {
+                //        r.result = false;
+                //        r.message = Resources.Res.Log_Check_MealId_Use;
+                //        return Ok(r);
+                //    }
+                //}
+                #endregion
+
                 item.mom_name = md.mom_name;
                 item.meal_id = md.meal_id;
                 item.sno = md.sno;
@@ -158,6 +179,27 @@ namespace DotWeb.Api
                     getCustomer.tw_country_2 = md.tw_country_2;
                     getCustomer.tw_address_1 = md.tw_address_1;
                     getCustomer.tw_address_2 = md.tw_address_2;
+                }
+                #endregion
+
+                #region 驗證MealId
+                if (md.meal_id != null)
+                {
+                    bool check_exist = db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId);
+                    if (!check_exist)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_MealId_Exist;
+                        return Ok(r);
+                    }
+                    var item_mealId = db0.MealID.Find(md.meal_id, this.companyId);
+                    if (item_mealId.i_Use)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_MealId_Use;
+                        return Ok(r);
+                    }
+                    item_mealId.i_Use = true;
                 }
                 #endregion
 

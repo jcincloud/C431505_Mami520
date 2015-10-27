@@ -1096,15 +1096,15 @@ var SubForm = React.createClass({
 	},
 	selectMealid:function(meal_id){
 		var fieldSubData = this.state.fieldSubData;//選取後變更mealid
-		jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldSubData.meal_id,new_id:meal_id})
-		.done(function(data, textStatus, jqXHRdata) {
-			if(!data.result){
-				alert(data.message);
-			}
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			//showAjaxError(errorThrown);
-		});
+		// jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldSubData.meal_id,new_id:meal_id})
+		// .done(function(data, textStatus, jqXHRdata) {
+		// 	if(!data.result){
+		// 		alert(data.message);
+		// 	}
+		// }.bind(this))
+		// .fail(function( jqXHR, textStatus, errorThrown ) {
+		// 	//showAjaxError(errorThrown);
+		// });
 
 		fieldSubData.meal_id=meal_id;
 		this.setState({isShowMealidSelect:false,fieldSubData:fieldSubData});
