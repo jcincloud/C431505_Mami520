@@ -1437,6 +1437,27 @@ var SubForm = React.createClass({
 										<small className="help-inline col-xs-4">系統自動計算</small>
 									</div>
 									<div className="form-group">
+										<label className="col-xs-2 control-label">餐別</label>
+										<div className="col-xs-6">
+										{
+											this.state.tryout_array.map(function(itemData,i) {
+												var out_check = 							
+												<div className="checkbox-inline" key={i}>
+													<label>
+														<input  type="checkbox" 
+																checked={itemData.value}
+																onChange={this.onMealChange.bind(this,i)}
+														 />
+														{itemData.name_c}
+													</label>
+												</div>;
+												return out_check;
+
+											}.bind(this))
+										}
+										</div>
+									</div>									
+									<div className="form-group">
 										<label className="col-xs-2 control-label">特殊排餐</label>
 										<div className="col-xs-4">
 											<select className="form-control" 
@@ -1497,6 +1518,16 @@ var SubForm = React.createClass({
 										<small className="help-inline col-xs-4">系統自動計算</small>
 									</div>
 									<div className="form-group">
+										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
+										<div className="col-xs-6">
+											<textarea col="30" rows="3" className="form-control"
+											value={fieldSubData.meal_memo}
+											onChange={this.changeFDValue.bind(this,'meal_memo')}
+											maxLength="256"></textarea>
+										</div>
+									</div>			
+									<div className="bg-warning">							
+									<div className="form-group">
 										<label className="col-xs-2 control-label">實際餐數</label>
 										<div className="col-xs-2">
 											<div className="input-group">
@@ -1539,36 +1570,7 @@ var SubForm = React.createClass({
 											min="0" disabled/>
 										</div>
 									</div>
-									<div className="form-group">
-										<label className="col-xs-2 control-label">試吃餐別</label>
-										<div className="col-xs-6">
-										{
-											this.state.tryout_array.map(function(itemData,i) {
-												var out_check = 							
-												<div className="checkbox-inline" key={i}>
-													<label>
-														<input  type="checkbox" 
-																checked={itemData.value}
-																onChange={this.onMealChange.bind(this,i)}
-														 />
-														{itemData.name_c}
-													</label>
-												</div>;
-												return out_check;
-
-											}.bind(this))
-										}
-										</div>
-									</div>							
-									<div className="form-group">
-										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
-										<div className="col-xs-6">
-											<textarea col="30" rows="3" className="form-control"
-											value={fieldSubData.meal_memo}
-											onChange={this.changeFDValue.bind(this,'meal_memo')}
-											maxLength="256"></textarea>
-										</div>
-									</div>	
+								</div>
 								</div>
 								</form>
 								<div className="panel-footer text-right">
