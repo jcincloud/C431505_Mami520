@@ -158,6 +158,40 @@ namespace DotWeb.Api
                 item.estimate_lunch = md.estimate_lunch;
                 item.meal_memo = md.meal_memo;
 
+                #region 修改用餐編號
+                if (md.product_type == (int)ProdyctType.PostnatalMeal)
+                {
+                    #region 驗證MealId
+                    var getBorn = await db0.CustomerBorn.FindAsync(md.born_id);//更新生產紀錄用餐編號
+                    if (md.meal_id != null)
+                    {
+                        bool check_exist = db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId);
+                        if (!check_exist)
+                        {
+                            r.result = false;
+                            r.message = Resources.Res.Log_Check_MealId_Exist;
+                            return Ok(r);
+                        }
+                        var item_mealId = db0.MealID.Find(md.meal_id, this.companyId);
+                        if (item_mealId.i_Use)
+                        {
+                            r.result = false;
+                            r.message = Resources.Res.Log_Check_MealId_Use;
+                            return Ok(r);
+                        }
+                        if (getBorn.meal_id != null)
+                        {
+                            var old_mealId = db0.MealID.Find(getBorn.meal_id, this.companyId);
+                            old_mealId.i_Use = false;
+                        }
+                        item_mealId.i_Use = true;
+                    }
+                    #endregion
+                    getBorn.meal_id = md.meal_id;
+                    item.meal_id = md.meal_id;
+                }
+                #endregion
+
                 #region 試吃用餐排程修改
                 if (item.product_type == (int)ProdyctType.Tryout)
                 {
@@ -182,31 +216,6 @@ namespace DotWeb.Api
                     bool check_DailMeal = db0.DailyMeal.Any(x => x.record_deatil_id == md.record_deatil_id);
                     if (!check_DailMeal)//沒有才新增
                     {
-                        #region 修改用餐編號
-                        #region 驗證MealId
-                        if (md.meal_id != null)
-                        {
-                            bool check_exist = db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId);
-                            if (!check_exist)
-                            {
-                                r.result = false;
-                                r.message = Resources.Res.Log_Check_MealId_Exist;
-                                return Ok(r);
-                            }
-                            var item_mealId = db0.MealID.Find(md.meal_id, this.companyId);
-                            if (item_mealId.i_Use)
-                            {
-                                r.result = false;
-                                r.message = Resources.Res.Log_Check_MealId_Use;
-                                return Ok(r);
-                            }
-                            item_mealId.i_Use = true;
-                        }
-                        #endregion
-                        var getBorn = await db0.CustomerBorn.FindAsync(md.born_id);//更新生產紀錄用餐編號
-                        getBorn.meal_id = md.meal_id;
-                        item.meal_id = md.meal_id;
-                        #endregion
 
                         DateTime start = DateTime.Parse(md.meal_start.ToString());
                         DateTime end = DateTime.Parse(md.meal_end.ToString());
@@ -427,7 +436,8 @@ namespace DotWeb.Api
                             r.message = Resources.Res.Log_Check_MealId_Use;
                             return Ok(r);
                         }
-                        if (getBorn.meal_id != null) {
+                        if (getBorn.meal_id != null)
+                        {
                             var old_mealId = db0.MealID.Find(getBorn.meal_id, this.companyId);
                             old_mealId.i_Use = false;
                         }
