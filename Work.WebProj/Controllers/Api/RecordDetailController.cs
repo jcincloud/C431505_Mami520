@@ -282,7 +282,9 @@ namespace DotWeb.Api
                             #region use sql insert
                             StringBuilder sb = new StringBuilder();
                             Log.Write("Start...");
-                            var sqlt = "insert into DailyMeal(daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID,product_type,meal_id,breakfast_state,lunch_state,dinner_state,company_id) values({0},{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}',{10},{11},{12},{13});";
+                            var sqlt = @"insert into DailyMeal
+                                (daily_meal_id, record_deatil_id, customer_id,born_id,meal_day,i_InsertUserID,i_InsertDateTime,i_InsertDeptID,product_type,meal_id,breakfast_state,lunch_state,dinner_state,company_id) 
+                                values({0},{1},{2},{3},'{4}','{5}','{6}',{7},{8},'{9}',{10},{11},{12},{13});";
                             sb.AppendFormat(sqlt, GetNewId(ProcCore.Business.CodeTable.DailyMeal)
                                                 , md.record_deatil_id
                                                 , md.customer_id
@@ -425,8 +427,10 @@ namespace DotWeb.Api
                             r.message = Resources.Res.Log_Check_MealId_Use;
                             return Ok(r);
                         }
-                        var old_mealId = db0.MealID.Find(getBorn.meal_id, this.companyId);
-                        old_mealId.i_Use = false;
+                        if (getBorn.meal_id != null) {
+                            var old_mealId = db0.MealID.Find(getBorn.meal_id, this.companyId);
+                            old_mealId.i_Use = false;
+                        }
                         item_mealId.i_Use = true;
                         getBorn.meal_id = md.meal_id;
                     }

@@ -82,6 +82,11 @@ namespace DotWeb.Api
                     DateTime end = ((DateTime)q.end_date).AddDays(1);
                     qr = qr.Where(x => x.record_day >= q.start_date && x.record_day < end);
                 }
+
+                if (q.customer_type != null)
+                {
+                    qr = qr.Where(x => x.Customer.customer_type == q.customer_type);
+                }
                 var result = qr.Select(x => new m_ProductRecord()
                 {
                     product_record_id = x.product_record_id,
@@ -93,7 +98,8 @@ namespace DotWeb.Api
                     record_day = x.record_day,
                     name = x.CustomerBorn.mom_name,
                     meal_id = x.CustomerBorn.meal_id,
-                    tel_1=x.CustomerBorn.tel_1
+                    tel_1 = x.CustomerBorn.tel_1,
+                    customer_type = x.Customer.customer_type
                 });
 
 

@@ -254,11 +254,13 @@ var GirdForm = React.createClass({
 		var obj = this.state.searchData;
 		obj['city'] = e.target.value;
 		this.setState({searchData:obj});
+		this.queryGridData(0);
 	},
 	onCountryChange:function(e){
 		var obj = this.state.searchData;
 		obj['country'] = e.target.value;
 		this.setState({searchData:obj});
+		this.queryGridData(0);
 	},
 	listCountry:function(value){
 		for(var i in CommData.twDistrict){
@@ -273,6 +275,7 @@ var GirdForm = React.createClass({
 		var obj = this.state.searchData;
 		obj['customer_type'] = e.target.value;
 		this.setState({searchData:obj});
+		this.queryGridData(0);
 	},
 	render: function() {
 		var outHtml = null;
@@ -624,8 +627,7 @@ var GirdSubForm = React.createClass({
 	},
 	insertDetailType:function(){//新增明細檔
 		var fiedlData=this.props.fiedlData;
-		if(this.props.customer_type==1)
-		{//自有客戶新增要自動帶資料
+			//新增要自動帶資料
 			this.setState({
 				detail_edit_type:1,
 				fieldDetailData:{
@@ -648,17 +650,6 @@ var GirdSubForm = React.createClass({
 					born_type:1
 				}
 			});
-		}else{
-			this.setState({
-				detail_edit_type:1,
-				fieldDetailData:{
-					customer_id:fiedlData.customer_id,
-					born_type:1,
-					born_id:null,
-					meal_id:null
-				}
-			});
-		}
 	},
 	updateDetailType:function(id){//修改明細檔
 		jqGet(this.props.apiSubPathName,{id:id})
@@ -1068,8 +1059,9 @@ var GirdSubForm = React.createClass({
 								<th className="col-xs-2">用餐編號</th>
 								<th className="col-xs-2">媽媽姓名</th>
 								<th className="col-xs-1">寶寶性別</th>
-								<th className="col-xs-2">生產方式</th>
-								<th className="col-xs-2">是否結案</th>
+								<th className="col-xs-1">生產方式</th>
+								<th className="col-xs-1">是否結案</th>
+								<th className="col-xs-2">備註</th>
 							</tr>
 							{
 								this.state.gridDetailData.map(function(itemData,i) {
@@ -1095,6 +1087,7 @@ var GirdSubForm = React.createClass({
 											<td><StateForGrid stateData={CommData.SexType} id={itemData.baby_sex} /></td>
 											<td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>
 											<td>{itemData.is_close? <span className="label label-success">結案</span>:<span className="label label-danger">未結案</span>}</td>			
+											<td>{itemData.memo}</td>
 										</tr>;
 									return out_sub_html;
 								}.bind(this))

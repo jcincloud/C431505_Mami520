@@ -171,6 +171,7 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public string meal_id { get; set; }
         public string tel_1 { get; set; }
+        public int customer_type { get; set; }
     }
     public partial class ProductRecord
     {
@@ -374,6 +375,7 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public string word { get; set; }
         public string meal_id { get; set; }
+        public int? customer_type { get; set; }
         public bool? is_close { get; set; }
         public bool? is_receipt { get; set; }
         public DateTime? start_date { get; set; }

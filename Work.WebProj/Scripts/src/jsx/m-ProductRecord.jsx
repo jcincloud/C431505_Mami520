@@ -18,6 +18,7 @@
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.record_sn}</td>
 					<td>{moment(this.props.itemData.record_day).format('YYYY/MM/DD')}</td>
+					<td><StateForGrid stateData={CommData.CustomerType} id={this.props.itemData.customer_type} /></td>
 					<td>{this.props.itemData.meal_id}</td>
 					<td>{this.props.itemData.name}</td>
 					<td>{this.props.itemData.tel_1}</td>
@@ -231,6 +232,7 @@ var GirdForm = React.createClass({
 		var obj = this.state.searchData;
 		obj[name] = e.target.value;
 		this.setState({searchData:obj});
+		this.queryGridData(0);
 	},
 	queryAllCustomerBorn:function(){//選取用餐編號-取得全部客戶生產資料(已結/未結)list
 		jqGet(gb_approot + 'api/GetAction/GetAllBorn',this.state.searchBornData)
@@ -330,6 +332,12 @@ var GirdForm = React.createClass({
 			showAjaxError(errorThrown);
 		});	
 	},
+	onCustomerTypeChange:function(e){
+		var obj = this.state.searchData;
+		obj['customer_type'] = e.target.value;
+		this.setState({searchData:obj});
+		this.queryGridData(0);
+	},
 	setAccountsPayable:function(){
         //檢視 應收帳款
         document.location.href = gb_approot + 'Active/AccountsPayable?product_record_id=' + this.state.fieldData.product_record_id;
@@ -370,13 +378,27 @@ var GirdForm = React.createClass({
 										<input type="text" className="form-control input-sm" 
 										value={searchData.word}
 										onChange={this.changeGDValue.bind(this,'word')}
-										placeholder="請擇一填寫..." /> { }
+										placeholder="請擇一填寫..." /> { }<br />
 
 										{/*<label>用餐編號</label> { }
 										<input type="text" className="form-control input-sm" 
 										value={searchData.meal_id}
 										onChange={this.changeGDValue.bind(this,'meal_id')}
 										placeholder="用餐編號..." /> { }*/}
+
+										<div className="form-group">
+											<label>客戶分類</label> { }
+											<select className="form-control input-sm" 
+													value={searchData.customer_type}
+													onChange={this.onCustomerTypeChange}>
+												<option value="">全部</option>
+											{
+												CommData.CustomerType.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select> { }
+										</div>
 
 										<label>是否轉單</label> { }
 										<select className="form-control input-sm" 
@@ -411,8 +433,9 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">銷售單號</th>
-									<th className="col-xs-2">訂購時間</th>
+									<th className="col-xs-1">銷售單號</th>
+									<th className="col-xs-1">訂購時間</th>
+									<th className="col-xs-1">客戶分類</th>
 									<th className="col-xs-1">用餐編號</th>
 									<th className="col-xs-2">媽媽姓名</th>
 									<th className="col-xs-1">電話1</th>

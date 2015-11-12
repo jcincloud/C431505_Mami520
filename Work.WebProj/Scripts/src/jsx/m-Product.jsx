@@ -240,6 +240,7 @@ var GirdForm = React.createClass({
 		var obj = this.state.searchData;
 		obj['product_type'] = e.target.value;
 		this.setState({searchData:obj});
+		this.queryGridData(0);
 	},
 	render: function() {
 		var outHtml = null;

@@ -47,7 +47,8 @@ namespace DotWeb.Api
                                  mom_name = x.mom_name,
                                  baby_sex = x.baby_sex,
                                  born_type = x.born_type,
-                                 is_close = x.is_close
+                                 is_close = x.is_close,
+                                 memo=x.memo
                              });
 
                 return Ok(items.ToList());
