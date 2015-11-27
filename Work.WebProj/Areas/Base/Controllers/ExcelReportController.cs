@@ -153,7 +153,8 @@ namespace DotWeb.Areas.Base.Controllers
                 {
                     #region 取得對應組合菜單
                     List<Dish> dishs = new List<Dish>();
-                    var constitute_id = db0.DailyMenuOfConstitute.Where(x => x.dail_menu_id == DailyMenu_item.dail_menu_id).Select(x => new { x.constitute_id, x.ConstituteFood.constitute_name }).ToList();
+                    var constitute_id = db0.DailyMenuOfConstitute.Where(x => x.dail_menu_id == DailyMenu_item.dail_menu_id)
+                                                                 .OrderByDescending(x => x.ConstituteFood.All_Category_L2.sort).Select(x => new { x.constitute_id, x.ConstituteFood.constitute_name }).ToList();
                     foreach (var id in constitute_id)
                     {
                         List<Require> Empty_RequireData = new List<Require>();
