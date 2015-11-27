@@ -781,6 +781,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 此{0}已存在，請確認後再新增！ 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_RepeatName {
+            get {
+                return ResourceManager.GetString("Log_Err_RepeatName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 庫存不足 的當地語系化字串。
         /// </summary>
         internal static string Log_Err_StockNotEnough {

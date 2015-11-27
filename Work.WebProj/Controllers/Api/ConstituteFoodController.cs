@@ -109,6 +109,7 @@ namespace DotWeb.Api
         }
         public async Task<IHttpActionResult> Post([FromBody]ConstituteFood md)
         {
+
             md.constitute_id = GetNewId(ProcCore.Business.CodeTable.ConstituteFood);
             ResultInfo r = new ResultInfo();
             if (!ModelState.IsValid)
@@ -122,6 +123,18 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
+
+                #region 重複檢查
+                bool check_name = db0.ConstituteFood.Any(x => x.constitute_name == md.constitute_name);
+                if (check_name) {
+                    if (check_name)
+                    {
+                        r.message = string.Format(Resources.Res.Log_Err_RepeatName,"組合菜單名稱");
+                        r.result = false;
+                        return Ok(r);
+                    }
+                }
+                #endregion
 
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;

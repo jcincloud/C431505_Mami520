@@ -123,6 +123,19 @@ namespace DotWeb.Api
                 #region working a
                 db0 = getDB0();
 
+                #region 重複檢查
+                bool check_name = db0.ElementFood.Any(x => x.element_name == md.element_name);
+                if (check_name)
+                {
+                    if (check_name)
+                    {
+                        r.message = string.Format(Resources.Res.Log_Err_RepeatName, "基礎菜單名稱");
+                        r.result = false;
+                        return Ok(r);
+                    }
+                }
+                #endregion
+
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;

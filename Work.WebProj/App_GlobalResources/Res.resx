@@ -385,4 +385,7 @@
   <data name="Log_Check_MealId_Use" xml:space="preserve">
     <value>此用餐編號已被使用!請重新選擇用餐編號。</value>
   </data>
+  <data name="Log_Err_RepeatName" xml:space="preserve">
+    <value>此{0}已存在，請確認後再新增！</value>
+  </data>
 </root>
