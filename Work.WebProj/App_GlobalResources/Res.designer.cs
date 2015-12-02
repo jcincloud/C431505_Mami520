@@ -781,6 +781,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   查詢類似 用餐編號未釋放,無法刪除此產品銷售明細~!!! 的當地語系化字串。
+        /// </summary>
+        internal static string Log_Err_RDetail_Delete_release {
+            get {
+                return ResourceManager.GetString("Log_Err_RDetail_Delete_release", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查詢類似 此{0}已存在，請確認後再新增！ 的當地語系化字串。
         /// </summary>
         internal static string Log_Err_RepeatName {

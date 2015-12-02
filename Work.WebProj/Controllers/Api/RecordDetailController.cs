@@ -686,6 +686,13 @@ namespace DotWeb.Api
                 #endregion
                 foreach (var id in ids)
                 {
+                    var item = db0.RecordDetail.Find(id);
+                    if (item.product_type == (int)ProdyctType.PostnatalMeal & !(bool)item.is_release) {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_RDetail_Delete_release;
+                        return Ok(r);
+                    }
+
                     #region use sql delete
                     StringBuilder sb = new StringBuilder();
                     Log.Write("Start...");
@@ -701,7 +708,7 @@ namespace DotWeb.Api
                     //item = new RecordDetail() { record_deatil_id = id };
                     //db0.RecordDetail.Attach(item);
 
-                    db0.RecordDetail.Remove(getItem);
+                    db0.RecordDetail.Remove(item);
                 }
 
 

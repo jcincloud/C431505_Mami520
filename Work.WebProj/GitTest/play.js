@@ -6,3 +6,4 @@ var f = 4321;
 var k = "ddd";
 var n = 1111;
 console.log(f + n + b);
+//# sourceMappingURL=play.js.map

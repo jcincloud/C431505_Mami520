@@ -388,4 +388,7 @@
   <data name="Log_Err_RepeatName" xml:space="preserve">
     <value>此{0}已存在，請確認後再新增！</value>
   </data>
+  <data name="Log_Err_RDetail_Delete_release" xml:space="preserve">
+    <value>用餐編號未釋放,無法刪除此產品銷售明細~!!!</value>
+  </data>
 </root>

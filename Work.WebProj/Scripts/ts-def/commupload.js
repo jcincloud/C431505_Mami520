@@ -8,6 +8,12 @@ angular.module('commbox', ['angularFileUpload']).directive('filehandleshadowbox'
             filekind: '@'
         },
         link: function (scope, element, attrs) {
+            //scope.openShadowbox = function (content_url) {
+            //    Shadowbox.open({
+            //        content: content_url,
+            //        player: 'img'
+            //    });
+            //};
         },
         controller: ['$scope', function ($scope) {
             $scope.FileUpload = function ($files) {
@@ -70,6 +76,7 @@ angular.module('commbox', ['angularFileUpload']).directive('filehandleshadowbox'
             };
             $scope.$watch('sysid', function (newValue, oldValue) {
                 if (newValue != undefined) {
+                    //console.log('whatch sysid', newValue);
                     $scope.FileList();
                 }
             });
@@ -77,3 +84,4 @@ angular.module('commbox', ['angularFileUpload']).directive('filehandleshadowbox'
         }]
     };
 }]);
+//# sourceMappingURL=commupload.js.map

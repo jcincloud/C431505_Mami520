@@ -11,3 +11,4 @@ angular.module('angularApp', ['commfun', 'ui.bootstrap', 'toaster']).controller(
         });
     };
 }]);
+//# sourceMappingURL=users_changepassword.js.map

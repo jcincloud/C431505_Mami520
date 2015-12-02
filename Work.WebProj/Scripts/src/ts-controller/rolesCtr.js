@@ -16,8 +16,8 @@ angular.module('angularApp', ['commfun', 'ui.bootstrap', 'toaster']).controller(
     $scope.nextpage = 0;
     $scope.prevpage = 0;
     $scope.show_master_edit = false;
-    $scope.edit_type = 0;
-    var timer = false;
+    $scope.edit_type = 0; //ref 2
+    var timer = false; //ref 3
     $scope.grid_new_show = true;
     $scope.grid_del_show = true;
     $scope.grid_nav_show = true;
@@ -30,7 +30,7 @@ angular.module('angularApp', ['commfun', 'ui.bootstrap', 'toaster']).controller(
         gridpage.CountPage($scope);
     };
     $scope.Init_Query = function () {
-        gridpage.CountPage($scope);
+        gridpage.CountPage($scope); //按下查詢
     };
     $scope.Master_Grid_Delete = function () {
         var sns = [];
@@ -123,5 +123,6 @@ angular.module('angularApp', ['commfun', 'ui.bootstrap', 'toaster']).controller(
         $scope.InitData = data;
         console.info("Init Msater Data finish...", data);
     });
-    $scope.Init_Query();
+    $scope.Init_Query(); //第一次進入
 }]);
+//# sourceMappingURL=rolesCtr.js.map

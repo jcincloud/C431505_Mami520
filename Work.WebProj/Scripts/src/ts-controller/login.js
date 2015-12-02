@@ -2,6 +2,7 @@ angular.module('angularApp', ['commfun']).controller('ctrl', ['$scope', '$http',
     $scope.vial_img_path = vial_img_path;
     function Init() {
         $http.post(path_lang, {}).success(function (data, status, headers, config) {
+            //$scope.options_lang = data;
         });
         $scope.fd = {
             lang: 'zh-TW',
@@ -40,3 +41,4 @@ angular.module('angularApp', ['commfun']).controller('ctrl', ['$scope', '$http',
     };
     Init();
 }]);
+//# sourceMappingURL=login.js.map

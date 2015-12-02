@@ -18,8 +18,8 @@ agApp.controller('ctrl', ['$scope', '$http', 'toaster', 'gridpage', function ($s
     $scope.nextpage = 0;
     $scope.prevpage = 0;
     $scope.show_master_edit = false;
-    $scope.edit_type = 0;
-    var timer = false;
+    $scope.edit_type = 0; //ref 2
+    var timer = false; //ref 3
     $scope.grid_new_show = true;
     $scope.grid_del_show = true;
     $scope.grid_nav_show = true;
@@ -33,7 +33,7 @@ agApp.controller('ctrl', ['$scope', '$http', 'toaster', 'gridpage', function ($s
         gridpage.CountPage($scope);
     };
     $scope.Init_Query = function () {
-        gridpage.CountPage($scope);
+        gridpage.CountPage($scope); //按下查詢
     };
     $scope.Master_Grid_Delete = function () {
         var sns = [];
@@ -135,5 +135,6 @@ agApp.controller('ctrl', ['$scope', '$http', 'toaster', 'gridpage', function ($s
         };
         console.info("Init Msater Data finish...", data);
     });
-    $scope.Init_Query();
+    $scope.Init_Query(); //第一次進入
 }]);
+//# sourceMappingURL=usersCtr.js.map
