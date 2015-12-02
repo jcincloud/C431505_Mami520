@@ -403,7 +403,7 @@ namespace DotWeb.Api
                 var getRecordDetail = await db0.RecordDetail.FindAsync(parm.record_deatil_id);//產品銷售明細檔
                 var getMealID = await db0.MealID.FindAsync(parm.meal_id, this.companyId);//用餐編號
                 var getBorn = await db0.CustomerBorn.FindAsync(getRecordDetail.born_id);//生產紀錄
-                DateTime end = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id)
+                DateTime end = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id & (x.breakfast_state > 0 || x.dinner_state > 0 || x.lunch_state > 0))
                                 .OrderByDescending(x => x.meal_day).FirstOrDefault().meal_day;
                 end = end.AddDays(1);
                 if (DateTime.Now < end)
@@ -2318,8 +2318,8 @@ namespace DotWeb.Api
                     var item = new MealID()
                     {
                         meal_id = id,
-                        company_id=this.companyId,
-                        i_Lang= "zh-TW"
+                        company_id = this.companyId,
+                        i_Lang = "zh-TW"
                     };
                     db0.MealID.Add(item);
                 }
