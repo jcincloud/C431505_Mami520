@@ -687,10 +687,14 @@ namespace DotWeb.Api
                 foreach (var id in ids)
                 {
                     var item = db0.RecordDetail.Find(id);
-                    if (item.product_type == (int)ProdyctType.PostnatalMeal & !(bool)item.is_release) {
-                        r.result = false;
-                        r.message = Resources.Res.Log_Err_RDetail_Delete_release;
-                        return Ok(r);
+                    if (item.product_type == (int)ProdyctType.PostnatalMeal & !(bool)item.is_release)
+                    {
+                        if (item.meal_id != null)
+                        {
+                            r.result = false;
+                            r.message = Resources.Res.Log_Err_RDetail_Delete_release;
+                            return Ok(r);
+                        }
                     }
 
                     #region use sql delete
