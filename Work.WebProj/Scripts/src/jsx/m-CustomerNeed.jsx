@@ -69,8 +69,9 @@ var GirdForm = React.createClass({
 
 		e.preventDefault();
 		var fieldData=this.state.fieldData;
-		if(fieldData.customer_id==null || fieldData.born_id==null || fieldData.meal_id==null){
-			tosMessage(gb_title_from_invalid,'請選取用餐編號在儲存!',3);
+		//if(fieldData.customer_id==null || fieldData.born_id==null || fieldData.meal_id==null){
+		if(fieldData.customer_id==null || fieldData.born_id==null){
+			tosMessage(gb_title_from_invalid,'請選取客戶生產紀錄在儲存!',3);
 			return;
 		}
 

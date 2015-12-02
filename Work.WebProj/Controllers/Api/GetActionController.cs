@@ -2314,10 +2314,12 @@ namespace DotWeb.Api
 
                 for (var i = 1; i <= 100; i++)
                 {
-                    string id = "T" + i.ToString().PadLeft(3, '0');
+                    string id = "N" + i.ToString().PadLeft(3, '0');
                     var item = new MealID()
                     {
-                        meal_id = id
+                        meal_id = id,
+                        company_id=this.companyId,
+                        i_Lang= "zh-TW"
                     };
                     db0.MealID.Add(item);
                 }
