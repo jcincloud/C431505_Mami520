@@ -18,7 +18,7 @@ namespace DotWeb.Api
         {
             using (db0 = getDB0())
             {
-                item = await db0.MealID.FindAsync(id);
+                item = await db0.MealID.FindAsync(id, this.companyId);
                 r = new ResultInfo<MealID>() { data = item };
             }
 

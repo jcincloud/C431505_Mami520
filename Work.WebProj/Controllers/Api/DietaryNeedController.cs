@@ -77,6 +77,19 @@ namespace DotWeb.Api
             {
                 db0 = getDB0();
 
+                #region 重複檢查
+                bool check_name = db0.DietaryNeed.Any(x => x.short_name == md.short_name & x.dietary_need_id != md.dietary_need_id);
+                if (check_name)
+                {
+                    if (check_name)
+                    {
+                        r.message = string.Format(Resources.Res.Log_Err_RepeatName, "需求元素名稱");
+                        r.result = false;
+                        return Ok(r);
+                    }
+                }
+                #endregion
+
                 item = await db0.DietaryNeed.FindAsync(md.dietary_need_id);
                 item.name = md.name;
                 item.short_name = md.short_name;
@@ -110,6 +123,7 @@ namespace DotWeb.Api
         public async Task<IHttpActionResult> Post([FromBody]DietaryNeed md)
         {
             md.dietary_need_id = GetNewId(ProcCore.Business.CodeTable.DietaryNeed);
+            md.name = md.short_name;
             ResultInfo r = new ResultInfo();
             if (!ModelState.IsValid)
             {
@@ -122,7 +136,18 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
-
+                #region 重複檢查
+                bool check_name = db0.DietaryNeed.Any(x => x.short_name == md.short_name);
+                if (check_name)
+                {
+                    if (check_name)
+                    {
+                        r.message = string.Format(Resources.Res.Log_Err_RepeatName, "需求元素名稱");
+                        r.result = false;
+                        return Ok(r);
+                    }
+                }
+                #endregion
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;

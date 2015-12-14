@@ -20,7 +20,7 @@ namespace DotWeb.Api
     public class GetActionController : BaseApiController
     {
         #region 客戶生產-用餐編號選取
-        public IHttpActionResult GetAllMealID()
+        public IHttpActionResult GetAllMealID([FromUri]GetAllMealIDParm q)
         {
             db0 = getDB0();
             try
@@ -30,6 +30,10 @@ namespace DotWeb.Api
                     .Where(x => !x.i_Use & !x.i_Hide & x.company_id == this.companyId)
                     .Select(x => new { x.meal_id });
 
+                if (q.keyword != null)
+                {
+                    items = items.Where(x => x.meal_id.StartsWith(q.keyword));
+                }
                 return Ok(items.ToList());
             }
             finally
@@ -403,15 +407,21 @@ namespace DotWeb.Api
                 var getRecordDetail = await db0.RecordDetail.FindAsync(parm.record_deatil_id);//產品銷售明細檔
                 var getMealID = await db0.MealID.FindAsync(parm.meal_id, this.companyId);//用餐編號
                 var getBorn = await db0.CustomerBorn.FindAsync(getRecordDetail.born_id);//生產紀錄
-                DateTime end = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id & (x.breakfast_state > 0 || x.dinner_state > 0 || x.lunch_state > 0))
-                                .OrderByDescending(x => x.meal_day).FirstOrDefault().meal_day;
-                end = end.AddDays(1);
-                if (DateTime.Now < end)
-                {//未用餐完畢,不可釋放用餐編號
-                    r.result = false;
-                    r.message = Resources.Res.Log_Check_RecordDetail_MealEnd;
-                    return Ok(r);
+
+                var end_dailymeal = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id & (x.breakfast_state > 0 || x.dinner_state > 0 || x.lunch_state > 0))
+                                .OrderByDescending(x => x.meal_day).FirstOrDefault();
+                if (end_dailymeal != null)
+                {
+                    DateTime end = end_dailymeal.meal_day;
+                    end = end.AddDays(1);
+                    if (DateTime.Now < end)
+                    {//未用餐完畢,不可釋放用餐編號
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_RecordDetail_MealEnd;
+                        return Ok(r);
+                    }
                 }
+
                 if (getRecordDetail.is_release == false)
                 {
                     getBorn.meal_id = null;
@@ -2347,6 +2357,10 @@ namespace DotWeb.Api
         }
     }
     #region Parm
+    public class GetAllMealIDParm
+    {
+        public string keyword { get; set; }
+    }
     public class ParmChangeMealID
     {
         public string old_id { get; set; }

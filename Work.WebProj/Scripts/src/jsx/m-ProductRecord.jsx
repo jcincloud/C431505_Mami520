@@ -786,6 +786,7 @@ var SubForm = React.createClass({
 			gridSubData:[],
 			fieldSubData:{},
 			searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
+			searchMealIDData:{keyword:'A'},
 			edit_sub_type:0,//預設皆為新增狀態
 			checkAll:false,
 			isShowProductSelect:false,//控制選取產品視窗顯示
@@ -1088,6 +1089,7 @@ var SubForm = React.createClass({
 				tosMessage(null,'完成用餐編號釋放',1);
 				var fieldSubData = this.state.fieldSubData;
 				fieldSubData.is_release=data.result;
+				this.props.meal_id=null;
 				this.setState({fieldSubData:fieldSubData});
 			}else{
 				tosMessage(null,data.message,3);
@@ -1102,13 +1104,19 @@ var SubForm = React.createClass({
 		document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
 	},
 	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
-		jqGet(gb_approot + 'api/GetAction/GetAllMealID',{})
+		jqGet(gb_approot + 'api/GetAction/GetAllMealID',this.state.searchMealIDData)
 		.done(function(data, textStatus, jqXHRdata) {
 			this.setState({mealid_list:data});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
 		});		
+	},
+	changeGDMealIDValue:function(name,e){
+		var obj = this.state.searchMealIDData;
+		obj[name] = e.target.value;
+		this.setState({searchMealIDData:obj});
+		this.queryAllMealID();
 	},
 	showSelectMealid:function(){
 		this.queryAllMealID();
@@ -1239,11 +1247,35 @@ var SubForm = React.createClass({
 
 		var MdoalMealidSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
 		var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
+		var searchMealIDData=this.state.searchMealIDData;
 		if(this.state.isShowMealidSelect){
 			mealid_select_out_html = 					
 				<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
 						<div className="modal-body">
 							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
+								<div className="table-header">
+							        <div className="table-filter">
+							            <div className="form-inline">
+							                <div className="form-group">
+							                    <label for="">用餐編號分類</label> { }
+							                    <select className="form-control input-sm"
+							                    value={searchMealIDData.keyword}
+												onChange={this.changeGDMealIDValue.bind(this,'keyword')}>
+							                        <option value="">全部</option>
+							                        <option value="A">A</option>
+							                        <option value="B">B</option>
+							                        <option value="C">C</option>
+							                        <option value="H">H</option>
+							                        <option value="N">N</option>
+							                        <option value="T">T</option>
+							                    </select>
+							                </div>
+							                <div className="form-group">
+							                    <button className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
+							                </div>
+							            </div>
+							        </div>
+							    </div>							
 							<table>
 								<tbody>
 									<tr>
@@ -1286,8 +1318,8 @@ var SubForm = React.createClass({
 							disabled={true} />
 			            	<span className="input-group-btn">
 			         			<a className="btn"
-								onClick={this.showSelectMealid}
-								disabled={this.state.edit_sub_type==2 & fieldSubData.meal_id!=null}>
+								onClick={this.showSelectMealid}>
+								{/*---disabled={this.state.edit_sub_type==2 & fieldSubData.meal_id!=null}---*/}
 									<i className="fa-plus"></i>
 								</a>
 			            	</span>

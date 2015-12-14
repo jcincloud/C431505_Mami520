@@ -16,7 +16,7 @@
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
-					<td>{this.props.itemData.name}</td>
+					{/*<td>{this.props.itemData.name}</td>*/}
 					<td>{this.props.itemData.short_name}</td>
 					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
 				</tr>
@@ -309,7 +309,7 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-3">需求元素名稱</th>
+									{/*<th className="col-xs-3">需求元素名稱</th>*/}
 									<th className="col-xs-2">需求元素簡稱</th>
 									<th className="col-xs-5">狀態</th>
 								</tr>
@@ -365,7 +365,7 @@ var GirdForm = React.createClass({
 
 				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 				<div className="col-xs-9">
-					<div className="form-group">
+					{/*<div className="form-group">
 						<label className="col-xs-2 control-label">名稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
@@ -376,7 +376,7 @@ var GirdForm = React.createClass({
 							required />
 						</div>
 						<small className="help-inline col-xs-6 text-danger">(必填)</small>
-					</div>
+					</div>*/}
 
 					<div className="form-group">
 						<label className="col-xs-2 control-label">簡稱</label>

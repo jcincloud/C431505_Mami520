@@ -163,8 +163,8 @@ namespace DotWeb.Api
                 {
                     #region 驗證MealId
                     var getBorn = await db0.CustomerBorn.FindAsync(md.born_id);//更新生產紀錄用餐編號
-                    if (md.meal_id != null)
-                    {
+                    if (md.meal_id != null & md.meal_id != getBorn.meal_id)
+                    {//用餐編號有更新才驗證
                         bool check_exist = db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId);
                         if (!check_exist)
                         {
@@ -185,6 +185,21 @@ namespace DotWeb.Api
                             old_mealId.i_Use = false;
                         }
                         item_mealId.i_Use = true;
+                        #region use sql update
+                        StringBuilder sb = new StringBuilder();
+                        Log.Write("Start...");
+                        var sqlt = @"Update DailyMeal
+                                 Set meal_id='{0}'
+                                Where record_deatil_id={1} And company_id={2};";
+                        sb.AppendFormat(sqlt, md.meal_id
+                                            , md.record_deatil_id
+                                            , md.company_id);
+                        Log.Write("Save...");
+                        var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
+                        sb.Clear();
+                        Log.Write("End...");
+                        Log.WriteToFile();
+                        #endregion
                     }
                     #endregion
                     getBorn.meal_id = md.meal_id;
