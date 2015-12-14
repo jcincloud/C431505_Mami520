@@ -660,59 +660,39 @@ namespace DotWeb.Api
                 if (parm.meal_type == (int)MealType.Breakfast)
                 {
                     item.breakfast_state = parm.meal_state;
+                    RecordDetailItem.real_breakfast = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.breakfast_state > 0).Count();
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_breakfast += 1;
-                        if (!check_meal_start)
-                        {
-                            RecordDetailItem.real_estimate_breakfast += 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = 1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                company_id = this.companyId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
                     }
-                    else if (parm.meal_state < 0)//停餐
+                    else if (parm.meal_state < 0)//減餐
                     {
-                        RecordDetailItem.real_breakfast -= 1;
-                        if (!check_meal_start)
+                        RecordDetailItem.real_breakfast += -1;
+                    }
+
+                    if (!check_meal_start)
+                    {
+                        RecordDetailItem.real_estimate_breakfast = RecordDetailItem.real_breakfast;
+                    }
+                    else
+                    {//開始用餐後變動新增異動紀錄
+                        int change_type = parm.meal_state > 0 ? 1 : -1;
+                        var changeRecord = new DailyMealChangeRecord()
                         {
-                            RecordDetailItem.real_estimate_breakfast -= 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = -1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                company_id = this.companyId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
+                            change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                            daily_meal_id = parm.daily_meal_id,
+                            record_deatil_id = parm.record_deatil_id,
+                            change_time = DateTime.Now,
+                            meal_day = item.meal_day,
+                            meal_type = parm.meal_type,
+                            change_type = change_type,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            company_id = this.companyId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.DailyMealChangeRecord.Add(changeRecord);
                     }
                 }
                 #endregion
@@ -720,59 +700,38 @@ namespace DotWeb.Api
                 if (parm.meal_type == (int)MealType.Lunch)
                 {
                     item.lunch_state = parm.meal_state;
+                    RecordDetailItem.real_lunch = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.lunch_state > 0).Count();
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_lunch += 1;
-                        if (!check_meal_start)
-                        {
-                            RecordDetailItem.real_estimate_lunch += 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = 1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                company_id = this.companyId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
                     }
-                    else if (parm.meal_state < 0)//停餐
+                    else if (parm.meal_state < 0)//減餐
                     {
-                        RecordDetailItem.real_lunch -= 1;
-                        if (!check_meal_start)
+                        RecordDetailItem.real_lunch += -1;
+                    }
+                    if (!check_meal_start)
+                    {
+                        RecordDetailItem.real_estimate_lunch = RecordDetailItem.real_lunch;
+                    }
+                    else
+                    {//開始用餐後變動新增異動紀錄
+                        int change_type = parm.meal_state > 0 ? 1 : -1;
+                        var changeRecord = new DailyMealChangeRecord()
                         {
-                            RecordDetailItem.real_estimate_lunch -= 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = -1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                company_id = this.companyId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
+                            change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                            daily_meal_id = parm.daily_meal_id,
+                            record_deatil_id = parm.record_deatil_id,
+                            change_time = DateTime.Now,
+                            meal_day = item.meal_day,
+                            meal_type = parm.meal_type,
+                            change_type = change_type,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            company_id = this.companyId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.DailyMealChangeRecord.Add(changeRecord);
                     }
                 }
                 #endregion
@@ -780,59 +739,38 @@ namespace DotWeb.Api
                 if (parm.meal_type == (int)MealType.Dinner)
                 {
                     item.dinner_state = parm.meal_state;
+                    RecordDetailItem.real_dinner = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.dinner_state > 0).Count();
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_dinner += 1;
-                        if (!check_meal_start)
-                        {
-                            RecordDetailItem.real_estimate_dinner += 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = 1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                company_id = this.companyId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
                     }
-                    else if (parm.meal_state < 0)//停餐
+                    else if (parm.meal_state < 0)//減餐
                     {
-                        RecordDetailItem.real_dinner -= 1;
-                        if (!check_meal_start)
+                        RecordDetailItem.real_dinner += -1;
+                    }
+                    if (!check_meal_start)
+                    {
+                        RecordDetailItem.real_estimate_dinner = RecordDetailItem.real_dinner;
+                    }
+                    else
+                    {//開始用餐後變動新增異動紀錄
+                        int change_type = parm.meal_state > 0 ? 1 : -1;
+                        var changeRecord = new DailyMealChangeRecord()
                         {
-                            RecordDetailItem.real_estimate_dinner -= 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = -1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                company_id = this.companyId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
+                            change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                            daily_meal_id = parm.daily_meal_id,
+                            record_deatil_id = parm.record_deatil_id,
+                            change_time = DateTime.Now,
+                            meal_day = item.meal_day,
+                            meal_type = parm.meal_type,
+                            change_type = change_type,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            company_id = this.companyId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.DailyMealChangeRecord.Add(changeRecord);
                     }
                 }
                 #endregion
@@ -1983,7 +1921,7 @@ namespace DotWeb.Api
                 {
                     if (DailyMeal_Item.breakfast_state > 0 || DailyMeal_Item.lunch_state > 0 || DailyMeal_Item.dinner_state > 0)
                     {//只要三餐有一餐有,就列特殊飲食
-                        //取得該客戶需求元素id
+                     //取得該客戶需求元素id
                         var dietary_need_id = db0.CustomerOfDietaryNeed.Where(x => x.CustomerNeed.born_id == DailyMeal_Item.born_id & x.company_id == this.companyId).Select(x => x.dietary_need_id);
 
                         #region 無對應特殊飲食習慣
