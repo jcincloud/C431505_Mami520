@@ -18,6 +18,7 @@
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
 					{/*<td>{this.props.itemData.name}</td>*/}
 					<td>{this.props.itemData.short_name}</td>
+					<td>{this.props.itemData.sort}</td>
 					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
 				</tr>
 			);
@@ -310,8 +311,9 @@ var GirdForm = React.createClass({
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
 									{/*<th className="col-xs-3">需求元素名稱</th>*/}
-									<th className="col-xs-2">需求元素簡稱</th>
-									<th className="col-xs-5">狀態</th>
+									<th className="col-xs-3">需求元素簡稱</th>
+									<th className="col-xs-2">排序</th>
+									<th className="col-xs-2">狀態</th>
 								</tr>
 							</thead>
 							<tbody>

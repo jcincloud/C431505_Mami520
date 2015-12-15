@@ -1003,6 +1003,7 @@ var SubForm = React.createClass({
 				obj.estimate_breakfast=diff_mealday.diff_day;
 				obj.estimate_lunch=diff_mealday.diff_day;
 				obj.estimate_dinner=diff_mealday.diff_day;
+				obj.qty=diff_mealday.diff_day;
 			}
 		}
 
@@ -1018,6 +1019,7 @@ var SubForm = React.createClass({
 			obj.estimate_breakfast=parseInt(e.target.value);
 			obj.estimate_lunch=parseInt(e.target.value);
 			obj.estimate_dinner=parseInt(e.target.value);
+			obj.qty=parseInt(e.target.value);
 		}
 
 		obj.diff_day=e.target.value;
@@ -1034,6 +1036,7 @@ var SubForm = React.createClass({
 		obj[name] = e.target.value;
 
 		obj.estimate_count=MealCount(this.state.parm,obj.estimate_breakfast,obj.estimate_lunch,obj.estimate_dinner);
+		obj.qty=obj.estimate_count;
 
 		this.setState({fieldSubData:obj});
 	},
