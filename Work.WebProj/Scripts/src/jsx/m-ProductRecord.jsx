@@ -572,7 +572,9 @@ var GirdForm = React.createClass({
 					receipt_out_html=<button className="btn-success" type="button" onClick={this.insertAccountsPayable.bind(this)}><i className="fa-check"></i>轉 應收帳款</button>;
 				}
 			}
-
+			var blankStyle={
+				height: 100
+			};
 			outHtml=(
 			<div>
 				{born_select_out_html}
@@ -767,6 +769,10 @@ var GirdForm = React.createClass({
 				{/*---產品明細---*/}
 				{detail_out_html}
 
+
+				<div className="col-xs-12" style={blankStyle}>
+				</div>
+				<hr className="condensed" />
 
 			</div>
 			);
