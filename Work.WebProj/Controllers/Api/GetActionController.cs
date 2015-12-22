@@ -1425,7 +1425,7 @@ namespace DotWeb.Api
                     .Select(x => x.dietary_need_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.DietaryNeed.Where(x => !dietary_need_id.Contains(x.dietary_need_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.dietary_need_id, x.name, x.is_correspond, x.is_breakfast, x.is_lunch, x.is_dinner });
+                var items = db0.DietaryNeed.Where(x => !dietary_need_id.Contains(x.dietary_need_id) & !x.i_Hide & x.company_id == this.companyId).OrderBy(x => x.short_name).Select(x => new { x.dietary_need_id, x.name, x.is_correspond, x.is_breakfast, x.is_lunch, x.is_dinner });
 
 
                 if (parm.name != null)

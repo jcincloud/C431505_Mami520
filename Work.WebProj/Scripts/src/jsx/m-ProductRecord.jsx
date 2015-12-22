@@ -1010,6 +1010,7 @@ var SubForm = React.createClass({
 				obj.estimate_lunch=diff_mealday.diff_day;
 				obj.estimate_dinner=diff_mealday.diff_day;
 				obj.qty=diff_mealday.diff_day;
+				obj.subtotal=obj.qty*obj.price;
 			}
 		}
 
@@ -1026,6 +1027,7 @@ var SubForm = React.createClass({
 			obj.estimate_lunch=parseInt(e.target.value);
 			obj.estimate_dinner=parseInt(e.target.value);
 			obj.qty=parseInt(e.target.value);
+			obj.subtotal=obj.qty*obj.price;
 		}
 
 		obj.diff_day=e.target.value;
@@ -1043,6 +1045,7 @@ var SubForm = React.createClass({
 
 		obj.estimate_count=MealCount(this.state.parm,obj.estimate_breakfast,obj.estimate_lunch,obj.estimate_dinner);
 		obj.qty=obj.estimate_count;
+		obj.subtotal=obj.qty*obj.price;
 
 		this.setState({fieldSubData:obj});
 	},
@@ -1277,10 +1280,8 @@ var SubForm = React.createClass({
 							                        <option value="H">H</option>
 							                        <option value="N">N</option>
 							                        <option value="T">T</option>
-							                    </select>
-							                </div>
-							                <div className="form-group">
-							                    <button className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
+							                    </select> { }
+							                    <button type="button" className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
 							                </div>
 							            </div>
 							        </div>
@@ -1343,6 +1344,8 @@ var SubForm = React.createClass({
 				</div>
 				);
 		}
+
+		var total=0;
 
 			outHtml =
 			(
@@ -1672,6 +1675,7 @@ var SubForm = React.createClass({
 									{
 										meal_detail_button=<button className="btn-info btn-sm" onClick={this.setMealSchedule.bind(this,itemData.record_deatil_id)}><i className="fa-search"></i> 查看</button>;
 									}
+									total+=itemData.subtotal;
 									var sub_out_html = 
 										<tr key={itemData.record_deatil_id}>
 											<td className="text-center">
@@ -1688,6 +1692,10 @@ var SubForm = React.createClass({
 										return sub_out_html;
 								}.bind(this))
 							}
+							<tr>
+								<th className="col-xs-1 text-center text-danger" colSpan={5}>總計</th>
+								<th className="col-xs-1 text-danger" colSpan={2}>{total}</th>
+							</tr>
 						</tbody>
 					</table>
 				{/*---產品明細列表end---*/}

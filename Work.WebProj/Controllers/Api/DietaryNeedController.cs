@@ -31,7 +31,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.DietaryNeed
                     .Where(x => x.company_id == this.companyId)
-                    .OrderByDescending(x => x.sort).AsQueryable();
+                    .OrderBy(x => x.short_name).AsQueryable();
 
 
                 if (q.name != null)

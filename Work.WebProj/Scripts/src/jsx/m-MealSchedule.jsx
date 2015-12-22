@@ -957,8 +957,9 @@ var MealCheckBox = React.createClass({
         {//用餐日期 < 今天 不可編輯
             this.state.isMealFinished=true;
         }
-            
-            outHtml =
+
+        var disabledOutHtml=null;//正常判斷式,日期已結束之排餐不可修改
+            disabledOutHtml =
             (
                 <div className="checkbox">
                     <label>
@@ -971,6 +972,17 @@ var MealCheckBox = React.createClass({
                 </div>
             );
 
+            outHtml =
+            (
+                <div className="checkbox">
+                    <label>
+                        <input type="checkbox"                             
+                        onChange={this.changeMealValue.bind(this)}
+                        checked={MealData.meal_state > 0}  />
+                        {name_out_html}
+                     </label>
+                </div>
+            );
         return outHtml;
     }
 });
