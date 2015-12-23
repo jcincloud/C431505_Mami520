@@ -302,7 +302,8 @@ var GirdForm = React.createClass({
 				main_id={fieldData.accounts_payable_id}
 				customer_id={fieldData.customer_id}
 				product_record_id={fieldData.product_record_id}
-				noneType={this.noneType} />;
+				noneType={this.noneType}
+				main_total={fieldData.estimate_payable} />;
 			}
 
 			outHtml=(
@@ -567,7 +568,8 @@ var SubForm = React.createClass({
 					<h4 className="title">
 						收款明細：
 						<span className="text-muted">
-							實際已收 <strong className="text-danger">${formatMoney(this.state.Total_Money,0)}</strong>
+							實際已收 <strong className="text-danger">${formatMoney(this.state.Total_Money,0)}</strong>,
+							未收 <strong className="text-danger">${formatMoney(this.props.main_total-this.state.Total_Money,0)}</strong>
 						</span>
 					</h4>
 
@@ -597,6 +599,11 @@ var SubForm = React.createClass({
 											return detail_out_html;
 										}.bind(this))
 									}
+									<tr>
+										<th className="col-xs-1 text-center text-danger" colSpan={4}>總計</th>
+										<th className="col-xs-1 text-danger">未收:${formatMoney(this.props.main_total-this.state.Total_Money,0)}</th>
+										<th className="col-xs-1 text-danger">實際已收:${formatMoney(this.state.Total_Money,0)}</th>
+									</tr>
 								</tbody>
 							</table>
 						</div>

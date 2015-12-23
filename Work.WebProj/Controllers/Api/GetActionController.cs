@@ -1903,16 +1903,19 @@ namespace DotWeb.Api
                     {
                         breakfast.dishs = dishs;
                         breakfast.isHaveData = true;
+                        breakfast.count = getDailyMeal.Where(x => x.breakfast_state > 0).Count();
                     }
                     if (DailyMenu_item.meal_type == (int)MealType.Lunch)
                     {
                         lunch.dishs = dishs;
                         lunch.isHaveData = true;
+                        lunch.count = getDailyMeal.Where(x => x.lunch_state > 0).Count();
                     }
                     if (DailyMenu_item.meal_type == (int)MealType.Dinner)
                     {
                         dinner.dishs = dishs;
                         dinner.isHaveData = true;
+                        dinner.count = getDailyMeal.Where(x => x.dinner_state > 0).Count();
                     }
                 }
                 #endregion
@@ -2478,6 +2481,10 @@ namespace DotWeb.Api
         /// 判斷是否有排每日菜單
         /// </summary>
         public bool isHaveData { get; set; }
+        /// <summary>
+        /// 計算該餐有幾人用餐
+        /// </summary>
+        public int count { get; set; }
     }
     public class Require
     {

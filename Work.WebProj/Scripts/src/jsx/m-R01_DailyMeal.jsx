@@ -10,9 +10,9 @@ var GirdForm = React.createClass({
 					pause_meal:{breakfast:[],lunch:[],dinner:[]},
 					tryout_meal:{breakfast:0,lunch:0,dinner:0}},
 			special_diet:[],
-			breakfast:{dishs:[],isHaveData:false},
-			lunch:{dishs:[],isHaveData:false},
-			dinner:{dishs:[],isHaveData:false},
+			breakfast:{dishs:[],isHaveData:false,count:0},
+			lunch:{dishs:[],isHaveData:false,count:0},
+			dinner:{dishs:[],isHaveData:false,count:0},
 			searchData:{meal_day:format_Date(getNowDate())}//預設帶今天
 		};  
 	},
@@ -363,21 +363,21 @@ var GirdForm = React.createClass({
 				<hr />
 				<table>
 					<tr className="warning">
-						<td colSpan="2"><strong>早餐</strong></td>
+						<td colSpan="2"><strong>早餐({this.state.breakfast.count})</strong></td>
 					</tr>
 					<tbody>{breakfast}</tbody>
 				</table>
 				<hr />
 				<table>
 					<tr className="warning">
-						<td colSpan="2"><strong>午餐</strong></td>
+						<td colSpan="2"><strong>午餐({this.state.lunch.count})</strong></td>
 					</tr>
 					<tbody>{lunch}</tbody>
 				</table>
 				<hr />
 				<table>
 					<tr className="warning">
-						<td colSpan="2"><strong>晚餐</strong></td>
+						<td colSpan="2"><strong>晚餐({this.state.dinner.count})</strong></td>
 					</tr>
 					<tbody>{dinner}</tbody>
 				</table>

@@ -171,16 +171,19 @@ namespace DotWeb.Areas.Base.Controllers
                     {
                         breakfast.dishs = dishs;
                         breakfast.isHaveData = true;
+                        breakfast.count = getDailyMeal.Where(x => x.breakfast_state > 0).Count();
                     }
                     if (DailyMenu_item.meal_type == (int)MealType.Lunch)
                     {
                         lunch.dishs = dishs;
                         lunch.isHaveData = true;
+                        lunch.count = getDailyMeal.Where(x => x.lunch_state > 0).Count();
                     }
                     if (DailyMenu_item.meal_type == (int)MealType.Dinner)
                     {
                         dinner.dishs = dishs;
                         dinner.isHaveData = true;
+                        dinner.count = getDailyMeal.Where(x => x.dinner_state > 0).Count();
                     }
                 }
                 #endregion
@@ -511,7 +514,7 @@ namespace DotWeb.Areas.Base.Controllers
                 #region 早餐
                 detail_row += 1;
                 #region 標題
-                sheet.Cells[detail_row, 1].Value = "[早餐]";
+                sheet.Cells[detail_row, 1].Value = "[早餐(" + data.breakfast.count + ")]";
                 sheet.Cells[detail_row, 1, detail_row, 6].Merge = true;
                 setFontColor_orange(sheet, detail_row, 1);
                 setYellowTitle(sheet, detail_row, 1, 6);
@@ -558,7 +561,7 @@ namespace DotWeb.Areas.Base.Controllers
                 #region 午餐
                 detail_row += 1;
                 #region 標題
-                sheet.Cells[detail_row, 1].Value = "[午餐]";
+                sheet.Cells[detail_row, 1].Value = "[午餐(" + data.lunch.count + ")]";
                 sheet.Cells[detail_row, 1, detail_row, 6].Merge = true;
                 setFontColor_orange(sheet, detail_row, 1);
                 setYellowTitle(sheet, detail_row, 1, 6);
@@ -606,7 +609,7 @@ namespace DotWeb.Areas.Base.Controllers
                 #region 晚餐
                 detail_row += 1;
                 #region 標題
-                sheet.Cells[detail_row, 1].Value = "[晚餐]";
+                sheet.Cells[detail_row, 1].Value = "[晚餐(" + data.dinner.count + ")]";
                 sheet.Cells[detail_row, 1, detail_row, 6].Merge = true;
                 setFontColor_orange(sheet, detail_row, 1);
                 setYellowTitle(sheet, detail_row, 1, 6);

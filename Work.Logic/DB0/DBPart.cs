@@ -308,6 +308,9 @@ namespace ProcCore.Business.DB0
         public int meal_select_state { get; set; }
         //判斷是否已新增用餐排程
         public bool isDailyMealAdd { get; set; }
+        //b02 產生用餐排程時,可設定是從哪一餐開始或結束(方便使用者設定)
+        public int? set_start_meal { get; set; }
+        public int? set_end_meal { get; set; }
     }
     public partial class DailyMealChangeRecord
     {

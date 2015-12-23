@@ -248,57 +248,98 @@ namespace DotWeb.Api
 
 
                         var getDateSection = (end - start).TotalDays + 1;
+
+                        #region 計算奇數及偶數天結束日期
+                        int? start_index = null;
+                        int? end_index = null;
+                        if (md.meal_select_state == 1 || md.meal_select_state == 2)
+                        {//奇數、偶數天用餐
+                            for (int j = (int)(getDateSection - 1); j >= 0; j--)
+                            {
+                                var setDayObj = start.AddDays(j);
+                                if (md.meal_select_state == 1 & setDayObj.Day % 2 != 0 & end_index == null)
+                                {
+                                    end_index = j;
+                                    break;
+                                }
+                                else if (md.meal_select_state == 2 & setDayObj.Day % 2 == 0 & end_index == null)
+                                {
+                                    end_index = j;
+                                    break;
+                                }
+                            }
+                        }
+                        else {
+                            start_index = 0;
+                            end_index = (int)(getDateSection - 1);
+                        }
+                        #endregion
+
                         for (int i = 0; i < getDateSection; i++)
                         {
                             var setDayObj = start.AddDays(i);
 
+                            int breakfast_state_i = breakfast_state;
+                            int lunch_state_i = lunch_state;
+                            int dinner_state_i = dinner_state;
+
                             #region 特殊排餐
+
                             if (md.meal_select_state == 1)
-                            {//基數天用餐
+                            {//奇數天用餐
+                                #region 計算基數天的起始、結束
+                                if (start_index == null & setDayObj.Day % 2 != 0)
+                                {//起始奇數天
+                                    start_index = i;
+                                }
+                                #endregion
                                 if (setDayObj.Day % 2 == 0)
                                 {
-                                    breakfast_state = (int)MealState.CommonNotMeal;
-                                    lunch_state = (int)MealState.CommonNotMeal;
-                                    dinner_state = (int)MealState.CommonNotMeal;
-                                }
-                                else
-                                {
-                                    if (tmp_tryout_mealtype.Count() > 0)
-                                    {
-                                        breakfast_state = tmp_tryout_mealtype.Contains("breakfast") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                        lunch_state = tmp_tryout_mealtype.Contains("lunch") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                        dinner_state = tmp_tryout_mealtype.Contains("dinner") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                    }
-                                    else
-                                    {
-                                        breakfast_state = (int)MealState.CommonMeal;
-                                        lunch_state = (int)MealState.CommonMeal;
-                                        dinner_state = (int)MealState.CommonMeal;
-                                    }
+                                    breakfast_state_i = (int)MealState.CommonNotMeal;
+                                    lunch_state_i = (int)MealState.CommonNotMeal;
+                                    dinner_state_i = (int)MealState.CommonNotMeal;
                                 }
                             }
                             else if (md.meal_select_state == 2)
                             {//偶數天用餐
+                                #region 計算偶數天的起始、結束
+                                if (start_index == null & setDayObj.Day % 2 == 0)
+                                {//起始偶數天
+                                    start_index = i;
+                                }
+                                #endregion
                                 if (setDayObj.Day % 2 != 0)
                                 {
-                                    breakfast_state = (int)MealState.CommonNotMeal;
-                                    lunch_state = (int)MealState.CommonNotMeal;
-                                    dinner_state = (int)MealState.CommonNotMeal;
+                                    breakfast_state_i = (int)MealState.CommonNotMeal;
+                                    lunch_state_i = (int)MealState.CommonNotMeal;
+                                    dinner_state_i = (int)MealState.CommonNotMeal;
                                 }
-                                else
-                                {
-                                    if (tmp_tryout_mealtype.Count() > 0)
-                                    {
-                                        breakfast_state = tmp_tryout_mealtype.Contains("breakfast") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                        lunch_state = tmp_tryout_mealtype.Contains("lunch") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                        dinner_state = tmp_tryout_mealtype.Contains("dinner") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                    }
-                                    else
-                                    {
-                                        breakfast_state = (int)MealState.CommonMeal;
-                                        lunch_state = (int)MealState.CommonMeal;
-                                        dinner_state = (int)MealState.CommonMeal;
-                                    }
+                            }
+                            #endregion
+
+                            #region 設定起始餐別、結束餐別
+                            if (start_index == i & md.set_start_meal != null)
+                            {
+                                if (md.set_start_meal == (int)MealType.Lunch)
+                                {//午開始
+                                    breakfast_state_i = (int)MealState.CommonNotMeal;
+                                }
+                                else if (md.set_start_meal == (int)MealType.Dinner)
+                                {//晚開始
+                                    breakfast_state_i = (int)MealState.CommonNotMeal;
+                                    lunch_state_i = (int)MealState.CommonNotMeal;
+                                }
+                            }
+                            if (end_index == i & md.set_end_meal != null)
+                            {
+                                if (md.set_end_meal == (int)MealType.Breakfast)
+                                {//早結束
+                                    lunch_state_i = (int)MealState.CommonNotMeal;
+                                    dinner_state_i = (int)MealState.CommonNotMeal;
+                                }
+                                else if (md.set_end_meal == (int)MealType.Lunch)
+                                {//晚開始
+                                    dinner_state_i = (int)MealState.CommonNotMeal;
                                 }
                             }
                             #endregion
@@ -319,9 +360,9 @@ namespace DotWeb.Api
                                                 , this.departmentId
                                                 , md.product_type
                                                 , md.meal_id
-                                                , breakfast_state
-                                                , lunch_state
-                                                , dinner_state
+                                                , breakfast_state_i
+                                                , lunch_state_i
+                                                , dinner_state_i
                                                 , this.companyId);
                             Log.Write("Save...");
                             var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
@@ -516,57 +557,99 @@ namespace DotWeb.Api
 
 
                     var getDateSection = (end - start).TotalDays + 1;
+
+                    #region 計算奇數及偶數天結束日期
+                    int? start_index = null;
+                    int? end_index = null;
+                    if (md.meal_select_state == 1 || md.meal_select_state == 2)
+                    {//奇數、偶數天用餐
+                        for (int j = (int)(getDateSection - 1); j >= 0; j--)
+                        {
+                            var setDayObj = start.AddDays(j);
+                            if (md.meal_select_state == 1 & setDayObj.Day % 2 != 0 & end_index == null)
+                            {
+                                end_index = j;
+                                break;
+                            }
+                            else if (md.meal_select_state == 2 & setDayObj.Day % 2 == 0 & end_index == null)
+                            {
+                                end_index = j;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        start_index = 0;
+                        end_index = (int)(getDateSection - 1);
+                    }
+                    #endregion
+
+
                     for (int i = 0; i < getDateSection; i++)
                     {
                         var setDayObj = start.AddDays(i);
 
+                        int breakfast_state_i = breakfast_state;
+                        int lunch_state_i = lunch_state;
+                        int dinner_state_i = dinner_state;
+
                         #region 特殊排餐
+
                         if (md.meal_select_state == 1)
-                        {//基數天用餐
+                        {//奇數天用餐
+                            #region 計算基數天的起始、結束
+                            if (start_index == null & setDayObj.Day % 2 != 0)
+                            {//起始奇數天
+                                start_index = i;
+                            }
+                            #endregion
                             if (setDayObj.Day % 2 == 0)
                             {
-                                breakfast_state = (int)MealState.CommonNotMeal;
-                                lunch_state = (int)MealState.CommonNotMeal;
-                                dinner_state = (int)MealState.CommonNotMeal;
-                            }
-                            else
-                            {
-                                if (tmp_tryout_mealtype.Count() > 0)
-                                {
-                                    breakfast_state = tmp_tryout_mealtype.Contains("breakfast") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                    lunch_state = tmp_tryout_mealtype.Contains("lunch") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                    dinner_state = tmp_tryout_mealtype.Contains("dinner") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                }
-                                else
-                                {
-                                    breakfast_state = (int)MealState.CommonMeal;
-                                    lunch_state = (int)MealState.CommonMeal;
-                                    dinner_state = (int)MealState.CommonMeal;
-                                }
+                                breakfast_state_i = (int)MealState.CommonNotMeal;
+                                lunch_state_i = (int)MealState.CommonNotMeal;
+                                dinner_state_i = (int)MealState.CommonNotMeal;
                             }
                         }
                         else if (md.meal_select_state == 2)
                         {//偶數天用餐
+                            #region 計算偶數天的起始、結束
+                            if (start_index == null & setDayObj.Day % 2 == 0)
+                            {//起始偶數天
+                                start_index = i;
+                            }
+                            #endregion
                             if (setDayObj.Day % 2 != 0)
                             {
-                                breakfast_state = (int)MealState.CommonNotMeal;
-                                lunch_state = (int)MealState.CommonNotMeal;
-                                dinner_state = (int)MealState.CommonNotMeal;
+                                breakfast_state_i = (int)MealState.CommonNotMeal;
+                                lunch_state_i = (int)MealState.CommonNotMeal;
+                                dinner_state_i = (int)MealState.CommonNotMeal;
                             }
-                            else
-                            {
-                                if (tmp_tryout_mealtype.Count() > 0)
-                                {
-                                    breakfast_state = tmp_tryout_mealtype.Contains("breakfast") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                    lunch_state = tmp_tryout_mealtype.Contains("lunch") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                    dinner_state = tmp_tryout_mealtype.Contains("dinner") ? (int)MealState.CommonMeal : (int)MealState.CommonNotMeal;
-                                }
-                                else
-                                {
-                                    breakfast_state = (int)MealState.CommonMeal;
-                                    lunch_state = (int)MealState.CommonMeal;
-                                    dinner_state = (int)MealState.CommonMeal;
-                                }
+                        }
+                        #endregion
+
+                        #region 設定起始餐別、結束餐別
+                        if (start_index == i & md.set_start_meal != null)
+                        {
+                            if (md.set_start_meal == (int)MealType.Lunch)
+                            {//午開始
+                                breakfast_state_i = (int)MealState.CommonNotMeal;
+                            }
+                            else if (md.set_start_meal == (int)MealType.Dinner)
+                            {//晚開始
+                                breakfast_state_i = (int)MealState.CommonNotMeal;
+                                lunch_state_i = (int)MealState.CommonNotMeal;
+                            }
+                        }
+                        if (end_index == i & md.set_end_meal != null)
+                        {
+                            if (md.set_end_meal == (int)MealType.Breakfast)
+                            {//早結束
+                                lunch_state_i = (int)MealState.CommonNotMeal;
+                                dinner_state_i = (int)MealState.CommonNotMeal;
+                            }
+                            else if (md.set_end_meal == (int)MealType.Lunch)
+                            {//晚開始
+                                dinner_state_i = (int)MealState.CommonNotMeal;
                             }
                         }
                         #endregion
@@ -585,9 +668,9 @@ namespace DotWeb.Api
                                             , this.departmentId
                                             , md.product_type
                                             , md.meal_id
-                                            , breakfast_state
-                                            , lunch_state
-                                            , dinner_state
+                                            , breakfast_state_i
+                                            , lunch_state_i
+                                            , dinner_state_i
                                             , this.companyId);
                         Log.Write("Save...");
                         var t = await db0.Database.ExecuteSqlCommandAsync(sb.ToString());
@@ -702,9 +785,9 @@ namespace DotWeb.Api
                 foreach (var id in ids)
                 {
                     var item = db0.RecordDetail.Find(id);
-                    if (item.product_type == (int)ProdyctType.PostnatalMeal & !(bool)item.is_release)
+                    if (item.product_type == (int)ProdyctType.PostnatalMeal & item.is_release != null)
                     {
-                        if (item.meal_id != null)
+                        if (item.meal_id != null & !(bool)item.is_release)
                         {
                             r.result = false;
                             r.message = Resources.Res.Log_Err_RDetail_Delete_release;

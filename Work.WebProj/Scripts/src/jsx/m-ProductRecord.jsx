@@ -945,7 +945,9 @@ var SubForm = React.createClass({
 			meal_id:null,
 			meal_start:null,
 			meal_end:null,
-			isDailyMealAdd:false
+			isDailyMealAdd:false,
+			set_start_meal:null,
+			set_end_meal:null
 		}});
 	},
 	updateSubType:function(id,e){
@@ -1476,7 +1478,44 @@ var SubForm = React.createClass({
 												required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!='')|| fieldSubData.product_type==1}
 												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
-										</div>										
+										</div>
+										{/*---早開始、午開始、晚開始---*/}
+										<div className="col-xs-4">
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_start_meal"
+															value={1}
+															checked={fieldSubData.set_start_meal==1} 
+															onChange={this.changeFDValue.bind(this,'set_start_meal')}
+													/>
+													<span>早開始</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_start_meal"
+															value={2}
+															checked={fieldSubData.set_start_meal==2} 
+															onChange={this.changeFDValue.bind(this,'set_start_meal')}
+															/>
+													<span>午開始</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_start_meal"
+															value={3}
+															checked={fieldSubData.set_start_meal==3} 
+															onChange={this.changeFDValue.bind(this,'set_start_meal')}
+															/>
+													<span>晚開始</span>
+												</label>
+											</div>											
+										</div>
+										{/*---早開始、午開始、晚開始---*/}								
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計送餐迄日</label>
@@ -1489,7 +1528,44 @@ var SubForm = React.createClass({
 												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
-										</div>										
+										</div>
+										{/*---早結束、午結束、晚結束---*/}
+										<div className="col-xs-4">
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_end_meal"
+															value={1}
+															checked={fieldSubData.set_end_meal==1} 
+															onChange={this.changeFDValue.bind(this,'set_end_meal')}
+													/>
+													<span>早結束</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_end_meal"
+															value={2}
+															checked={fieldSubData.set_end_meal==2} 
+															onChange={this.changeFDValue.bind(this,'set_end_meal')}
+															/>
+													<span>午結束</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_end_meal"
+															value={3}
+															checked={fieldSubData.set_end_meal==3} 
+															onChange={this.changeFDValue.bind(this,'set_end_meal')}
+															/>
+													<span>晚結束</span>
+												</label>
+											</div>											
+										</div>
+										{/*---早結束、午結束、晚結束---*/}																				
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計天數</label>
