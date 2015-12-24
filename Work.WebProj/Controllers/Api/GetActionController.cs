@@ -834,8 +834,8 @@ namespace DotWeb.Api
                 var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
                 bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= Yesterday &&
                                                                x.record_deatil_id == parm.record_deatil_id);
-
-                if (item == null & DateTime.Now <= parm.meal_day)
+                //先前日期,先開放可以加
+                if (item == null)//& DateTime.Now <= parm.meal_day
                 {
                     item = new DailyMeal()
                     {
