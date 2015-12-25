@@ -35,9 +35,9 @@ var GirdForm = React.createClass({
 	getInitialState: function() {  
 		return {
 			gridData:{rows:[],page:1},
-			fieldData:{},
+			fieldData:{born_memo:null},
 			searchData:{title:null},
-			searchBornData:{word:null,is_close:null},
+			searchBornData:{word:null,customer_type:null,is_meal:false},
 			edit_type:0,
 			checkAll:false,
 			isShowCustomerBornSelect:false,
@@ -275,6 +275,7 @@ var GirdForm = React.createClass({
 			fieldData.tw_city_2=data.getBorn.tw_city_2;
 			fieldData.tw_country_2=data.getBorn.tw_country_2;
 			fieldData.tw_address_2=data.getBorn.tw_address_2;
+			fieldData.born_memo=data.getBorn.memo;
 
 			this.setState({isShowCustomerBornSelect:false,fieldData:fieldData});
 		}.bind(this))
@@ -475,6 +476,7 @@ var GirdForm = React.createClass({
 		else if(this.state.edit_type==1 || this.state.edit_type==2)
 		{
 			var fieldData = this.state.fieldData;
+
 			var searchBornData=this.state.searchBornData;
 
 			var MdoalCustomerBornSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
@@ -493,14 +495,25 @@ var GirdForm = React.createClass({
 												onChange={this.changeGDBornValue.bind(this,'word')}
 											 	placeholder="請擇一填寫" />
 							                </div>
+											<label>客戶分類</label> { }
+											<select className="form-control input-sm" 
+													value={searchBornData.customer_type}
+													onChange={this.changeGDBornValue.bind(this,'customer_type')}>
+												<option value="">全部</option>
+											{
+												CommData.CustomerType.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select> { }							                
 							                <div className="form-group">
-							                    <label for="">是否結案</label> { }
+							                    <label for="">是否正在用餐</label> { }
 							                    <select className="form-control input-sm"
-							                    value={searchBornData.is_close}
-												onChange={this.changeGDBornValue.bind(this,'is_close')}>
+							                    value={searchBornData.is_meal}
+												onChange={this.changeGDBornValue.bind(this,'is_meal')}>
 							                        <option value="">全部</option>
-							                        <option value="true">已結案</option>
-							                        <option value="false">未結案</option>
+							                        <option value="true">是</option>
+							                        <option value="false">否</option>
 							                    </select>
 							                </div>
 							                <div className="form-group">
@@ -514,10 +527,12 @@ var GirdForm = React.createClass({
 										<tr>
 											<th className="col-xs-1 text-center">選擇</th>
 											<th className="col-xs-1">客戶姓名</th>
+											<th className="col-xs-1">客戶類別</th>
 											<th className="col-xs-1">用餐編號</th>
-											<th className="col-xs-1">媽媽姓名</th>
-											<th className="col-xs-1">第幾胎</th>
-											<th className="col-xs-1">是否結案</th>
+											<th className="col-xs-1">媽媽姓名</th>										
+											<th className="col-xs-1">電話1</th>
+											<th className="col-xs-1">備註</th>
+											<th className="col-xs-1">預產期</th>
 										</tr>
 										{
 											this.state.born_list.map(function(itemData,i) {
@@ -531,10 +546,12 @@ var GirdForm = React.createClass({
 										                    </label>
 														</td>
 														<td>{itemData.customer_name}</td>
+														<td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
 														<td>{itemData.meal_id}</td>
 														<td>{itemData.mom_name}</td>
-														<td>{itemData.born_frequency}</td>
-														<td>{itemData.is_close? <span className="label label-primary">結案</span>:<span className="label label-danger">未結案</span>}</td>			
+														<td>{itemData.tel_1}</td>
+														<td>{itemData.memo}</td>
+														<td>{moment(itemData.expected_born_day).format('YYYY/MM/DD')}</td>			
 													</tr>;
 												return born_out_html;
 											}.bind(this))
@@ -746,6 +763,18 @@ var GirdForm = React.createClass({
 									disabled={true}/>
 							</div>
 						</div>
+						<div className="form-group">
+							<label className="col-xs-2 control-label">生產備註</label>
+							<div className="col-xs-8">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.born_memo}
+								onChange={this.changeFDValue.bind(this,'born_memo')}
+								maxLength="256"
+								disabled/>
+							</div>
+						</div>
+
 						<div className="form-action text-right">
 							{save_out_html} { }
 							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>

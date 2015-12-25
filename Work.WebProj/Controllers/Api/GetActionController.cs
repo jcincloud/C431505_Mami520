@@ -171,11 +171,35 @@ namespace DotWeb.Api
                 var items = db0.CustomerBorn
                     .Where(x => x.company_id == this.companyId)
                     .OrderBy(x => new { x.customer_id, x.meal_id })
-                    .Select(x => new { x.customer_id, x.born_id, x.Customer.customer_sn, x.Customer.customer_name, x.meal_id, x.mom_name, x.born_frequency, x.is_close });
+                    .Select(x => new
+                    {
+                        x.customer_id,
+                        x.born_id,
+                        x.Customer.customer_sn,
+                        x.Customer.customer_name,
+                        x.meal_id,
+                        x.mom_name,
+                        x.born_frequency,
+                        x.Customer.customer_type,//客戶類別
+                        x.tel_1,
+                        x.memo,
+                        x.expected_born_day//預產期
+                    });
 
-                if (parm.is_close != null)
+                if (parm.customer_type != null)
                 {
-                    items = items.Where(x => x.is_close == parm.is_close);
+                    items = items.Where(x => x.customer_type == parm.customer_type);
+                }
+                if (parm.is_meal != null)
+                {
+                    if ((bool)parm.is_meal)
+                    {
+                        items = items.Where(x => x.meal_id != null);
+                    }
+                    else {
+                        items = items.Where(x => x.meal_id == null);
+                    }
+
                 }
                 if (parm.word != null)
                 {
@@ -2366,7 +2390,8 @@ namespace DotWeb.Api
     public class ParmGetAllBorn
     {
         public string word { get; set; }
-        public bool? is_close { get; set; }
+        public int? customer_type { get; set; }
+        public bool? is_meal { get; set; }
     }
     public class ParmGetLeftCustomer
     {

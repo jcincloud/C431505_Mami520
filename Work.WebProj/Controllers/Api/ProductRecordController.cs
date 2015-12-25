@@ -36,6 +36,7 @@ namespace DotWeb.Api
                 item.tw_city_2 = getCustomerBorn.tw_city_2;
                 item.tw_country_2 = getCustomerBorn.tw_country_2;
                 item.tw_address_2 = getCustomerBorn.tw_address_2;
+                item.born_memo = getCustomerBorn.memo;
 
                 r = new ResultInfo<ProductRecord>() { data = item };
             }

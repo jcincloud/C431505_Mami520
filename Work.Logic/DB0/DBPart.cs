@@ -191,6 +191,7 @@ namespace ProcCore.Business.DB0
         public string tw_city_2 { get; set; }
         public string tw_country_2 { get; set; }
         public string tw_address_2 { get; set; }
+        public string born_memo { get; set; }
     }
     public partial class CustomerBorn
     {
@@ -345,7 +346,8 @@ namespace ProcCore.Business.DB0
         public int company_id { get; set; }
         public string company_name { get; set; }
     }
-    public partial class Menu : BaseEntityTable {
+    public partial class Menu : BaseEntityTable
+    {
 
         public IList<MenuRoleArray> role_array { get; set; }
     }
