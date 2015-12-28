@@ -395,7 +395,8 @@ var SubForm = React.createClass({
 			gridSubData:[],
 			fieldSubData:{},
 			searchData:{name:null,product_type:null},
-			Total_Money:0
+			Total_Money:0,
+			edit_sub_type:1
 		};  
 	},
 	getDefaultProps:function(){
@@ -423,15 +424,55 @@ var SubForm = React.createClass({
 	},
 	detailHandleSubmit:function(e){//新增 
 		e.preventDefault();
-			
-		jqPost(this.props.apiPathName,this.state.fieldSubData)
+	    if(this.state.edit_sub_type==1){
+			jqPost(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
+					this.queryAccountsPayableDetail();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+	    }else if(this.state.edit_sub_type==2){
+			jqPut(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
+					this.queryAccountsPayableDetail();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+	    }
+
+		return;
+	},
+	detailDeleteSubmit:function(id,e){
+
+		if(!confirm('確定是否刪除?')){
+			return;
+		}
+		jqDelete(this.props.apiPathName + '?ids=' +id ,{})			
 		.done(function(data, textStatus, jqXHRdata) {
 			if(data.result){
-				if(data.message!=null){
-					tosMessage(null,'新增完成'+data.message,1);
-				}else{
-					tosMessage(null,'新增完成',1);
-				}
+				tosMessage(null,'刪除完成',1);
 				this.queryAccountsPayableDetail();
 				this.insertSubType();
 			}else{
@@ -441,10 +482,11 @@ var SubForm = React.createClass({
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
 		});
-		return;
 	},
 	insertSubType:function(){
-		this.setState({fieldSubData:{
+		this.setState({
+			edit_sub_type:1,
+			fieldSubData:{
 			accounts_payable_id:this.props.main_id,
 			customer_id:this.props.customer_id,
 			meal_type:0,
@@ -454,6 +496,15 @@ var SubForm = React.createClass({
 			receipt_sn:null,
 			actual_receipt:0
 		}});
+	},
+	updateSubType:function(id,e){
+		jqGet(this.props.apiPathName,{id:id})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({edit_sub_type:2,fieldSubData:data.data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
 	},
 	changeFDValue:function(name,e){
 		var obj = this.state.fieldSubData;
@@ -468,7 +519,12 @@ var SubForm = React.createClass({
 	render: function() {
 		var outHtml = null;
 		var fieldSubData=this.state.fieldSubData;
-
+		var editor_html=null;
+		var editor_colspan=4;
+		if(gb_roles=='Managers'){
+			editor_html=<th className="col-xs-1 text-center">編輯</th>;
+			editor_colspan=5;
+		}
 			outHtml =
 			(
 				<div>
@@ -556,6 +612,7 @@ var SubForm = React.createClass({
 							<div className="form-action">
 								<p className="text-right">
 									<button type="submit" form="detailForm" className="btn-primary"><i className="fa-check"></i> 存檔確認</button> { }
+									<button type="button" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button> { }
 									<button type="button" onClick={this.props.noneType}><i className="fa-times"></i> 回列表</button> { }
                             		<button type="button" className="btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
 								</p>
@@ -578,17 +635,28 @@ var SubForm = React.createClass({
 							<table className="table-condensed">
 								<tbody>
 									<tr>
+										{editor_html}
 										<th className="col-xs-2 text-center">收款日期</th>
-										<th className="col-xs-2 text-center">收款餐別</th>
+										<th className="col-xs-1 text-center">收款餐別</th>
 										<th className="col-xs-2 text-center">收款人員</th>
 										<th className="col-xs-2 text-center">收款項目</th>
 										<th className="col-xs-2">收款單號</th>
 										<th className="col-xs-2">本次實收</th>
 									</tr>
 									{
-										this.state.gridSubData.map(function(itemData,i) {										
+										this.state.gridSubData.map(function(itemData,i) {
+											var button_html=null;
+											if(gb_roles=='Managers'){
+												button_html=(
+													<td className="text-center">
+														<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.accounts_payable_detail_id)}><i className="fa-pencil"></i></button>
+														<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.accounts_payable_detail_id)} disabled={this.props.is_close}><i className="fa-trash"></i></button>
+													</td>
+													);
+											}								
 											var detail_out_html = 
 												<tr key={itemData.accounts_payable_detail_id}>
+													{button_html}												
 													<td className="text-center">{moment(itemData.receipt_day).format('YYYY/MM/DD')}</td>
 													<td className="text-center"><StateForGrid stateData={CommData.MealTypeByAccountsPayable} id={itemData.meal_type} /></td>
 													<td className="text-center"><StateForGrid stateData={CommData.ReceiptPersonType} id={itemData.receipt_person} /></td>
@@ -600,7 +668,7 @@ var SubForm = React.createClass({
 										}.bind(this))
 									}
 									<tr>
-										<th className="col-xs-1 text-center text-danger" colSpan={4}>總計</th>
+										<th className="col-xs-1 text-center text-danger" colSpan={editor_colspan}>總計</th>
 										<th className="col-xs-1 text-danger">未收:${formatMoney(this.props.main_total-this.state.Total_Money,0)}</th>
 										<th className="col-xs-1 text-danger">實際已收:${formatMoney(this.state.Total_Money,0)}</th>
 									</tr>

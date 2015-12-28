@@ -79,6 +79,13 @@ namespace DotWeb.Api
 
                 item = await db0.AccountsPayableDetail.FindAsync(md.accounts_payable_detail_id);
 
+                item.receipt_day = md.receipt_day;
+                item.meal_type = md.meal_type;
+                item.receipt_person = md.receipt_person;
+                item.receipt_item = md.receipt_item;
+                item.receipt_sn = md.receipt_sn;
+                item.actual_receipt = md.actual_receipt;
+
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
                 item.i_UpdateDeptID = this.departmentId;
