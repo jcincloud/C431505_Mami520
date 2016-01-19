@@ -67,8 +67,8 @@ namespace ProcCore.Business.DB0
     	[JsonIgnore]
         public virtual ICollection<DailyMeal> DailyMeal { get; set; }
     	[JsonIgnore]
-        public virtual Product Product { get; set; }
-    	[JsonIgnore]
         public virtual ProductRecord ProductRecord { get; set; }
+    	[JsonIgnore]
+        public virtual Product Product { get; set; }
     }
 }

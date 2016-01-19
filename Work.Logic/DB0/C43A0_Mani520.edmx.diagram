@@ -58,7 +58,6 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsg" Width="1.5" PointX="3.375" PointY="19.125" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMealChangeRecord" Width="1.5" PointX="27.625" PointY="18.5" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayableDetail" Width="1.5" PointX="22.375" PointY="5.25" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayable" Width="1.5" PointX="20.25" PointY="5.25" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayable_Customer" />
@@ -69,7 +68,6 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="26.125" PointY="7.375" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.AspNetUsers" Width="1.5" PointX="5" PointY="1.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Company" Width="1.5" PointX="2.75" PointY="25.125" />
@@ -81,6 +79,8 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsgOfCustomer" Width="1.5" PointX="12.625" PointY="17.375" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="19.375" PointY="17.125" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

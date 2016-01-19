@@ -51,7 +51,7 @@ namespace DotWeb.Api
                     product_type = x.product_type,
                     price = x.price,
                     standard = x.standard,
-                    i_Hide=x.i_Hide
+                    i_Hide = x.i_Hide
                 });
 
 
@@ -86,6 +86,10 @@ namespace DotWeb.Api
                 item.sort = md.sort;
                 item.memo = md.memo;
                 item.i_Hide = md.i_Hide;
+                item.meal_type = md.meal_type;
+                item.breakfast_price = md.breakfast_price;
+                item.lunch_price = md.lunch_price;
+                item.dinner_price = md.dinner_price;
 
 
                 item.i_UpdateUserID = this.UserId;

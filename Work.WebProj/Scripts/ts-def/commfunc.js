@@ -1,9 +1,4 @@
 function uniqid() {
-    /*
-        Autohr:Jerry
-        Date:2014/2/23
-        Description:取得唯一值
-    */
     var newDate = new Date();
     return newDate.getTime();
 }
@@ -33,7 +28,9 @@ function isValidJSONDate(value, userFormat) {
                 y = date[i];
         }
         ;
-        return (m > 0 && m < 13 && y && y.length === 4 && d > 0 && d <= (new Date(y, m, 0)).getDate());
+        return (m > 0 && m < 13 &&
+            y && y.length === 4 &&
+            d > 0 && d <= (new Date(y, m, 0)).getDate());
     };
     return isDate(theDate, theFormat);
 }
@@ -145,14 +142,6 @@ function jqDelete(url, data) {
     });
 }
 function tosMessage(title, message, type) {
-    //if (type == emToastrType.success)
-    //    toastr.success(message, title);
-    //if (type == emToastrType.error)
-    //    toastr.error(message, title);
-    //if (type == emToastrType.warning)
-    //    toastr.warning(message, title);
-    //if (type == emToastrType.info)
-    //    toastr.info(message, title);
     if (type == 1)
         toastr.success(message, title);
     if (type == 3)
@@ -192,7 +181,12 @@ function getBrower() {
     var Sys = {};
     var ua = navigator.userAgent.toLowerCase();
     var s;
-    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] : (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] : (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] : (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] : (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] : (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] :
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+            (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                    (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
     if (Sys.ie)
         return ('IE: ' + Sys.ie);
     if (Sys.firefox)
@@ -204,13 +198,8 @@ function getBrower() {
     if (Sys.safari)
         return ('Safari: ' + Sys.safari);
 }
-var replace_br = /(?:\\[rn]|[\r\n]+)+/g; //將換行碼換成<br/>的樣板
+var replace_br = /(?:\\[rn]|[\r\n]+)+/g;
 function checkTelReg(tel) {
-    /*
-      Autohr:Ajoe
-      Date:2015/9/8
-      Description:檢查電話格式
-    */
     if (tel != undefined && tel != '') {
         if (tel.indexOf('-') != -1 || tel.indexOf(' ') != -1 || tel.indexOf('　') != -1) {
             return { result: false, errMsg: '電話請勿輸入「空白」或「-」！！' };
@@ -222,31 +211,19 @@ function checkTelReg(tel) {
     return { result: true };
 }
 function checkTwID(id) {
-    /*
-      Autohr:Ajoe
-      Date:2015/9/8
-      Description:台灣身份證檢查簡
-    */
     if (id != null && id != "") {
-        //建立字母分數陣列(A~Z)
         var city = new Array(1, 10, 19, 28, 37, 46, 55, 64, 39, 73, 82, 2, 11, 20, 48, 29, 38, 47, 56, 65, 74, 83, 21, 3, 12, 30);
         id = id.toUpperCase();
-        // 使用「正規表達式」檢驗格式
         if (id.search(/^[A-Z](1|2)\d{8}$/i) == -1) {
-            //alert('基本格式錯誤');
             return false;
         }
         else {
-            //將字串分割為陣列(IE必需這麼做才不會出錯)
             id = id.split('');
-            //計算總分
             var total = city[id[0].charCodeAt(0) - 65];
             for (var i = 1; i <= 8; i++) {
                 total += eval(id[i]) * (9 - i);
             }
-            //補上檢查碼(最後一碼)
             total += eval(id[9]);
-            //檢查比對碼(餘數應為0);
             return ((total % 10 == 0));
         }
     }
@@ -255,16 +232,10 @@ function checkTwID(id) {
     }
 }
 function DiffDate(start, end) {
-    /*
-      Autohr:Ajoe
-      Date:2015/9/24
-      Description:計算兩日期相差天數
-    */
     if (start != null && end != null) {
         var day_s = new Date(start);
         var day_e = new Date(end);
         if (day_s <= day_e) {
-            //開始日期 小於等於 結束日期 才計算
             var iDays = (Math.abs(day_e.getTime() - day_s.getTime()) / 1000 / 60 / 60 / 24) + 1;
             return { result: 1, diff_day: iDays };
         }
@@ -277,11 +248,6 @@ function DiffDate(start, end) {
     }
 }
 function MealCount(Parm, B, L, D) {
-    /*
-      Autohr:Ajoe
-      Date:2015/9/24
-      Description:計算用餐點數
-    */
     var total = 0;
     if (B != null) {
         total += parseFloat((B * Parm.breakfast).toFixed(2));
@@ -295,26 +261,12 @@ function MealCount(Parm, B, L, D) {
     return parseFloat(total.toFixed(2));
 }
 function addDate(date, days) {
-    /*
-      Autohr:Ajoe
-      Date:2015/10/6
-      Description:日期加減天數
-      參數:date,要加減的日期.
-      參數:days,要加減的天數.
-    */
     var a = date.valueOf();
     a = a + (days * 24 * 60 * 60 * 1000);
     var r = new Date(a);
     return r;
 }
 function formatMoney(s, d_point) {
-    /*
-   * formatMoney(s,type)
-   * 功能：金額按千位逗號分割
-   * 參數：s，需要格式化的金額數值.
-   * 參數：type,判斷格式化後的金額是否需要小數位.
-   * 返回：返回格式化後的數值字元串.
-   */
     if (/[^0-9\.]/.test(s))
         return "0";
     if (s == null || s == "")
@@ -334,4 +286,6 @@ function formatMoney(s, d_point) {
     }
     return s;
 }
-//# sourceMappingURL=commfunc.js.map
+function roundX(val, precision) {
+    return Math.round(Math.round(val * Math.pow(10, (precision || 0) + 1)) / 10) / Math.pow(10, (precision || 0));
+}

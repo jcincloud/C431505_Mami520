@@ -352,6 +352,16 @@ function formatMoney(s: string, d_point: number) {
     }
     return s;
 }
+function roundX(val: number, precision: number) {
+  /* 
+   * roundX(val,precision) 
+   * 功能：計算小數點後幾位四捨五入
+   * 參數：val，需四捨五入的參數值. 
+   * 參數：precision,判斷四捨五入後的參數需保留小數到第幾位. 
+   * 返回：返回四捨五入且可控制保留小數值到第幾位. 
+   */
+    return Math.round(Math.round(val * Math.pow(10, (precision || 0) + 1)) / 10) / Math.pow(10, (precision || 0));
+}
 interface ParmMealCount {
     breakfast: number;
     lunch: number;

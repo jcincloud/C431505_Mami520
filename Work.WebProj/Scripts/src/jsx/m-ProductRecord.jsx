@@ -848,7 +848,7 @@ var SubForm = React.createClass({
 	componentDidMount:function(){
 		this.queryGridData();
 		this.insertSubType();//一開始載入預設為新增狀態
-		this.getAjaxInitData();//載入init資料
+		//this.getAjaxInitData();//載入init資料
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
@@ -963,6 +963,9 @@ var SubForm = React.createClass({
 	},
 	insertSubType:function(){
 		$('textarea').val("");
+		var tryout_array=this.state.tryout_array;
+		tryout_array.forEach(function(object, i){object.value=false;})
+
 		this.setState({edit_sub_type:1,fieldSubData:{
 			product_record_id:this.props.main_id,
 			customer_id:this.props.customer_id,
@@ -976,8 +979,11 @@ var SubForm = React.createClass({
 			meal_end:null,
 			isDailyMealAdd:false,
 			set_start_meal:null,
-			set_end_meal:null
-		}});
+			set_end_meal:null,
+			diff_day:0
+		},
+		tryout_array:tryout_array
+	});
 	},
 	updateSubType:function(id,e){
 		jqGet(this.props.apiPathName,{id:id})
@@ -990,12 +996,18 @@ var SubForm = React.createClass({
 			data.data.real_count=MealCount(this.state.parm,data.data.real_breakfast,data.data.real_lunch,data.data.real_dinner);
 			//試吃餐別
 			var tryout_array=this.state.tryout_array;
-			tryout_array.forEach(function(object, i){
-	        	if(object.name==data.data.tryout_mealtype){
-	  				object.value=true;
-	        	}
-    		})
-			console.log(data);
+			tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
+			if(data.data.tryout_mealtype!=undefined){
+				var array=data.data.tryout_mealtype.split(",");
+				tryout_array.forEach(function(object, i){
+					array.forEach(function(a_obj,j){
+						if(object.name==a_obj){
+							object.value=true;
+						}
+					})
+	    		})
+			}
+			//console.log(data);
 			this.setState({edit_sub_type:2,fieldSubData:data.data,tryout_array:tryout_array});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -1025,6 +1037,7 @@ var SubForm = React.createClass({
 	},
 	changeMealday:function(name,e){//計算日期天數
 		var obj = this.state.fieldSubData;
+		var parm=this.state.parm;
 		if(obj.isMealStart){
 			tosMessage(gb_title_from_invalid,'已開始正式用餐後,請勿變更預計用餐起日及迄日!!',3);
 		}else{
@@ -1037,9 +1050,10 @@ var SubForm = React.createClass({
 				tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
 				obj[name]=old_val;
 			}else{
-				obj.estimate_breakfast=diff_mealday.diff_day;
-				obj.estimate_lunch=diff_mealday.diff_day;
-				obj.estimate_dinner=diff_mealday.diff_day;
+				if(parm.breakfast>0){obj.estimate_breakfast=diff_mealday.diff_day;}else{obj.estimate_breakfast=0;}
+				if(parm.lunch>0){obj.estimate_lunch=diff_mealday.diff_day;}else{obj.estimate_lunch=0;}
+				if(parm.dinner>0){obj.estimate_dinner=diff_mealday.diff_day;}else{obj.estimate_dinner=0;}
+				
 				obj.qty=diff_mealday.diff_day;
 				obj.subtotal=obj.qty*obj.price;
 			}
@@ -1049,14 +1063,21 @@ var SubForm = React.createClass({
 	},
 	changeMealDayCount:function(e){
 		var obj = this.state.fieldSubData;
+		var parm=this.state.parm;
 		if(obj.meal_start!=null & (e.target.value!=null & e.target.value!='')){
 			var tmp_date = new Date(obj.meal_start);
 			var end_date=addDate(tmp_date,parseInt(e.target.value)-1);
 
 			obj.meal_end=format_Date(end_date);
-			obj.estimate_breakfast=parseInt(e.target.value);
-			obj.estimate_lunch=parseInt(e.target.value);
-			obj.estimate_dinner=parseInt(e.target.value);
+			if(parm.breakfast>0){
+				obj.estimate_breakfast=parseInt(e.target.value);
+			}else{obj.estimate_breakfast=0;}
+			if(parm.lunch>0){
+				obj.estimate_lunch=parseInt(e.target.value);
+			}else{obj.estimate_lunch=0;}
+			if(parm.dinner>0){
+				obj.estimate_dinner=parseInt(e.target.value);
+			}else{obj.estimate_dinner=0;}
 			obj.qty=parseInt(e.target.value);
 			obj.subtotal=obj.qty*obj.price;
 		}
@@ -1098,6 +1119,10 @@ var SubForm = React.createClass({
 	},
 	selectProduct:function(product_id,e){
 		var fSD = this.state.fieldSubData;
+		var tryout_array=this.state.tryout_array;
+		var parm=this.state.parm;//用餐點數計算
+		tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
+
 		this.state.product_list.forEach(function(obj,i){
 			if(obj.product_id==product_id){
 				fSD.product_id=product_id;
@@ -1106,12 +1131,32 @@ var SubForm = React.createClass({
 				fSD.price=obj.price;
 				fSD.standard=obj.standard;
 				fSD.subtotal=fSD.qty*obj.price;
+				if(obj.product_type==1 || obj.product_type==2){
+					//parm:{breakfast:0,lunch:0,dinner:0}
+					//依產品各餐別計算售價點數
+					parm.breakfast=roundX(obj.breakfast_price/obj.price,4);
+					parm.lunch=roundX(obj.lunch_price/obj.price,4);
+					parm.dinner=roundX(obj.dinner_price/obj.price,4);
+
+					fSD.tryout_mealtype=obj.meal_type;
+					//依產品選擇餐別帶出餐別
+					if(obj.meal_type!=undefined){
+						var array=obj.meal_type.split(",");
+						tryout_array.forEach(function(object, i){
+							array.forEach(function(a_obj,j){
+								if(object.name==a_obj){
+									object.value=true;
+								}
+							})
+			    		})
+					}
+				}
 			}
 		});
 		if(fSD.product_type==2){//如果產品為月子餐就儲存用餐編號
 			fSD.meal_id=this.props.meal_id;
 		}
-		this.setState({isShowProductSelect:false,fieldSubData:fSD});
+		this.setState({isShowProductSelect:false,fieldSubData:fSD,tryout_array:tryout_array,parm:parm});
 	},
 	setReleaseMealID:function(meal_id,record_deatil_id){
 		if(!confirm('確定釋放用餐編號?')){

@@ -1060,7 +1060,7 @@ var GirdSubForm = React.createClass({
 								<th className="col-xs-2">媽媽姓名</th>
 								<th className="col-xs-1">寶寶性別</th>
 								<th className="col-xs-1">生產方式</th>
-								<th className="col-xs-1">是否結案</th>
+								{/*<th className="col-xs-1">是否結案</th>*/}
 								<th className="col-xs-2">備註</th>
 							</tr>
 							{
@@ -1086,7 +1086,7 @@ var GirdSubForm = React.createClass({
 											<td>{itemData.mom_name}</td>
 											<td><StateForGrid stateData={CommData.SexType} id={itemData.baby_sex} /></td>
 											<td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>
-											<td>{itemData.is_close? <span className="label label-success">結案</span>:<span className="label label-danger">未結案</span>}</td>			
+											{/*<td>{itemData.is_close? <span className="label label-success">結案</span>:<span className="label label-danger">未結案</span>}</td>*/}		
 											<td>{itemData.memo}</td>
 										</tr>;
 									return out_sub_html;

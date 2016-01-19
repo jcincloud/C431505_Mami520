@@ -37,7 +37,12 @@ var GirdForm = React.createClass({
 			edit_type:0,
 			checkAll:false,
 			country_list:[],
-			next_id:null
+			next_id:null,
+			meal_array:[
+				{name:'breakfast',name_c:'早餐',value:false},
+				{name:'lunch',name_c:'午餐',value:false},
+				{name:'dinner',name_c:'晚餐',value:false}
+			]
 		};  
 	},
 	getDefaultProps:function(){
@@ -176,16 +181,31 @@ var GirdForm = React.createClass({
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:2,fieldData:data.data});
+			//排餐餐別
+			var meal_array=this.state.meal_array;
+			if(data.data.meal_type!=undefined){
+				var array=data.data.meal_type.split(",");
+				meal_array.forEach(function(object, i){
+					array.forEach(function(a_obj,j){
+						if(object.name==a_obj){
+							object.value=true;
+						}
+					})
+	    		})
+			}
+			this.setState({edit_type:2,fieldData:data.data,meal_array:meal_array});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
 		});
 	},
 	noneType:function(){
+		var meal_array=this.state.meal_array;
+		meal_array.forEach(function(object, i){object.value=false;})
+
 		this.gridData(0)
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:0,gridData:data});
+			this.setState({edit_type:0,gridData:data,meal_array:meal_array});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -241,6 +261,34 @@ var GirdForm = React.createClass({
 		obj['product_type'] = e.target.value;
 		this.setState({searchData:obj});
 		this.queryGridData(0);
+	},
+	onMealChange:function(index,e){
+		var obj = this.state.fieldData;
+		var arrayObj=this.state.meal_array;
+		var item = arrayObj[index];
+		item.value = !item.value;
+		
+		var array="";
+		if(obj.product_type==1){//如果為試吃,只能有一個餐別
+			array=item.name;
+			arrayObj.forEach(function(object, i){
+	        	if(item!=object){
+	  				object.value=false;
+	        	}
+    		})
+		}else{
+			arrayObj.forEach(function(object, i){
+	        	if(object.value){
+	        		if(array.length==0){
+						array=object.name;
+	        		}else{
+						array=array+","+object.name;
+	        		}	  				
+	        	}
+    		})
+		}
+		obj.meal_type=array;
+		this.setState({fieldData:obj,meal_array:arrayObj});
 	},
 	render: function() {
 		var outHtml = null;
@@ -333,7 +381,68 @@ var GirdForm = React.createClass({
 		else if(this.state.edit_type==1 || this.state.edit_type==2)
 		{
 			var fieldData = this.state.fieldData;
+			var mealHtml=null;
+			if(fieldData.product_type==1 || fieldData.product_type==2){
+				mealHtml=(
+					<div>
+						<div className="form-group">
+							<label className="col-xs-2 control-label">餐別售價</label>
+							<div className="col-xs-2">
+								<div className="input-group">
+									<span className="input-group-addon" id="meal1-1">早</span>
+									<input type="number" 							
+									className="form-control"	
+									value={fieldData.breakfast_price}
+									onChange={this.changeFDValue.bind(this,'breakfast_price')}
+									required={true}
+									min="0"/>
+								</div>
+							</div>
+							<div className="col-xs-2">
+								<div className="input-group">
+									<span className="input-group-addon" id="meal1-2">午</span>
+									<input type="number" 							
+									className="form-control"	
+									value={fieldData.lunch_price}
+									onChange={this.changeFDValue.bind(this,'lunch_price')}
+									required={true}
+									min="0"/>
+								</div>
+							</div>
+							<div className="col-xs-2">
+								<div className="input-group">
+								<span className="input-group-addon" id="meal1-3">晚</span>
+								<input type="number" 							
+								className="form-control"	
+								value={fieldData.dinner_price}
+								onChange={this.changeFDValue.bind(this,'dinner_price')}
+								required={true}
+								min="0"/>
+							</div>
+							</div>
+						</div>				
+						<div className="form-group">
+							<label className="col-xs-2 control-label">用餐餐別</label>
+							<div className="col-xs-6">
+							{
+								this.state.meal_array.map(function(itemData,i) {
+									var out_check =<div className="checkbox-inline" key={i}>
+											<label>
+											<input  type="checkbox" 
+											checked={itemData.value}
+											onChange={this.onMealChange.bind(this,i)}
+											/>
+											{itemData.name_c}
+											</label>
+										</div>;
+									return out_check;
 
+								}.bind(this))
+							}
+							</div>
+						</div>
+					</div>);
+			}
 			outHtml=(
 			<div>
 				<h3 className="title">{this.props.Caption} 編輯</h3>
@@ -389,6 +498,7 @@ var GirdForm = React.createClass({
 						</div>
 						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
+					{mealHtml}
 					<div className="form-group">
 						<label className="col-xs-2 control-label">排序</label>
 						<div className="col-xs-4">
@@ -399,7 +509,7 @@ var GirdForm = React.createClass({
 							 />
 						</div>
 						<small className="col-xs-6 help-inline">數字愈大愈前面，未填寫視為 0</small>
-					</div>
+					</div>			
 					<div className="form-group">
 						<label className="col-xs-2 control-label">狀態</label>
 						<div className="col-xs-4">

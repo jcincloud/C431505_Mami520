@@ -16,6 +16,10 @@ namespace ProcCore.Business.DB0
     public int product_type { get; set; }
     public string product_name { get; set; }
     public double price { get; set; }
+    public int breakfast_price { get; set; }
+    public int lunch_price { get; set; }
+    public int dinner_price { get; set; }
+    public string meal_type { get; set; }
     public string standard { get; set; }
     public Nullable<int> sort { get; set; }
     public string memo { get; set; }

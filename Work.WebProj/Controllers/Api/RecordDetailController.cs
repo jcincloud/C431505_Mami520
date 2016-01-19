@@ -114,14 +114,7 @@ namespace DotWeb.Api
             string[] tmp_tryout_mealtype = new string[] { };
             if (md.tryout_mealtype != null && md.tryout_mealtype.Length > 0)
             {
-                if (md.tryout_mealtype.IndexOf(",") == -1)
-                {
-                    tmp_tryout_mealtype = new string[] { md.tryout_mealtype };
-                }
-                else
-                {
-                    tmp_tryout_mealtype = md.tryout_mealtype.Split(',');
-                }
+                tmp_tryout_mealtype = md.tryout_mealtype.Split(',');
             }
             #endregion
             try
@@ -161,6 +154,7 @@ namespace DotWeb.Api
                 #region 修改用餐編號
                 if (md.product_type == (int)ProdyctType.PostnatalMeal)
                 {
+                    item.tryout_mealtype = md.tryout_mealtype;
                     #region 驗證MealId
                     var getBorn = await db0.CustomerBorn.FindAsync(md.born_id);//更新生產紀錄用餐編號
                     if (md.meal_id != null & md.meal_id != getBorn.meal_id)
@@ -402,14 +396,7 @@ namespace DotWeb.Api
             string[] tmp_tryout_mealtype = new string[] { };
             if (md.tryout_mealtype != null && md.tryout_mealtype.Length > 0)
             {
-                if (md.tryout_mealtype.IndexOf(",") == -1)
-                {
-                    tmp_tryout_mealtype = new string[] { md.tryout_mealtype };
-                }
-                else
-                {
-                    tmp_tryout_mealtype = md.tryout_mealtype.Split(',');
-                }
+                tmp_tryout_mealtype = md.tryout_mealtype.Split(',');
             }
             #endregion
             md.record_deatil_id = GetNewId(ProcCore.Business.CodeTable.RecordDetail);
@@ -434,10 +421,6 @@ namespace DotWeb.Api
                         r.message = Resources.Res.Log_Check_RecordDetail_Tryout;
                         return Ok(r);
                     }
-                }
-                else
-                {
-                    md.tryout_mealtype = null;
                 }
                 if (md.product_type == (int)ProdyctType.PostnatalMeal)
                 {

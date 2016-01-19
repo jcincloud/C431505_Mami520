@@ -369,7 +369,7 @@ namespace DotWeb.Api
                 var items = db0.Product
                     .OrderBy(x => new { x.sort })
                     .Where(x => !x.i_Hide & x.company_id == this.companyId)
-                    .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard });
+                    .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard, x.meal_type, x.breakfast_price, x.lunch_price, x.dinner_price });
 
                 if (parm.name != null)
                 {
@@ -681,10 +681,10 @@ namespace DotWeb.Api
                 bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= Yesterday &&
                                                                x.record_deatil_id == parm.record_deatil_id);
                 #region 早餐
+                RecordDetailItem.real_breakfast = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.breakfast_state > 0).Count();
                 if (parm.meal_type == (int)MealType.Breakfast)
                 {
                     item.breakfast_state = parm.meal_state;
-                    RecordDetailItem.real_breakfast = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.breakfast_state > 0).Count();
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_breakfast += 1;
@@ -721,10 +721,10 @@ namespace DotWeb.Api
                 }
                 #endregion
                 #region 午餐
+                RecordDetailItem.real_lunch = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.lunch_state > 0).Count();
                 if (parm.meal_type == (int)MealType.Lunch)
                 {
                     item.lunch_state = parm.meal_state;
-                    RecordDetailItem.real_lunch = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.lunch_state > 0).Count();
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_lunch += 1;
@@ -760,10 +760,10 @@ namespace DotWeb.Api
                 }
                 #endregion
                 #region 晚餐
+                RecordDetailItem.real_dinner = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.dinner_state > 0).Count();
                 if (parm.meal_type == (int)MealType.Dinner)
                 {
                     item.dinner_state = parm.meal_state;
-                    RecordDetailItem.real_dinner = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.dinner_state > 0).Count();
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_dinner += 1;
@@ -802,7 +802,13 @@ namespace DotWeb.Api
                 double old_subtotal = RecordDetailItem.subtotal;
 
                 #region 變更產品數量
-                RecordDetailItem.qty = Math.Round((int)RecordDetailItem.real_breakfast * 0.3 + (int)RecordDetailItem.real_lunch * 0.35 + (int)RecordDetailItem.real_dinner * 0.35, 2);
+                double b_point = 0, l_point = 0, d_point = 0;//餐別計算點數
+                var product = db0.Product.Find(RecordDetailItem.product_id);
+                b_point = Math.Round(product.breakfast_price / product.price, 4);
+                l_point = Math.Round(product.lunch_price / product.price, 4);
+                d_point = Math.Round(product.dinner_price / product.price, 4);
+
+                RecordDetailItem.qty = Math.Round((double)RecordDetailItem.real_breakfast * b_point + (double)RecordDetailItem.real_lunch * l_point + (double)RecordDetailItem.real_dinner * d_point, 4);
                 RecordDetailItem.subtotal = Math.Round(RecordDetailItem.qty * RecordDetailItem.price);
                 #endregion
 
