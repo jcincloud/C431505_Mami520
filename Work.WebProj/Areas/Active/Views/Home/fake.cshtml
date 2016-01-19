@@ -1,0 +1,254 @@
+﻿@{
+    Layout = "~/Views/Shared/Manage/RLayout.cshtml";
+}
+@section breadCrumb {
+    @*<li><a href="~/Active/Home"><i class="fa-phone"></i>首頁</a></li>*@
+    <li>首頁</li>
+}
+@section IncludeCSS{
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datetimepicker-build.css" />
+}
+@section IncludeScript{
+    @Html.Partial("Manage/JSGlobalVar")
+    <script src="~/Scripts/build/comminc.js"></script>
+    <script src="~/Scripts/app/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    @*<script src="~/Scripts/app/Sortable.min.js"></script>
+        <script src="~/Scripts/app/react-sortable-mixin.js"></script>
+        <script src="~/Scripts/build/func/m-Home.js"></script>
+        <script>
+            var getRootDOM = document.getElementById('page_content');
+            var rootParm = { MenuName: '@ViewBag.MenuName', Caption: '@ViewBag.Caption', IconClass: 'fa-phone' };
+            var compObject = React.render(React.createElement(GirdForm, rootParm), getRootDOM);
+        </script>*@
+}
+@section sidebar{
+    @Html.Partial("Manage/vucMenu")
+}
+
+<h3 class="title">首頁</h3>
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#tel" aria-controls="home" role="tab" data-toggle="tab" id="tabAddNew">
+            <i class="fa-phone"></i> 電訪名單
+        </a>
+    </li>
+    <li role="presentation">
+        <a href="#search" aria-controls="profile" role="tab" data-toggle="tab" id="tabAddView">
+            <i class="glyphicon glyphicon-user"></i> 搜尋客戶
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="tel">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="item-box">
+                    <div class="item-title">
+                        <h5>電訪名單 主檔</h5>
+                    </div>
+                    <form class="form-horizontal" role="form" id="main-form" onSubmit={this.handleSubmit}>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">選擇客戶</label>
+                                <div class="col-xs-3">
+                                    <div class="input-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               value="王媽媽"
+                                               maxLength="64"
+                                               disabled />
+                                        <span class="input-group-btn">
+                                            <a class="btn" disabled><i class="fa-plus"></i></a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <small class="help-inline col-xs-6"><span class="text-danger">(必填)</span> 請按 <i class="fa-plus"></i> 選取</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">電訪日期</label>
+                                <div class="col-xs-3">
+                                    <span class="has-feedback">
+                                        <input type="date" class="form-control datetimepicker" value="2016-01-15" />
+                                        <i class="fa-calendar form-control-feedback"></i>
+                                    </span>
+                                </div>
+                                <small class="help-inline col-xs-6">系統自動產生，無法修改</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">電訪原因</label>
+                                <div class="col-xs-3">
+                                    <select class="form-control">
+                                        <option value="1">客戶來電</option>
+                                        <option value="2">收頭款</option>
+                                        <option value="3">可麻油酒</option>
+                                        <option value="4">收尾款</option>
+                                    </select>
+                                </div>
+                                <small class="text-danger col-xs-6">(必填)</small>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr class="condensed" />
+
+                    <div class="row">
+                        <div class="col-xs-10 col-xs-offset-1">
+                            <div class="item-box">
+                                <div class="item-title">
+                                    <h5>新增電訪紀錄</h5>
+                                </div>
+                                <form class="form-horizontal" role="form" id="form2">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-xs-2 control-label">電訪時間</label>
+                                            <div class="col-xs-4">
+                                                <input type="date"
+                                                       class="form-control"
+                                                       maxLength="30"
+                                                       disabled />
+                                            </div>
+                                            <small class="help-inline col-xs-6">系統自動產生，無法修改</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-xs-2 control-label">電訪狀態</label>
+                                            <div class="col-xs-4">
+                                                <select class="form-control">
+                                                    <option value="1">已完成</option>
+                                                    <option value="2">未接通</option>
+                                                    <option value="3">忙碌中</option>
+                                                </select>
+                                            </div>
+                                            <small class="help-inline text-danger col-xs-6">(必填)</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-xs-2 control-label">電訪內容(備註)</label>
+                                            <div class="col-xs-8">
+                                                <textarea col="30" rows="5" class="form-control" maxLength="256"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="panel-footer">
+                                    <button class="btn-primary col-xs-offset-9"
+                                            type="submit" form="form2">
+                                        <i class="fa-check"></i> 存檔確認
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="condensed" />
+
+                    <h4 class="title">電訪紀錄</h4>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <th class="col-xs-3 text-center">時間</th>
+                                        <th class="col-xs-2 text-center">原因</th>
+                                        <th class="col-xs-4">內容</th>
+                                        <th class="col-xs-1 text-center">狀態</th>
+                                        <th class="col-xs-2">人員</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-xs-3 text-center"><strong>2016/01/19 06:35:40</strong></td>
+                                        <td class="col-xs-2 text-center"><span class="label label-success">收頭款</span></td>
+                                        <td class="col-xs-4">兒子王曉明</td>
+                                        <td class="col-xs-1 text-center"><span class="label label-success">已完成</span></td>
+                                        <td class="col-xs-2">人員</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="panel-footer">
+                        <strong class="col-xs-offset-6">主檔資料不可修改！</strong>
+                        <button type="button"><i class="fa-times"></i> 取消</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xs-6">
+                <form class="form-horizontal" onSubmit={this.handleSearch} id="search-form">
+                    <div class="table-header">
+                        <div class="table-filter">
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <label for="">電訪日期</label>
+                                    <span class="has-feedback">
+                                        <input type="date" class="form-control datetimepicker" value="2016-01-15" />
+                                        <i class="fa-calendar form-control-feedback"></i>
+                                    </span>
+                                    <label for="">電訪原因</label>
+                                    <select class="form-control">
+                                        <option value="1">客戶來電</option>
+                                        <option value="2">收頭款</option>
+                                        <option value="3">可麻油酒</option>
+                                        <option value="4">收尾款</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table-condensed">
+                        <tbody>
+                            <tr>
+                                <th class="col-xs-1 text-center">刪除</th>
+                                <th class="col-xs-1 text-center">修改</th>
+                                <th class="col-xs-1 text-center">電訪日期</th>
+                                <th class="col-xs-1">用餐編號</th>
+                                <th class="col-xs-1">媽媽姓名</th>
+                                <th class="col-xs-1">電話1</th>
+                                <th class="col-xs-1">電話2</th>
+                                <th class="col-xs-1 text-center">電訪原因</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-footer">
+                        <div class="pull-left">
+                            <button class="btn-link text-success" type="button"><i class="fa-plus-circle"></i>新增</button>
+                            <button class="btn-link text-danger" type="button"><i class="fa-trash-o"></i>刪除</button>
+                        </div>
+                        <small class="pull-right">第1-1筆，共1筆</small>
+                        <ul class="pager">
+                            <li>
+                                <a href="#" title="移至第一頁" tabIndex="-1">
+                                    <i class="fa-angle-double-left"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" title="上一頁" tabIndex="-1">
+                                    <i class="fa-angle-left"></i>
+                                </a>
+                            </li>
+                            <li class="form-inline">
+                                <div class="form-group">
+                                    <label>第</label>
+                                    <input class="form-control text-center input-sm" type="number" min="1" tabIndex="-1" value="1" />
+                                    <label>頁，共1頁</label>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#" title="@Resources.Res.NextPage" tabIndex="-1">
+                                    <i class="fa-angle-right"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" title="移至最後一頁" tabIndex="-1">
+                                    <i class="fa-angle-double-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="search">
+    </div>
+</div>

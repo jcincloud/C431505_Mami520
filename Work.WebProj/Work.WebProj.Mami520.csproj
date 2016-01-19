@@ -241,6 +241,7 @@
     <Content Include="Areas\Active\Views\Report\ProductRecord.cshtml" />
     <Content Include="Areas\Active\Views\Report\AccountsPayable.cshtml" />
     <Content Include="Areas\Active\Views\Home\Main.cshtml" />
+    <Content Include="Areas\Active\Views\Home\fake.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />

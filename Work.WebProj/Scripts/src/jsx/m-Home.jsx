@@ -33,10 +33,10 @@ var GirdForm = React.createClass({
 	getInitialState: function() {  
 		return {
 			gridData:{rows:[],page:1},
-			fieldData:{},
+			fieldData:{tel_reason:1,is_detailInsert:true},
 			searchData:{title:null,start_date:moment(Date()).format('YYYY/MM/DD'),end_date:moment(Date()).format('YYYY/MM/DD')},
 			searchBornData:{word:null,is_close:null},
-			edit_type:0,
+			edit_type:1,
 			checkAll:false,
 			isShowCustomerBornSelect:false,
 			born_list:[]
@@ -58,7 +58,6 @@ var GirdForm = React.createClass({
 	handleSubmit: function(e) {
 
 		e.preventDefault();
-
 		if(this.state.fieldData.customer_id==null || this.state.fieldData.customer_id==undefined){
 			tosMessage(gb_title_from_invalid,'未選擇客戶無法新增電訪名單資料!!',3);
 			return;
@@ -74,6 +73,7 @@ var GirdForm = React.createClass({
 						tosMessage(null,'新增完成',1);
 					}
 					this.updateType(data.id);
+					this.queryGridData(0);
 				}else{
 					tosMessage(null,data.message,3);
 				}
@@ -99,6 +99,7 @@ var GirdForm = React.createClass({
 				showAjaxError(errorThrown);
 			});
 		};
+
 		return;
 	},
 	deleteSubmit:function(e){
@@ -184,17 +185,9 @@ var GirdForm = React.createClass({
 		jqGet(this.props.apiPathName,{id:id})
 		.done(function(data, textStatus, jqXHRdata) {
 			this.setState({edit_type:2,fieldData:data.data});
+			this.refs.SubForm.queryGridData();
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
-			showAjaxError(errorThrown);
-		});
-	},
-	noneType:function(){
-		this.gridData(0)
-		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:0,gridData:data});
-		}.bind(this))
-		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
 		});
 	},
@@ -222,10 +215,14 @@ var GirdForm = React.createClass({
 		}
 		this.setState({fieldData:obj});
 	},
-	onSelectChange:function(name,e){
+	setSearchVal:function(name,e){
 		var obj = this.state.searchData;
 		obj[name] = e.target.value;
+		if(name=='start_date'){
+			obj['end_date'] = e.target.value;
+		}
 		this.setState({searchData:obj});
+		this.queryGridData(0);
 	},
 	queryAllCustomerBorn:function(){//選取用餐編號-取得全部客戶生產資料(已結/未結)list
 		jqGet(gb_approot + 'api/GetAction/GetAllBorn',this.state.searchBornData)
@@ -286,107 +283,7 @@ var GirdForm = React.createClass({
 	render: function() {
 		var outHtml = null;
 
-		if(this.state.edit_type==0)
-		{
 			var searchData = this.state.searchData;
-
-			outHtml =
-			(
-			<div>
-				<h3 className="title">{this.props.Caption} 列表</h3>
-
-				<form onSubmit={this.handleSearch}>
-					
-						<div className="table-header">
-							<div className="table-filter">
-								<div className="form-inline">
-									<div className="form-group">
-										<label>用餐編號/媽媽姓名/電話</label> { }
-										<input type="text" className="form-control input-sm" 
-										value={searchData.word}
-										onChange={this.changeGDValue.bind(this,'word')}
-										placeholder="請擇一填寫..." /> { }
-
-							            <label for="">電訪原因</label>
-							            <select className="form-control input-sm"
-							            value={searchData.tel_reason}
-										onChange={this.changeGDValue.bind(this,'tel_reason')}>
-							                <option value="">全部</option>
-						                {
-											CommData.TelReasonByDetail.map(function(itemData,i) {
-											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-											})
-										}
-							            </select>
-							            <br />
-					                    <label for="">預計電訪日期</label>
-										<span className="has-feedback">
-											<InputDate id="start_date" ver={2}
-											onChange={this.changeGDValue} 
-											field_name="start_date" 
-											value={searchData.start_date} />
-										</span> { }
-										<label>~</label> { }
-										<span className="has-feedback">
-											<InputDate id="end_date" ver={2}
-											onChange={this.changeGDValue} 
-											field_name="end_date" 
-											value={searchData.end_date} />
-										</span> { }
-										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
-					                </div>					                
-								</div>
-							</div>
-						</div>
-						<table className="table-condensed">
-							<thead>
-								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
-											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
-										</label>
-									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1 text-center">電訪日期</th>
-					                <th className="col-xs-1">用餐編號</th>
-					                <th className="col-xs-1">媽媽姓名</th>
-					                <th className="col-xs-1">電話1</th>
-					                <th className="col-xs-1">電話2</th>
-					                <th className="col-xs-1 text-center">電訪原因</th>
-								</tr>
-							</thead>
-							<tbody>
-								{
-								this.state.gridData.rows.map(function(itemData,i) {
-								return <GridRow 
-								key={i}
-								ikey={i}
-								primKey={itemData.schedule_detail_id} 
-								itemData={itemData} 
-								delCheck={this.delCheck}
-								updateType={this.updateType}								
-								/>;
-								}.bind(this))
-								}
-							</tbody>
-						</table>
-					<GridNavPage 
-					StartCount={this.state.gridData.startcount}
-					EndCount={this.state.gridData.endcount}
-					RecordCount={this.state.gridData.records}
-					TotalPage={this.state.gridData.total}
-					NowPage={this.state.gridData.page}
-					onQueryGridData={this.queryGridData}
-					InsertType={this.insertType}
-					deleteSubmit={this.deleteSubmit}
-					/>
-				</form>
-			</div>
-			);
-		}
-		else if(this.state.edit_type==1 || this.state.edit_type==2)
-		{
 			var fieldData = this.state.fieldData;
 			var searchBornData=this.state.searchBornData;
 
@@ -400,20 +297,31 @@ var GirdForm = React.createClass({
 							        <div className="table-filter">
 							            <div className="form-inline">
 							                <div className="form-group">
-							                    <label for="">客戶名稱/餐編/媽媽姓名</label>
+							                    <label for="">客戶名稱/餐編/媽媽姓名</label> { }
 							                    <input type="text" className="form-control input-sm"
 							      			    value={searchBornData.word}
 												onChange={this.changeGDBornValue.bind(this,'word')}
 											 	placeholder="請擇一填寫" />
 							                </div>
+											<label>客戶分類</label> { }
+											<select className="form-control input-sm" 
+													value={searchBornData.customer_type}
+													onChange={this.changeGDBornValue.bind(this,'customer_type')}>
+												<option value="">全部</option>
+											{
+												CommData.CustomerType.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select> { }							                
 							                <div className="form-group">
-							                    <label for="">是否結案</label>
+							                    <label for="">是否正在用餐</label> { }
 							                    <select className="form-control input-sm"
-							                    value={searchBornData.is_close}
-												onChange={this.changeGDBornValue.bind(this,'is_close')}>
+							                    value={searchBornData.is_meal}
+												onChange={this.changeGDBornValue.bind(this,'is_meal')}>
 							                        <option value="">全部</option>
-							                        <option value="true">已結案</option>
-							                        <option value="false">未結案</option>
+							                        <option value="true">是</option>
+							                        <option value="false">否</option>
 							                    </select>
 							                </div>
 							                <div className="form-group">
@@ -427,10 +335,12 @@ var GirdForm = React.createClass({
 										<tr>
 											<th className="col-xs-1 text-center">選擇</th>
 											<th className="col-xs-1">客戶姓名</th>
+											<th className="col-xs-1">客戶類別</th>
 											<th className="col-xs-1">用餐編號</th>
-											<th className="col-xs-1">媽媽姓名</th>
-											<th className="col-xs-1">第幾胎</th>
-											<th className="col-xs-1">是否結案</th>
+											<th className="col-xs-1">媽媽姓名</th>										
+											<th className="col-xs-1">電話1</th>
+											<th className="col-xs-1">備註</th>
+											<th className="col-xs-1">預產期</th>
 										</tr>
 										{
 											this.state.born_list.map(function(itemData,i) {
@@ -444,10 +354,12 @@ var GirdForm = React.createClass({
 										                    </label>
 														</td>
 														<td>{itemData.customer_name}</td>
+														<td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
 														<td>{itemData.meal_id}</td>
 														<td>{itemData.mom_name}</td>
-														<td>{itemData.born_frequency}</td>
-														<td>{itemData.is_close? <span className="label label-primary">結案</span>:<span className="label label-danger">未結案</span>}</td>			
+														<td>{itemData.tel_1}</td>
+														<td>{itemData.memo}</td>
+														<td>{moment(itemData.expected_born_day).format('YYYY/MM/DD')}</td>			
 													</tr>;
 												return born_out_html;
 											}.bind(this))
@@ -464,237 +376,191 @@ var GirdForm = React.createClass({
 			var save_out_html=null;
 			var detail_out_html=null;
 			if(this.state.edit_type==1){
-				save_out_html=<button type="submit" className="btn-primary"><i className="fa-check"></i> 儲存</button>;
-			}else{
-				save_out_html=<strong>主檔資料不可修改！</strong>;
+				save_out_html=<button className="btn-primary col-xs-offset-6" type="submit" form="main-form"><i className="fa-check"></i> 存檔主檔</button>;
+			}else if(this.state.edit_type==2){
+				save_out_html=<strong className="col-xs-offset-6">主檔資料不可修改！</strong>;
 				detail_out_html=
 				<SubForm ref="SubForm" 
 				main_id={fieldData.schedule_detail_id}
 				tel_reason={fieldData.tel_reason} />;
 			}
 
-			outHtml=(
+			outHtml =
+			(
 			<div>
-				{born_select_out_html}
-				<h3 className="title">{this.props.Caption} 主檔</h3>
+				<h3 className="title">首頁</h3>
+			    <ul className="nav nav-tabs" role="tablist">
+			        <li role="presentation" className="active">
+			            <a href="#tel" aria-controls="home" role="tab" data-toggle="tab" id="tabAddNew">
+			            	<i className="fa-phone"></i> 電訪名單
+			            </a>
+			        </li>
+			        <li role="presentation">
+			            <a href="#search" aria-controls="profile" role="tab" data-toggle="tab" id="tabAddView">
+			                <i className="glyphicon glyphicon-user"></i> 搜尋客戶
+			            </a>
+			        </li>
+			    </ul>					
 
-				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
-					<div className="col-xs-9">
-						<div className="form-group">
-							<label className="col-xs-2 control-label">選擇客戶</label>
-							<div className="col-xs-3">
-								<div className="input-group">
-									<input type="text" 							
-									className="form-control"	
-									value={fieldData.customer_name}
-									onChange={this.changeFDValue.bind(this,'customer_name')}
-									maxLength="64"
-									disabled />
-									<span className="input-group-btn">
-										<a className="btn"
-										onClick={this.showSelectCustomerBorn}
-										disabled={this.state.edit_type==2} ><i className="fa-plus"></i></a>
-									</span>
+				<div className="tab-content">
+				{/*頁籤1*/}
+					<div role="tabpanel" className="tab-pane active" id="tel">
+
+						<div className="row">
+							{/*---左半邊start---*/}
+							<div className="col-xs-6">
+					        	{born_select_out_html}
+					        	{/* 電訪主檔*/}
+								<div className="item-box">
+									<div className="item-title">
+										<h5>電訪名單 主檔</h5>
+									</div>
+									<form className="form-horizontal" role="form" id="main-form" onSubmit={this.handleSubmit}>
+									<div className="panel-body">
+										<div className="form-group">
+											<label className="col-xs-2 control-label">選擇客戶</label>
+											<div className="col-xs-3">
+												<div className="input-group">
+													<input type="text" 							
+													className="form-control"	
+													value={fieldData.customer_name}
+													onChange={this.changeFDValue.bind(this,'customer_name')}
+													maxLength="64"
+													disabled />
+													<span className="input-group-btn">
+														<a className="btn"
+														onClick={this.showSelectCustomerBorn}
+														disabled={this.state.edit_type==2} ><i className="fa-plus"></i></a>
+													</span>
+												</div>
+											</div>
+											<small className="help-inline col-xs-6"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
+										</div>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">電訪日期</label>
+											<div className="col-xs-3">
+									            <span className="has-feedback">
+													<InputDate id="tel_day" 
+													onChange={this.changeFDValue} 
+													field_name="tel_day" 
+													value={fieldData.tel_day}
+													required={true}
+													disabled={true} />
+												</span>
+											</div>
+											<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
+										</div>
+										<div className="form-group">
+											<label className="col-xs-2 control-label">電訪原因</label>
+											<div className="col-xs-3">
+								                <select className="form-control"
+								                value={fieldData.tel_reason}
+								                onChange={this.changeFDValue.bind(this,'tel_reason')}
+								                disabled={this.state.edit_type==2}>
+										            {
+														CommData.TelReasonByDetail.map(function(itemData,i) {
+														return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+														})
+													}
+								                </select>
+											</div>
+											<small className="text-danger col-xs-6">(必填)</small>
+										</div>
+									</div>								
+									</form>
+								
+									<hr className="condensed" />
+								{/*電訪明細檔*/}
+									{detail_out_html}
+								{/*電訪明細檔*/}
+
+									<div className="panel-footer">
+										{save_out_html} { }
+										<button type="button" onClick={this.insertType}><i className="fa-times"></i> 取消</button>
+									</div>
 								</div>
-							</div>
-							<small className="help-inline col-xs-6"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">電訪日期</label>
-							<div className="col-xs-3">
-					            <span className="has-feedback">
-									<InputDate id="tel_day" 
-									onChange={this.changeFDValue} 
-									field_name="tel_day" 
-									value={fieldData.tel_day}
-									required={true}
-									disabled={true} />
-								</span>
-							</div>
-							<small className="help-inline col-xs-6">系統自動產生，無法修改</small>
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">電訪原因</label>
-							<div className="col-xs-3">
-				                <select className="form-control"
-				                value={fieldData.tel_reason}
-				                onChange={this.changeFDValue.bind(this,'tel_reason')}
-				                disabled={this.state.edit_type==2}>
-						            {
-										CommData.TelReasonByDetail.map(function(itemData,i) {
-										return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-										})
-									}
-				                </select>
-							</div>
-							<small className="text-danger col-xs-6">(必填)</small>
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">客戶類別</label>
-							<div className="col-xs-3">
-								<select className="form-control" 
-								value={fieldData.customer_type}
-								disabled
-								onChange={this.changeFDValue.bind(this,'customer_type')}>
-								{
-									CommData.CustomerType.map(function(itemData,i) {
-										return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-									})
-								}
-								</select>
-							</div>
-							<label className="col-xs-2 control-label">客戶名稱</label>
-							<div className="col-xs-3">
-								<input type="text" 							
-								className="form-control"	
-								value={fieldData.customer_name}
-								onChange={this.changeFDValue.bind(this,'customer_name')}
-								maxLength="64"
-								required 
-								disabled />
-							</div>				
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">用餐編號</label>
-							<div className="col-xs-3">
-								<input type="text" 
-								className="form-control"	
-								value={fieldData.meal_id}
-								onChange={this.changeFDValue.bind(this,'meal_id')}
-								required
-								disabled />
-							</div>
-							<label className="col-xs-2 control-label">媽媽姓名</label>
-							<div className="col-xs-3">
-								<input type="text" 							
-								className="form-control"	
-								value={fieldData.mom_name}
-								onChange={this.changeFDValue.bind(this,'mom_name')}
-								maxLength="64"
-								required 
-								disabled />
-							</div>	
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">生產方式</label>
-							<div className="col-xs-3">
-								<select className="form-control" 
-								value={fieldData.born_type}
-								onChange={this.changeFDValue.bind(this,'born_type')}
-								disabled>
-								{
-									CommData.BornType.map(function(itemData,i) {
-									return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-									})
-								}
-								</select>
-							</div>
-							<label className="col-xs-2 control-label">生產日期</label>
-							<div className="col-xs-3">
-								<span className="has-feedback">
-									<InputDate id="born_day" 
-									onChange={this.changeFDValue} 
-									field_name="born_day" 
-									value={fieldData.born_day}
-									required={true}
-									disabled={true} />
-								</span>
-							</div>
-						</div>
-						<div className="bg-warning">
-						<div className="form-group">
-							<label className="col-xs-2 control-label">連絡電話1</label>
-							<div className="col-xs-3">
-								<input type="tel" 
-								className="form-control"	
-								value={fieldData.tel_1}
-								onChange={this.changeFDValue.bind(this,'tel_1')}
-								maxLength="16"
-								disabled />
-							</div>
-							<label className="col-xs-2 control-label">連絡電話2</label>
-							<div className="col-xs-3">
-								<input type="tel" 
-								className="form-control"	
-								value={fieldData.tel_2}
-								onChange={this.changeFDValue.bind(this,'tel_2')}
-								maxLength="16"
-								disabled />
-							</div>
-						</div>						
-						<div className="form-group">
-							<label className="col-xs-2 control-label">身分證字號</label>
-							<div className="col-xs-3">
-								<input type="text" 
-								className="form-control"	
-								value={fieldData.sno}
-								onChange={this.changeFDValue.bind(this,'sno')}
-								maxLength="10"
-								disabled />
-							</div>
-							<label className="col-xs-2 control-label">生日</label>
-							<div className="col-xs-3">
-								<span className="has-feedback">
-									<InputDate id="birthday" 
-									onChange={this.changeFDValue} 
-									field_name="birthday" 
-									value={fieldData.birthday}
-									disabled={true} />
-								</span>
-							</div>
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">送餐地址</label>
-								<TwAddress ver={1}
-								onChange={this.changeFDValue}
-								setFDValue={this.setFDValue}
-								zip_value={fieldData.tw_zip_1} 
-								city_value={fieldData.tw_city_1} 
-								country_value={fieldData.tw_country_1}
-								address_value={fieldData.tw_address_1}
-								zip_field="tw_zip_1"
-								city_field="tw_city_1"
-								country_field="tw_country_1"
-								address_field="tw_address_1"
-								disabled={true}/>
-						</div>
-
-						<div className="form-group">
-							<label className="col-xs-2 control-label">備用地址</label>
-								<TwAddress ver={1}
-								onChange={this.changeFDValue}
-								setFDValue={this.setFDValue}
-								zip_value={fieldData.tw_zip_2} 
-								city_value={fieldData.tw_city_2} 
-								country_value={fieldData.tw_country_2}
-								address_value={fieldData.tw_address_2}
-								zip_field="tw_zip_2"
-								city_field="tw_city_2"
-								country_field="tw_country_2"
-								address_field="tw_address_2"
-								disabled={true}/>
-						</div>
-					</div>
-					<div className="form-action text-right">
-			            {save_out_html} { }
-			            <button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+								{/* 電訪主檔*/}
+					        </div>						    
+							{/*---左半邊end---*/}
+							{/*---右半邊start---*/}
+					        <div className="col-xs-6">
+					            <form className="form-horizontal" onSubmit={this.handleSearch} id="search-form">
+									<div className="table-header">
+										<div className="table-filter">
+											<div className="form-inline">
+												<div className="form-group">
+													<label for="">電訪日期</label>
+													<span className="has-feedback">
+														<InputDate id="start_date" ver={2}
+														onChange={this.setSearchVal} 
+														field_name="start_date" 
+														value={searchData.start_date} />
+													</span> { }												
+										            <label for="">電訪原因</label>
+										            <select className="form-control input-sm"
+										            value={searchData.tel_reason}
+													onChange={this.setSearchVal.bind(this,'tel_reason')}>
+										                <option value="">全部</option>
+									                {
+														CommData.TelReasonByDetail.map(function(itemData,i) {
+														return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+														})
+													}
+										            </select> { }
+								                </div>					                
+											</div>
+										</div>
+									</div>					            
+					                <table className="table-condensed">
+					                	<tbody>
+											<tr>
+												<th className="col-xs-1 text-center">刪除</th>
+												<th className="col-xs-1 text-center">修改</th>
+												<th className="col-xs-1 text-center">電訪日期</th>
+								                <th className="col-xs-1">用餐編號</th>
+								                <th className="col-xs-1">媽媽姓名</th>
+								                <th className="col-xs-1">電話1</th>
+								                <th className="col-xs-1">電話2</th>
+								                <th className="col-xs-1 text-center">電訪原因</th>
+											</tr>
+											{
+											this.state.gridData.rows.map(function(itemData,i) {
+												return <GridRow 
+												key={i}
+												ikey={i}
+												primKey={itemData.schedule_detail_id} 
+												itemData={itemData} 
+												delCheck={this.delCheck}
+												updateType={this.updateType}/>;
+												}.bind(this))
+											}
+										</tbody>
+					                </table>
+									<GridNavPage 
+									StartCount={this.state.gridData.startcount}
+									EndCount={this.state.gridData.endcount}
+									RecordCount={this.state.gridData.records}
+									TotalPage={this.state.gridData.total}
+									NowPage={this.state.gridData.page}
+									onQueryGridData={this.queryGridData}
+									InsertType={this.insertType}
+									deleteSubmit={this.deleteSubmit}
+									ver={2}
+									/>					                
+					            </form>
+					        </div>
+					        {/*---右半邊end---*/}
+				        </div>						
 			        </div>
-
+				{/*頁籤1*/}
+				{/*頁籤2*/}
+					<div role="tabpanel" className="tab-pane" id="search">
 					</div>
-				</form>
-
-				<hr className="condensed" />
-
-				
-				{/*---產品明細---*/}
-				{detail_out_html}
-
+				{/*頁籤2*/}
+			    </div>		
 
 			</div>
 			);
-		}else{
-			outHtml=(<span>No Page</span>);
-		}
 
 		return outHtml;
 	}
@@ -727,7 +593,7 @@ var SubForm = React.createClass({
 	},
 	detailHandleSubmit: function(e) {
 		e.preventDefault();
-
+		this.state.fieldSubData.schedule_detail_id=this.props.main_id;
 		if(this.state.edit_sub_type==1){
 			jqPost(this.props.apiPathName,this.state.fieldSubData)
 			.done(function(data, textStatus, jqXHRdata) {
@@ -846,9 +712,8 @@ var SubForm = React.createClass({
 			(
 				<div>
 			{/*---產品明細編輯start---*/}
-					<h4 className="title">新增電訪明細</h4>
 					<div className="row">
-						<div className="col-xs-9">
+						<div className="col-xs-10 col-xs-offset-1">
 							<div className="item-box">
 								<div className="item-title">
 									<h5>新增電訪紀錄</h5>
@@ -909,7 +774,7 @@ var SubForm = React.createClass({
 				{/*---產谝明細列表start---*/}
 					<h4 className="title">電訪紀錄</h4>
 					<div className="row">
-						<div className="col-xs-9">
+						<div className="col-xs-12">
 							<table className="table-condensed">
 								<tbody>
 									<tr>
