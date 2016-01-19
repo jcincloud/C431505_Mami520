@@ -194,6 +194,7 @@
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
     <Compile Include="Areas\Active\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerBornController.cs" />
+    <Compile Include="Areas\Active\Controllers\HomeController.cs" />
     <Compile Include="Areas\Active\Controllers\GiftController.cs" />
     <Compile Include="Areas\Active\Controllers\MealScheduleController.cs" />
     <Compile Include="Areas\Active\Controllers\NeedController.cs" />
@@ -239,6 +240,7 @@
     <Content Include="Areas\Active\Views\Report\DailyMeal.cshtml" />
     <Content Include="Areas\Active\Views\Report\ProductRecord.cshtml" />
     <Content Include="Areas\Active\Views\Report\AccountsPayable.cshtml" />
+    <Content Include="Areas\Active\Views\Home\Main.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -744,6 +746,7 @@
     <Content Include="Scripts\build\func\m-Draft.js" />
     <Content Include="Scripts\build\func\m-ElementFood.js" />
     <Content Include="Scripts\build\func\m-GiftRecord.js" />
+    <Content Include="Scripts\build\func\m-Home.js" />
     <Content Include="Scripts\build\func\m-login.js" />
     <Content Include="Scripts\build\func\m-MealID.js" />
     <Content Include="Scripts\build\func\m-MealSchedule.js" />
@@ -1062,6 +1065,7 @@
     <Content Include="Scripts\src\jsx\m-R03_AccountsPayable.jsx" />
     <Content Include="Scripts\src\jsx\m-Company.jsx" />
     <Content Include="Scripts\src\jsx\m-Menu.jsx" />
+    <Content Include="Scripts\src\jsx\m-Home.jsx" />
     <None Include="Web.Amoz.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1212,6 +1216,7 @@
     <Content Include="Areas\Active\Views\MealSchedule\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\AccountsPayable\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Base\Views\Menu\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\Home\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
