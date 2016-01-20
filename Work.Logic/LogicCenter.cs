@@ -22,7 +22,8 @@ namespace ProcCore.Business
         ContactSchedule, ScheduleDetail, DeatilTelRecord, SendMsg, Draft,
         AccountsPayable, AccountsPayableDetail,
         All_Category_L1, All_Category_L2,
-        Company, Menu
+        Company, Menu,
+        MenuCopyTemplate, MenuCopy, MenuCopyOfConstitute
     }
     public enum SNType
     {

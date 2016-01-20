@@ -512,6 +512,15 @@ namespace ProcCore.Business.DB0
         public string word { get; set; }
         public bool? is_folder { get; set; }
     }
+    public class q_MenuCopyTemplate : QueryBase
+    {
+        public string keyword { get; set; }
+    }
+    public class q_MenuCopy : QueryBase
+    {
+        public int? day { get; set; }//查詢第幾天
+        public int? meal_type { get; set; }
+    }
     #endregion
 
     #region c_Model_Define

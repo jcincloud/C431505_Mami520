@@ -265,6 +265,8 @@
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
     <Compile Include="Controllers\Api\AccountsPayableController.cs" />
+    <Compile Include="Controllers\Api\MenuCopyController.cs" />
+    <Compile Include="Controllers\Api\MenuCopyTemplateController.cs" />
     <Compile Include="Controllers\Api\MenuController.cs" />
     <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\SendMsgController.cs" />
