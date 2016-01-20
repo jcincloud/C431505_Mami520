@@ -32,6 +32,11 @@ namespace DotWeb.Areas.Active.Controllers
             ActionRun();
             return View();
         }
+        public ActionResult MenuCopyTemplate()
+        {
+            ActionRun();
+            return View();
+        }
         #endregion
 
         #region ajax call section

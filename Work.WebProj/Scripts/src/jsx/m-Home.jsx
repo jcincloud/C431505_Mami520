@@ -417,6 +417,75 @@ var GirdForm = React.createClass({
 						<div className="row">
 							{/*---左半邊start---*/}
 							<div className="col-xs-6">
+					            <form className="form-horizontal" onSubmit={this.handleSearch} id="search-form">
+									<div className="table-header">
+										<div className="table-filter">
+											<div className="form-inline">
+												<div className="form-group">
+													<label for="">電訪日期</label>
+													<span className="has-feedback">
+														<InputDate id="start_date" ver={2}
+														onChange={this.setSearchVal} 
+														field_name="start_date" 
+														value={searchData.start_date} />
+													</span> { }												
+										            <label for="">電訪原因</label>
+										            <select className="form-control input-sm"
+										            value={searchData.tel_reason}
+													onChange={this.setSearchVal.bind(this,'tel_reason')}>
+										                <option value="">全部</option>
+									                {
+														CommData.TelReasonByDetail.map(function(itemData,i) {
+														return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+														})
+													}
+										            </select> { }
+								                </div>					                
+											</div>
+										</div>
+									</div>					            
+					                <table className="table-condensed">
+					                	<tbody>
+											<tr>
+												<th className="col-xs-1 text-center">刪除</th>
+												<th className="col-xs-1 text-center">修改</th>
+												<th className="col-xs-1 text-center">電訪日期</th>
+								                <th className="col-xs-1">用餐編號</th>
+								                <th className="col-xs-1">媽媽姓名</th>
+								                <th className="col-xs-1">電話1</th>
+								                <th className="col-xs-1">電話2</th>
+								                <th className="col-xs-1 text-center">電訪原因</th>
+											</tr>
+											{
+											this.state.gridData.rows.map(function(itemData,i) {
+												return <GridRow 
+												key={i}
+												ikey={i}
+												primKey={itemData.schedule_detail_id} 
+												itemData={itemData} 
+												delCheck={this.delCheck}
+												updateType={this.updateType}/>;
+												}.bind(this))
+											}
+										</tbody>
+					                </table>
+									<GridNavPage 
+									StartCount={this.state.gridData.startcount}
+									EndCount={this.state.gridData.endcount}
+									RecordCount={this.state.gridData.records}
+									TotalPage={this.state.gridData.total}
+									NowPage={this.state.gridData.page}
+									onQueryGridData={this.queryGridData}
+									InsertType={this.insertType}
+									deleteSubmit={this.deleteSubmit}
+									showAdd={false}
+									ver={2}
+									/>					                
+					            </form>
+					        </div>							
+							{/*---左半邊end---*/}
+							{/*---右半邊start---*/}
+							<div className="col-xs-6">
 					        	{born_select_out_html}
 					        	{/* 電訪主檔*/}
 								<div className="item-box">
@@ -488,83 +557,14 @@ var GirdForm = React.createClass({
 									</div>
 								</div>
 								{/* 電訪主檔*/}
-					        </div>						    
-							{/*---左半邊end---*/}
-							{/*---右半邊start---*/}
-					        <div className="col-xs-6">
-					            <form className="form-horizontal" onSubmit={this.handleSearch} id="search-form">
-									<div className="table-header">
-										<div className="table-filter">
-											<div className="form-inline">
-												<div className="form-group">
-													<label for="">電訪日期</label>
-													<span className="has-feedback">
-														<InputDate id="start_date" ver={2}
-														onChange={this.setSearchVal} 
-														field_name="start_date" 
-														value={searchData.start_date} />
-													</span> { }												
-										            <label for="">電訪原因</label>
-										            <select className="form-control input-sm"
-										            value={searchData.tel_reason}
-													onChange={this.setSearchVal.bind(this,'tel_reason')}>
-										                <option value="">全部</option>
-									                {
-														CommData.TelReasonByDetail.map(function(itemData,i) {
-														return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-														})
-													}
-										            </select> { }
-								                </div>					                
-											</div>
-										</div>
-									</div>					            
-					                <table className="table-condensed">
-					                	<tbody>
-											<tr>
-												<th className="col-xs-1 text-center">刪除</th>
-												<th className="col-xs-1 text-center">修改</th>
-												<th className="col-xs-1 text-center">電訪日期</th>
-								                <th className="col-xs-1">用餐編號</th>
-								                <th className="col-xs-1">媽媽姓名</th>
-								                <th className="col-xs-1">電話1</th>
-								                <th className="col-xs-1">電話2</th>
-								                <th className="col-xs-1 text-center">電訪原因</th>
-											</tr>
-											{
-											this.state.gridData.rows.map(function(itemData,i) {
-												return <GridRow 
-												key={i}
-												ikey={i}
-												primKey={itemData.schedule_detail_id} 
-												itemData={itemData} 
-												delCheck={this.delCheck}
-												updateType={this.updateType}/>;
-												}.bind(this))
-											}
-										</tbody>
-					                </table>
-									<GridNavPage 
-									StartCount={this.state.gridData.startcount}
-									EndCount={this.state.gridData.endcount}
-									RecordCount={this.state.gridData.records}
-									TotalPage={this.state.gridData.total}
-									NowPage={this.state.gridData.page}
-									onQueryGridData={this.queryGridData}
-									InsertType={this.insertType}
-									deleteSubmit={this.deleteSubmit}
-									showAdd={false}
-									ver={2}
-									/>					                
-					            </form>
-					        </div>
+					        </div>						    					        
 					        {/*---右半邊end---*/}
 				        </div>						
 			        </div>
 				{/*頁籤1*/}
 				{/*頁籤2*/}
 					<div role="tabpanel" className="tab-pane" id="search">
-						<SubSearchCustomer />
+						{/*<SubSearchCustomer />*/}
 					</div>
 				{/*頁籤2*/}
 			    </div>		

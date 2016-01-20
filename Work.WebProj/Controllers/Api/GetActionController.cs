@@ -19,6 +19,20 @@ namespace DotWeb.Api
 {
     public class GetActionController : BaseApiController
     {
+        #region 首頁-搜尋客戶
+        [HttpGet]
+        public async Task<IHttpActionResult> ta_CustomerBorn(string keyword)
+        {
+            db0 = getDB0();
+            var item = await db0.CustomerBorn
+                .OrderBy(x => x.born_id)
+                .Where(x => x.mom_name.Contains(keyword))
+                .Select(x => new { x.mom_name, x.meal_id, x.tel_1, x.tw_city_1, x.tw_country_1, x.tw_address_1 })
+                .Take(5).ToListAsync();
+
+            return Ok(item);
+        }
+        #endregion
         #region 客戶生產-用餐編號選取
         public IHttpActionResult GetAllMealID([FromUri]GetAllMealIDParm q)
         {

@@ -242,6 +242,7 @@
     <Content Include="Areas\Active\Views\Report\AccountsPayable.cshtml" />
     <Content Include="Areas\Active\Views\Home\Main.cshtml" />
     <Content Include="Areas\Active\Views\Home\fake.cshtml" />
+    <Content Include="Areas\Active\Views\Food\MenuCopyTemplate.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
@@ -752,6 +753,7 @@
     <Content Include="Scripts\build\func\m-MealID.js" />
     <Content Include="Scripts\build\func\m-MealSchedule.js" />
     <Content Include="Scripts\build\func\m-Menu.js" />
+    <Content Include="Scripts\build\func\m-MenuCopyTemplate.js" />
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductRecord.js" />
     <Content Include="Scripts\build\func\m-R01_DailyMeal.js" />
@@ -1067,6 +1069,8 @@
     <Content Include="Scripts\src\jsx\m-Company.jsx" />
     <Content Include="Scripts\src\jsx\m-Menu.jsx" />
     <Content Include="Scripts\src\jsx\m-Home.jsx" />
+    <Content Include="Scripts\src\jsx-inc\c-Typeahead.jsx" />
+    <Content Include="Scripts\src\jsx\m-MenuCopyTemplate.jsx" />
     <None Include="Web.Amoz.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
