@@ -39,7 +39,8 @@ var GirdForm = React.createClass({
 			edit_type:1,
 			checkAll:false,
 			isShowCustomerBornSelect:false,
-			born_list:[]
+			born_list:[],
+			searchCustomer:{}
 		};  
 	},
 	getDefaultProps:function(){
@@ -109,9 +110,13 @@ var GirdForm = React.createClass({
 		}
 
 		var ids = [];
+		var check_id=false;
 		for(var i in this.state.gridData.rows){
 			if(this.state.gridData.rows[i].check_del){
 				ids.push('ids='+this.state.gridData.rows[i].schedule_detail_id);
+				if(this.state.gridData.rows[i].schedule_detail_id==this.state.fieldData.schedule_detail_id){
+					check_id=true;
+				}
 			}
 		}
 
@@ -125,6 +130,9 @@ var GirdForm = React.createClass({
 			if(data.result){
 				tosMessage(null,'刪除完成',1);
 				this.queryGridData(0);
+				if(check_id){
+					this.insertType();
+				}
 			}else{
 				tosMessage(null,data.message,3);
 			}
@@ -315,7 +323,7 @@ var GirdForm = React.createClass({
 											}
 											</select> { }							                
 							                <div className="form-group">
-							                    <label for="">是否正在用餐</label> { }
+							                    <label for="">正在用餐</label> { }
 							                    <select className="form-control input-sm"
 							                    value={searchBornData.is_meal}
 												onChange={this.changeGDBornValue.bind(this,'is_meal')}>
@@ -324,9 +332,9 @@ var GirdForm = React.createClass({
 							                        <option value="false">否</option>
 							                    </select>
 							                </div>
-							                <div className="form-group">
+							                {/*<div className="form-group">
 							                    <button className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
-							                </div>
+							                </div>*/}
 							            </div>
 							        </div>
 							    </div>
@@ -545,6 +553,7 @@ var GirdForm = React.createClass({
 									onQueryGridData={this.queryGridData}
 									InsertType={this.insertType}
 									deleteSubmit={this.deleteSubmit}
+									showAdd={false}
 									ver={2}
 									/>					                
 					            </form>
@@ -555,6 +564,7 @@ var GirdForm = React.createClass({
 				{/*頁籤1*/}
 				{/*頁籤2*/}
 					<div role="tabpanel" className="tab-pane" id="search">
+						<SubSearchCustomer />
 					</div>
 				{/*頁籤2*/}
 			    </div>		
@@ -813,3 +823,100 @@ var SubForm = React.createClass({
 		return outHtml;
 	}
 });
+
+//頁籤2搜尋功能
+var SubSearchCustomer = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			searchData:{},
+			gridSearchData:[],
+			edit_sub_type:0,//預設皆為新增狀態
+			checkAll:false
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldSubData',
+			gdName:'searchData',
+			apiPathName:gb_approot+'api/GetAction/DeatilTelRecord'
+		};
+	},
+	componentDidMount:function(){
+	},
+	shouldComponentUpdate:function(nextProps,nextState){
+		return true;
+	},
+	gridData:function(){
+		var parms = {
+			main_id:this.props.main_id
+		};
+		$.extend(parms, this.state.searchData);
+
+		return jqGet(this.props.apiPathName,parms);
+	},
+	queryGridData:function(){
+		this.gridData()
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({gridSearchData:data});
+		}.bind(this))
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			showAjaxError(errorThrown);
+		});
+	},
+	changeGDValue:function(name,e){
+		this.setInputValue(this.props.gdName,name,e);
+	},
+	setInputValue:function(collentName,name,e){
+
+		var obj = this.state[collentName];
+		if(e.target.value=='true'){
+			obj[name] = true;
+		}else if(e.target.value=='false'){
+			obj[name] = false;
+		}else{
+			obj[name] = e.target.value;
+		}
+		this.setState({searchData:obj});
+	},
+	render: function() {
+		var outHtml = null;
+		var searchData = this.state.searchData;//明細檔資料
+
+			outHtml =
+			(
+				<div className="row">
+			{/*---客戶搜尋start---*/}
+					<div className="col-xs-12">
+						<div className="col-xs-6 col-xs-offset-3">
+							<div className="form-group">
+			                    <label for="">搜尋客戶</label> { }
+					            <input type="text" className="form-control input-sm"
+					      		value={searchData.word}
+								onChange={this.changeGDValue.bind(this,'word')}
+							 	placeholder="請擇一填寫" />
+				            </div>
+						</div>
+						<div className="col-xs-10 col-xs-offset-1">
+							<table className="table-condensed">
+									<tbody>
+										<tr>
+											<th className="col-xs-2">A01客戶基本資料</th>
+											<th className="col-xs-2">B02產品基本資料</th>
+											<th className="col-xs-2">C02客戶需求</th>
+											<th className="col-xs-2">D01客戶用餐紀錄</th>
+											<th className="col-xs-2">G02電訪名單</th>
+											<th className="col-xs-2">F01應收帳款</th>
+										</tr>
+									</tbody>
+								</table>
+						</div>
+					</div>
+			{/*---客戶搜尋end---*/}
+				</div>
+			);
+
+		return outHtml;
+	}
+});
+
