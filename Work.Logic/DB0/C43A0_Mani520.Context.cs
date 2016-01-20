@@ -65,5 +65,8 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<Draft> Draft { get; set; }
         public virtual DbSet<SendMsgOfCustomer> SendMsgOfCustomer { get; set; }
         public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<MenuCopy> MenuCopy { get; set; }
+        public virtual DbSet<MenuCopyOfConstitute> MenuCopyOfConstitute { get; set; }
+        public virtual DbSet<MenuCopyTemplate> MenuCopyTemplate { get; set; }
     }
 }

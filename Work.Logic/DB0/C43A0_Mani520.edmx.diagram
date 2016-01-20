@@ -81,6 +81,12 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="19.375" PointY="17.125" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MenuCopy" Width="1.5" PointX="19.875" PointY="24.5" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MenuCopyOfConstitute" Width="1.5" PointX="22.125" PointY="17.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MenuCopyTemplate" Width="1.5" PointX="17.625" PointY="24.75" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_MenuCopyOfConstitute_ConstituteFood" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_MenuCopy_MenuCopyTemplate" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_MenuCopyOfConstitute_MenuCopy" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -200,6 +200,15 @@
     <Compile Include="DB0\Menu.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
+    <Compile Include="DB0\MenuCopy.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\MenuCopyOfConstitute.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\MenuCopyTemplate.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB0\m_AccountsPayable.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
@@ -300,6 +309,15 @@
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Menu.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_MenuCopy.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_MenuCopyOfConstitute.cs">
+      <DependentUpon>C43A0_Mani520.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB0\m_MenuCopyTemplate.cs">
       <DependentUpon>C43A0_Mani520.tt</DependentUpon>
     </Compile>
     <Compile Include="DB0\m_Product.cs">
