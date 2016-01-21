@@ -23,6 +23,7 @@ namespace ProcCore.Business.DB0
         public int department_id { get; set; }
         public string department_name { get; set; }
         public bool i_Hide { get; set; }
+        public int company_id { get; set; }
     
     	[JsonIgnore]
         public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }

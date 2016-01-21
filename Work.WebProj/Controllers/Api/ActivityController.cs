@@ -30,6 +30,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.Activity
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => x.sort).AsQueryable();
 
 
@@ -129,6 +130,7 @@ namespace DotWeb.Api
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
 
                 db0.Activity.Add(md);

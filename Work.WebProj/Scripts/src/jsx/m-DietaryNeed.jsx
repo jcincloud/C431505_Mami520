@@ -16,8 +16,9 @@
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
-					<td>{this.props.itemData.name}</td>
+					{/*<td>{this.props.itemData.name}</td>*/}
 					<td>{this.props.itemData.short_name}</td>
+					{/*<td>{this.props.itemData.sort}</td>*/}
 					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
 				</tr>
 			);
@@ -180,7 +181,7 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{}});
+		this.setState({edit_type:1,fieldData:{is_breakfast:true,is_lunch:true,is_dinner:true,sort:0}});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -309,9 +310,10 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-3">需求元素名稱</th>
-									<th className="col-xs-2">需求元素簡稱</th>
-									<th className="col-xs-5">狀態</th>
+									{/*<th className="col-xs-3">需求元素名稱</th>*/}
+									<th className="col-xs-3">需求元素簡稱</th>
+									{/*<th className="col-xs-2">排序</th>*/}
+									<th className="col-xs-2">狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -365,7 +367,7 @@ var GirdForm = React.createClass({
 
 				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
 				<div className="col-xs-9">
-					<div className="form-group">
+					{/*<div className="form-group">
 						<label className="col-xs-2 control-label">名稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
@@ -376,7 +378,7 @@ var GirdForm = React.createClass({
 							required />
 						</div>
 						<small className="help-inline col-xs-6 text-danger">(必填)</small>
-					</div>
+					</div>*/}
 
 					<div className="form-group">
 						<label className="col-xs-2 control-label">簡稱</label>
@@ -483,7 +485,7 @@ var GirdForm = React.createClass({
 							</div>
 						</div>
 					</div>
-					<div className="form-group">
+					{/*<div className="form-group">
 						<label className="col-xs-2 control-label">排序</label>
 						<div className="col-xs-4">
 							<input type="number" 
@@ -493,7 +495,7 @@ var GirdForm = React.createClass({
 							 />
 						</div>
 						<small className="col-xs-6 help-inline">數字越大越前面</small>
-					</div>
+					</div>*/}
 
 					<div className="form-group">
 						<label className="col-xs-2 control-label">備註</label>

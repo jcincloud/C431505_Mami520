@@ -25,6 +25,11 @@ namespace ProcCore.Business.DB0
         public Nullable<int> i_UpdateDeptID { get; set; }
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
+        public int company_id { get; set; }
+        public Nullable<bool> isSend { get; set; }
+        public Nullable<bool> isRead { get; set; }
+        public Nullable<System.DateTime> date_send { get; set; }
+        public string remark { get; set; }
     
     	[JsonIgnore]
         public virtual Customer Customer { get; set; }

@@ -24,6 +24,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AccountsPayableDetail">
           <Key>
@@ -45,6 +46,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Activity">
           <Key>
@@ -65,6 +67,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="All_Category_L1">
           <Key>
@@ -82,6 +85,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="All_Category_L2">
           <Key>
@@ -100,6 +104,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -135,6 +140,16 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="user_name_c" Type="nvarchar" MaxLength="32" Nullable="false" />
           <Property Name="sort" Type="int" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="int" Nullable="false" />
+          <Property Name="company_sn" Type="varchar" MaxLength="4" />
+          <Property Name="company_name" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ConstituteFood">
           <Key>
@@ -153,6 +168,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ConstituteOfElement">
           <Key>
@@ -169,6 +185,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ContactSchedule">
           <Key>
@@ -186,6 +203,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -218,6 +236,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomerBorn">
           <Key>
@@ -256,6 +275,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomerNeed">
           <Key>
@@ -274,6 +294,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomerOfDietaryNeed">
           <Key>
@@ -290,6 +311,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyMeal">
           <Key>
@@ -313,6 +335,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyMealChangeRecord">
           <Key>
@@ -333,6 +356,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyMenu">
           <Key>
@@ -349,6 +373,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyMenuOfConstitute">
           <Key>
@@ -365,6 +390,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DeatilTelRecord">
           <Key>
@@ -383,12 +409,14 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="department_id" />
           </Key>
           <Property Name="department_id" Type="int" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
           <Property Name="department_name" Type="nvarchar" MaxLength="16" Nullable="false" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
         </EntityType>
@@ -413,6 +441,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DietaryNeedOfElement">
           <Key>
@@ -429,6 +458,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Draft">
           <Key>
@@ -437,7 +467,7 @@
           <Property Name="draft_id" Type="int" Nullable="false" />
           <Property Name="draft_name" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="draft_title" Type="nvarchar" MaxLength="64" />
-          <Property Name="draft_content" Type="text" />
+          <Property Name="draft_content" Type="ntext" />
           <Property Name="sort" Type="int" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
@@ -447,6 +477,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ElementFood">
           <Key>
@@ -465,6 +496,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="GiftRecord">
           <Key>
@@ -486,6 +518,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="i_Currency">
           <Key>
@@ -552,11 +585,20 @@
         <EntityType Name="MealID">
           <Key>
             <PropertyRef Name="meal_id" />
+            <PropertyRef Name="company_id" />
           </Key>
           <Property Name="meal_id" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="memo" Type="nvarchar" MaxLength="256" />
           <Property Name="i_Use" Type="bit" Nullable="false" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Menu">
           <Key>
@@ -576,6 +618,58 @@
           <Property Name="is_on_tablet" Type="bit" Nullable="false" />
           <Property Name="is_only_tablet" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="MenuCopy">
+          <Key>
+            <PropertyRef Name="menu_copy_id" />
+          </Key>
+          <Property Name="menu_copy_id" Type="int" Nullable="false" />
+          <Property Name="menu_copy_template_id" Type="int" Nullable="false" />
+          <Property Name="day" Type="int" Nullable="false" />
+          <Property Name="meal_type" Type="int" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuCopyOfConstitute">
+          <Key>
+            <PropertyRef Name="constitute_id" />
+            <PropertyRef Name="menu_copy_id" />
+          </Key>
+          <Property Name="constitute_id" Type="int" Nullable="false" />
+          <Property Name="menu_copy_id" Type="int" Nullable="false" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuCopyTemplate">
+          <Key>
+            <PropertyRef Name="menu_copy_template_id" />
+          </Key>
+          <Property Name="menu_copy_template_id" Type="int" Nullable="false" />
+          <Property Name="template_name" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="memo" Type="ntext" />
+          <Property Name="i_Hide" Type="bit" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_InsertDeptID" Type="int" />
+          <Property Name="i_InsertDateTime" Type="datetime" />
+          <Property Name="i_UpdateUserID" Type="nvarchar" MaxLength="128" />
+          <Property Name="i_UpdateDeptID" Type="int" />
+          <Property Name="i_UpdateDateTime" Type="datetime" />
+          <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="MenuRole">
           <Key>
             <PropertyRef Name="menu_id" />
@@ -592,6 +686,10 @@
           <Property Name="product_type" Type="int" Nullable="false" />
           <Property Name="product_name" Type="nvarchar" MaxLength="64" Nullable="false" />
           <Property Name="price" Type="float" Nullable="false" />
+          <Property Name="breakfast_price" Type="int" Nullable="false" />
+          <Property Name="lunch_price" Type="int" Nullable="false" />
+          <Property Name="dinner_price" Type="int" Nullable="false" />
+          <Property Name="meal_type" Type="varchar" MaxLength="50" />
           <Property Name="standard" Type="nvarchar" MaxLength="64" />
           <Property Name="sort" Type="int" />
           <Property Name="memo" Type="nvarchar" MaxLength="256" />
@@ -603,6 +701,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductRecord">
           <Key>
@@ -623,6 +722,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RecordDetail">
           <Key>
@@ -659,6 +759,7 @@
           <Property Name="real_dinner" Type="int" />
           <Property Name="meal_memo" Type="nvarchar" MaxLength="256" />
           <Property Name="is_release" Type="bit" />
+          <Property Name="tryout_mealtype" Type="varchar" MaxLength="50" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="i_InsertDeptID" Type="int" />
@@ -667,6 +768,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ScheduleDetail">
           <Key>
@@ -687,6 +789,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SendMsg">
           <Key>
@@ -703,6 +806,7 @@
           <Property Name="is_complete" Type="bit" Nullable="false" />
           <Property Name="is_quickly_send" Type="bit" Nullable="false" />
           <Property Name="is_send" Type="bit" Nullable="false" />
+          <Property Name="real_senddatetime" Type="datetime" />
           <Property Name="i_Hide" Type="bit" Nullable="false" />
           <Property Name="i_InsertUserID" Type="nvarchar" MaxLength="128" />
           <Property Name="i_InsertDeptID" Type="int" />
@@ -711,6 +815,7 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SendMsgOfCustomer">
           <Key>
@@ -727,6 +832,11 @@
           <Property Name="i_UpdateDeptID" Type="int" />
           <Property Name="i_UpdateDateTime" Type="datetime" />
           <Property Name="i_Lang" Type="char" MaxLength="5" Nullable="false" />
+          <Property Name="company_id" Type="int" Nullable="false" />
+          <Property Name="isSend" Type="bit" />
+          <Property Name="isRead" Type="bit" />
+          <Property Name="date_send" Type="datetime" />
+          <Property Name="remark" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_AccountsPayable_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
@@ -773,6 +883,18 @@
             </Principal>
             <Dependent Role="All_Category_L2">
               <PropertyRef Name="all_category_l1_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AspNetUsers_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="AspNetUsers">
+              <PropertyRef Name="company_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1056,6 +1178,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MenuCopy_MenuCopyTemplate">
+          <End Role="MenuCopyTemplate" Type="Self.MenuCopyTemplate" Multiplicity="1" />
+          <End Role="MenuCopy" Type="Self.MenuCopy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuCopyTemplate">
+              <PropertyRef Name="menu_copy_template_id" />
+            </Principal>
+            <Dependent Role="MenuCopy">
+              <PropertyRef Name="menu_copy_template_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuCopyOfConstitute_ConstituteFood">
+          <End Role="ConstituteFood" Type="Self.ConstituteFood" Multiplicity="1" />
+          <End Role="MenuCopyOfConstitute" Type="Self.MenuCopyOfConstitute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConstituteFood">
+              <PropertyRef Name="constitute_id" />
+            </Principal>
+            <Dependent Role="MenuCopyOfConstitute">
+              <PropertyRef Name="constitute_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuCopyOfConstitute_MenuCopy">
+          <End Role="MenuCopy" Type="Self.MenuCopy" Multiplicity="1" />
+          <End Role="MenuCopyOfConstitute" Type="Self.MenuCopyOfConstitute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuCopy">
+              <PropertyRef Name="menu_copy_id" />
+            </Principal>
+            <Dependent Role="MenuCopyOfConstitute">
+              <PropertyRef Name="menu_copy_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MenuRole_AspNetRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
           <End Role="MenuRole" Type="Self.MenuRole" Multiplicity="*" />
@@ -1185,6 +1343,7 @@
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConstituteFood" EntityType="Self.ConstituteFood" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConstituteOfElement" EntityType="Self.ConstituteOfElement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactSchedule" EntityType="Self.ContactSchedule" Schema="dbo" store:Type="Tables" />
@@ -1211,6 +1370,9 @@
           <EntitySet Name="i_UserLoginLog" EntityType="Self.i_UserLoginLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MealID" EntityType="Self.MealID" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Menu" EntityType="Self.Menu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuCopy" EntityType="Self.MenuCopy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuCopyOfConstitute" EntityType="Self.MenuCopyOfConstitute" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MenuCopyTemplate" EntityType="Self.MenuCopyTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MenuRole" EntityType="Self.MenuRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductRecord" EntityType="Self.ProductRecord" Schema="dbo" store:Type="Tables" />
@@ -1233,6 +1395,10 @@
           <AssociationSet Name="FK_All_Category_L2_All_Category_L1" Association="Self.FK_All_Category_L2_All_Category_L1">
             <End Role="All_Category_L1" EntitySet="All_Category_L1" />
             <End Role="All_Category_L2" EntitySet="All_Category_L2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AspNetUsers_Company" Association="Self.FK_AspNetUsers_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_AspNetUsers_Department" Association="Self.FK_AspNetUsers_Department">
             <End Role="Department" EntitySet="Department" />
@@ -1326,6 +1492,18 @@
             <End Role="ProductRecord" EntitySet="ProductRecord" />
             <End Role="GiftRecord" EntitySet="GiftRecord" />
           </AssociationSet>
+          <AssociationSet Name="FK_MenuCopy_MenuCopyTemplate" Association="Self.FK_MenuCopy_MenuCopyTemplate">
+            <End Role="MenuCopyTemplate" EntitySet="MenuCopyTemplate" />
+            <End Role="MenuCopy" EntitySet="MenuCopy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuCopyOfConstitute_ConstituteFood" Association="Self.FK_MenuCopyOfConstitute_ConstituteFood">
+            <End Role="ConstituteFood" EntitySet="ConstituteFood" />
+            <End Role="MenuCopyOfConstitute" EntitySet="MenuCopyOfConstitute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuCopyOfConstitute_MenuCopy" Association="Self.FK_MenuCopyOfConstitute_MenuCopy">
+            <End Role="MenuCopy" EntitySet="MenuCopy" />
+            <End Role="MenuCopyOfConstitute" EntitySet="MenuCopyOfConstitute" />
+          </AssociationSet>
           <AssociationSet Name="FK_MenuRole_AspNetRoles" Association="Self.FK_MenuRole_AspNetRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="MenuRole" EntitySet="MenuRole" />
@@ -1377,30 +1555,8 @@
           </Key>
           <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
           <NavigationProperty Name="Menu" Relationship="Self.MenuRole" FromRole="AspNetRoles" ToRole="Menu" />
-        </EntityType>
-        <EntityType Name="AspNetUsers">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="department_id" Type="Int32" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="user_name_c" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="sort" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Department" Relationship="Self.FK_AspNetUsers_Department" FromRole="AspNetUsers" ToRole="Department" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="AspNetUsers" Relationship="C43A0_Mani520Model.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -1409,7 +1565,8 @@
           <Property Name="department_id" Type="Int32" Nullable="false" />
           <Property Name="department_name" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="i_Hide" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_AspNetUsers_Department" FromRole="Department" ToRole="AspNetUsers" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="C43A0_Mani520Model.FK_AspNetUsers_Department" FromRole="Department" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="i_Currency">
           <Key>
@@ -1492,29 +1649,12 @@
           <Property Name="is_only_tablet" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.MenuRole" FromRole="Menu" ToRole="AspNetRoles" />
         </EntityType>
-        <Association Name="FK_AspNetUsers_Department">
-          <End Role="Department" Type="Self.Department" Multiplicity="1" />
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Department">
-              <PropertyRef Name="department_id" />
-            </Principal>
-            <Dependent Role="AspNetUsers">
-              <PropertyRef Name="department_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
-        </Association>
         <Association Name="MenuRole">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
           <End Role="Menu" Type="Self.Menu" Multiplicity="*" />
         </Association>
         <EntityContainer Name="C43A0_Mani520Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
           <EntitySet Name="Department" EntityType="Self.Department" />
           <EntitySet Name="i_Currency" EntityType="Self.i_Currency" />
           <EntitySet Name="i_IDX" EntityType="Self.i_IDX" />
@@ -1523,19 +1663,10 @@
           <EntitySet Name="i_SN" EntityType="Self.i_SN" />
           <EntitySet Name="i_UserLoginLog" EntityType="Self.i_UserLoginLog" />
           <EntitySet Name="Menu" EntityType="Self.Menu" />
-          <AssociationSet Name="FK_AspNetUsers_Department" Association="Self.FK_AspNetUsers_Department">
-            <End Role="Department" EntitySet="Department" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
           <AssociationSet Name="MenuRole" Association="Self.MenuRole">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="Menu" EntitySet="Menu" />
           </AssociationSet>
-          <EntitySet Name="MealID" EntityType="C43A0_Mani520Model.MealID" />
           <EntitySet Name="Customer" EntityType="C43A0_Mani520Model.Customer" />
           <EntitySet Name="CustomerBorn" EntityType="C43A0_Mani520Model.CustomerBorn" />
           <AssociationSet Name="FK_CustomerBorn_Customer" Association="C43A0_Mani520Model.FK_CustomerBorn_Customer">
@@ -1606,7 +1737,6 @@
             <End Role="DietaryNeed" EntitySet="DietaryNeed" />
             <End Role="CustomerOfDietaryNeed" EntitySet="CustomerOfDietaryNeed" />
           </AssociationSet>
-          <EntitySet Name="Draft" EntityType="C43A0_Mani520Model.Draft" />
           <EntitySet Name="ProductRecord" EntityType="C43A0_Mani520Model.ProductRecord" />
           <AssociationSet Name="FK_ProductRecord_Customer" Association="C43A0_Mani520Model.FK_ProductRecord_Customer">
             <End Role="Customer" EntitySet="Customer" />
@@ -1644,18 +1774,8 @@
             <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
             <End Role="DeatilTelRecord" EntitySet="DeatilTelRecord" />
           </AssociationSet>
-          <EntitySet Name="SendMsgOfCustomer" EntityType="C43A0_Mani520Model.SendMsgOfCustomer" />
-          <AssociationSet Name="FK_SendMsgOfCustomer_Customer" Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer">
-            <End Role="Customer" EntitySet="Customer" />
-            <End Role="SendMsgOfCustomer" EntitySet="SendMsgOfCustomer" />
-          </AssociationSet>
           <EntitySet Name="SendMsg" EntityType="C43A0_Mani520Model.SendMsg" />
-          <AssociationSet Name="FK_SendMsgOfCustomer_SendMsg" Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg">
-            <End Role="SendMsg" EntitySet="SendMsg" />
-            <End Role="SendMsgOfCustomer" EntitySet="SendMsgOfCustomer" />
-          </AssociationSet>
           <EntitySet Name="DailyMealChangeRecord" EntityType="C43A0_Mani520Model.DailyMealChangeRecord" />
-          <EntitySet Name="Product" EntityType="C43A0_Mani520Model.Product" />
           <EntitySet Name="AccountsPayableDetail" EntityType="C43A0_Mani520Model.AccountsPayableDetail" />
           <EntitySet Name="AccountsPayable" EntityType="C43A0_Mani520Model.AccountsPayable" />
           <AssociationSet Name="FK_AccountsPayable_Customer" Association="C43A0_Mani520Model.FK_AccountsPayable_Customer">
@@ -1670,38 +1790,70 @@
             <End Role="AccountsPayable" EntitySet="AccountsPayable" />
             <End Role="AccountsPayableDetail" EntitySet="AccountsPayableDetail" />
           </AssociationSet>
+          <EntitySet Name="DailyMeal" EntityType="C43A0_Mani520Model.DailyMeal" />
+          <AssociationSet Name="FK_DailyMealChangeRecord_DailyMeal" Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal">
+            <End Role="DailyMeal" EntitySet="DailyMeal" />
+            <End Role="DailyMealChangeRecord" EntitySet="DailyMealChangeRecord" />
+          </AssociationSet>
           <EntitySet Name="RecordDetail" EntityType="C43A0_Mani520Model.RecordDetail" />
           <AssociationSet Name="FK_RecordDetail_CustomerBorn" Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn">
             <End Role="CustomerBorn" EntitySet="CustomerBorn" />
             <End Role="RecordDetail" EntitySet="RecordDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_RecordDetail_Product" Association="C43A0_Mani520Model.FK_RecordDetail_Product">
-            <End Role="Product" EntitySet="Product" />
+          <AssociationSet Name="FK_DailyMeal_RecordDetail" Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail">
             <End Role="RecordDetail" EntitySet="RecordDetail" />
+            <End Role="DailyMeal" EntitySet="DailyMeal" />
           </AssociationSet>
           <AssociationSet Name="FK_RecordDetail_ProductRecord" Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord">
             <End Role="ProductRecord" EntitySet="ProductRecord" />
             <End Role="RecordDetail" EntitySet="RecordDetail" />
           </AssociationSet>
-          <EntitySet Name="DailyMeal" EntityType="C43A0_Mani520Model.DailyMeal" />
-          <AssociationSet Name="FK_DailyMeal_RecordDetail" Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail">
-            <End Role="RecordDetail" EntitySet="RecordDetail" />
-            <End Role="DailyMeal" EntitySet="DailyMeal" />
+          <EntitySet Name="AspNetUsers" EntityType="C43A0_Mani520Model.AspNetUsers" />
+          <EntitySet Name="Company" EntityType="C43A0_Mani520Model.Company" />
+          <AssociationSet Name="FK_AspNetUsers_Company" Association="C43A0_Mani520Model.FK_AspNetUsers_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK_DailyMealChangeRecord_DailyMeal" Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal">
-            <End Role="DailyMeal" EntitySet="DailyMeal" />
-            <End Role="DailyMealChangeRecord" EntitySet="DailyMealChangeRecord" />
+          <AssociationSet Name="FK_AspNetUsers_Department" Association="C43A0_Mani520Model.FK_AspNetUsers_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="C43A0_Mani520Model.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="MealID" EntityType="C43A0_Mani520Model.MealID" />
+          <EntitySet Name="Draft" EntityType="C43A0_Mani520Model.Draft" />
+          <EntitySet Name="SendMsgOfCustomer" EntityType="C43A0_Mani520Model.SendMsgOfCustomer" />
+          <AssociationSet Name="FK_SendMsgOfCustomer_Customer" Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="SendMsgOfCustomer" EntitySet="SendMsgOfCustomer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SendMsgOfCustomer_SendMsg" Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg">
+            <End Role="SendMsg" EntitySet="SendMsg" />
+            <End Role="SendMsgOfCustomer" EntitySet="SendMsgOfCustomer" />
+          </AssociationSet>
+          <EntitySet Name="Product" EntityType="C43A0_Mani520Model.Product" />
+          <AssociationSet Name="FK_RecordDetail_Product" Association="C43A0_Mani520Model.FK_RecordDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="RecordDetail" EntitySet="RecordDetail" />
+          </AssociationSet>
+          <EntitySet Name="MenuCopy" EntityType="C43A0_Mani520Model.MenuCopy" />
+          <EntitySet Name="MenuCopyOfConstitute" EntityType="C43A0_Mani520Model.MenuCopyOfConstitute" />
+          <EntitySet Name="MenuCopyTemplate" EntityType="C43A0_Mani520Model.MenuCopyTemplate" />
+          <AssociationSet Name="FK_MenuCopyOfConstitute_ConstituteFood" Association="C43A0_Mani520Model.FK_MenuCopyOfConstitute_ConstituteFood">
+            <End Role="ConstituteFood" EntitySet="ConstituteFood" />
+            <End Role="MenuCopyOfConstitute" EntitySet="MenuCopyOfConstitute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuCopy_MenuCopyTemplate" Association="C43A0_Mani520Model.FK_MenuCopy_MenuCopyTemplate">
+            <End Role="MenuCopyTemplate" EntitySet="MenuCopyTemplate" />
+            <End Role="MenuCopy" EntitySet="MenuCopy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MenuCopyOfConstitute_MenuCopy" Association="C43A0_Mani520Model.FK_MenuCopyOfConstitute_MenuCopy">
+            <End Role="MenuCopy" EntitySet="MenuCopy" />
+            <End Role="MenuCopyOfConstitute" EntitySet="MenuCopyOfConstitute" />
           </AssociationSet>
           </EntityContainer>
-        <EntityType Name="MealID">
-          <Key>
-            <PropertyRef Name="meal_id" />
-          </Key>
-          <Property Name="meal_id" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="i_Use" Type="Boolean" Nullable="false" />
-          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="customer_id" />
@@ -1736,8 +1888,9 @@
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_CustomerBorn_Customer" FromRole="Customer" ToRole="CustomerBorn" />
           <NavigationProperty Name="CustomerNeed" Relationship="C43A0_Mani520Model.FK_CustomerNeed_Customer" FromRole="Customer" ToRole="CustomerNeed" />
           <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_ProductRecord_Customer" FromRole="Customer" ToRole="ProductRecord" />
-          <NavigationProperty Name="SendMsgOfCustomer" Relationship="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" FromRole="Customer" ToRole="SendMsgOfCustomer" />
           <NavigationProperty Name="AccountsPayable" Relationship="C43A0_Mani520Model.FK_AccountsPayable_Customer" FromRole="Customer" ToRole="AccountsPayable" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SendMsgOfCustomer" Relationship="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" FromRole="Customer" ToRole="SendMsgOfCustomer" />
         </EntityType>
         <EntityType Name="CustomerBorn">
           <Key>
@@ -1783,6 +1936,7 @@
           <NavigationProperty Name="ContactSchedule" Relationship="C43A0_Mani520Model.FK_ContactSchedule_CustomerBorn" FromRole="CustomerBorn" ToRole="ContactSchedule" />
           <NavigationProperty Name="ScheduleDetail" Relationship="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" FromRole="CustomerBorn" ToRole="ScheduleDetail" />
           <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" FromRole="CustomerBorn" ToRole="RecordDetail" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_CustomerBorn_Customer">
           <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
@@ -1813,6 +1967,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" FromRole="All_Category_L1" ToRole="All_Category_L2" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="All_Category_L2">
           <Key>
@@ -1834,6 +1989,7 @@
           <NavigationProperty Name="All_Category_L1" Relationship="C43A0_Mani520Model.FK_All_Category_L2_All_Category_L1" FromRole="All_Category_L2" ToRole="All_Category_L1" />
           <NavigationProperty Name="ElementFood" Relationship="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" FromRole="All_Category_L2" ToRole="ElementFood" />
           <NavigationProperty Name="ConstituteFood" Relationship="C43A0_Mani520Model.FK_ConstituteFood_All_Category_L2" FromRole="All_Category_L2" ToRole="ConstituteFood" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_All_Category_L2_All_Category_L1">
           <End Type="C43A0_Mani520Model.All_Category_L1" Role="All_Category_L1" Multiplicity="1" />
@@ -1867,6 +2023,7 @@
           <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_ElementFood_All_Category_L2" FromRole="ElementFood" ToRole="All_Category_L2" />
           <NavigationProperty Name="ConstituteOfElement" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood" FromRole="ElementFood" ToRole="ConstituteOfElement" />
           <NavigationProperty Name="DietaryNeedOfElement" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_ElementFood" FromRole="ElementFood" ToRole="DietaryNeedOfElement" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_ElementFood_All_Category_L2">
           <End Type="C43A0_Mani520Model.All_Category_L2" Role="All_Category_L2" Multiplicity="1" />
@@ -1900,6 +2057,8 @@
           <NavigationProperty Name="All_Category_L2" Relationship="C43A0_Mani520Model.FK_ConstituteFood_All_Category_L2" FromRole="ConstituteFood" ToRole="All_Category_L2" />
           <NavigationProperty Name="ConstituteOfElement" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ConstituteFood" FromRole="ConstituteFood" ToRole="ConstituteOfElement" />
           <NavigationProperty Name="DailyMenuOfConstitute" Relationship="C43A0_Mani520Model.FK_DailyMenuOfConstitute_ConstituteFood" FromRole="ConstituteFood" ToRole="DailyMenuOfConstitute" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MenuCopyOfConstitute" Relationship="C43A0_Mani520Model.FK_MenuCopyOfConstitute_ConstituteFood" FromRole="ConstituteFood" ToRole="MenuCopyOfConstitute" />
         </EntityType>
         <Association Name="FK_ConstituteFood_All_Category_L2">
           <End Type="C43A0_Mani520Model.All_Category_L2" Role="All_Category_L2" Multiplicity="1" />
@@ -1930,6 +2089,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="ConstituteFood" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ConstituteFood" FromRole="ConstituteOfElement" ToRole="ConstituteFood" />
           <NavigationProperty Name="ElementFood" Relationship="C43A0_Mani520Model.FK_ConstituteOfElement_ElementFood" FromRole="ConstituteOfElement" ToRole="ElementFood" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_ConstituteOfElement_ConstituteFood">
           <End Type="C43A0_Mani520Model.ConstituteFood" Role="ConstituteFood" Multiplicity="1" />
@@ -1971,6 +2131,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="DailyMenuOfConstitute" Relationship="C43A0_Mani520Model.FK_DailyMenuOfConstitute_DailyMenu" FromRole="DailyMenu" ToRole="DailyMenuOfConstitute" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyMenuOfConstitute">
           <Key>
@@ -1989,6 +2150,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="ConstituteFood" Relationship="C43A0_Mani520Model.FK_DailyMenuOfConstitute_ConstituteFood" FromRole="DailyMenuOfConstitute" ToRole="ConstituteFood" />
           <NavigationProperty Name="DailyMenu" Relationship="C43A0_Mani520Model.FK_DailyMenuOfConstitute_DailyMenu" FromRole="DailyMenuOfConstitute" ToRole="DailyMenu" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_DailyMenuOfConstitute_ConstituteFood">
           <End Type="C43A0_Mani520Model.ConstituteFood" Role="ConstituteFood" Multiplicity="1" />
@@ -2037,6 +2199,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="DietaryNeedOfElement" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_DietaryNeed" FromRole="DietaryNeed" ToRole="DietaryNeedOfElement" />
           <NavigationProperty Name="CustomerOfDietaryNeed" Relationship="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_DietaryNeed" FromRole="DietaryNeed" ToRole="CustomerOfDietaryNeed" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="DietaryNeedOfElement">
           <Key>
@@ -2055,6 +2218,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="DietaryNeed" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_DietaryNeed" FromRole="DietaryNeedOfElement" ToRole="DietaryNeed" />
           <NavigationProperty Name="ElementFood" Relationship="C43A0_Mani520Model.FK_DietaryNeedOfElement_ElementFood" FromRole="DietaryNeedOfElement" ToRole="ElementFood" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_DietaryNeedOfElement_DietaryNeed">
           <End Type="C43A0_Mani520Model.DietaryNeed" Role="DietaryNeed" Multiplicity="1" />
@@ -2100,6 +2264,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="GiftRecord" Relationship="C43A0_Mani520Model.FK_GiftRecord_Activity" FromRole="Activity" ToRole="GiftRecord" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomerNeed">
           <Key>
@@ -2121,6 +2286,7 @@
           <NavigationProperty Name="Customer" Relationship="C43A0_Mani520Model.FK_CustomerNeed_Customer" FromRole="CustomerNeed" ToRole="Customer" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_CustomerNeed_CustomerBorn" FromRole="CustomerNeed" ToRole="CustomerBorn" />
           <NavigationProperty Name="CustomerOfDietaryNeed" Relationship="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_CustomerNeed" FromRole="CustomerNeed" ToRole="CustomerOfDietaryNeed" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomerOfDietaryNeed">
           <Key>
@@ -2139,6 +2305,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CustomerNeed" Relationship="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_CustomerNeed" FromRole="CustomerOfDietaryNeed" ToRole="CustomerNeed" />
           <NavigationProperty Name="DietaryNeed" Relationship="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_DietaryNeed" FromRole="CustomerOfDietaryNeed" ToRole="DietaryNeed" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_CustomerNeed_Customer">
           <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
@@ -2188,24 +2355,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Draft">
-          <Key>
-            <PropertyRef Name="draft_id" />
-          </Key>
-          <Property Name="draft_id" Type="Int32" Nullable="false" />
-          <Property Name="draft_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="draft_title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="draft_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="sort" Type="Int32" />
-          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
-          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_InsertDeptID" Type="Int32" />
-          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_UpdateDeptID" Type="Int32" />
-          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-        </EntityType>
         <EntityType Name="ProductRecord">
           <Key>
             <PropertyRef Name="product_record_id" />
@@ -2230,6 +2379,7 @@
           <NavigationProperty Name="GiftRecord" Relationship="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" FromRole="ProductRecord" ToRole="GiftRecord" />
           <NavigationProperty Name="AccountsPayable" Relationship="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord" FromRole="ProductRecord" ToRole="AccountsPayable" />
           <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="ProductRecord" ToRole="RecordDetail" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_ProductRecord_Customer">
           <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
@@ -2278,6 +2428,7 @@
           <NavigationProperty Name="Activity" Relationship="C43A0_Mani520Model.FK_GiftRecord_Activity" FromRole="GiftRecord" ToRole="Activity" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_GiftRecord_CustomerBorn" FromRole="GiftRecord" ToRole="CustomerBorn" />
           <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_GiftRecord_ProductRecord" FromRole="GiftRecord" ToRole="ProductRecord" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_GiftRecord_Activity">
           <End Type="C43A0_Mani520Model.Activity" Role="Activity" Multiplicity="1" />
@@ -2332,6 +2483,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_ContactSchedule_CustomerBorn" FromRole="ContactSchedule" ToRole="CustomerBorn" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_ContactSchedule_CustomerBorn">
           <End Type="C43A0_Mani520Model.CustomerBorn" Role="CustomerBorn" Multiplicity="1" />
@@ -2366,6 +2518,7 @@
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" FromRole="ScheduleDetail" ToRole="CustomerBorn" />
           <NavigationProperty Name="DeatilTelRecord" Relationship="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" FromRole="ScheduleDetail" ToRole="DeatilTelRecord" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_ScheduleDetail_CustomerBorn">
           <End Type="C43A0_Mani520Model.CustomerBorn" Role="CustomerBorn" Multiplicity="1" />
@@ -2397,6 +2550,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="ScheduleDetail" Relationship="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" FromRole="DeatilTelRecord" ToRole="ScheduleDetail" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_DeatilTelRecord_ScheduleDetail">
           <End Type="C43A0_Mani520Model.ScheduleDetail" Role="ScheduleDetail" Multiplicity="1" />
@@ -2407,36 +2561,6 @@
             </Principal>
             <Dependent Role="DeatilTelRecord">
               <PropertyRef Name="schedule_detail_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="SendMsgOfCustomer">
-          <Key>
-            <PropertyRef Name="customer_id" />
-            <PropertyRef Name="send_msg_id" />
-          </Key>
-          <Property Name="customer_id" Type="Int32" Nullable="false" />
-          <Property Name="send_msg_id" Type="Int32" Nullable="false" />
-          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
-          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_InsertDeptID" Type="Int32" />
-          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_UpdateDeptID" Type="Int32" />
-          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="Customer" Relationship="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" FromRole="SendMsgOfCustomer" ToRole="Customer" />
-          <NavigationProperty Name="SendMsg" Relationship="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" FromRole="SendMsgOfCustomer" ToRole="SendMsg" />
-        </EntityType>
-        <Association Name="FK_SendMsgOfCustomer_Customer">
-          <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
-          <End Type="C43A0_Mani520Model.SendMsgOfCustomer" Role="SendMsgOfCustomer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="customer_id" />
-            </Principal>
-            <Dependent Role="SendMsgOfCustomer">
-              <PropertyRef Name="customer_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2463,20 +2587,10 @@
           <Property Name="i_UpdateDeptID" Type="Int32" />
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <Property Name="real_senddatetime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="SendMsgOfCustomer" Relationship="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" FromRole="SendMsg" ToRole="SendMsgOfCustomer" />
         </EntityType>
-        <Association Name="FK_SendMsgOfCustomer_SendMsg">
-          <End Type="C43A0_Mani520Model.SendMsg" Role="SendMsg" Multiplicity="1" />
-          <End Type="C43A0_Mani520Model.SendMsgOfCustomer" Role="SendMsgOfCustomer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SendMsg">
-              <PropertyRef Name="send_msg_id" />
-            </Principal>
-            <Dependent Role="SendMsgOfCustomer">
-              <PropertyRef Name="send_msg_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="DailyMealChangeRecord">
           <Key>
             <PropertyRef Name="change_record_id" />
@@ -2497,27 +2611,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="DailyMeal" Relationship="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" FromRole="DailyMealChangeRecord" ToRole="DailyMeal" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="product_id" />
-          </Key>
-          <Property Name="product_id" Type="Int32" Nullable="false" />
-          <Property Name="product_type" Type="Int32" Nullable="false" />
-          <Property Name="product_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="price" Type="Double" Nullable="false" />
-          <Property Name="standard" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
-          <Property Name="sort" Type="Int32" />
-          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
-          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_InsertDeptID" Type="Int32" />
-          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="i_UpdateDeptID" Type="Int32" />
-          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
-          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="Product" ToRole="RecordDetail" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AccountsPayableDetail">
           <Key>
@@ -2540,6 +2634,7 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="AccountsPayable" Relationship="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" FromRole="AccountsPayableDetail" ToRole="AccountsPayable" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="AccountsPayable">
           <Key>
@@ -2563,6 +2658,7 @@
           <NavigationProperty Name="Customer" Relationship="C43A0_Mani520Model.FK_AccountsPayable_Customer" FromRole="AccountsPayable" ToRole="Customer" />
           <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord" FromRole="AccountsPayable" ToRole="ProductRecord" />
           <NavigationProperty Name="AccountsPayableDetail" Relationship="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" FromRole="AccountsPayable" ToRole="AccountsPayableDetail" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_AccountsPayable_Customer">
           <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
@@ -2600,6 +2696,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DailyMeal">
+          <Key>
+            <PropertyRef Name="daily_meal_id" />
+          </Key>
+          <Property Name="daily_meal_id" Type="Int32" Nullable="false" />
+          <Property Name="record_deatil_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="born_id" Type="Int32" Nullable="false" />
+          <Property Name="product_type" Type="Int32" Nullable="false" />
+          <Property Name="meal_day" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="breakfast_state" Type="Int32" Nullable="false" />
+          <Property Name="lunch_state" Type="Int32" Nullable="false" />
+          <Property Name="dinner_state" Type="Int32" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="DailyMealChangeRecord" Relationship="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" FromRole="DailyMeal" ToRole="DailyMealChangeRecord" />
+          <Property Name="meal_id" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="DailyMeal" ToRole="RecordDetail" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_DailyMealChangeRecord_DailyMeal">
+          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.DailyMealChangeRecord" Role="DailyMealChangeRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DailyMeal">
+              <PropertyRef Name="daily_meal_id" />
+            </Principal>
+            <Dependent Role="DailyMealChangeRecord">
+              <PropertyRef Name="daily_meal_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="RecordDetail">
           <Key>
             <PropertyRef Name="record_deatil_id" />
@@ -2628,11 +2762,14 @@
           <Property Name="real_estimate_breakfast" Type="Int32" />
           <Property Name="real_estimate_lunch" Type="Int32" />
           <Property Name="real_estimate_dinner" Type="Int32" />
+          <Property Name="real_meal_start" Type="DateTime" Precision="0" />
+          <Property Name="real_meal_end" Type="DateTime" Precision="0" />
           <Property Name="real_breakfast" Type="Int32" />
           <Property Name="real_lunch" Type="Int32" />
           <Property Name="real_dinner" Type="Int32" />
           <Property Name="meal_memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="is_release" Type="Boolean" />
+          <Property Name="tryout_mealtype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="i_Hide" Type="Boolean" Nullable="false" />
           <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="i_InsertDeptID" Type="Int32" />
@@ -2642,11 +2779,10 @@
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CustomerBorn" Relationship="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" FromRole="RecordDetail" ToRole="CustomerBorn" />
-          <NavigationProperty Name="Product" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="RecordDetail" ToRole="Product" />
-          <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="RecordDetail" ToRole="ProductRecord" />
           <NavigationProperty Name="DailyMeal" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="RecordDetail" ToRole="DailyMeal" />
-          <Property Name="real_meal_start" Type="DateTime" Precision="0" />
-          <Property Name="real_meal_end" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="ProductRecord" Relationship="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" FromRole="RecordDetail" ToRole="ProductRecord" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="RecordDetail" ToRole="Product" />
         </EntityType>
         <Association Name="FK_RecordDetail_CustomerBorn">
           <End Type="C43A0_Mani520Model.CustomerBorn" Role="CustomerBorn" Multiplicity="1" />
@@ -2660,15 +2796,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RecordDetail_Product">
-          <End Type="C43A0_Mani520Model.Product" Role="Product" Multiplicity="1" />
-          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="*" />
+        <Association Name="FK_DailyMeal_RecordDetail">
+          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="product_id" />
+            <Principal Role="RecordDetail">
+              <PropertyRef Name="record_deatil_id" />
             </Principal>
-            <Dependent Role="RecordDetail">
-              <PropertyRef Name="product_id" />
+            <Dependent Role="DailyMeal">
+              <PropertyRef Name="record_deatil_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2684,19 +2820,76 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DailyMeal">
+        <EntityType Name="AspNetUsers">
           <Key>
-            <PropertyRef Name="daily_meal_id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="daily_meal_id" Type="Int32" Nullable="false" />
-          <Property Name="record_deatil_id" Type="Int32" Nullable="false" />
-          <Property Name="customer_id" Type="Int32" Nullable="false" />
-          <Property Name="born_id" Type="Int32" Nullable="false" />
-          <Property Name="product_type" Type="Int32" Nullable="false" />
-          <Property Name="meal_day" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="breakfast_state" Type="Int32" Nullable="false" />
-          <Property Name="lunch_state" Type="Int32" Nullable="false" />
-          <Property Name="dinner_state" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="department_id" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="user_name_c" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="sort" Type="Int32" Nullable="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Company" Relationship="C43A0_Mani520Model.FK_AspNetUsers_Company" FromRole="AspNetUsers" ToRole="Company" />
+          <NavigationProperty Name="Department" Relationship="C43A0_Mani520Model.FK_AspNetUsers_Department" FromRole="AspNetUsers" ToRole="Department" />
+          <NavigationProperty Name="AspNetRoles" Relationship="C43A0_Mani520Model.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <Property Name="company_sn" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="company_name" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="C43A0_Mani520Model.FK_AspNetUsers_Company" FromRole="Company" ToRole="AspNetUsers" />
+        </EntityType>
+        <Association Name="FK_AspNetUsers_Company">
+          <End Type="C43A0_Mani520Model.Company" Role="Company" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="company_id" />
+            </Principal>
+            <Dependent Role="AspNetUsers">
+              <PropertyRef Name="company_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AspNetUsers_Department">
+          <End Type="C43A0_Mani520Model.Department" Role="Department" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="department_id" />
+            </Principal>
+            <Dependent Role="AspNetUsers">
+              <PropertyRef Name="department_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="C43A0_Mani520Model.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
+          <End Type="C43A0_Mani520Model.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
+        </Association>
+        <EntityType Name="MealID">
+          <Key>
+            <PropertyRef Name="meal_id" />
+            <PropertyRef Name="company_id" />
+          </Key>
+          <Property Name="meal_id" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="i_Use" Type="Boolean" Nullable="false" />
           <Property Name="i_Hide" Type="Boolean" Nullable="false" />
           <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="i_InsertDeptID" Type="Int32" />
@@ -2705,31 +2898,202 @@
           <Property Name="i_UpdateDeptID" Type="Int32" />
           <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
           <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" FromRole="DailyMeal" ToRole="RecordDetail" />
-          <NavigationProperty Name="DailyMealChangeRecord" Relationship="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" FromRole="DailyMeal" ToRole="DailyMealChangeRecord" />
-          <Property Name="meal_id" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
         </EntityType>
-        <Association Name="FK_DailyMeal_RecordDetail">
-          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="1" />
-          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="*" />
+        <EntityType Name="Draft">
+          <Key>
+            <PropertyRef Name="draft_id" />
+          </Key>
+          <Property Name="draft_id" Type="Int32" Nullable="false" />
+          <Property Name="draft_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="draft_title" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="draft_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sort" Type="Int32" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SendMsgOfCustomer">
+          <Key>
+            <PropertyRef Name="customer_id" />
+            <PropertyRef Name="send_msg_id" />
+          </Key>
+          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="send_msg_id" Type="Int32" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <Property Name="isSend" Type="Boolean" />
+          <Property Name="isRead" Type="Boolean" />
+          <Property Name="date_send" Type="DateTime" Precision="3" />
+          <Property Name="remark" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" FromRole="SendMsgOfCustomer" ToRole="Customer" />
+          <NavigationProperty Name="SendMsg" Relationship="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" FromRole="SendMsgOfCustomer" ToRole="SendMsg" />
+        </EntityType>
+        <Association Name="FK_SendMsgOfCustomer_Customer">
+          <End Type="C43A0_Mani520Model.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.SendMsgOfCustomer" Role="SendMsgOfCustomer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RecordDetail">
-              <PropertyRef Name="record_deatil_id" />
+            <Principal Role="Customer">
+              <PropertyRef Name="customer_id" />
             </Principal>
-            <Dependent Role="DailyMeal">
-              <PropertyRef Name="record_deatil_id" />
+            <Dependent Role="SendMsgOfCustomer">
+              <PropertyRef Name="customer_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DailyMealChangeRecord_DailyMeal">
-          <End Type="C43A0_Mani520Model.DailyMeal" Role="DailyMeal" Multiplicity="1" />
-          <End Type="C43A0_Mani520Model.DailyMealChangeRecord" Role="DailyMealChangeRecord" Multiplicity="*" />
+        <Association Name="FK_SendMsgOfCustomer_SendMsg">
+          <End Type="C43A0_Mani520Model.SendMsg" Role="SendMsg" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.SendMsgOfCustomer" Role="SendMsgOfCustomer" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="DailyMeal">
-              <PropertyRef Name="daily_meal_id" />
+            <Principal Role="SendMsg">
+              <PropertyRef Name="send_msg_id" />
             </Principal>
-            <Dependent Role="DailyMealChangeRecord">
-              <PropertyRef Name="daily_meal_id" />
+            <Dependent Role="SendMsgOfCustomer">
+              <PropertyRef Name="send_msg_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="product_type" Type="Int32" Nullable="false" />
+          <Property Name="product_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Double" Nullable="false" />
+          <Property Name="breakfast_price" Type="Int32" Nullable="false" />
+          <Property Name="lunch_price" Type="Int32" Nullable="false" />
+          <Property Name="dinner_price" Type="Int32" Nullable="false" />
+          <Property Name="meal_type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="standard" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="sort" Type="Int32" />
+          <Property Name="memo" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RecordDetail" Relationship="C43A0_Mani520Model.FK_RecordDetail_Product" FromRole="Product" ToRole="RecordDetail" />
+        </EntityType>
+        <Association Name="FK_RecordDetail_Product">
+          <End Type="C43A0_Mani520Model.Product" Role="Product" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.RecordDetail" Role="RecordDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="RecordDetail">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MenuCopy">
+          <Key>
+            <PropertyRef Name="menu_copy_id" />
+          </Key>
+          <Property Name="menu_copy_id" Type="Int32" Nullable="false" />
+          <Property Name="menu_copy_template_id" Type="Int32" Nullable="false" />
+          <Property Name="day" Type="Int32" Nullable="false" />
+          <Property Name="meal_type" Type="Int32" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MenuCopyTemplate" Relationship="C43A0_Mani520Model.FK_MenuCopy_MenuCopyTemplate" FromRole="MenuCopy" ToRole="MenuCopyTemplate" />
+          <NavigationProperty Name="MenuCopyOfConstitute" Relationship="C43A0_Mani520Model.FK_MenuCopyOfConstitute_MenuCopy" FromRole="MenuCopy" ToRole="MenuCopyOfConstitute" />
+        </EntityType>
+        <EntityType Name="MenuCopyOfConstitute">
+          <Key>
+            <PropertyRef Name="constitute_id" />
+            <PropertyRef Name="menu_copy_id" />
+          </Key>
+          <Property Name="constitute_id" Type="Int32" Nullable="false" />
+          <Property Name="menu_copy_id" Type="Int32" Nullable="false" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ConstituteFood" Relationship="C43A0_Mani520Model.FK_MenuCopyOfConstitute_ConstituteFood" FromRole="MenuCopyOfConstitute" ToRole="ConstituteFood" />
+          <NavigationProperty Name="MenuCopy" Relationship="C43A0_Mani520Model.FK_MenuCopyOfConstitute_MenuCopy" FromRole="MenuCopyOfConstitute" ToRole="MenuCopy" />
+        </EntityType>
+        <EntityType Name="MenuCopyTemplate">
+          <Key>
+            <PropertyRef Name="menu_copy_template_id" />
+          </Key>
+          <Property Name="menu_copy_template_id" Type="Int32" Nullable="false" />
+          <Property Name="template_name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="memo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="i_Hide" Type="Boolean" Nullable="false" />
+          <Property Name="i_InsertUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_InsertDeptID" Type="Int32" />
+          <Property Name="i_InsertDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_UpdateUserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="i_UpdateDeptID" Type="Int32" />
+          <Property Name="i_UpdateDateTime" Type="DateTime" Precision="3" />
+          <Property Name="i_Lang" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="company_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MenuCopy" Relationship="C43A0_Mani520Model.FK_MenuCopy_MenuCopyTemplate" FromRole="MenuCopyTemplate" ToRole="MenuCopy" />
+        </EntityType>
+        <Association Name="FK_MenuCopyOfConstitute_ConstituteFood">
+          <End Type="C43A0_Mani520Model.ConstituteFood" Role="ConstituteFood" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.MenuCopyOfConstitute" Role="MenuCopyOfConstitute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConstituteFood">
+              <PropertyRef Name="constitute_id" />
+            </Principal>
+            <Dependent Role="MenuCopyOfConstitute">
+              <PropertyRef Name="constitute_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuCopy_MenuCopyTemplate">
+          <End Type="C43A0_Mani520Model.MenuCopyTemplate" Role="MenuCopyTemplate" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.MenuCopy" Role="MenuCopy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuCopyTemplate">
+              <PropertyRef Name="menu_copy_template_id" />
+            </Principal>
+            <Dependent Role="MenuCopy">
+              <PropertyRef Name="menu_copy_template_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MenuCopyOfConstitute_MenuCopy">
+          <End Type="C43A0_Mani520Model.MenuCopy" Role="MenuCopy" Multiplicity="1" />
+          <End Type="C43A0_Mani520Model.MenuCopyOfConstitute" Role="MenuCopyOfConstitute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuCopy">
+              <PropertyRef Name="menu_copy_id" />
+            </Principal>
+            <Dependent Role="MenuCopyOfConstitute">
+              <PropertyRef Name="menu_copy_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2747,30 +3111,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.AspNetUsers">
-              <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="department_id" ColumnName="department_id" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="user_name_c" ColumnName="user_name_c" />
-                <ScalarProperty Name="sort" ColumnName="sort" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Department">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.Department">
               <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="department_id" ColumnName="department_id" />
                 <ScalarProperty Name="department_name" ColumnName="department_name" />
                 <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
@@ -2864,14 +3208,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="C43A0_Mani520Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="Id" ColumnName="UserId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="MenuRole" TypeName="C43A0_Mani520Model.MenuRole" StoreEntitySet="MenuRole">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="role_id" />
@@ -2880,19 +3216,10 @@
               <ScalarProperty Name="menu_id" ColumnName="menu_id" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="MealID">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.MealID">
-              <MappingFragment StoreEntitySet="MealID">
-                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="i_Use" ColumnName="i_Use" />
-                <ScalarProperty Name="memo" ColumnName="memo" />
-                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Customer">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -2926,6 +3253,7 @@
           <EntitySetMapping Name="CustomerBorn">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.CustomerBorn">
               <MappingFragment StoreEntitySet="CustomerBorn">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -2965,6 +3293,7 @@
           <EntitySetMapping Name="All_Category_L1">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.All_Category_L1">
               <MappingFragment StoreEntitySet="All_Category_L1">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -2983,6 +3312,7 @@
           <EntitySetMapping Name="All_Category_L2">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.All_Category_L2">
               <MappingFragment StoreEntitySet="All_Category_L2">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3002,6 +3332,7 @@
           <EntitySetMapping Name="ElementFood">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.ElementFood">
               <MappingFragment StoreEntitySet="ElementFood">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3021,6 +3352,7 @@
           <EntitySetMapping Name="ConstituteFood">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.ConstituteFood">
               <MappingFragment StoreEntitySet="ConstituteFood">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3040,6 +3372,7 @@
           <EntitySetMapping Name="ConstituteOfElement">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.ConstituteOfElement">
               <MappingFragment StoreEntitySet="ConstituteOfElement">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3056,6 +3389,7 @@
           <EntitySetMapping Name="DailyMenu">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMenu">
               <MappingFragment StoreEntitySet="DailyMenu">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3073,6 +3407,7 @@
           <EntitySetMapping Name="DailyMenuOfConstitute">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMenuOfConstitute">
               <MappingFragment StoreEntitySet="DailyMenuOfConstitute">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3089,6 +3424,7 @@
           <EntitySetMapping Name="DietaryNeed">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.DietaryNeed">
               <MappingFragment StoreEntitySet="DietaryNeed">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3112,6 +3448,7 @@
           <EntitySetMapping Name="DietaryNeedOfElement">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.DietaryNeedOfElement">
               <MappingFragment StoreEntitySet="DietaryNeedOfElement">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3128,6 +3465,7 @@
           <EntitySetMapping Name="Activity">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.Activity">
               <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3149,6 +3487,7 @@
           <EntitySetMapping Name="CustomerNeed">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.CustomerNeed">
               <MappingFragment StoreEntitySet="CustomerNeed">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3168,6 +3507,7 @@
           <EntitySetMapping Name="CustomerOfDietaryNeed">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.CustomerOfDietaryNeed">
               <MappingFragment StoreEntitySet="CustomerOfDietaryNeed">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3181,28 +3521,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Draft">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.Draft">
-              <MappingFragment StoreEntitySet="Draft">
-                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
-                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
-                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
-                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
-                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
-                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
-                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
-                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="sort" ColumnName="sort" />
-                <ScalarProperty Name="draft_content" ColumnName="draft_content" />
-                <ScalarProperty Name="draft_title" ColumnName="draft_title" />
-                <ScalarProperty Name="draft_name" ColumnName="draft_name" />
-                <ScalarProperty Name="draft_id" ColumnName="draft_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ProductRecord">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.ProductRecord">
               <MappingFragment StoreEntitySet="ProductRecord">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3224,6 +3546,7 @@
           <EntitySetMapping Name="GiftRecord">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.GiftRecord">
               <MappingFragment StoreEntitySet="GiftRecord">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3246,6 +3569,7 @@
           <EntitySetMapping Name="ContactSchedule">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.ContactSchedule">
               <MappingFragment StoreEntitySet="ContactSchedule">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3264,6 +3588,7 @@
           <EntitySetMapping Name="ScheduleDetail">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.ScheduleDetail">
               <MappingFragment StoreEntitySet="ScheduleDetail">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3285,6 +3610,7 @@
           <EntitySetMapping Name="DeatilTelRecord">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.DeatilTelRecord">
               <MappingFragment StoreEntitySet="DeatilTelRecord">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3301,25 +3627,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SendMsgOfCustomer">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.SendMsgOfCustomer">
-              <MappingFragment StoreEntitySet="SendMsgOfCustomer">
-                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
-                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
-                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
-                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
-                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
-                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
-                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
-                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="send_msg_id" ColumnName="send_msg_id" />
-                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SendMsg">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.SendMsg">
               <MappingFragment StoreEntitySet="SendMsg">
+                <ScalarProperty Name="real_senddatetime" ColumnName="real_senddatetime" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3345,6 +3657,7 @@
           <EntitySetMapping Name="DailyMealChangeRecord">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMealChangeRecord">
               <MappingFragment StoreEntitySet="DailyMealChangeRecord">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3363,30 +3676,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Product">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
-                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
-                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
-                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
-                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
-                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
-                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
-                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="memo" ColumnName="memo" />
-                <ScalarProperty Name="sort" ColumnName="sort" />
-                <ScalarProperty Name="standard" ColumnName="standard" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="product_name" ColumnName="product_name" />
-                <ScalarProperty Name="product_type" ColumnName="product_type" />
-                <ScalarProperty Name="product_id" ColumnName="product_id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AccountsPayableDetail">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.AccountsPayableDetail">
               <MappingFragment StoreEntitySet="AccountsPayableDetail">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3409,6 +3702,7 @@
           <EntitySetMapping Name="AccountsPayable">
             <EntityTypeMapping TypeName="C43A0_Mani520Model.AccountsPayable">
               <MappingFragment StoreEntitySet="AccountsPayable">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3427,11 +3721,11 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="RecordDetail">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.RecordDetail">
-              <MappingFragment StoreEntitySet="RecordDetail">
-                <ScalarProperty Name="real_meal_end" ColumnName="real_meal_end" />
-                <ScalarProperty Name="real_meal_start" ColumnName="real_meal_start" />
+          <EntitySetMapping Name="DailyMeal">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMeal">
+              <MappingFragment StoreEntitySet="DailyMeal">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3440,11 +3734,38 @@
                 <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
                 <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
                 <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="dinner_state" ColumnName="dinner_state" />
+                <ScalarProperty Name="lunch_state" ColumnName="lunch_state" />
+                <ScalarProperty Name="breakfast_state" ColumnName="breakfast_state" />
+                <ScalarProperty Name="meal_day" ColumnName="meal_day" />
+                <ScalarProperty Name="product_type" ColumnName="product_type" />
+                <ScalarProperty Name="born_id" ColumnName="born_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="record_deatil_id" ColumnName="record_deatil_id" />
+                <ScalarProperty Name="daily_meal_id" ColumnName="daily_meal_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecordDetail">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.RecordDetail">
+              <MappingFragment StoreEntitySet="RecordDetail">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="tryout_mealtype" ColumnName="tryout_mealtype" />
                 <ScalarProperty Name="is_release" ColumnName="is_release" />
                 <ScalarProperty Name="meal_memo" ColumnName="meal_memo" />
                 <ScalarProperty Name="real_dinner" ColumnName="real_dinner" />
                 <ScalarProperty Name="real_lunch" ColumnName="real_lunch" />
                 <ScalarProperty Name="real_breakfast" ColumnName="real_breakfast" />
+                <ScalarProperty Name="real_meal_end" ColumnName="real_meal_end" />
+                <ScalarProperty Name="real_meal_start" ColumnName="real_meal_start" />
                 <ScalarProperty Name="real_estimate_dinner" ColumnName="real_estimate_dinner" />
                 <ScalarProperty Name="real_estimate_lunch" ColumnName="real_estimate_lunch" />
                 <ScalarProperty Name="real_estimate_breakfast" ColumnName="real_estimate_breakfast" />
@@ -3472,10 +3793,50 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="DailyMeal">
-            <EntityTypeMapping TypeName="C43A0_Mani520Model.DailyMeal">
-              <MappingFragment StoreEntitySet="DailyMeal">
-                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.AspNetUsers">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="user_name_c" ColumnName="user_name_c" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="department_id" ColumnName="department_id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Company">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="company_name" ColumnName="company_name" />
+                <ScalarProperty Name="company_sn" ColumnName="company_sn" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="C43A0_Mani520Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="MealID">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.MealID">
+              <MappingFragment StoreEntitySet="MealID">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
                 <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
                 <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
                 <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
@@ -3484,15 +3845,130 @@
                 <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
                 <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
                 <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
-                <ScalarProperty Name="dinner_state" ColumnName="dinner_state" />
-                <ScalarProperty Name="lunch_state" ColumnName="lunch_state" />
-                <ScalarProperty Name="breakfast_state" ColumnName="breakfast_state" />
-                <ScalarProperty Name="meal_day" ColumnName="meal_day" />
-                <ScalarProperty Name="product_type" ColumnName="product_type" />
-                <ScalarProperty Name="born_id" ColumnName="born_id" />
+                <ScalarProperty Name="i_Use" ColumnName="i_Use" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="meal_id" ColumnName="meal_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Draft">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.Draft">
+              <MappingFragment StoreEntitySet="Draft">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="draft_content" ColumnName="draft_content" />
+                <ScalarProperty Name="draft_title" ColumnName="draft_title" />
+                <ScalarProperty Name="draft_name" ColumnName="draft_name" />
+                <ScalarProperty Name="draft_id" ColumnName="draft_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SendMsgOfCustomer">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.SendMsgOfCustomer">
+              <MappingFragment StoreEntitySet="SendMsgOfCustomer">
+                <ScalarProperty Name="remark" ColumnName="remark" />
+                <ScalarProperty Name="date_send" ColumnName="date_send" />
+                <ScalarProperty Name="isRead" ColumnName="isRead" />
+                <ScalarProperty Name="isSend" ColumnName="isSend" />
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="send_msg_id" ColumnName="send_msg_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-                <ScalarProperty Name="record_deatil_id" ColumnName="record_deatil_id" />
-                <ScalarProperty Name="daily_meal_id" ColumnName="daily_meal_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="sort" ColumnName="sort" />
+                <ScalarProperty Name="standard" ColumnName="standard" />
+                <ScalarProperty Name="meal_type" ColumnName="meal_type" />
+                <ScalarProperty Name="dinner_price" ColumnName="dinner_price" />
+                <ScalarProperty Name="lunch_price" ColumnName="lunch_price" />
+                <ScalarProperty Name="breakfast_price" ColumnName="breakfast_price" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="product_name" ColumnName="product_name" />
+                <ScalarProperty Name="product_type" ColumnName="product_type" />
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuCopy">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.MenuCopy">
+              <MappingFragment StoreEntitySet="MenuCopy">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="meal_type" ColumnName="meal_type" />
+                <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="menu_copy_template_id" ColumnName="menu_copy_template_id" />
+                <ScalarProperty Name="menu_copy_id" ColumnName="menu_copy_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuCopyOfConstitute">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.MenuCopyOfConstitute">
+              <MappingFragment StoreEntitySet="MenuCopyOfConstitute">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="menu_copy_id" ColumnName="menu_copy_id" />
+                <ScalarProperty Name="constitute_id" ColumnName="constitute_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuCopyTemplate">
+            <EntityTypeMapping TypeName="C43A0_Mani520Model.MenuCopyTemplate">
+              <MappingFragment StoreEntitySet="MenuCopyTemplate">
+                <ScalarProperty Name="company_id" ColumnName="company_id" />
+                <ScalarProperty Name="i_Lang" ColumnName="i_Lang" />
+                <ScalarProperty Name="i_UpdateDateTime" ColumnName="i_UpdateDateTime" />
+                <ScalarProperty Name="i_UpdateDeptID" ColumnName="i_UpdateDeptID" />
+                <ScalarProperty Name="i_UpdateUserID" ColumnName="i_UpdateUserID" />
+                <ScalarProperty Name="i_InsertDateTime" ColumnName="i_InsertDateTime" />
+                <ScalarProperty Name="i_InsertDeptID" ColumnName="i_InsertDeptID" />
+                <ScalarProperty Name="i_InsertUserID" ColumnName="i_InsertUserID" />
+                <ScalarProperty Name="i_Hide" ColumnName="i_Hide" />
+                <ScalarProperty Name="memo" ColumnName="memo" />
+                <ScalarProperty Name="template_name" ColumnName="template_name" />
+                <ScalarProperty Name="menu_copy_template_id" ColumnName="menu_copy_template_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

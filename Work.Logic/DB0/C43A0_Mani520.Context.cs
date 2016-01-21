@@ -26,7 +26,6 @@ namespace ProcCore.Business.DB0
         }
     
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<i_Currency> i_Currency { get; set; }
         public virtual DbSet<i_IDX> i_IDX { get; set; }
@@ -35,7 +34,6 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<i_SN> i_SN { get; set; }
         public virtual DbSet<i_UserLoginLog> i_UserLoginLog { get; set; }
         public virtual DbSet<Menu> Menu { get; set; }
-        public virtual DbSet<MealID> MealID { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<CustomerBorn> CustomerBorn { get; set; }
         public virtual DbSet<All_Category_L1> All_Category_L1 { get; set; }
@@ -50,19 +48,25 @@ namespace ProcCore.Business.DB0
         public virtual DbSet<Activity> Activity { get; set; }
         public virtual DbSet<CustomerNeed> CustomerNeed { get; set; }
         public virtual DbSet<CustomerOfDietaryNeed> CustomerOfDietaryNeed { get; set; }
-        public virtual DbSet<Draft> Draft { get; set; }
         public virtual DbSet<ProductRecord> ProductRecord { get; set; }
         public virtual DbSet<GiftRecord> GiftRecord { get; set; }
         public virtual DbSet<ContactSchedule> ContactSchedule { get; set; }
         public virtual DbSet<ScheduleDetail> ScheduleDetail { get; set; }
         public virtual DbSet<DeatilTelRecord> DeatilTelRecord { get; set; }
-        public virtual DbSet<SendMsgOfCustomer> SendMsgOfCustomer { get; set; }
         public virtual DbSet<SendMsg> SendMsg { get; set; }
         public virtual DbSet<DailyMealChangeRecord> DailyMealChangeRecord { get; set; }
-        public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<AccountsPayableDetail> AccountsPayableDetail { get; set; }
         public virtual DbSet<AccountsPayable> AccountsPayable { get; set; }
-        public virtual DbSet<RecordDetail> RecordDetail { get; set; }
         public virtual DbSet<DailyMeal> DailyMeal { get; set; }
+        public virtual DbSet<RecordDetail> RecordDetail { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<Company> Company { get; set; }
+        public virtual DbSet<MealID> MealID { get; set; }
+        public virtual DbSet<Draft> Draft { get; set; }
+        public virtual DbSet<SendMsgOfCustomer> SendMsgOfCustomer { get; set; }
+        public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<MenuCopy> MenuCopy { get; set; }
+        public virtual DbSet<MenuCopyOfConstitute> MenuCopyOfConstitute { get; set; }
+        public virtual DbSet<MenuCopyTemplate> MenuCopyTemplate { get; set; }
     }
 }

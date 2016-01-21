@@ -21,7 +21,9 @@ namespace ProcCore.Business
         Activity, GiftRecord,
         ContactSchedule, ScheduleDetail, DeatilTelRecord, SendMsg, Draft,
         AccountsPayable, AccountsPayableDetail,
-        All_Category_L1, All_Category_L2
+        All_Category_L1, All_Category_L2,
+        Company, Menu,
+        MenuCopyTemplate, MenuCopy, MenuCopyOfConstitute
     }
     public enum SNType
     {
@@ -65,6 +67,7 @@ namespace ProcCore.Business.LogicConect
         protected TransactionScope tx;
         private const string DatabaseName = "C43A0_Mani520";
         public int DepartmentId { get; set; }
+        public int CompanyId { get; set; }
         public string Lang { get; set; }
         public string IP { get; set; }
         public string AspUserID { get; set; }

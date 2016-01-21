@@ -226,6 +226,12 @@ var GirdForm = React.createClass({
 		this.setState({fieldData:obj});
 	},
 	changeDraftValue:function(e){
+		if(e.target.value==''){
+			var obj = this.state.fieldData;
+			obj.draft_id = '';
+			this.setState({fieldData:obj});
+			return;
+		}
 		jqGet(gb_approot + 'api/GetAction/GetDraftData',{draft_id:e.target.value})
 		.done(function(data, textStatus, jqXHRdata) {
 			var obj = this.state.fieldData;

@@ -114,7 +114,8 @@ var GridNavPage = React.createClass({
 			UpdateType:null,
 			deleteSubmit:null,
 			showAdd:true,
-			showDelete:true
+			showDelete:true,
+			ver:1
 		};
 	},
 	firstPage:function(){
@@ -155,7 +156,7 @@ var GridNavPage = React.createClass({
 
 		}
 		var oper = null;
-
+		if(this.props.ver==1){
 		oper = (
 			<div className="table-footer">
 			    <div className="pull-left">
@@ -198,6 +199,51 @@ var GridNavPage = React.createClass({
 			    </ul>
 			</div>
 		);
+		}else if(this.props.ver==2){
+		oper = (
+			<div className="table-footer">
+			    <div className="pull-left">
+			        {setAddButton}
+			        {setDeleteButton}
+			    </div>
+			    <small className="pull-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+
+			    <ul className="pager">
+			        <li>
+			            <a href="#" title="移至第一頁" tabIndex="-1" onClick={this.firstPage}>
+			                <i className="fa-angle-double-left"></i>
+			            </a>
+			        </li> { } 
+			        <li>
+			            <a href="#" title="上一頁" tabIndex="-1" onClick={this.prvePage}>
+			                <i className="fa-angle-left"></i>
+			            </a>
+			        </li> { } 
+			        <li className="form-inline">
+			            <div className="form-group">
+			                <label>第</label>
+			                {' '}
+			                <input className="form-control text-center input-sm" type="number" min="1" tabIndex="-1" value={this.props.NowPage}
+			                       onChange={this.jumpPage} />
+			                {' '}
+			                <label>頁，共{this.props.TotalPage}頁</label>
+			            </div>
+			        </li> { } 
+			        <li>
+			            <a href="#" title="@Resources.Res.NextPage" tabIndex="-1" onClick={this.nextPage}>
+			                <i className="fa-angle-right"></i>
+			            </a>
+			        </li> { } 
+			        <li>
+			            <a href="#" title="移至最後一頁" tabIndex="-1" onClick={this.lastPage}>
+			                <i className="fa-angle-double-right"></i>
+			            </a>
+			        </li>
+			    </ul>
+			</div>
+		);			
+		}
+
 
 		return oper;
 	}
@@ -391,7 +437,8 @@ var InputDate = React.createClass({
 			onChange:null,
 			field_name:null,
 			required:false,
-			disabled:false
+			disabled:false,
+			ver:1
 		};
 	},
 	componentDidMount:function(){
@@ -414,8 +461,24 @@ var InputDate = React.createClass({
 		this.props.onChange(this.props.field_name,e);
 	},
 	render:function(){
-
-		return (
+		var out_html=null;
+		if(this.props.ver==1){
+			out_html=(
+			<div>
+				<input 
+					type="date" 
+					className="form-control datetimepicker"
+					id={this.props.id}
+					name={this.props.field_name}
+					value={this.props.value!=undefined ? moment(this.props.value).format('YYYY-MM-DD'):''}
+					onChange={this.onChange}
+					required={this.props.required}
+					disabled={this.props.disabled} />
+					<i className="fa-calendar form-control-feedback"></i>
+			</div>
+				);
+		}else if(this.props.ver==2){
+		out_html=(
 			<div>
 				<input 
 					type="date" 
@@ -428,7 +491,10 @@ var InputDate = React.createClass({
 					disabled={this.props.disabled} />
 					<i className="fa-calendar form-control-feedback"></i>
 			</div>
-			);
+				);
+		}
+
+		return out_html;
 		}
 });
 

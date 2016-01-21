@@ -17,16 +17,16 @@ namespace ProcCore.Business.DB0
     {
         public AspNetRoles()
         {
-            this.AspNetUsers = new HashSet<AspNetUsers>();
             this.Menu = new HashSet<Menu>();
+            this.AspNetUsers = new HashSet<AspNetUsers>();
         }
     
         public string Id { get; set; }
         public string Name { get; set; }
     
     	[JsonIgnore]
-        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
-    	[JsonIgnore]
         public virtual ICollection<Menu> Menu { get; set; }
+    	[JsonIgnore]
+        public virtual ICollection<AspNetUsers> AspNetUsers { get; set; }
     }
 }

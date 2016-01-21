@@ -117,40 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="id" xml:space="preserve">
-    <value>代碼</value>
+  <data name="BaseData" xml:space="preserve">
+    <value>基本資料填寫</value>
   </data>
-  <data name="product_state" xml:space="preserve">
-    <value>狀態</value>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>確認密碼</value>
   </data>
-  <data name="product_sn" xml:space="preserve">
-    <value>產品序號</value>
+  <data name="Email" xml:space="preserve">
+    <value>電子郵件</value>
   </data>
-  <data name="product_name" xml:space="preserve">
-    <value>品名</value>
+  <data name="Id" xml:space="preserve">
+    <value>序號</value>
   </data>
-  <data name="count_unit_name" xml:space="preserve">
-    <value>計算單位</value>
+  <data name="Password" xml:space="preserve">
+    <value>密碼</value>
   </data>
-  <data name="import_inner_price_now" xml:space="preserve">
-    <value>廠內進價</value>
+  <data name="Role" xml:space="preserve">
+    <value>角色設定</value>
   </data>
-  <data name="product_picture" xml:space="preserve">
-    <value>產品圖片</value>
-  </data>
-  <data name="export_price_now" xml:space="preserve">
-    <value>售價</value>
-  </data>
-  <data name="import_outer_price_now" xml:space="preserve">
-    <value>廠外進價</value>
-  </data>
-  <data name="is_tear" xml:space="preserve">
-    <value>折解</value>
-  </data>
-  <data name="category_l1_name" xml:space="preserve">
-    <value>產品分類</value>
-  </data>
-  <data name="product_category_l1_id" xml:space="preserve">
-    <value>產品分類</value>
+  <data name="UserName" xml:space="preserve">
+    <value>登錄帳號</value>
   </data>
 </root>

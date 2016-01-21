@@ -28,7 +28,9 @@ function isValidJSONDate(value, userFormat) {
                 y = date[i];
         }
         ;
-        return (m > 0 && m < 13 && y && y.length === 4 && d > 0 && d <= (new Date(y, m, 0)).getDate());
+        return (m > 0 && m < 13 &&
+            y && y.length === 4 &&
+            d > 0 && d <= (new Date(y, m, 0)).getDate());
     };
     return isDate(theDate, theFormat);
 }
@@ -46,9 +48,8 @@ function obj_prop_date(obj) {
     }
     return obj;
 }
-function stand_date(getDateStr) {
-    var d = new Date(getDateStr);
-    var r = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate;
+function stand_date(d) {
+    var r = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
     return r;
 }
 function format_Date(date) {
@@ -180,7 +181,12 @@ function getBrower() {
     var Sys = {};
     var ua = navigator.userAgent.toLowerCase();
     var s;
-    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] : (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] : (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] : (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] : (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] : (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys.ie = s[1] :
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+            (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                    (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
     if (Sys.ie)
         return ('IE: ' + Sys.ie);
     if (Sys.firefox)
@@ -255,7 +261,9 @@ function MealCount(Parm, B, L, D) {
     return parseFloat(total.toFixed(2));
 }
 function addDate(date, days) {
-    var r = new Date(date.setDate(date.getDate() + days));
+    var a = date.valueOf();
+    a = a + (days * 24 * 60 * 60 * 1000);
+    var r = new Date(a);
     return r;
 }
 function formatMoney(s, d_point) {
@@ -277,4 +285,7 @@ function formatMoney(s, d_point) {
         }
     }
     return s;
+}
+function roundX(val, precision) {
+    return Math.round(Math.round(val * Math.pow(10, (precision || 0) + 1)) / 10) / Math.pow(10, (precision || 0));
 }

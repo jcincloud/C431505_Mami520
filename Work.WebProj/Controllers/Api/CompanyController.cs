@@ -11,40 +11,54 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class ProductCategoryController : ajaxApi<ProductCategory, q_ProductCategory>
+    public class CompanyController : ajaxApi<Company, q_Company>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                item = await db0.ProductCategory.FindAsync(id);
-                r = new ResultInfo<ProductCategory>() { data = item };
+                item = await db0.Company.FindAsync(id);
+                r = new ResultInfo<Company>() { data = item };
             }
 
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_ProductCategory q)
+        public async Task<IHttpActionResult> Get([FromUri]q_Company q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var items = db0.ProductCategory
-                    .OrderBy(x => x.sort)
-                    .Select(x => new m_ProductCategory()
-                    {
-                        product_category_id = x.product_category_id,
-                        product_category_name = x.product_category_name,
-                        sort = x.sort
-                    }).Where(x => x.product_category_id > 0);
+                var qr = db0.Company
+                    .OrderByDescending(x => x.company_id).AsQueryable();
+
+
+                if (q.word != null)
+                {
+                    qr = qr.Where(x => x.company_name.Contains(q.word));
+                }
+
+                if (q.i_Hide != null)
+                {
+                    qr = qr.Where(x => x.i_Hide == q.i_Hide);
+                }
+
+                var result = qr.Select(x => new m_Company()
+                {
+                    company_id = x.company_id,
+                    company_sn=x.company_sn,
+                    company_name = x.company_name,
+                    i_Hide=x.i_Hide
+                });
+
 
                 int page = (q.page == null ? 1 : (int)q.page);
-                int startRecord = PageCount.PageInfo(page, this.defPageSize, items.Count());
-                var resultItems = await items.Skip(startRecord).Take(this.defPageSize).ToListAsync();
+                int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
+                var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
 
-                return Ok<GridInfo<m_ProductCategory>>(new GridInfo<m_ProductCategory>()
+                return Ok<GridInfo<m_Company>>(new GridInfo<m_Company>()
                 {
-                    rows = resultItems,
+                    rows = segment,
                     total = PageCount.TotalPage,
                     page = PageCount.Page,
                     records = PageCount.RecordCount,
@@ -54,40 +68,41 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]ProductCategory md)
+        public async Task<IHttpActionResult> Put([FromBody]Company md)
         {
-            ResultInfo rAjaxResult = new ResultInfo();
+            ResultInfo r = new ResultInfo();
             try
             {
                 db0 = getDB0();
 
-                item = await db0.ProductCategory.FindAsync(md.product_category_id);
-                item.product_category_name = md.product_category_name;
-                item.sort = md.sort;
+                item = await db0.Company.FindAsync(md.company_id);
+                item.company_name = md.company_name;
+                item.company_sn = md.company_sn;
+                item.i_Hide = md.i_Hide;
 
                 await db0.SaveChangesAsync();
-                rAjaxResult.result = true;
+                r.result = true;
             }
             catch (Exception ex)
             {
-                rAjaxResult.result = false;
-                rAjaxResult.message = ex.ToString();
+                r.result = false;
+                r.message = ex.ToString();
             }
             finally
             {
                 db0.Dispose();
             }
-            return Ok(rAjaxResult);
+            return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]ProductCategory md)
+        public async Task<IHttpActionResult> Post([FromBody]Company md)
         {
-            md.product_category_id = GetNewId(ProcCore.Business.CodeTable.Base);
-            ResultInfo rAjaxResult = new ResultInfo();
+            md.company_id = GetNewId(ProcCore.Business.CodeTable.Company);
+            ResultInfo r = new ResultInfo();
             if (!ModelState.IsValid)
             {
-                rAjaxResult.message = ModelStateErrorPack();
-                rAjaxResult.result = false;
-                return Ok(rAjaxResult);
+                r.message = ModelStateErrorPack();
+                r.result = false;
+                return Ok(r);
             }
 
             try
@@ -95,19 +110,19 @@ namespace DotWeb.Api
                 #region working a
                 db0 = getDB0();
 
-                db0.ProductCategory.Add(md);
+                db0.Company.Add(md);
                 await db0.SaveChangesAsync();
 
-                rAjaxResult.result = true;
-                rAjaxResult.id = md.product_category_id;
-                return Ok(rAjaxResult);
+                r.result = true;
+                r.id = md.company_id;
+                return Ok(r);
                 #endregion
             }
             catch (Exception ex)
             {
-                rAjaxResult.result = false;
-                rAjaxResult.message = ex.Message;
-                return Ok(rAjaxResult);
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
             }
             finally
             {
@@ -123,11 +138,9 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-
-                    item = new ProductCategory() { product_category_id = id };
-                    db0.ProductCategory.Attach(item);
-                    db0.ProductCategory.Remove(item);
-
+                    item = new Company() { company_id = id };
+                    db0.Company.Attach(item);
+                    db0.Company.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();

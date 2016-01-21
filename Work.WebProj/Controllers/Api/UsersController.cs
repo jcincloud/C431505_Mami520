@@ -42,29 +42,63 @@ namespace DotWeb.Api
         public async Task<IHttpActionResult> Get([FromUri]q_AspNetUsers q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
-
-            var items = UserManager.Users
+            db0 = getDB0();
+            try
+            {
+                var items = UserManager.Users
                 .OrderBy(x => x.UserName)
-                .Select(x => new { x.Id, x.user_name_c, x.UserName, x.Email })
+                .Select(x => new UserList()
+                {
+                    Id = x.Id,
+                    user_name_c = x.user_name_c,
+                    UserName = x.UserName,
+                    Email = x.Email,
+                    company_id = x.company_id
+                })
                 .Where(x => x.UserName != "admin");
 
-            if (q.UserName != null) {
-                items = items.Where(x => x.user_name_c.Contains(q.UserName));
+                if (q.UserName != null)
+                {
+                    items = items.Where(x => x.user_name_c.Contains(q.UserName));
+                }
+                if (this.RoleName != "Admins")
+                {
+                    items = items.Where(x => x.company_id == this.companyId);
+                }
+
+
+                int page = (q.page == null ? 1 : (int)q.page);
+                int startRecord = PageCount.PageInfo(page, this.defPageSize, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(this.defPageSize).ToListAsync();
+
+                var company = db0.Company.Where(x => !x.i_Hide).OrderBy(x => x.company_id)
+                                          .Select(x => new option() { val = x.company_id, Lname = x.company_name }).ToList();
+
+                foreach (var i in resultItems)
+                {
+                    foreach (var c in company)
+                    {
+                        if (c.val == i.company_id)
+                        {
+                            i.company_name = c.Lname;
+                            break;
+                        }
+                    }
+                }
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
             }
-
-            int page = (q.page == null ? 1 : (int)q.page);
-            int startRecord = PageCount.PageInfo(page, this.defPageSize, items.Count());
-            var resultItems = await items.Skip(startRecord).Take(this.defPageSize).ToListAsync();
-
-            return Ok(new
+            finally
             {
-                rows = resultItems,
-                total = PageCount.TotalPage,
-                page = PageCount.Page,
-                records = PageCount.RecordCount,
-                startcount = PageCount.StartCount,
-                endcount = PageCount.EndCount
-            });
+                db0.Dispose();
+            }
 
             #endregion
         }
@@ -79,6 +113,11 @@ namespace DotWeb.Api
                 item.Email = md.Email;
                 item.user_name_c = md.user_name_c;
                 item.sort = md.sort;
+
+                if (this.RoleName == "Admins")
+                {
+                    item.company_id = md.company_id;
+                }
 
                 var roles = item.Roles;
 
@@ -121,6 +160,11 @@ namespace DotWeb.Api
             try
             {
                 #region working
+                if (this.RoleName != "Admins")
+                {
+                    md.company_id = this.companyId;
+                }
+
                 foreach (var role in md.role_array)
                 {
                     if (role.role_use)

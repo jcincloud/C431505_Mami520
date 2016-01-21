@@ -37,7 +37,7 @@ namespace DotWeb.Api
             {
                 var items = (from x in db0.CustomerBorn
                              orderby x.born_day descending
-                             where x.customer_id == q.main_id
+                             where x.customer_id == q.main_id & x.company_id == this.companyId
                              select new m_CustomerBorn()
                              {
                                  customer_id = x.customer_id,
@@ -47,7 +47,8 @@ namespace DotWeb.Api
                                  mom_name = x.mom_name,
                                  baby_sex = x.baby_sex,
                                  born_type = x.born_type,
-                                 is_close = x.is_close
+                                 is_close = x.is_close,
+                                 memo=x.memo
                              });
 
                 return Ok(items.ToList());
@@ -63,6 +64,27 @@ namespace DotWeb.Api
                 db0 = getDB0();
 
                 item = await db0.CustomerBorn.FindAsync(md.born_id);
+
+                #region 驗證MealId
+                //if (md.meal_id != null)
+                //{
+                //    bool check_exist = db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId);
+                //    if (!check_exist)
+                //    {
+                //        r.result = false;
+                //        r.message = Resources.Res.Log_Check_MealId_Exist;
+                //        return Ok(r);
+                //    }
+                //    var item_mealId = db0.MealID.Find(md.meal_id, this.companyId);
+                //    if (item_mealId.i_Use)
+                //    {
+                //        r.result = false;
+                //        r.message = Resources.Res.Log_Check_MealId_Use;
+                //        return Ok(r);
+                //    }
+                //}
+                #endregion
+
                 item.mom_name = md.mom_name;
                 item.meal_id = md.meal_id;
                 item.sno = md.sno;
@@ -131,12 +153,12 @@ namespace DotWeb.Api
 
             md.born_id = GetNewId(ProcCore.Business.CodeTable.CustomerBorn);
 
-            if (!ModelState.IsValid)
-            {
-                r.message = ModelStateErrorPack();
-                r.result = false;
-                return Ok(r);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    r.message = ModelStateErrorPack();
+            //    r.result = false;
+            //    return Ok(r);
+            //}
             try
             {
                 #region working a
@@ -161,9 +183,31 @@ namespace DotWeb.Api
                 }
                 #endregion
 
+                #region 驗證MealId
+                if (md.meal_id != null)
+                {
+                    bool check_exist = db0.MealID.Any(x => x.meal_id == md.meal_id & x.company_id == this.companyId);
+                    if (!check_exist)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_MealId_Exist;
+                        return Ok(r);
+                    }
+                    var item_mealId = db0.MealID.Find(md.meal_id, this.companyId);
+                    if (item_mealId.i_Use)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_MealId_Use;
+                        return Ok(r);
+                    }
+                    item_mealId.i_Use = true;
+                }
+                #endregion
+
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
                 db0.CustomerBorn.Add(md);
                 await db0.SaveChangesAsync();
@@ -210,12 +254,12 @@ namespace DotWeb.Api
                 {
                     item = db0.CustomerBorn.Find(id);
 
-                    //刪除生產紀錄要自動釋放用餐編號(如果未結案)
-                    bool check_mealid = db0.MealID.Any(x => x.meal_id == item.meal_id);
+                    //刪除生產紀錄要自動釋放用餐編號
+                    bool check_mealid = db0.MealID.Any(x => x.meal_id == item.meal_id & x.company_id == this.companyId);
                     if (check_mealid)
                     {
-                        var getMealid = db0.MealID.Find(item.meal_id);
-                        if (!item.is_close & getMealid.i_Use)
+                        var getMealid = db0.MealID.Find(item.meal_id, this.companyId);
+                        if (getMealid.i_Use)
                             getMealid.i_Use = false;
                     }
 

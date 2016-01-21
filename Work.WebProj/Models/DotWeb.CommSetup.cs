@@ -93,6 +93,20 @@ namespace DotWeb.CommSetup
                 return "Cookie_DepartmentName";
             }
         }
+        public static string Cookie_CompanyId
+        {
+            get
+            {
+                return "Cookie_CompanyId";
+            }
+        }
+        public static string Cookie_CompanyName
+        {
+            get
+            {
+                return "Cookie_CompanyName";
+            }
+        }
         public static string CacheVer
         {
             get

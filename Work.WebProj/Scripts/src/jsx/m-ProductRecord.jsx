@@ -18,8 +18,10 @@
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.record_sn}</td>
 					<td>{moment(this.props.itemData.record_day).format('YYYY/MM/DD')}</td>
+					<td><StateForGrid stateData={CommData.CustomerType} id={this.props.itemData.customer_type} /></td>
 					<td>{this.props.itemData.meal_id}</td>
 					<td>{this.props.itemData.name}</td>
+					<td>{this.props.itemData.tel_1}</td>
 					<td>{this.props.itemData.is_receipt?<span className="label label-primary">已轉單</span>:<span className="label label-danger">未轉單</span>}</td>			
 					<td>{this.props.itemData.is_close?<span className="label label-primary">結案</span>:<span className="label label-danger">未結案</span>}</td>			
 				</tr>
@@ -33,9 +35,9 @@ var GirdForm = React.createClass({
 	getInitialState: function() {  
 		return {
 			gridData:{rows:[],page:1},
-			fieldData:{},
+			fieldData:{born_memo:null},
 			searchData:{title:null},
-			searchBornData:{word:null,is_close:null},
+			searchBornData:{word:null,customer_type:null,is_meal:false},
 			edit_type:0,
 			checkAll:false,
 			isShowCustomerBornSelect:false,
@@ -230,6 +232,7 @@ var GirdForm = React.createClass({
 		var obj = this.state.searchData;
 		obj[name] = e.target.value;
 		this.setState({searchData:obj});
+		this.queryGridData(0);
 	},
 	queryAllCustomerBorn:function(){//選取用餐編號-取得全部客戶生產資料(已結/未結)list
 		jqGet(gb_approot + 'api/GetAction/GetAllBorn',this.state.searchBornData)
@@ -272,6 +275,7 @@ var GirdForm = React.createClass({
 			fieldData.tw_city_2=data.getBorn.tw_city_2;
 			fieldData.tw_country_2=data.getBorn.tw_country_2;
 			fieldData.tw_address_2=data.getBorn.tw_address_2;
+			fieldData.born_memo=data.getBorn.memo;
 
 			this.setState({isShowCustomerBornSelect:false,fieldData:fieldData});
 		}.bind(this))
@@ -329,6 +333,12 @@ var GirdForm = React.createClass({
 			showAjaxError(errorThrown);
 		});	
 	},
+	onCustomerTypeChange:function(e){
+		var obj = this.state.searchData;
+		obj['customer_type'] = e.target.value;
+		this.setState({searchData:obj});
+		this.queryGridData(0);
+	},
 	setAccountsPayable:function(){
         //檢視 應收帳款
         document.location.href = gb_approot + 'Active/AccountsPayable?product_record_id=' + this.state.fieldData.product_record_id;
@@ -352,30 +362,44 @@ var GirdForm = React.createClass({
 									<div className="form-group">
 										<label>訂單日期</label> { }										
 											<span className="has-feedback">
-												<InputDate id="start_date" 
+												<InputDate id="start_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="start_date" 
 												value={searchData.start_date} />
 											</span> { }
 										<label>~</label> { }
 											<span className="has-feedback">
-												<InputDate id="end_date" 
+												<InputDate id="end_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="end_date" 
 												value={searchData.end_date} />
 											</span> { }
 
-										<label>媽媽姓名</label> { }
+										<label>媽媽姓名/用餐編號/電話</label> { }
 										<input type="text" className="form-control input-sm" 
-										value={searchData.name}
-										onChange={this.changeGDValue.bind(this,'name')}
-										placeholder="媽媽姓名..." /> { }
+										value={searchData.word}
+										onChange={this.changeGDValue.bind(this,'word')}
+										placeholder="請擇一填寫..." /> { }<br />
 
-										<label>用餐編號</label> { }
+										{/*<label>用餐編號</label> { }
 										<input type="text" className="form-control input-sm" 
 										value={searchData.meal_id}
 										onChange={this.changeGDValue.bind(this,'meal_id')}
-										placeholder="用餐編號..." /> { }
+										placeholder="用餐編號..." /> { }*/}
+
+										<div className="form-group">
+											<label>客戶分類</label> { }
+											<select className="form-control input-sm" 
+													value={searchData.customer_type}
+													onChange={this.onCustomerTypeChange}>
+												<option value="">全部</option>
+											{
+												CommData.CustomerType.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select> { }
+										</div>
 
 										<label>是否轉單</label> { }
 										<select className="form-control input-sm" 
@@ -410,10 +434,12 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">銷售單號</th>
-									<th className="col-xs-2">訂購時間</th>
-									<th className="col-xs-2">用餐編號</th>
+									<th className="col-xs-1">銷售單號</th>
+									<th className="col-xs-1">訂購時間</th>
+									<th className="col-xs-1">客戶分類</th>
+									<th className="col-xs-1">用餐編號</th>
 									<th className="col-xs-2">媽媽姓名</th>
+									<th className="col-xs-1">電話1</th>
 									<th className="col-xs-1">是否轉單</th>
 									<th className="col-xs-1">是否結案</th>
 								</tr>
@@ -450,6 +476,7 @@ var GirdForm = React.createClass({
 		else if(this.state.edit_type==1 || this.state.edit_type==2)
 		{
 			var fieldData = this.state.fieldData;
+
 			var searchBornData=this.state.searchBornData;
 
 			var MdoalCustomerBornSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
@@ -468,14 +495,25 @@ var GirdForm = React.createClass({
 												onChange={this.changeGDBornValue.bind(this,'word')}
 											 	placeholder="請擇一填寫" />
 							                </div>
+											<label>客戶分類</label> { }
+											<select className="form-control input-sm" 
+													value={searchBornData.customer_type}
+													onChange={this.changeGDBornValue.bind(this,'customer_type')}>
+												<option value="">全部</option>
+											{
+												CommData.CustomerType.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select> { }							                
 							                <div className="form-group">
-							                    <label for="">是否結案</label> { }
+							                    <label for="">是否正在用餐</label> { }
 							                    <select className="form-control input-sm"
-							                    value={searchBornData.is_close}
-												onChange={this.changeGDBornValue.bind(this,'is_close')}>
+							                    value={searchBornData.is_meal}
+												onChange={this.changeGDBornValue.bind(this,'is_meal')}>
 							                        <option value="">全部</option>
-							                        <option value="true">已結案</option>
-							                        <option value="false">未結案</option>
+							                        <option value="true">是</option>
+							                        <option value="false">否</option>
 							                    </select>
 							                </div>
 							                <div className="form-group">
@@ -489,10 +527,12 @@ var GirdForm = React.createClass({
 										<tr>
 											<th className="col-xs-1 text-center">選擇</th>
 											<th className="col-xs-1">客戶姓名</th>
+											<th className="col-xs-1">客戶類別</th>
 											<th className="col-xs-1">用餐編號</th>
-											<th className="col-xs-1">媽媽姓名</th>
-											<th className="col-xs-1">第幾胎</th>
-											<th className="col-xs-1">是否結案</th>
+											<th className="col-xs-1">媽媽姓名</th>										
+											<th className="col-xs-1">電話1</th>
+											<th className="col-xs-1">備註</th>
+											<th className="col-xs-1">預產期</th>
 										</tr>
 										{
 											this.state.born_list.map(function(itemData,i) {
@@ -506,10 +546,12 @@ var GirdForm = React.createClass({
 										                    </label>
 														</td>
 														<td>{itemData.customer_name}</td>
+														<td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
 														<td>{itemData.meal_id}</td>
 														<td>{itemData.mom_name}</td>
-														<td>{itemData.born_frequency}</td>
-														<td>{itemData.is_close? <span className="label label-primary">結案</span>:<span className="label label-danger">未結案</span>}</td>			
+														<td>{itemData.tel_1}</td>
+														<td>{itemData.memo}</td>
+														<td>{moment(itemData.expected_born_day).format('YYYY/MM/DD')}</td>			
 													</tr>;
 												return born_out_html;
 											}.bind(this))
@@ -547,7 +589,9 @@ var GirdForm = React.createClass({
 					receipt_out_html=<button className="btn-success" type="button" onClick={this.insertAccountsPayable.bind(this)}><i className="fa-check"></i>轉 應收帳款</button>;
 				}
 			}
-
+			var blankStyle={
+				height: 100
+			};
 			outHtml=(
 			<div>
 				{born_select_out_html}
@@ -719,6 +763,18 @@ var GirdForm = React.createClass({
 									disabled={true}/>
 							</div>
 						</div>
+						<div className="form-group">
+							<label className="col-xs-2 control-label">生產備註</label>
+							<div className="col-xs-8">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.born_memo}
+								onChange={this.changeFDValue.bind(this,'born_memo')}
+								maxLength="256"
+								disabled/>
+							</div>
+						</div>
+
 						<div className="form-action text-right">
 							{save_out_html} { }
 							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
@@ -743,6 +799,10 @@ var GirdForm = React.createClass({
 				{detail_out_html}
 
 
+				<div className="col-xs-12" style={blankStyle}>
+				</div>
+				<hr className="condensed" />
+
 			</div>
 			);
 		}else{
@@ -761,14 +821,19 @@ var SubForm = React.createClass({
 			gridSubData:[],
 			fieldSubData:{},
 			searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
+			searchMealIDData:{keyword:'A'},
 			edit_sub_type:0,//預設皆為新增狀態
 			checkAll:false,
 			isShowProductSelect:false,//控制選取產品視窗顯示
 			product_list:[],
 			parm:{breakfast:0,lunch:0,dinner:0},//計算用
 			isShowMealidSelect:false,//控制選取用餐編號顯示
-			mealid_list:[]
-
+			mealid_list:[],
+			tryout_array:[
+				{name:'breakfast',name_c:'早餐',value:false},
+				{name:'lunch',name_c:'午餐',value:false},
+				{name:'dinner',name_c:'晚餐',value:false}
+			]
 		};  
 	},
 	getDefaultProps:function(){
@@ -783,7 +848,7 @@ var SubForm = React.createClass({
 	componentDidMount:function(){
 		this.queryGridData();
 		this.insertSubType();//一開始載入預設為新增狀態
-		this.getAjaxInitData();//載入init資料
+		//this.getAjaxInitData();//載入init資料
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
@@ -802,14 +867,18 @@ var SubForm = React.createClass({
 
 		e.preventDefault();
 		var fieldSubData=this.state.fieldSubData;
+
 		if(fieldSubData.product_id==null || fieldSubData.product_id==undefined){
 			tosMessage(gb_title_from_invalid,'未選擇產品!!',3);
 			return;
 		}
 		if(fieldSubData.product_type==1){
-			fieldSubData.meal_end=fieldSubData.meal_start;
-			if(fieldSubData.estimate_breakfast==null && fieldSubData.estimate_lunch==null && fieldSubData.estimate_dinner==null){
-				tosMessage(gb_title_from_invalid,'產品為試吃時,請填寫試吃的用餐預計餐數!!',3);
+			if(!this.state.tryout_array[0]['value'] && !this.state.tryout_array[1]['value'] && !this.state.tryout_array[2]['value']){
+				tosMessage(gb_title_from_invalid,'產品為試吃時,請選擇試吃的餐別!!',3);
+				return;
+			}
+			if(fieldSubData.tryout_mealtype.indexOf(',')!=-1){
+				tosMessage(gb_title_from_invalid,'試吃僅能選擇一項餐別!!',3);
 				return;
 			}
 		}
@@ -894,13 +963,27 @@ var SubForm = React.createClass({
 	},
 	insertSubType:function(){
 		$('textarea').val("");
+		var tryout_array=this.state.tryout_array;
+		tryout_array.forEach(function(object, i){object.value=false;})
+
 		this.setState({edit_sub_type:1,fieldSubData:{
 			product_record_id:this.props.main_id,
 			customer_id:this.props.customer_id,
 			born_id:this.props.born_id,
 			qty:1,
-			subtotal:0
-		}});
+			subtotal:0,
+			tryout_mealtype:null,
+			meal_select_state:0,
+			meal_id:null,
+			meal_start:null,
+			meal_end:null,
+			isDailyMealAdd:false,
+			set_start_meal:null,
+			set_end_meal:null,
+			diff_day:0
+		},
+		tryout_array:tryout_array
+	});
 	},
 	updateSubType:function(id,e){
 		jqGet(this.props.apiPathName,{id:id})
@@ -911,8 +994,21 @@ var SubForm = React.createClass({
 			//計算點數
 			data.data.estimate_count=MealCount(this.state.parm,data.data.estimate_breakfast,data.data.estimate_lunch,data.data.estimate_dinner);
 			data.data.real_count=MealCount(this.state.parm,data.data.real_breakfast,data.data.real_lunch,data.data.real_dinner);
-			
-			this.setState({edit_sub_type:2,fieldSubData:data.data});
+			//試吃餐別
+			var tryout_array=this.state.tryout_array;
+			tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
+			if(data.data.tryout_mealtype!=undefined){
+				var array=data.data.tryout_mealtype.split(",");
+				tryout_array.forEach(function(object, i){
+					array.forEach(function(a_obj,j){
+						if(object.name==a_obj){
+							object.value=true;
+						}
+					})
+	    		})
+			}
+			//console.log(data);
+			this.setState({edit_sub_type:2,fieldSubData:data.data,tryout_array:tryout_array});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
@@ -941,6 +1037,7 @@ var SubForm = React.createClass({
 	},
 	changeMealday:function(name,e){//計算日期天數
 		var obj = this.state.fieldSubData;
+		var parm=this.state.parm;
 		if(obj.isMealStart){
 			tosMessage(gb_title_from_invalid,'已開始正式用餐後,請勿變更預計用餐起日及迄日!!',3);
 		}else{
@@ -952,9 +1049,40 @@ var SubForm = React.createClass({
 			if(diff_mealday.result==-1){
 				tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
 				obj[name]=old_val;
+			}else{
+				if(parm.breakfast>0){obj.estimate_breakfast=diff_mealday.diff_day;}else{obj.estimate_breakfast=0;}
+				if(parm.lunch>0){obj.estimate_lunch=diff_mealday.diff_day;}else{obj.estimate_lunch=0;}
+				if(parm.dinner>0){obj.estimate_dinner=diff_mealday.diff_day;}else{obj.estimate_dinner=0;}
+				
+				obj.qty=diff_mealday.diff_day;
+				obj.subtotal=obj.qty*obj.price;
 			}
 		}
 
+		this.setState({fieldSubData:obj});
+	},
+	changeMealDayCount:function(e){
+		var obj = this.state.fieldSubData;
+		var parm=this.state.parm;
+		if(obj.meal_start!=null & (e.target.value!=null & e.target.value!='')){
+			var tmp_date = new Date(obj.meal_start);
+			var end_date=addDate(tmp_date,parseInt(e.target.value)-1);
+
+			obj.meal_end=format_Date(end_date);
+			if(parm.breakfast>0){
+				obj.estimate_breakfast=parseInt(e.target.value);
+			}else{obj.estimate_breakfast=0;}
+			if(parm.lunch>0){
+				obj.estimate_lunch=parseInt(e.target.value);
+			}else{obj.estimate_lunch=0;}
+			if(parm.dinner>0){
+				obj.estimate_dinner=parseInt(e.target.value);
+			}else{obj.estimate_dinner=0;}
+			obj.qty=parseInt(e.target.value);
+			obj.subtotal=obj.qty*obj.price;
+		}
+
+		obj.diff_day=e.target.value;
 		this.setState({fieldSubData:obj});
 	},
 	changePriceCount:function(name,e){
@@ -968,6 +1096,8 @@ var SubForm = React.createClass({
 		obj[name] = e.target.value;
 
 		obj.estimate_count=MealCount(this.state.parm,obj.estimate_breakfast,obj.estimate_lunch,obj.estimate_dinner);
+		obj.qty=obj.estimate_count;
+		obj.subtotal=obj.qty*obj.price;
 
 		this.setState({fieldSubData:obj});
 	},
@@ -989,6 +1119,10 @@ var SubForm = React.createClass({
 	},
 	selectProduct:function(product_id,e){
 		var fSD = this.state.fieldSubData;
+		var tryout_array=this.state.tryout_array;
+		var parm=this.state.parm;//用餐點數計算
+		tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
+
 		this.state.product_list.forEach(function(obj,i){
 			if(obj.product_id==product_id){
 				fSD.product_id=product_id;
@@ -997,12 +1131,32 @@ var SubForm = React.createClass({
 				fSD.price=obj.price;
 				fSD.standard=obj.standard;
 				fSD.subtotal=fSD.qty*obj.price;
+				if(obj.product_type==1 || obj.product_type==2){
+					//parm:{breakfast:0,lunch:0,dinner:0}
+					//依產品各餐別計算售價點數
+					parm.breakfast=roundX(obj.breakfast_price/obj.price,4);
+					parm.lunch=roundX(obj.lunch_price/obj.price,4);
+					parm.dinner=roundX(obj.dinner_price/obj.price,4);
+
+					fSD.tryout_mealtype=obj.meal_type;
+					//依產品選擇餐別帶出餐別
+					if(obj.meal_type!=undefined){
+						var array=obj.meal_type.split(",");
+						tryout_array.forEach(function(object, i){
+							array.forEach(function(a_obj,j){
+								if(object.name==a_obj){
+									object.value=true;
+								}
+							})
+			    		})
+					}
+				}
 			}
 		});
-		if(fSD.product_type==2 || fSD.product_type==1){//如果產品為試吃就儲存用餐編號
+		if(fSD.product_type==2){//如果產品為月子餐就儲存用餐編號
 			fSD.meal_id=this.props.meal_id;
 		}
-		this.setState({isShowProductSelect:false,fieldSubData:fSD});
+		this.setState({isShowProductSelect:false,fieldSubData:fSD,tryout_array:tryout_array,parm:parm});
 	},
 	setReleaseMealID:function(meal_id,record_deatil_id){
 		if(!confirm('確定釋放用餐編號?')){
@@ -1023,6 +1177,7 @@ var SubForm = React.createClass({
 				tosMessage(null,'完成用餐編號釋放',1);
 				var fieldSubData = this.state.fieldSubData;
 				fieldSubData.is_release=data.result;
+				this.props.meal_id=null;
 				this.setState({fieldSubData:fieldSubData});
 			}else{
 				tosMessage(null,data.message,3);
@@ -1037,13 +1192,19 @@ var SubForm = React.createClass({
 		document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
 	},
 	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
-		jqGet(gb_approot + 'api/GetAction/GetAllMealID',{})
+		jqGet(gb_approot + 'api/GetAction/GetAllMealID',this.state.searchMealIDData)
 		.done(function(data, textStatus, jqXHRdata) {
 			this.setState({mealid_list:data});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
 		});		
+	},
+	changeGDMealIDValue:function(name,e){
+		var obj = this.state.searchMealIDData;
+		obj[name] = e.target.value;
+		this.setState({searchMealIDData:obj});
+		this.queryAllMealID();
 	},
 	showSelectMealid:function(){
 		this.queryAllMealID();
@@ -1054,18 +1215,46 @@ var SubForm = React.createClass({
 	},
 	selectMealid:function(meal_id){
 		var fieldSubData = this.state.fieldSubData;//選取後變更mealid
-		jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldSubData.meal_id,new_id:meal_id})
-		.done(function(data, textStatus, jqXHRdata) {
-			if(!data.result){
-				alert(data.message);
-			}
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			//showAjaxError(errorThrown);
-		});
+		// jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldSubData.meal_id,new_id:meal_id})
+		// .done(function(data, textStatus, jqXHRdata) {
+		// 	if(!data.result){
+		// 		alert(data.message);
+		// 	}
+		// }.bind(this))
+		// .fail(function( jqXHR, textStatus, errorThrown ) {
+		// 	//showAjaxError(errorThrown);
+		// });
 
 		fieldSubData.meal_id=meal_id;
 		this.setState({isShowMealidSelect:false,fieldSubData:fieldSubData});
+	},
+	onMealChange:function(index,e){
+		var obj = this.state.fieldSubData;
+		var arrayObj=this.state.tryout_array;
+		var item = arrayObj[index];
+		item.value = !item.value;
+		
+		var array="";
+		if(obj.product_type==1){//如果為試吃,只能有一個餐別
+			array=item.name;
+			arrayObj.forEach(function(object, i){
+	        	if(item!=object){
+	  				object.value=false;
+	        	}
+    		})
+		}else{
+			arrayObj.forEach(function(object, i){
+	        	if(object.value){
+	        		if(array.length==0){
+						array=object.name;
+	        		}else{
+						array=array+","+object.name;
+	        		}	  				
+	        	}
+    		})
+		}
+		obj.tryout_mealtype=array;
+		this.setState({fieldSubData:obj,tryout_array:arrayObj});
 	},
 	render: function() {
 		var outHtml = null;
@@ -1080,7 +1269,6 @@ var SubForm = React.createClass({
 						<div className="modal-body">
 						<div className="alert alert-warning">
 							<p>1.一筆生產紀錄只能對應一筆試吃</p>
-							<p>2.一筆生產紀錄只能對應一筆月子餐</p>
 						</div>
 							<div className="table-header">
 			                    <div className="table-filter">
@@ -1147,11 +1335,33 @@ var SubForm = React.createClass({
 
 		var MdoalMealidSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
 		var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
+		var searchMealIDData=this.state.searchMealIDData;
 		if(this.state.isShowMealidSelect){
 			mealid_select_out_html = 					
 				<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
 						<div className="modal-body">
 							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
+								<div className="table-header">
+							        <div className="table-filter">
+							            <div className="form-inline">
+							                <div className="form-group">
+							                    <label for="">用餐編號分類</label> { }
+							                    <select className="form-control input-sm"
+							                    value={searchMealIDData.keyword}
+												onChange={this.changeGDMealIDValue.bind(this,'keyword')}>
+							                        <option value="">全部</option>
+							                        <option value="A">A</option>
+							                        <option value="B">B</option>
+							                        <option value="C">C</option>
+							                        <option value="H">H</option>
+							                        <option value="N">N</option>
+							                        <option value="T">T</option>
+							                    </select> { }
+							                    <button type="button" className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
+							                </div>
+							            </div>
+							        </div>
+							    </div>							
 							<table>
 								<tbody>
 									<tr>
@@ -1177,9 +1387,9 @@ var SubForm = React.createClass({
 						</div>
 				</MdoalMealidSelect>;
 		}
-		//試吃及月子餐用的用餐編號
+		//月子餐用的用餐編號
 		var meal_id_html=null;
-		if(fieldSubData.product_type==2 || fieldSubData.product_type==1){
+		if(fieldSubData.product_type==2){
 			meal_id_html=(
 				<div className="form-group">
 					{mealid_select_out_html}
@@ -1194,8 +1404,8 @@ var SubForm = React.createClass({
 							disabled={true} />
 			            	<span className="input-group-btn">
 			         			<a className="btn"
-								onClick={this.showSelectMealid}
-								disabled={this.state.edit_sub_type==2}>
+								onClick={this.showSelectMealid}>
+								{/*---disabled={this.state.edit_sub_type==2 & fieldSubData.meal_id!=null}---*/}
 									<i className="fa-plus"></i>
 								</a>
 			            	</span>
@@ -1204,14 +1414,14 @@ var SubForm = React.createClass({
 					<small className="help-inline col-xs-2">請按 <i className="fa-plus"></i> 選取</small>
 					<button className="btn-success" type="button" 
 					onClick={this.setReleaseMealID.bind(this,fieldSubData.meal_id,fieldSubData.record_deatil_id)}
-					disabled={this.state.edit_sub_type==1}>
+					disabled={this.state.edit_sub_type==1 || fieldSubData.meal_id==null}>
 						<i className="fa-check"></i>釋放用餐編號
 					</button>
 				</div>
 				);
 		}
 
-
+		var total=0;
 
 			outHtml =
 			(
@@ -1339,10 +1549,47 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_start" 
 												value={fieldSubData.meal_start}
-												required={fieldSubData.product_type==2 || fieldSubData.product_type==1}
-												disabled={(fieldSubData.product_type==1 || fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
+												required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!='')|| fieldSubData.product_type==1}
+												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
-										</div>										
+										</div>
+										{/*---早開始、午開始、晚開始---*/}
+										<div className="col-xs-4">
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_start_meal"
+															value={1}
+															checked={fieldSubData.set_start_meal==1} 
+															onChange={this.changeFDValue.bind(this,'set_start_meal')}
+													/>
+													<span>早開始</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_start_meal"
+															value={2}
+															checked={fieldSubData.set_start_meal==2} 
+															onChange={this.changeFDValue.bind(this,'set_start_meal')}
+															/>
+													<span>午開始</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_start_meal"
+															value={3}
+															checked={fieldSubData.set_start_meal==3} 
+															onChange={this.changeFDValue.bind(this,'set_start_meal')}
+															/>
+													<span>晚開始</span>
+												</label>
+											</div>											
+										</div>
+										{/*---早開始、午開始、晚開始---*/}								
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計送餐迄日</label>
@@ -1352,10 +1599,47 @@ var SubForm = React.createClass({
 												onChange={this.changeMealday} 
 												field_name="meal_end" 
 												value={fieldSubData.meal_end}
-												required={fieldSubData.product_type==2}
-												disabled={(fieldSubData.product_type==1 || fieldSubData.product_type==2) && this.state.edit_sub_type==2} />
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
+												disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
 											</span>
-										</div>										
+										</div>
+										{/*---早結束、午結束、晚結束---*/}
+										<div className="col-xs-4">
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_end_meal"
+															value={1}
+															checked={fieldSubData.set_end_meal==1} 
+															onChange={this.changeFDValue.bind(this,'set_end_meal')}
+													/>
+													<span>早結束</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_end_meal"
+															value={2}
+															checked={fieldSubData.set_end_meal==2} 
+															onChange={this.changeFDValue.bind(this,'set_end_meal')}
+															/>
+													<span>午結束</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio" 
+															name="set_end_meal"
+															value={3}
+															checked={fieldSubData.set_end_meal==3} 
+															onChange={this.changeFDValue.bind(this,'set_end_meal')}
+															/>
+													<span>晚結束</span>
+												</label>
+											</div>											
+										</div>
+										{/*---早結束、午結束、晚結束---*/}																				
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計天數</label>
@@ -1363,10 +1647,45 @@ var SubForm = React.createClass({
 											<input type="number" 							
 											className="form-control"	
 											value={fieldSubData.diff_day}
-											onChange={this.changeFDValue.bind(this,'diff_day')}
-											min="0" disabled/>
+											onChange={this.changeMealDayCount.bind(this)}
+											min="0"
+											disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}/>
 										</div>
 										<small className="help-inline col-xs-4">系統自動計算</small>
+									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">餐別</label>
+										<div className="col-xs-6">
+										{
+											this.state.tryout_array.map(function(itemData,i) {
+												var out_check = 							
+												<div className="checkbox-inline" key={i}>
+													<label>
+														<input  type="checkbox" 
+																checked={itemData.value}
+																onChange={this.onMealChange.bind(this,i)}
+														 />
+														{itemData.name_c}
+													</label>
+												</div>;
+												return out_check;
+
+											}.bind(this))
+										}
+										</div>
+									</div>									
+									<div className="form-group">
+										<label className="col-xs-2 control-label">特殊排餐</label>
+										<div className="col-xs-4">
+											<select className="form-control" 
+											value={fieldSubData.meal_select_state}
+											onChange={this.changeFDValue.bind(this,'meal_select_state')}
+											disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}>
+											<option value="0">無</option>
+											<option value="1">基數天排餐</option>
+											<option value="2">偶數天排餐</option>
+											</select>
+										</div>
 									</div>
 									<div className="form-group">
 										<label className="col-xs-2 control-label">預計餐數</label>
@@ -1377,8 +1696,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_breakfast}
 												onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
-												required={fieldSubData.product_type==2}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												min="0"/>
 											</div>
 										</div>
@@ -1389,8 +1707,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_lunch}
 												onChange={this.changeMealCount.bind(this,'estimate_lunch')}
-												required={fieldSubData.product_type==2}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												min="0"/>
 											</div>
 										</div>
@@ -1401,8 +1718,7 @@ var SubForm = React.createClass({
 												className="form-control"	
 												value={fieldSubData.estimate_dinner}
 												onChange={this.changeMealCount.bind(this,'estimate_dinner')}
-												required={fieldSubData.product_type==2}
-												disabled={fieldSubData.product_type==1 && this.state.edit_sub_type==2}
+												required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 												min="0"/>
 											</div>
 										</div>
@@ -1418,6 +1734,16 @@ var SubForm = React.createClass({
 										</div>
 										<small className="help-inline col-xs-4">系統自動計算</small>
 									</div>
+									<div className="form-group">
+										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
+										<div className="col-xs-6">
+											<textarea col="30" rows="3" className="form-control"
+											value={fieldSubData.meal_memo}
+											onChange={this.changeFDValue.bind(this,'meal_memo')}
+											maxLength="256"></textarea>
+										</div>
+									</div>			
+									<div className="bg-warning">							
 									<div className="form-group">
 										<label className="col-xs-2 control-label">實際餐數</label>
 										<div className="col-xs-2">
@@ -1460,16 +1786,8 @@ var SubForm = React.createClass({
 											onChange={this.changeFDValue.bind(this,'real_count')}
 											min="0" disabled/>
 										</div>
-									</div>										
-									<div className="form-group">
-										<label className="col-xs-2 control-label">用餐週期<br />說明</label>
-										<div className="col-xs-6">
-											<textarea col="30" rows="3" className="form-control"
-											value={fieldSubData.meal_memo}
-											onChange={this.changeFDValue.bind(this,'meal_memo')}
-											maxLength="256"></textarea>
-										</div>
-									</div>	
+									</div>
+								</div>
 								</div>
 								</form>
 								<div className="panel-footer text-right">
@@ -1477,7 +1795,8 @@ var SubForm = React.createClass({
 									disabled={this.props.is_close}
 									type="submit" form="form2">
 										<i className="fa-check"></i> 存檔確認
-									</button>
+									</button> { }
+									<button type="button" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button>
 								</div>
 							</div>
 						</div>
@@ -1506,6 +1825,7 @@ var SubForm = React.createClass({
 									{
 										meal_detail_button=<button className="btn-info btn-sm" onClick={this.setMealSchedule.bind(this,itemData.record_deatil_id)}><i className="fa-search"></i> 查看</button>;
 									}
+									total+=itemData.subtotal;
 									var sub_out_html = 
 										<tr key={itemData.record_deatil_id}>
 											<td className="text-center">
@@ -1522,6 +1842,10 @@ var SubForm = React.createClass({
 										return sub_out_html;
 								}.bind(this))
 							}
+							<tr>
+								<th className="col-xs-1 text-center text-danger" colSpan={5}>總計</th>
+								<th className="col-xs-1 text-danger" colSpan={2}>{total}</th>
+							</tr>
 						</tbody>
 					</table>
 				{/*---產品明細列表end---*/}

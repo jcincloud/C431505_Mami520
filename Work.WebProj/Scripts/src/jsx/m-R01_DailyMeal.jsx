@@ -5,10 +5,14 @@ var GirdForm = React.createClass({
 		return {
 			gridData:{rows:[],page:1},
 			fieldData:{},
+			matters:{start_meal:{breakfast:[],lunch:[],dinner:[]},
+					end_meal:{breakfast:[],lunch:[],dinner:[]},
+					pause_meal:{breakfast:[],lunch:[],dinner:[]},
+					tryout_meal:{breakfast:0,lunch:0,dinner:0}},
 			special_diet:[],
-			breakfast:{dishs:[],isHaveData:false},
-			lunch:{dishs:[],isHaveData:false},
-			dinner:{dishs:[],isHaveData:false},
+			breakfast:{dishs:[],isHaveData:false,count:0},
+			lunch:{dishs:[],isHaveData:false,count:0},
+			dinner:{dishs:[],isHaveData:false,count:0},
 			searchData:{meal_day:format_Date(getNowDate())}//預設帶今天
 		};  
 	},
@@ -34,7 +38,13 @@ var GirdForm = React.createClass({
 		jqGet(this.props.apiPathName,this.state.searchData)
 		.done(function(data, textStatus, jqXHRdata) {
 			console.log(data);
-			this.setState({breakfast:data.breakfast,lunch:data.lunch,dinner:data.dinner,special_diet:data.special_diet});
+			this.setState({
+				matters:data.matters,
+				breakfast:data.breakfast,
+				lunch:data.lunch,
+				dinner:data.dinner,
+				special_diet:data.special_diet
+			});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -71,14 +81,24 @@ var GirdForm = React.createClass({
 		$.extend(parms, this.state.searchData);
 
 		var url_parms = $.param(parms);
-		var print_url = gb_approot + 'Base/ExcelReport/downloadExcel_CustomerVisit?' + url_parms;
+		var print_url = gb_approot + 'Base/ExcelReport/downloadExcel_DailyMeal?' + url_parms;
 
 		this.setState({download_src:print_url});
 		return;
 	},
+	test:function(){
+		jqPost(gb_approot + 'api/GetAction/test',{})
+		.done(function(data, textStatus, jqXHRdata) {
+
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
 	render: function() {
 		var outHtml = null;
 		var searchData=this.state.searchData;
+		var matters=this.state.matters;
 		//沒有排餐顯示之html
 		var no_data_html=				
 				(<tr>
@@ -192,14 +212,14 @@ var GirdForm = React.createClass({
 								<div className="form-group">
 									<label for="">選擇日期</label>
 									<span className="has-feedback">
-										<InputDate id="meal_day" 
+										<InputDate id="meal_day" ver={2}
 										onChange={this.changeGDValue} 
 										field_name="meal_day" 
 										value={searchData.meal_day} />
 									</span> { }
 								</div>
 								<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button> { }
-								<button className="btn-success btn-sm" type="button"><i className="fa-print"></i> 列印</button>
+								<button className="btn-success btn-sm" type="button" onClick={this.excelPrint}><i className="fa-print"></i> 列印</button>
 							</div>
 						</div>
 					</div>
@@ -213,13 +233,104 @@ var GirdForm = React.createClass({
 						<td><strong>當日事項</strong></td>
 					</tr>
 					<tr>
-						<td>停早(2)：<span className="label label-success">A001</span>　停午(2)：<span className="label label-success">A001</span>　停晚(2)：<span className="label label-success">A001</span></td>
+						<td>
+						停早({matters.pause_meal.breakfast.length})：
+			            {
+			                matters.pause_meal.breakfast.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						停午({matters.pause_meal.lunch.length})：
+			            {
+			                matters.pause_meal.lunch.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						停晚({matters.pause_meal.dinner.length})：
+			            {
+			                matters.pause_meal.dinner.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						</td>
 					</tr>
 					<tr>
-						<td>早開始(2)：<span className="label label-success">A001</span>　午開始(2)：<span className="label label-success">A001</span>　晚開始(2)：<span className="label label-success">A001</span></td>
+						<td>
+						早開始({matters.start_meal.breakfast.length})：
+			            {
+			                matters.start_meal.breakfast.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						午開始({matters.start_meal.lunch.length})：
+			            {
+			                matters.start_meal.lunch.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						晚開始({matters.start_meal.dinner.length})：
+			            {
+			                matters.start_meal.dinner.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						</td>
 					</tr>
 					<tr>
-						<td>早結束(2)：<span className="label label-success">A001</span>　午結束(2)：<span className="label label-success">A001</span>　晚結束(2)：<span className="label label-success">A001</span></td>
+						<td>
+						早結束({matters.end_meal.breakfast.length})：
+			            {
+			                matters.end_meal.breakfast.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						午結束({matters.end_meal.lunch.length})：
+			            {
+			                matters.end_meal.lunch.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						晚結束({matters.end_meal.dinner.length})：
+			            {
+			                matters.end_meal.dinner.map(function(meal_id,i) {                                           
+			                    return (
+			                        <span>
+			                            <span className="label label-success">{meal_id}</span> { }
+			                        </span>);
+			                }.bind(this))
+			            }
+						</td>
+					</tr>
+					<tr>
+						<td>
+						早試吃({matters.tryout_meal.breakfast})、
+						午試吃({matters.tryout_meal.lunch})、
+						晚試吃({matters.tryout_meal.dinner})
+						</td>
 					</tr>
 				</table>
 				<hr />
@@ -252,25 +363,26 @@ var GirdForm = React.createClass({
 				<hr />
 				<table>
 					<tr className="warning">
-						<td colSpan="2"><strong>早餐</strong></td>
+						<td colSpan="2"><strong>早餐({this.state.breakfast.count})</strong></td>
 					</tr>
 					<tbody>{breakfast}</tbody>
 				</table>
 				<hr />
 				<table>
 					<tr className="warning">
-						<td colSpan="2"><strong>午餐</strong></td>
+						<td colSpan="2"><strong>午餐({this.state.lunch.count})</strong></td>
 					</tr>
 					<tbody>{lunch}</tbody>
 				</table>
 				<hr />
 				<table>
 					<tr className="warning">
-						<td colSpan="2"><strong>晚餐</strong></td>
+						<td colSpan="2"><strong>晚餐({this.state.dinner.count})</strong></td>
 					</tr>
 					<tbody>{dinner}</tbody>
 				</table>
 				{/*---報表end---*/}
+				<iframe src={this.state.download_src} style={ {visibility:'hidden',display:'none'} } />
 			</div>
 			);
 		return outHtml;

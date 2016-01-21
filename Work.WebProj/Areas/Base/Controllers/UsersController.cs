@@ -27,6 +27,11 @@ namespace DotWeb.Areas.Base.Controllers
             ActionRun();
             return View();
         }
+        public ActionResult Company()
+        {
+            ActionRun();
+            return View();
+        }
         #endregion
         [HttpPost]
         public async Task<string> aj_MasterPasswordUpdate(ManageUserViewModel md)
@@ -67,6 +72,17 @@ namespace DotWeb.Areas.Base.Controllers
 
             return defJSON(rAjaxResult);
 
+        }
+
+        public string aj_Init()
+        {
+            using (var db0 = getDB0())
+            {
+                return defJSON(new
+                {
+                    options_company = db0.Company.OrderBy(x => x.company_id).Select(x => new option() { val = x.company_id, Lname = x.company_name })
+                });
+            }
         }
     }
 }

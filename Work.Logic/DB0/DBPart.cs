@@ -57,66 +57,18 @@ namespace ProcCore.Business.DB0
 
     public static class CodeSheet
     {
-        public static List<i_Code> visitdetail_state = new List<i_Code>()
+        public static List<i_Code> product_type = new List<i_Code>()
         {
-            new i_Code{ Code = 0, Value = "無狀態", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "未拜訪", LangCode = "wait" },
-            new i_Code{ Code = 2, Value = "進行中", LangCode = "progress" },
-            new i_Code{ Code = 3, Value = "完成", LangCode = "finish" },
-            new i_Code{ Code = 4, Value = "暫停", LangCode = "pause" }
+            new i_Code{ Code = 1, Value = "試吃", LangCode = "wait" },
+            new i_Code{ Code = 2, Value = "月子餐", LangCode = "progress" },
+            new i_Code{ Code = 3, Value = "一般產品", LangCode = "finish" },
+            new i_Code{ Code = 4, Value = "折扣&退款", LangCode = "pause" }
         };
-        public static List<i_Code> customer_type = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "店家", LangCode = "store" },
-            new i_Code{ Code = 2, Value = "直客", LangCode = "straght" }
-        };
-        public static List<i_Code> channel_type = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "即飲", LangCode = "" },
-            new i_Code{ Code = 2, Value = "外帶", LangCode = "" }
-        };
-        public static List<i_Code> store_type = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "LS", LangCode = "" },
-            new i_Code{ Code = 2, Value = "Beer Store", LangCode = "" },
-            new i_Code{ Code = 3, Value = "Dancing", LangCode = "" },
-            new i_Code{ Code = 4, Value = "Bar", LangCode = "" },
-            new i_Code{ Code = 5, Value = "Cafe", LangCode = "" },
-            new i_Code{ Code = 6, Value = "Bistro", LangCode = "" },
-            new i_Code{ Code = 7, Value = "Restaurant", LangCode = "" }
-        };
-        public static List<i_Code> store_level = new List<i_Code>()
-        {
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "G", LangCode = "" },
-            new i_Code{ Code = 2, Value = "S", LangCode = "" },
-            new i_Code{ Code = 3, Value = "B", LangCode = "" }
-        };
-        public static List<i_Code> evaluate = new List<i_Code>()
-        {
-            new i_Code{ Code = null, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 0, Value = "無", LangCode = "none" },
-            new i_Code{ Code = 1, Value = "A", LangCode = "" },
-            new i_Code{ Code = 2, Value = "B", LangCode = "" },
-            new i_Code{ Code = 3, Value = "C", LangCode = "" }
-        };
-        public static string GetStateVal(int code)
+
+        public static string GetProductTypeVal(int code)
         {
             string Val = string.Empty;
-            foreach (var item in visitdetail_state)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetCustomerTypeVal(int code)
-        {
-            string Val = string.Empty;
-            foreach (var item in customer_type)
+            foreach (var item in product_type)
             {
                 if (item.Code == code)
                     Val = item.Value;
@@ -124,46 +76,6 @@ namespace ProcCore.Business.DB0
             return Val;
         }
 
-        public static string GetChannelTypeVal(int code)
-        {
-            string Val = string.Empty;
-            foreach (var item in channel_type)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetStoreTypeVal(int code)
-        {
-            string Val = string.Empty;
-            foreach (var item in store_type)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetStoreLevelVal(int? code)
-        {
-            string Val = string.Empty;
-            foreach (var item in store_level)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
-        public static string GetEvaluateVal(int? code)
-        {
-            string Val = string.Empty;
-            foreach (var item in evaluate)
-            {
-                if (item.Code == code)
-                    Val = item.Value;
-            }
-            return Val;
-        }
     }
     public class i_Code
     {
@@ -258,6 +170,8 @@ namespace ProcCore.Business.DB0
     {
         public string name { get; set; }
         public string meal_id { get; set; }
+        public string tel_1 { get; set; }
+        public int customer_type { get; set; }
     }
     public partial class ProductRecord
     {
@@ -277,6 +191,7 @@ namespace ProcCore.Business.DB0
         public string tw_city_2 { get; set; }
         public string tw_country_2 { get; set; }
         public string tw_address_2 { get; set; }
+        public string born_memo { get; set; }
     }
     public partial class CustomerBorn
     {
@@ -391,6 +306,12 @@ namespace ProcCore.Business.DB0
         public string tw_address_2 { get; set; }
         //用餐排程用
         public bool isMealStart { get; set; }
+        public int meal_select_state { get; set; }
+        //判斷是否已新增用餐排程
+        public bool isDailyMealAdd { get; set; }
+        //b02 產生用餐排程時,可設定是從哪一餐開始或結束(方便使用者設定)
+        public int? set_start_meal { get; set; }
+        public int? set_end_meal { get; set; }
     }
     public partial class DailyMealChangeRecord
     {
@@ -416,8 +337,26 @@ namespace ProcCore.Business.DB0
         public int val { get; set; }
         public string Lname { get; set; }
     }
+    public class UserList
+    {
+        public string Id { get; set; }
+        public string user_name_c { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public int company_id { get; set; }
+        public string company_name { get; set; }
+    }
+    public partial class Menu : BaseEntityTable
+    {
 
-
+        public IList<MenuRoleArray> role_array { get; set; }
+    }
+    public class MenuRoleArray
+    {
+        public string role_id { get; set; }
+        public bool role_use { get; set; }
+        public string role_name { get; set; }
+    }
     #endregion
 
     #region q_Model_Define
@@ -439,7 +378,9 @@ namespace ProcCore.Business.DB0
     public class q_ProductRecord : QueryBase
     {
         public string name { get; set; }
+        public string word { get; set; }
         public string meal_id { get; set; }
+        public int? customer_type { get; set; }
         public bool? is_close { get; set; }
         public bool? is_receipt { get; set; }
         public DateTime? start_date { get; set; }
@@ -560,6 +501,25 @@ namespace ProcCore.Business.DB0
     public class q_AccountsPayableDetail : QueryBase
     {
         public string word { get; set; }
+    }
+    public class q_Company : QueryBase
+    {
+        public string word { get; set; }
+        public bool? i_Hide { get; set; }
+    }
+    public class q_Menu : QueryBase
+    {
+        public string word { get; set; }
+        public bool? is_folder { get; set; }
+    }
+    public class q_MenuCopyTemplate : QueryBase
+    {
+        public string keyword { get; set; }
+    }
+    public class q_MenuCopy : QueryBase
+    {
+        public int? day { get; set; }//查詢第幾天
+        public int? meal_type { get; set; }
     }
     #endregion
 

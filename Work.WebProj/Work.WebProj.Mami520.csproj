@@ -194,6 +194,7 @@
     <Compile Include="Areas\Active\ActiveAreaRegistration.cs" />
     <Compile Include="Areas\Active\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Active\Controllers\CustomerBornController.cs" />
+    <Compile Include="Areas\Active\Controllers\HomeController.cs" />
     <Compile Include="Areas\Active\Controllers\GiftController.cs" />
     <Compile Include="Areas\Active\Controllers\MealScheduleController.cs" />
     <Compile Include="Areas\Active\Controllers\NeedController.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="Areas\Active\Controllers\AccountsPayableController.cs" />
     <Compile Include="Areas\Active\Controllers\ProductController.cs" />
     <Compile Include="Areas\Active\Controllers\ReportController.cs" />
+    <Compile Include="Areas\Base\Controllers\ExcelReportController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
     <Content Include="Areas\Active\Views\Product\Main.cshtml" />
@@ -236,9 +238,15 @@
     <Content Include="Areas\Active\Views\MealSchedule\Main.cshtml" />
     <Content Include="Areas\Active\Views\AccountsPayable\Main.cshtml" />
     <Content Include="Areas\Active\Views\Report\DailyMeal.cshtml" />
+    <Content Include="Areas\Active\Views\Report\ProductRecord.cshtml" />
+    <Content Include="Areas\Active\Views\Report\AccountsPayable.cshtml" />
+    <Content Include="Areas\Active\Views\Home\Main.cshtml" />
+    <Content Include="Areas\Active\Views\Home\fake.cshtml" />
+    <Content Include="Areas\Active\Views\Food\MenuCopyTemplate.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
+    <Compile Include="Areas\Base\Controllers\MenuController.cs" />
     <Compile Include="Areas\Base\Controllers\UsersController.cs" />
     <Compile Include="Areas\Base\BaseAreaRegistration.cs" />
     <Content Include="Content\bootstrap\css\bootstrap-theme.css" />
@@ -248,6 +256,8 @@
     <Content Include="Content\bootstrap\css\page.css" />
     <Content Include="Content\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Areas\Base\Views\Login\index.tablet.cshtml" />
+    <Content Include="Areas\Base\Views\Users\Company.cshtml" />
+    <Content Include="Areas\Base\Views\Menu\Main.cshtml" />
     <None Include="Content\bootstrap\js\bootstrap.js" />
     <None Include="Content\bootstrap\js\bootstrap.min.js" />
     <None Include="Content\bootstrap\js\npm.js" />
@@ -255,6 +265,10 @@
     <Compile Include="Controllers\Api\AllCategoryL1Controller.cs" />
     <Compile Include="Controllers\Api\AllCategoryL2Controller.cs" />
     <Compile Include="Controllers\Api\AccountsPayableController.cs" />
+    <Compile Include="Controllers\Api\MenuCopyController.cs" />
+    <Compile Include="Controllers\Api\MenuCopyTemplateController.cs" />
+    <Compile Include="Controllers\Api\MenuController.cs" />
+    <Compile Include="Controllers\Api\CompanyController.cs" />
     <Compile Include="Controllers\Api\SendMsgController.cs" />
     <Compile Include="Controllers\Api\ContactScheduleController.cs" />
     <Compile Include="Controllers\Api\DeatilTelRecordController.cs" />
@@ -725,6 +739,7 @@
     <Content Include="Scripts\build\func\m-Activity.js" />
     <Content Include="Scripts\build\func\m-Category.js" />
     <Content Include="Scripts\build\func\m-ChangePassword.js" />
+    <Content Include="Scripts\build\func\m-Company.js" />
     <Content Include="Scripts\build\func\m-ConstituteFood.js" />
     <Content Include="Scripts\build\func\m-ContactSchedule.js" />
     <Content Include="Scripts\build\func\m-Customer.js" />
@@ -735,12 +750,17 @@
     <Content Include="Scripts\build\func\m-Draft.js" />
     <Content Include="Scripts\build\func\m-ElementFood.js" />
     <Content Include="Scripts\build\func\m-GiftRecord.js" />
+    <Content Include="Scripts\build\func\m-Home.js" />
     <Content Include="Scripts\build\func\m-login.js" />
     <Content Include="Scripts\build\func\m-MealID.js" />
     <Content Include="Scripts\build\func\m-MealSchedule.js" />
+    <Content Include="Scripts\build\func\m-Menu.js" />
+    <Content Include="Scripts\build\func\m-MenuCopyTemplate.js" />
     <Content Include="Scripts\build\func\m-Product.js" />
     <Content Include="Scripts\build\func\m-ProductRecord.js" />
     <Content Include="Scripts\build\func\m-R01_DailyMeal.js" />
+    <Content Include="Scripts\build\func\m-R02_ProductRecord.js" />
+    <Content Include="Scripts\build\func\m-R03_AccountsPayable.js" />
     <Content Include="Scripts\build\func\m-Roles.js" />
     <Content Include="Scripts\build\func\m-ScheduleDetail.js" />
     <Content Include="Scripts\build\func\m-SendMsg.js" />
@@ -1046,6 +1066,16 @@
     <Content Include="Scripts\src\jsx\m-GiftRecord.jsx" />
     <Content Include="Scripts\src\jsx\m-AccountsPayable.jsx" />
     <Content Include="Scripts\src\jsx\m-R01_DailyMeal.jsx" />
+    <Content Include="Scripts\src\jsx\m-R02_ProductRecord.jsx" />
+    <Content Include="Scripts\src\jsx\m-R03_AccountsPayable.jsx" />
+    <Content Include="Scripts\src\jsx\m-Company.jsx" />
+    <Content Include="Scripts\src\jsx\m-Menu.jsx" />
+    <Content Include="Scripts\src\jsx\m-Home.jsx" />
+    <Content Include="Scripts\src\jsx-inc\c-Typeahead.jsx" />
+    <Content Include="Scripts\src\jsx\m-MenuCopyTemplate.jsx" />
+    <None Include="Web.Amoz.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
@@ -1192,6 +1222,8 @@
     <Content Include="Areas\Active\Views\Communication\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\MealSchedule\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\AccountsPayable\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Base\Views\Menu\App_LocalResources\Main.cshtml.resx" />
+    <Content Include="Areas\Active\Views\Home\App_LocalResources\Main.cshtml.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -1202,12 +1234,21 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Amoz|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>None</TypeScriptModuleKind>

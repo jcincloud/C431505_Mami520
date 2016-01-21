@@ -29,7 +29,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.DeatilTelRecord
                              .OrderBy(x => x.tel_datetime)
-                             .Where(x => x.schedule_detail_id == q.main_id)
+                             .Where(x => x.schedule_detail_id == q.main_id & x.company_id == this.companyId)
                              .Select(x => new m_DeatilTelRecord()
                              {
                                  schedule_detail_id = x.schedule_detail_id,
@@ -104,6 +104,7 @@ namespace DotWeb.Api
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
                 db0.DeatilTelRecord.Add(md);
                 await db0.SaveChangesAsync();

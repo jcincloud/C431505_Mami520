@@ -29,7 +29,7 @@ namespace DotWeb.Api
             {
                 var items = (from x in db0.All_Category_L2
                              orderby x.sort descending
-                             where x.all_category_l1_id == q.l1_id && x.i_Lang == System.Globalization.CultureInfo.CurrentCulture.Name
+                             where x.all_category_l1_id == q.l1_id && x.company_id == this.companyId
                              select new m_All_Category_L2()
                              {
                                  all_category_l1_id = x.all_category_l1_id,
@@ -113,6 +113,7 @@ namespace DotWeb.Api
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
 
                 db0.All_Category_L2.Add(md);
@@ -158,9 +159,9 @@ namespace DotWeb.Api
                     //}
                     //else
                     //{
-                        item = new All_Category_L2() { all_category_l2_id = id };
-                        db0.All_Category_L2.Attach(item);
-                        db0.All_Category_L2.Remove(item);
+                    item = new All_Category_L2() { all_category_l2_id = id };
+                    db0.All_Category_L2.Attach(item);
+                    db0.All_Category_L2.Remove(item);
                     //}
 
                 }

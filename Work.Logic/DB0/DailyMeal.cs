@@ -38,10 +38,11 @@ namespace ProcCore.Business.DB0
         public Nullable<System.DateTime> i_UpdateDateTime { get; set; }
         public string i_Lang { get; set; }
         public string meal_id { get; set; }
+        public int company_id { get; set; }
     
     	[JsonIgnore]
-        public virtual RecordDetail RecordDetail { get; set; }
-    	[JsonIgnore]
         public virtual ICollection<DailyMealChangeRecord> DailyMealChangeRecord { get; set; }
+    	[JsonIgnore]
+        public virtual RecordDetail RecordDetail { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace DotWeb.Api
                 item.tw_city_2 = getCustomerBorn.tw_city_2;
                 item.tw_country_2 = getCustomerBorn.tw_country_2;
                 item.tw_address_2 = getCustomerBorn.tw_address_2;
+                item.born_memo = getCustomerBorn.memo;
 
                 r = new ResultInfo<ProductRecord>() { data = item };
             }
@@ -49,9 +50,16 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.ProductRecord
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => x.record_day).AsQueryable();
 
-
+                if (q.word != null)
+                {
+                    qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.word) ||
+                                       x.CustomerBorn.meal_id.Contains(q.word) ||
+                                       x.CustomerBorn.tel_1.Contains(q.word) ||
+                                       x.CustomerBorn.tel_2.Contains(q.word));
+                }
                 if (q.name != null)
                 {
                     qr = qr.Where(x => x.CustomerBorn.mom_name.Contains(q.name));
@@ -75,6 +83,11 @@ namespace DotWeb.Api
                     DateTime end = ((DateTime)q.end_date).AddDays(1);
                     qr = qr.Where(x => x.record_day >= q.start_date && x.record_day < end);
                 }
+
+                if (q.customer_type != null)
+                {
+                    qr = qr.Where(x => x.Customer.customer_type == q.customer_type);
+                }
                 var result = qr.Select(x => new m_ProductRecord()
                 {
                     product_record_id = x.product_record_id,
@@ -85,7 +98,9 @@ namespace DotWeb.Api
                     record_sn = x.record_sn,
                     record_day = x.record_day,
                     name = x.CustomerBorn.mom_name,
-                    meal_id = x.CustomerBorn.meal_id
+                    meal_id = x.CustomerBorn.meal_id,
+                    tel_1 = x.CustomerBorn.tel_1,
+                    customer_type = x.Customer.customer_type
                 });
 
 
@@ -161,6 +176,7 @@ namespace DotWeb.Api
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
 
                 db0.ProductRecord.Add(md);

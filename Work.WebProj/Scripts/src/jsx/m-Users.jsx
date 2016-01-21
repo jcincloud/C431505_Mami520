@@ -19,6 +19,7 @@
 					<td>{this.props.itemData.user_name_c}</td>					
 					<td>{this.props.itemData.UserName}</td>
 					<td>{this.props.itemData.Email}</td>
+					<td>{this.props.itemData.company_name}</td>
 				</tr>
 			);
 		}
@@ -35,7 +36,8 @@ var GirdForm = React.createClass({
 			},
 			searchData:{title:null},
 			edit_type:0,
-			checkAll:false
+			checkAll:false,
+			company:[]
 		};  
 	},
 	getDefaultProps:function(){
@@ -47,6 +49,7 @@ var GirdForm = React.createClass({
 			fdName:'fieldData',
 			gdName:'searchData',
 			apiPathName:gb_approot+'api/Users',
+			initPathName:gb_approot+'Base/Users/aj_Init',
 			roleDescription:role_description
 		};
 	},	
@@ -54,6 +57,17 @@ var GirdForm = React.createClass({
 		//只在客戶端執行一次，當渲染完成後立即執行。當生命週期執行到這一步，元件已經俱有 DOM 所以我們可以透過 this.getDOMNode() 來取得 DOM 。
 		//如果您想整和其他 Javascript framework ，使用 setTimeout, setInterval, 或者是發動 AJAX 請在這個方法中執行這些動作。
 		this.queryGridData(1);
+		this.getAjaxInitData();
+	},
+	getAjaxInitData:function(){
+		jqGet(this.props.initPathName)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({company:data.options_company});
+			//載入下拉是選單內容
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
 	},
 	handleSubmit: function(e) {
 
@@ -166,7 +180,7 @@ var GirdForm = React.createClass({
 	insertType:function(){
 		jqGet(gb_approot + 'api/GetAction/GetInsertRoles',{})
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:1,fieldData:{role_array:data}});
+			this.setState({edit_type:1,fieldData:{role_array:data,company_id:1}});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -272,7 +286,8 @@ var GirdForm = React.createClass({
 									<th className="col-xs-1 text-center">修改</th>
 									<th className="col-xs-2">姓名</th>
 									<th className="col-xs-2">帳號</th>
-									<th className="col-xs-7">Email</th>
+									<th className="col-xs-4">Email</th>
+									<th className="col-xs-3">公司名稱</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -307,7 +322,25 @@ var GirdForm = React.createClass({
 		else if(this.state.edit_type==1 || this.state.edit_type==2)
 		{
 			var fieldData = this.state.fieldData;
-
+			var company_html=null;
+			if(Role=="Admins"){
+				company_html=
+					<div className="form-group">
+						<label className="col-xs-2 control-label">選擇分公司</label>
+						<div className="col-xs-4">
+							<select className="form-control" 
+							value={fieldData.company_id}
+							onChange={this.changeFDValue.bind(this,'company_id')}>
+							{
+								this.state.company.map(function(itemData,i) {
+									return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
+								})
+							}
+							</select>
+						</div>
+						<small className="help-inline col-xs-6 text-danger">(必填)</small>
+					</div>;
+			}
 			outHtml=(
 			<div>
 				<ul className="breadcrumb">
@@ -373,7 +406,7 @@ var GirdForm = React.createClass({
 								 />
 							</div>
 						</div>
-
+						{company_html}
 						<div className="form-group">
 							<label className="col-xs-2 control-label">角色</label>
 							<div className="col-xs-10">

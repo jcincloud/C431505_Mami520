@@ -321,14 +321,14 @@ var GirdForm = React.createClass({
 							            <br />
 					                    <label for="">預計電訪日期</label>
 										<span className="has-feedback">
-											<InputDate id="start_date" 
+											<InputDate id="start_date" ver={2}
 											onChange={this.changeGDValue} 
 											field_name="start_date" 
 											value={searchData.start_date} />
 										</span> { }
 										<label>~</label> { }
 										<span className="has-feedback">
-											<InputDate id="end_date" 
+											<InputDate id="end_date" ver={2}
 											onChange={this.changeGDValue} 
 											field_name="end_date" 
 											value={searchData.end_date} />
@@ -400,25 +400,36 @@ var GirdForm = React.createClass({
 							        <div className="table-filter">
 							            <div className="form-inline">
 							                <div className="form-group">
-							                    <label for="">客戶名稱/餐編/媽媽姓名</label>
+							                    <label for="">客戶名稱/餐編/媽媽姓名</label> { }
 							                    <input type="text" className="form-control input-sm"
 							      			    value={searchBornData.word}
 												onChange={this.changeGDBornValue.bind(this,'word')}
 											 	placeholder="請擇一填寫" />
 							                </div>
+											<label>客戶分類</label> { }
+											<select className="form-control input-sm" 
+													value={searchBornData.customer_type}
+													onChange={this.changeGDBornValue.bind(this,'customer_type')}>
+												<option value="">全部</option>
+											{
+												CommData.CustomerType.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select> { }							                
 							                <div className="form-group">
-							                    <label for="">是否結案</label>
+							                    <label for="">正在用餐</label> { }
 							                    <select className="form-control input-sm"
-							                    value={searchBornData.is_close}
-												onChange={this.changeGDBornValue.bind(this,'is_close')}>
+							                    value={searchBornData.is_meal}
+												onChange={this.changeGDBornValue.bind(this,'is_meal')}>
 							                        <option value="">全部</option>
-							                        <option value="true">已結案</option>
-							                        <option value="false">未結案</option>
+							                        <option value="true">是</option>
+							                        <option value="false">否</option>
 							                    </select>
 							                </div>
-							                <div className="form-group">
+							                {/*<div className="form-group">
 							                    <button className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
-							                </div>
+							                </div>*/}
 							            </div>
 							        </div>
 							    </div>
@@ -427,10 +438,12 @@ var GirdForm = React.createClass({
 										<tr>
 											<th className="col-xs-1 text-center">選擇</th>
 											<th className="col-xs-1">客戶姓名</th>
+											<th className="col-xs-1">客戶類別</th>
 											<th className="col-xs-1">用餐編號</th>
-											<th className="col-xs-1">媽媽姓名</th>
-											<th className="col-xs-1">第幾胎</th>
-											<th className="col-xs-1">是否結案</th>
+											<th className="col-xs-1">媽媽姓名</th>										
+											<th className="col-xs-1">電話1</th>
+											<th className="col-xs-1">備註</th>
+											<th className="col-xs-1">預產期</th>
 										</tr>
 										{
 											this.state.born_list.map(function(itemData,i) {
@@ -444,10 +457,12 @@ var GirdForm = React.createClass({
 										                    </label>
 														</td>
 														<td>{itemData.customer_name}</td>
+														<td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
 														<td>{itemData.meal_id}</td>
 														<td>{itemData.mom_name}</td>
-														<td>{itemData.born_frequency}</td>
-														<td>{itemData.is_close? <span className="label label-primary">結案</span>:<span className="label label-danger">未結案</span>}</td>			
+														<td>{itemData.tel_1}</td>
+														<td>{itemData.memo}</td>
+														<td>{moment(itemData.expected_born_day).format('YYYY/MM/DD')}</td>			
 													</tr>;
 												return born_out_html;
 											}.bind(this))

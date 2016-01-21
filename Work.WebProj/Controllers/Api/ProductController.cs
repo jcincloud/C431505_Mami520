@@ -30,6 +30,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.Product
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => x.sort).AsQueryable();
 
 
@@ -49,7 +50,8 @@ namespace DotWeb.Api
                     product_name = x.product_name,
                     product_type = x.product_type,
                     price = x.price,
-                    standard = x.standard
+                    standard = x.standard,
+                    i_Hide = x.i_Hide
                 });
 
 
@@ -83,6 +85,11 @@ namespace DotWeb.Api
                 item.standard = md.standard;
                 item.sort = md.sort;
                 item.memo = md.memo;
+                item.i_Hide = md.i_Hide;
+                item.meal_type = md.meal_type;
+                item.breakfast_price = md.breakfast_price;
+                item.lunch_price = md.lunch_price;
+                item.dinner_price = md.dinner_price;
 
 
                 item.i_UpdateUserID = this.UserId;
@@ -122,6 +129,7 @@ namespace DotWeb.Api
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
 
                 db0.Product.Add(md);
@@ -152,6 +160,13 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
+                    bool check_rd = db0.RecordDetail.Any(x => x.product_id == id);
+                    if (check_rd)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_Delete_Product;
+                        return Ok(r);
+                    }
                     item = new Product() { product_id = id };
                     db0.Product.Attach(item);
                     db0.Product.Remove(item);

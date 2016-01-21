@@ -31,6 +31,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.Customer
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => x.customer_id).AsQueryable();
 
                 if (q.word != null)
@@ -176,6 +177,7 @@ namespace DotWeb.Api
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
                 db0.Customer.Add(md);
                 await db0.SaveChangesAsync();

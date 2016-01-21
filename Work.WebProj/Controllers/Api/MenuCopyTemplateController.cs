@@ -11,66 +11,49 @@ using System.Web.Http;
 
 namespace DotWeb.Api
 {
-    public class StockController : ajaxBaseApi
+    public class MenuCopyTemplateController : ajaxApi<MenuCopyTemplate, q_MenuCopyTemplate>
     {
         public async Task<IHttpActionResult> Get(int id)
         {
             using (db0 = getDB0())
             {
-                var item = await db0.Stock
-                    .Where(x => x.stock_id == id)
-                    .Select(x => new
-                    {
-                        x.stock_id,
-                        x.y,
-                        x.m,
-                        x.agent_id,
-                        x.state,
-                        x.users_id
-                    }).FirstAsync();
-                string UserName = db0.AspNetUsers.Find(item.users_id).UserName;
-                var r = new { data = item, user_name = UserName };
-                return Ok(r);
+                item = await db0.MenuCopyTemplate.FindAsync(id);
+                r = new ResultInfo<MenuCopyTemplate>() { data = item };
             }
+
+            return Ok(r);
         }
-        public async Task<IHttpActionResult> Get([FromUri]q_Stock q)
+        public async Task<IHttpActionResult> Get([FromUri]q_MenuCopyTemplate q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
 
             using (db0 = getDB0())
             {
-                var items = db0.Stock
-                    .OrderByDescending(x => x.y)//依日期排序(新到舊)
-                    .OrderByDescending(x => x.m)
-                    .Select(x => new
-                    {
-                        x.stock_id,
-                        x.users_id,
-                        x.Agent.agent_name,
-                        x.y,
-                        x.m
-                    });
-                var getRoles = db0.AspNetUsers.FirstOrDefault(x => x.Id == this.UserId).AspNetRoles;
-                string getRolesName = getRoles.FirstOrDefault().Name;
-                if (getRolesName != "Admins" && getRolesName != "Managers")
-                {
-                    items = items.Where(x => x.users_id == this.UserId);
-                }
-                if (q.year != null)
-                {
-                    items = items.Where(x => x.y == q.year);
-                }
-                if (q.month != null)
-                {
-                    items = items.Where(x => x.m == q.month);
-                }
-                int page = (q.page == null ? 1 : (int)q.page);
-                int startRecord = PageCount.PageInfo(page, this.defPageSize, items.Count());
-                var resultItems = await items.Skip(startRecord).Take(this.defPageSize).ToListAsync();
+                var qr = db0.MenuCopyTemplate
+                    .Where(x => x.company_id == this.companyId)
+                    .OrderByDescending(x => x.menu_copy_template_id).AsQueryable();
 
-                return Ok<GridInfo>(new GridInfo()
+
+                if (q.keyword != null)
                 {
-                    rows = resultItems.ToArray(),
+                    qr = qr.Where(x => x.template_name.Contains(q.keyword));
+                }
+
+                var result = qr.Select(x => new m_MenuCopyTemplate()
+                {
+                    menu_copy_template_id = x.menu_copy_template_id,
+                    template_name = x.template_name,
+                    memo = x.memo
+                });
+
+
+                int page = (q.page == null ? 1 : (int)q.page);
+                int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
+                var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
+
+                return Ok<GridInfo<m_MenuCopyTemplate>>(new GridInfo<m_MenuCopyTemplate>()
+                {
+                    rows = segment,
                     total = PageCount.TotalPage,
                     page = PageCount.Page,
                     records = PageCount.RecordCount,
@@ -80,18 +63,16 @@ namespace DotWeb.Api
             }
             #endregion
         }
-        public async Task<IHttpActionResult> Put([FromBody]Stock md)
+        public async Task<IHttpActionResult> Put([FromBody]MenuCopyTemplate md)
         {
             ResultInfo r = new ResultInfo();
             try
             {
                 db0 = getDB0();
 
-                var item = await db0.Stock.FindAsync(md.stock_id);
-
-                item.agent_id = md.agent_id;
-                item.y = md.y;
-                item.m = md.m;
+                item = await db0.MenuCopyTemplate.FindAsync(md.menu_copy_template_id);
+                item.template_name = md.template_name;
+                item.memo = md.memo;
 
                 item.i_UpdateUserID = this.UserId;
                 item.i_UpdateDateTime = DateTime.Now;
@@ -111,28 +92,10 @@ namespace DotWeb.Api
             }
             return Ok(r);
         }
-        public async Task<IHttpActionResult> Post([FromBody]Stock md)
+        public async Task<IHttpActionResult> Post([FromBody]MenuCopyTemplate md)
         {
-
+            md.menu_copy_template_id = GetNewId(ProcCore.Business.CodeTable.MenuCopyTemplate);
             ResultInfo r = new ResultInfo();
-            db0 = getDB0();
-            var is_exist = db0.Stock.Any(
-                x =>
-                        x.agent_id == md.agent_id &&
-                        x.m == md.m &&
-                        x.y == md.y
-                );
-
-            if (is_exist)
-            {
-                r.message = "該項產品本月已登錄";
-                r.result = false;
-                return Ok(r);
-            }
-
-            md.stock_id = GetNewId(ProcCore.Business.CodeTable.Base);
-            md.users_id = this.UserId;
-
             if (!ModelState.IsValid)
             {
                 r.message = ModelStateErrorPack();
@@ -143,17 +106,19 @@ namespace DotWeb.Api
             try
             {
                 #region working a
+                db0 = getDB0();
 
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
-                db0.Stock.Add(md);
 
+                db0.MenuCopyTemplate.Add(md);
                 await db0.SaveChangesAsync();
 
                 r.result = true;
-                r.id = md.stock_id;
+                r.id = md.menu_copy_template_id;
                 return Ok(r);
                 #endregion
             }
@@ -177,9 +142,16 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    var item = new Stock() { stock_id = id };
-                    db0.Stock.Attach(item);
-                    db0.Stock.Remove(item);
+                    bool check = db0.MenuCopy.Any(x => x.menu_copy_template_id == id);
+                    if (check)
+                    {
+                        r.result = false;
+                        r.message = Resources.Res.Log_Err_Delete_DetailExist;
+                        return Ok(r);
+                    }
+                    item = new MenuCopyTemplate() { menu_copy_template_id = id };
+                    db0.MenuCopyTemplate.Attach(item);
+                    db0.MenuCopyTemplate.Remove(item);
                 }
 
                 await db0.SaveChangesAsync();
@@ -212,6 +184,5 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
-
     }
 }

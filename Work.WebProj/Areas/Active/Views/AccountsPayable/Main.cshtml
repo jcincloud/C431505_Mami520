@@ -2,7 +2,7 @@
     Layout = "~/Views/Shared/Manage/RLayout.cshtml";
 }
 @section breadCrumb {
-    <li><a href="~/Active/Product/ProductRecord"><i class="fa-usd"></i> @ViewBag.MenuName</a></li>
+    <li><a href="~/Active/AccountsPayable"><i class="fa-usd"></i> @ViewBag.MenuName</a></li>
     <li>@ViewBag.Caption</li>
 }
 @section IncludeCSS{
@@ -12,6 +12,7 @@
     @Html.Partial("Manage/JSGlobalVar")
     <script>
         var gb_main_id = '@ViewBag.main_id';
+        var gb_roles = '@ViewBag.RoleName';
     </script>
     <script src="~/Scripts/build/comminc.js"></script>
     <script src="~/Scripts/app/datetimepicker/bootstrap-datetimepicker.min.js"></script>

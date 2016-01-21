@@ -119,7 +119,7 @@ var MasterImageUpload = React.createClass({
 		        	if(response.result){ 
 						r_this.getFileList();
 					}else{
-						alert(response.error);
+						alert(response.message);
 					}
 		        }
 			});

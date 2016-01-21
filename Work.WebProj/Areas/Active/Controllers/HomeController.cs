@@ -1,13 +1,15 @@
 ﻿using DotWeb.CommSetup;
 using DotWeb.Controller;
+using ProcCore.Business.DB0;
 using ProcCore.HandleResult;
 using System;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace DotWeb.Areas.Active.Controllers
 {
-    public class CustomerController : AdminController
+    public class HomeController : AdminController
     {
         #region Action and function section
         public ActionResult Main()
@@ -15,7 +17,11 @@ namespace DotWeb.Areas.Active.Controllers
             ActionRun();
             return View();
         }
-
+        public ActionResult fake()
+        {
+            ActionRun();
+            return View();
+        }
         #endregion
 
         #region ajax call section
@@ -27,6 +33,26 @@ namespace DotWeb.Areas.Active.Controllers
                 return defJSON(new
                 {
                     // options_equipment_category = db0.Equipment_Category.OrderBy(x=>x.sort)
+                });
+            }
+        }
+        public string element_food_Init()
+        {
+            using (var db0 = getDB0())
+            {
+                return defJSON(new
+                {
+                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ElementFood & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
+                });
+            }
+        }
+        public string constitute_food_Init()
+        {
+            using (var db0 = getDB0())
+            {
+                return defJSON(new
+                {
+                    options_category = db0.All_Category_L2.Where(x => x.all_category_l1_id == CategoryType.ConstituteFood & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new option() { val = x.all_category_l2_id, Lname = x.l2_name })
                 });
             }
         }

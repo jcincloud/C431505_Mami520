@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="87fa7e47fdc247a7b60d3c5e951242c4" Name="Diagram1">
         <EntityTypeShape EntityType="C43A0_Mani520Model.AspNetRoles" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.AspNetUsers" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Department" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.i_Currency" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.i_IDX" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
@@ -15,10 +14,7 @@
         <EntityTypeShape EntityType="C43A0_Mani520Model.i_SN" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.i_UserLoginLog" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Menu" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_AspNetUsers_Department" ManuallyRouted="false" />
-        <AssociationConnector Association="C43A0_Mani520Model.AspNetUserRoles" ManuallyRouted="false" />
         <AssociationConnector Association="C43A0_Mani520Model.MenuRole" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.MealID" Width="1.5" PointX="12.375" PointY="0.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.Customer" Width="1.5" PointX="5.375" PointY="10.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.CustomerBorn" Width="1.5" PointX="7.625" PointY="12.125" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerBorn_Customer" />
@@ -47,7 +43,6 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerNeed_CustomerBorn" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_CustomerNeed" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_CustomerOfDietaryNeed_DietaryNeed" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.Draft" Width="1.5" PointX="14.375" PointY="0.75" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.ProductRecord" Width="1.5" PointX="17.875" PointY="5.25" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ProductRecord_Customer" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_ProductRecord_CustomerBorn" />
@@ -61,24 +56,37 @@
         <AssociationConnector Association="C43A0_Mani520Model.FK_ScheduleDetail_CustomerBorn" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DeatilTelRecord" Width="1.5" PointX="12.125" PointY="27.625" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DeatilTelRecord_ScheduleDetail" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsgOfCustomer" Width="1.5" PointX="10.625" PointY="7.625" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsg" Width="1.5" PointX="3.375" PointY="19.125" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMealChangeRecord" Width="1.5" PointX="27.625" PointY="18.5" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="0.75" PointY="19" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayableDetail" Width="1.5" PointX="22.375" PointY="5.25" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.AccountsPayable" Width="1.5" PointX="20.25" PointY="5.25" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayable_Customer" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayable_ProductRecord" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_AccountsPayableDetail_AccountsPayable" />
-        <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="26.125" PointY="7.75" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
         <EntityTypeShape EntityType="C43A0_Mani520Model.DailyMeal" Width="1.5" PointX="28.375" PointY="9.875" />
-        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
         <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMealChangeRecord_DailyMeal" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.RecordDetail" Width="1.5" PointX="26.125" PointY="7.375" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_CustomerBorn" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_DailyMeal_RecordDetail" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_ProductRecord" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.AspNetUsers" Width="1.5" PointX="5" PointY="1.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Company" Width="1.5" PointX="2.75" PointY="25.125" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_AspNetUsers_Company" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_AspNetUsers_Department" />
+        <AssociationConnector Association="C43A0_Mani520Model.AspNetUserRoles" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MealID" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Draft" Width="1.5" PointX="12.375" PointY="0.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.SendMsgOfCustomer" Width="1.5" PointX="12.625" PointY="17.375" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_Customer" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_SendMsgOfCustomer_SendMsg" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.Product" Width="1.5" PointX="19.375" PointY="17.125" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_RecordDetail_Product" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MenuCopy" Width="1.5" PointX="19.875" PointY="24.5" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MenuCopyOfConstitute" Width="1.5" PointX="22.125" PointY="17.75" />
+        <EntityTypeShape EntityType="C43A0_Mani520Model.MenuCopyTemplate" Width="1.5" PointX="17.625" PointY="24.75" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_MenuCopyOfConstitute_ConstituteFood" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_MenuCopy_MenuCopyTemplate" />
+        <AssociationConnector Association="C43A0_Mani520Model.FK_MenuCopyOfConstitute_MenuCopy" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

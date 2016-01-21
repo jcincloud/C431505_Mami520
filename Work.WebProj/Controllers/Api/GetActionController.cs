@@ -19,17 +19,35 @@ namespace DotWeb.Api
 {
     public class GetActionController : BaseApiController
     {
+        #region 首頁-搜尋客戶
+        [HttpGet]
+        public async Task<IHttpActionResult> ta_CustomerBorn(string keyword)
+        {
+            db0 = getDB0();
+            var item = await db0.CustomerBorn
+                .OrderBy(x => x.born_id)
+                .Where(x => x.mom_name.Contains(keyword))
+                .Select(x => new { x.mom_name, x.meal_id, x.tel_1, x.tw_city_1, x.tw_country_1, x.tw_address_1 })
+                .Take(5).ToListAsync();
+
+            return Ok(item);
+        }
+        #endregion
         #region 客戶生產-用餐編號選取
-        public IHttpActionResult GetAllMealID()
+        public IHttpActionResult GetAllMealID([FromUri]GetAllMealIDParm q)
         {
             db0 = getDB0();
             try
             {
                 var items = db0.MealID
                     .OrderBy(x => x.meal_id)
-                    .Where(x => !x.i_Use & !x.i_Hide)
+                    .Where(x => !x.i_Use & !x.i_Hide & x.company_id == this.companyId)
                     .Select(x => new { x.meal_id });
 
+                if (q.keyword != null)
+                {
+                    items = items.Where(x => x.meal_id.StartsWith(q.keyword));
+                }
                 return Ok(items.ToList());
             }
             finally
@@ -42,8 +60,8 @@ namespace DotWeb.Api
             db0 = getDB0();
             try
             {
-                var check_old = db0.MealID.Any(x => x.meal_id == parm.old_id);
-                var check_new = db0.MealID.Any(x => x.meal_id == parm.new_id & !x.i_Use);
+                var check_old = db0.MealID.Any(x => x.meal_id == parm.old_id & x.company_id == this.companyId);
+                var check_new = db0.MealID.Any(x => x.meal_id == parm.new_id & !x.i_Use & x.company_id == this.companyId);
 
                 if (!check_new)
                 {//如果發先新id已被使用
@@ -51,10 +69,10 @@ namespace DotWeb.Api
                 }
                 if (check_old)
                 {
-                    var old_item = await db0.MealID.FindAsync(parm.old_id);
+                    var old_item = await db0.MealID.FindAsync(parm.old_id, this.companyId);
                     old_item.i_Use = false;//將舊id改回未使用狀態
                 }
-                var new_item = await db0.MealID.FindAsync(parm.new_id);
+                var new_item = await db0.MealID.FindAsync(parm.new_id, this.companyId);
                 new_item.i_Use = true;
 
                 await db0.SaveChangesAsync();
@@ -70,10 +88,10 @@ namespace DotWeb.Api
             db0 = getDB0();
             try
             {
-                bool check_born = db0.CustomerBorn.Any(x => x.born_id == parm.born_id);//先檢查此筆生產存不存在
+                bool check_born = db0.CustomerBorn.Any(x => x.born_id == parm.born_id & x.company_id == this.companyId);//先檢查此筆生產存不存在
                 if (parm.meal_id != null)//有選用餐編號才改
                 {
-                    var meal_item = await db0.MealID.FindAsync(parm.meal_id);
+                    var meal_item = await db0.MealID.FindAsync(parm.meal_id, this.companyId);
                     if (!check_born || parm.born_id == null)
                     {
                         meal_item.i_Use = false;
@@ -83,7 +101,7 @@ namespace DotWeb.Api
                         var born_item = await db0.CustomerBorn.FindAsync(parm.born_id);
                         if (born_item.meal_id != parm.meal_id)
                         {
-                            var old_item = await db0.MealID.FindAsync(born_item.meal_id);
+                            var old_item = await db0.MealID.FindAsync(born_item.meal_id, this.companyId);
                             if (old_item.i_Use)
                             {//如果舊id已經被其他人用
                                 born_item.meal_id = parm.meal_id;//換成新id
@@ -118,16 +136,16 @@ namespace DotWeb.Api
                 IQueryable<int> born_id = null;
                 if (main_id != null)
                 {
-                    born_id = db0.CustomerNeed.Where(x => x.customer_need_id != main_id).Select(x => x.born_id);
+                    born_id = db0.CustomerNeed.Where(x => x.customer_need_id != main_id & x.company_id == this.companyId).Select(x => x.born_id);
                 }
                 else
                 {
-                    born_id = db0.CustomerNeed.Select(x => x.born_id);
+                    born_id = db0.CustomerNeed.Where(x => x.company_id == this.companyId).Select(x => x.born_id);
                 }
 
                 var items = db0.CustomerBorn
                     .OrderBy(x => x.meal_id)
-                    .Where(x => !x.is_close & !born_id.Contains(x.born_id))
+                    .Where(x => !x.is_close & !born_id.Contains(x.born_id) & x.company_id == this.companyId)
                     .Select(x => new { x.customer_id, x.born_id, x.meal_id, x.mom_name, x.born_frequency });
 
                 if (old_id != null)
@@ -165,12 +183,37 @@ namespace DotWeb.Api
             {
 
                 var items = db0.CustomerBorn
+                    .Where(x => x.company_id == this.companyId)
                     .OrderBy(x => new { x.customer_id, x.meal_id })
-                    .Select(x => new { x.customer_id, x.born_id, x.Customer.customer_sn, x.Customer.customer_name, x.meal_id, x.mom_name, x.born_frequency, x.is_close });
+                    .Select(x => new
+                    {
+                        x.customer_id,
+                        x.born_id,
+                        x.Customer.customer_sn,
+                        x.Customer.customer_name,
+                        x.meal_id,
+                        x.mom_name,
+                        x.born_frequency,
+                        x.Customer.customer_type,//客戶類別
+                        x.tel_1,
+                        x.memo,
+                        x.expected_born_day//預產期
+                    });
 
-                if (parm.is_close != null)
+                if (parm.customer_type != null)
                 {
-                    items = items.Where(x => x.is_close == parm.is_close);
+                    items = items.Where(x => x.customer_type == parm.customer_type);
+                }
+                if (parm.is_meal != null)
+                {
+                    if ((bool)parm.is_meal)
+                    {
+                        items = items.Where(x => x.meal_id != null);
+                    }
+                    else {
+                        items = items.Where(x => x.meal_id == null);
+                    }
+
                 }
                 if (parm.word != null)
                 {
@@ -265,6 +308,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.AccountsPayable.Add(item);
@@ -334,11 +378,12 @@ namespace DotWeb.Api
             {
                 //檢查此筆生產紀錄是否已有"試吃"及"月子餐"
                 var check_Tryout = db0.RecordDetail.Any(x => x.born_id == parm.born_id & x.product_type == (int)ProdyctType.Tryout);
-                var check_PostnatalMeal = db0.RecordDetail.Any(x => x.born_id == parm.born_id & x.product_type == (int)ProdyctType.PostnatalMeal);
+                //var check_PostnatalMeal = db0.RecordDetail.Any(x => x.born_id == parm.born_id & x.product_type == (int)ProdyctType.PostnatalMeal);
 
                 var items = db0.Product
                     .OrderBy(x => new { x.sort })
-                    .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard });
+                    .Where(x => !x.i_Hide & x.company_id == this.companyId)
+                    .Select(x => new { x.product_id, x.product_name, x.product_type, x.price, x.standard, x.meal_type, x.breakfast_price, x.lunch_price, x.dinner_price });
 
                 if (parm.name != null)
                 {
@@ -352,10 +397,10 @@ namespace DotWeb.Api
                 {//已有試吃,將不列出試吃產品
                     items = items.Where(x => x.product_type != (int)ProdyctType.Tryout);
                 }
-                if (check_PostnatalMeal)
-                {//已有月子餐,將不列出月子餐產品
-                    items = items.Where(x => x.product_type != (int)ProdyctType.PostnatalMeal);
-                }
+                //if (check_PostnatalMeal)
+                //{//已有月子餐,將不列出月子餐產品
+                //    items = items.Where(x => x.product_type != (int)ProdyctType.PostnatalMeal);
+                //}
 
                 return Ok(items.ToList());
             }
@@ -371,7 +416,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.RecordDetail
                              .OrderByDescending(x => x.sell_day)
-                             .Where(x => x.product_record_id == q.main_id)
+                             .Where(x => x.product_record_id == q.main_id & x.company_id == this.companyId)
                              .Select(x => new m_RecordDetail()
                              {
                                  product_record_id = x.product_record_id,
@@ -398,17 +443,23 @@ namespace DotWeb.Api
             try
             {
                 var getRecordDetail = await db0.RecordDetail.FindAsync(parm.record_deatil_id);//產品銷售明細檔
-                var getMealID = await db0.MealID.FindAsync(parm.meal_id);//用餐編號
+                var getMealID = await db0.MealID.FindAsync(parm.meal_id, this.companyId);//用餐編號
                 var getBorn = await db0.CustomerBorn.FindAsync(getRecordDetail.born_id);//生產紀錄
-                DateTime end = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id)
-                                .OrderByDescending(x => x.meal_day).FirstOrDefault().meal_day;
-                end = end.AddDays(1);
-                if (DateTime.Now < end)
-                {//未用餐完畢,不可釋放用餐編號
-                    r.result = false;
-                    r.message = Resources.Res.Log_Check_RecordDetail_MealEnd;
-                    return Ok(r);
+
+                var end_dailymeal = db0.DailyMeal.Where(x => x.record_deatil_id == getRecordDetail.record_deatil_id & (x.breakfast_state > 0 || x.dinner_state > 0 || x.lunch_state > 0))
+                                .OrderByDescending(x => x.meal_day).FirstOrDefault();
+                if (end_dailymeal != null)
+                {
+                    DateTime end = end_dailymeal.meal_day;
+                    end = end.AddDays(1);
+                    if (DateTime.Now < end)
+                    {//未用餐完畢,不可釋放用餐編號
+                        r.result = false;
+                        r.message = Resources.Res.Log_Check_RecordDetail_MealEnd;
+                        return Ok(r);
+                    }
                 }
+
                 if (getRecordDetail.is_release == false)
                 {
                     getBorn.meal_id = null;
@@ -443,7 +494,7 @@ namespace DotWeb.Api
             {
                 var items = db0.Activity
                     .OrderByDescending(x => x.sort)
-                    .Where(x => !x.i_Hide)
+                    .Where(x => !x.i_Hide & x.company_id == this.companyId)
                     .Select(x => new option() { val = x.activity_id, Lname = x.activity_name });
 
                 return Ok(items.ToList());
@@ -459,11 +510,11 @@ namespace DotWeb.Api
             try
             {
                 //一筆生產紀錄只能有一筆禮品贈送紀錄
-                var born_id = db0.GiftRecord.Select(x => x.born_id).AsQueryable();
+                var born_id = db0.GiftRecord.Where(x => x.company_id == this.companyId).Select(x => x.born_id).AsQueryable();
 
                 var items = db0.ProductRecord
                     .OrderByDescending(x => x.record_day)
-                    .Where(x => !born_id.Contains(x.born_id))
+                    .Where(x => !born_id.Contains(x.born_id) & x.company_id == this.companyId)
                     .Select(x => new
                     {
                         x.product_record_id,
@@ -527,7 +578,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.ScheduleDetail
                              .OrderBy(x => x.tel_day)
-                             .Where(x => x.schedule_id == main_id)
+                             .Where(x => x.schedule_id == main_id & x.company_id == this.companyId)
                              .Select(x => new m_ScheduleDetail()
                              {
                                  schedule_detail_id = x.schedule_detail_id,
@@ -556,8 +607,8 @@ namespace DotWeb.Api
                 //取得該月天數
                 var getDateSection = (getCalendarLastDay - getCalendarFirstDay).TotalDays + 1;
 
-                //var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
-                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day < DateTime.Now &&
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day < Yesterday &&
                                              x.record_deatil_id == parm.record_deatil_id);
 
                 Mobj = new MonthObject()
@@ -639,177 +690,125 @@ namespace DotWeb.Api
                 db0 = getDB0();
                 var item = await db0.DailyMeal.FindAsync(parm.daily_meal_id);
                 var RecordDetailItem = await db0.RecordDetail.FindAsync(parm.record_deatil_id);
+
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= Yesterday &&
+                                                               x.record_deatil_id == parm.record_deatil_id);
                 #region 早餐
+                RecordDetailItem.real_breakfast = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.breakfast_state > 0).Count();
                 if (parm.meal_type == (int)MealType.Breakfast)
                 {
                     item.breakfast_state = parm.meal_state;
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_breakfast += 1;
-                        if (!parm.isMealStart)
-                        {
-                            RecordDetailItem.real_estimate_breakfast += 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = 1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
                     }
-                    else if (parm.meal_state < 0)//停餐
+                    else if (parm.meal_state < 0)//減餐
                     {
-                        RecordDetailItem.real_breakfast -= 1;
-                        if (!parm.isMealStart)
+                        RecordDetailItem.real_breakfast += -1;
+                    }
+
+                    if (!check_meal_start)
+                    {
+                        RecordDetailItem.real_estimate_breakfast = RecordDetailItem.real_breakfast;
+                    }
+                    else
+                    {//開始用餐後變動新增異動紀錄
+                        int change_type = parm.meal_state > 0 ? 1 : -1;
+                        var changeRecord = new DailyMealChangeRecord()
                         {
-                            RecordDetailItem.real_estimate_breakfast -= 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = -1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
+                            change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                            daily_meal_id = parm.daily_meal_id,
+                            record_deatil_id = parm.record_deatil_id,
+                            change_time = DateTime.Now,
+                            meal_day = item.meal_day,
+                            meal_type = parm.meal_type,
+                            change_type = change_type,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            company_id = this.companyId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.DailyMealChangeRecord.Add(changeRecord);
                     }
                 }
                 #endregion
                 #region 午餐
+                RecordDetailItem.real_lunch = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.lunch_state > 0).Count();
                 if (parm.meal_type == (int)MealType.Lunch)
                 {
                     item.lunch_state = parm.meal_state;
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_lunch += 1;
-                        if (!parm.isMealStart)
-                        {
-                            RecordDetailItem.real_estimate_lunch += 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = 1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
                     }
-                    else if (parm.meal_state < 0)//停餐
+                    else if (parm.meal_state < 0)//減餐
                     {
-                        RecordDetailItem.real_lunch -= 1;
-                        if (!parm.isMealStart)
+                        RecordDetailItem.real_lunch += -1;
+                    }
+                    if (!check_meal_start)
+                    {
+                        RecordDetailItem.real_estimate_lunch = RecordDetailItem.real_lunch;
+                    }
+                    else
+                    {//開始用餐後變動新增異動紀錄
+                        int change_type = parm.meal_state > 0 ? 1 : -1;
+                        var changeRecord = new DailyMealChangeRecord()
                         {
-                            RecordDetailItem.real_estimate_lunch -= 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = -1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
+                            change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                            daily_meal_id = parm.daily_meal_id,
+                            record_deatil_id = parm.record_deatil_id,
+                            change_time = DateTime.Now,
+                            meal_day = item.meal_day,
+                            meal_type = parm.meal_type,
+                            change_type = change_type,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            company_id = this.companyId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.DailyMealChangeRecord.Add(changeRecord);
                     }
                 }
                 #endregion
                 #region 晚餐
+                RecordDetailItem.real_dinner = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id & x.dinner_state > 0).Count();
                 if (parm.meal_type == (int)MealType.Dinner)
                 {
                     item.dinner_state = parm.meal_state;
                     if (parm.meal_state > 0)//增餐
                     {
                         RecordDetailItem.real_dinner += 1;
-                        if (!parm.isMealStart)
-                        {
-                            RecordDetailItem.real_estimate_dinner += 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = 1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
                     }
-                    else if (parm.meal_state < 0)//停餐
+                    else if (parm.meal_state < 0)//減餐
                     {
-                        RecordDetailItem.real_dinner -= 1;
-                        if (!parm.isMealStart)
+                        RecordDetailItem.real_dinner += -1;
+                    }
+                    if (!check_meal_start)
+                    {
+                        RecordDetailItem.real_estimate_dinner = RecordDetailItem.real_dinner;
+                    }
+                    else
+                    {//開始用餐後變動新增異動紀錄
+                        int change_type = parm.meal_state > 0 ? 1 : -1;
+                        var changeRecord = new DailyMealChangeRecord()
                         {
-                            RecordDetailItem.real_estimate_dinner -= 1;
-                        }
-                        else
-                        {//開始用餐後變動新增異動紀錄
-                            var changeRecord = new DailyMealChangeRecord()
-                            {
-                                change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
-                                daily_meal_id = parm.daily_meal_id,
-                                record_deatil_id = parm.record_deatil_id,
-                                change_time = DateTime.Now,
-                                meal_day = item.meal_day,
-                                meal_type = parm.meal_type,
-                                change_type = -1,
-                                i_InsertUserID = this.UserId,
-                                i_InsertDateTime = DateTime.Now,
-                                i_InsertDeptID = this.departmentId,
-                                i_Lang = "zh-TW"
-                            };
-                            db0.DailyMealChangeRecord.Add(changeRecord);
-                        }
+                            change_record_id = GetNewId(ProcCore.Business.CodeTable.DailyMealChangeRecord),
+                            daily_meal_id = parm.daily_meal_id,
+                            record_deatil_id = parm.record_deatil_id,
+                            change_time = DateTime.Now,
+                            meal_day = item.meal_day,
+                            meal_type = parm.meal_type,
+                            change_type = change_type,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            company_id = this.companyId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.DailyMealChangeRecord.Add(changeRecord);
                     }
                 }
                 #endregion
@@ -817,8 +816,14 @@ namespace DotWeb.Api
                 double old_subtotal = RecordDetailItem.subtotal;
 
                 #region 變更產品數量
-                RecordDetailItem.qty = Math.Round((int)RecordDetailItem.real_breakfast * 0.3 + (int)RecordDetailItem.real_lunch * 0.35 + (int)RecordDetailItem.real_dinner * 0.35, 2);
-                RecordDetailItem.subtotal = RecordDetailItem.qty * RecordDetailItem.price;
+                double b_point = 0, l_point = 0, d_point = 0;//餐別計算點數
+                var product = db0.Product.Find(RecordDetailItem.product_id);
+                b_point = Math.Round(product.breakfast_price / product.price, 4);
+                l_point = Math.Round(product.lunch_price / product.price, 4);
+                d_point = Math.Round(product.dinner_price / product.price, 4);
+
+                RecordDetailItem.qty = Math.Round((double)RecordDetailItem.real_breakfast * b_point + (double)RecordDetailItem.real_lunch * l_point + (double)RecordDetailItem.real_dinner * d_point, 4);
+                RecordDetailItem.subtotal = Math.Round(RecordDetailItem.qty * RecordDetailItem.price);
                 #endregion
 
                 #region 變更應收帳款
@@ -869,9 +874,12 @@ namespace DotWeb.Api
                 db0 = getDB0();
                 var item = db0.DailyMeal.Where(x => x.record_deatil_id == parm.record_deatil_id && x.meal_day == parm.meal_day).FirstOrDefault();
                 var RecordDetailItem = await db0.RecordDetail.FindAsync(parm.record_deatil_id);
-                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= DateTime.Now &&
+
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
+                bool check_meal_start = db0.DailyMeal.Any(x => x.meal_day <= Yesterday &&
                                                                x.record_deatil_id == parm.record_deatil_id);
-                if (item == null & DateTime.Now <= parm.meal_day)
+                //先前日期,先開放可以加
+                if (item == null)//& DateTime.Now <= parm.meal_day
                 {
                     item = new DailyMeal()
                     {
@@ -888,6 +896,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.DailyMeal.Add(item);
@@ -983,10 +992,11 @@ namespace DotWeb.Api
                 real_total = ((int)item.real_breakfast + (int)item.real_lunch + (int)item.real_dinner);
                 #region 增餐&停餐&已吃
                 var getDailyMeal = db0.DailyMeal.Where(x => x.record_deatil_id == record_deatil_id).ToList();
+                var Yesterday = DateTime.Parse(DateTime.Now.ToShortDateString()).AddDays(-1);
                 foreach (var i in getDailyMeal)
                 {
                     #region 已吃
-                    if (i.meal_day <= DateTime.Now)
+                    if (i.meal_day <= Yesterday)
                     {
                         if (i.breakfast_state > 0)
                             already_eat++;
@@ -1037,11 +1047,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var element_id = db0.ConstituteOfElement
-                    .Where(x => x.constitute_id == parm.main_id)
+                    .Where(x => x.constitute_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.element_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
+                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
 
 
                 if (parm.name != null)
@@ -1079,7 +1089,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.ConstituteOfElement
                             join y in db0.ElementFood on x.element_id equals y.element_id
-                            where x.constitute_id == main_id
+                            where x.constitute_id == main_id & x.company_id == this.companyId
                             select new { x.element_id, y.category_id, y.element_name };
 
                 return Ok(items.ToList());
@@ -1108,6 +1118,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.ConstituteOfElement.Add(item);
@@ -1176,11 +1187,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var constitute_id = db0.DailyMenuOfConstitute
-                    .Where(x => x.dail_menu_id == parm.main_id)
+                    .Where(x => x.dail_menu_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.constitute_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.ConstituteFood.Where(x => !constitute_id.Contains(x.constitute_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.constitute_id, x.category_id, x.constitute_name });
+                var items = db0.ConstituteFood.Where(x => !constitute_id.Contains(x.constitute_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.constitute_id, x.category_id, x.constitute_name });
 
 
                 if (parm.name != null)
@@ -1217,7 +1228,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.DailyMenuOfConstitute
                             join y in db0.ConstituteFood on x.constitute_id equals y.constitute_id
-                            where x.dail_menu_id == main_id
+                            where x.dail_menu_id == main_id & x.company_id == this.companyId
                             select new { x.constitute_id, y.category_id, y.constitute_name };
 
                 return Ok(items.ToList());
@@ -1246,6 +1257,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.DailyMenuOfConstitute.Add(item);
@@ -1314,11 +1326,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var element_id = db0.DietaryNeedOfElement
-                    .Where(x => x.dietary_need_id == parm.main_id)
+                    .Where(x => x.dietary_need_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.element_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
+                var items = db0.ElementFood.Where(x => !element_id.Contains(x.element_id) & !x.i_Hide & x.company_id == this.companyId).OrderByDescending(x => x.sort).Select(x => new { x.element_id, x.category_id, x.element_name });
 
 
                 if (parm.name != null)
@@ -1355,7 +1367,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.DietaryNeedOfElement
                             join y in db0.ElementFood on x.element_id equals y.element_id
-                            where x.dietary_need_id == main_id
+                            where x.dietary_need_id == main_id & x.company_id == this.companyId
                             select new { x.element_id, y.category_id, y.element_name };
 
                 return Ok(items.ToList());
@@ -1384,6 +1396,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.DietaryNeedOfElement.Add(item);
@@ -1452,11 +1465,11 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var dietary_need_id = db0.CustomerOfDietaryNeed
-                    .Where(x => x.customer_need_id == parm.main_id)
+                    .Where(x => x.customer_need_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.dietary_need_id);
 
                 //設定未啟用i_hide=true的不顯示
-                var items = db0.DietaryNeed.Where(x => !dietary_need_id.Contains(x.dietary_need_id) & !x.i_Hide).OrderByDescending(x => x.sort).Select(x => new { x.dietary_need_id, x.name, x.is_correspond, x.is_breakfast, x.is_lunch, x.is_dinner });
+                var items = db0.DietaryNeed.Where(x => !dietary_need_id.Contains(x.dietary_need_id) & !x.i_Hide & x.company_id == this.companyId).OrderBy(x => x.short_name).Select(x => new { x.dietary_need_id, x.name, x.is_correspond, x.is_breakfast, x.is_lunch, x.is_dinner });
 
 
                 if (parm.name != null)
@@ -1506,7 +1519,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.CustomerOfDietaryNeed
                             join y in db0.DietaryNeed on x.dietary_need_id equals y.dietary_need_id
-                            where x.customer_need_id == main_id
+                            where x.customer_need_id == main_id & x.company_id == this.companyId
                             select new { x.dietary_need_id, y.name, y.is_correspond, y.is_breakfast, y.is_lunch, y.is_dinner };
 
                 return Ok(items.ToList());
@@ -1535,6 +1548,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.CustomerOfDietaryNeed.Add(item);
@@ -1617,10 +1631,10 @@ namespace DotWeb.Api
             {
                 int page_size = 10;
                 var customer_id = db0.SendMsgOfCustomer
-                    .Where(x => x.send_msg_id == parm.main_id)
+                    .Where(x => x.send_msg_id == parm.main_id & x.company_id == this.companyId)
                     .Select(x => x.customer_id);
 
-                var items = db0.Customer.Where(x => !customer_id.Contains(x.customer_id)).OrderByDescending(x => x.customer_id).Select(x => new { x.customer_id, x.customer_name, x.customer_type });
+                var items = db0.Customer.Where(x => !customer_id.Contains(x.customer_id) & x.company_id == this.companyId).OrderByDescending(x => x.customer_id).Select(x => new { x.customer_id, x.customer_name, x.customer_type });
 
 
                 if (parm.name != null)
@@ -1658,7 +1672,7 @@ namespace DotWeb.Api
             {
                 var items = from x in db0.SendMsgOfCustomer
                             join y in db0.Customer on x.customer_id equals y.customer_id
-                            where x.send_msg_id == main_id
+                            where x.send_msg_id == main_id & x.company_id == this.companyId
                             select new { x.customer_id, y.customer_name, y.customer_type };
 
                 return Ok(items.ToList());
@@ -1687,6 +1701,7 @@ namespace DotWeb.Api
                         i_InsertUserID = this.UserId,
                         i_InsertDateTime = DateTime.Now,
                         i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
                         i_Lang = "zh-TW"
                     };
                     db0.SendMsgOfCustomer.Add(item);
@@ -1756,7 +1771,7 @@ namespace DotWeb.Api
             {
                 var qr = db0.AccountsPayableDetail
                              .OrderBy(x => x.receipt_day)
-                             .Where(x => x.accounts_payable_id == main_id)
+                             .Where(x => x.accounts_payable_id == main_id & x.company_id == this.companyId)
                              .Select(x => new m_AccountsPayableDetail()
                              {
                                  accounts_payable_detail_id = x.accounts_payable_detail_id,
@@ -1796,61 +1811,126 @@ namespace DotWeb.Api
                 Matters matters = new Matters();
 
                 //取得正在用餐日期內的客戶生產編號
-                var all_born_id = db0.RecordDetail.Where(x => x.product_type == (int)ProdyctType.PostnatalMeal &&
-                                                              (x.real_meal_start >= parm.meal_day && parm.meal_day <= x.real_meal_end))
+                var all_born_id = db0.RecordDetail.Where(x => x.product_type == (int)ProdyctType.PostnatalMeal & x.real_meal_start <= parm.meal_day & x.real_meal_end >= parm.meal_day & x.is_release == false & x.company_id == this.companyId)
                                                       .OrderBy(x => x.meal_id)
                                                       .Select(x => new { x.born_id, x.meal_id, x.real_meal_start, x.real_meal_end }).ToList();
-                #region 塞空資料
+
+                MealDay pause_meal = new MealDay();
                 MealDay start_meal = new MealDay();
                 MealDay end_meal = new MealDay();
-                List<string> Empty_MealIdData = new List<string>();
-                start_meal.breakfast = Empty_MealIdData;
-                start_meal.lunch = Empty_MealIdData;
-                start_meal.dinner = Empty_MealIdData;
+                MealDaybyTryout tryout_meal = new MealDaybyTryout();
+                #region 塞空資料
+                pause_meal.breakfast = new List<string>();
+                pause_meal.lunch = new List<string>();
+                pause_meal.dinner = new List<string>();
+                start_meal.breakfast = new List<string>();
+                start_meal.lunch = new List<string>();
+                start_meal.dinner = new List<string>();
+                end_meal.breakfast = new List<string>();
+                end_meal.lunch = new List<string>();
+                end_meal.dinner = new List<string>();
                 #endregion
                 foreach (var born_id in all_born_id)
                 {
-                    DailyMeal getDMItem = db0.DailyMeal.Where(x => x.born_id == born_id.born_id && x.meal_day == parm.meal_day).FirstOrDefault();
-                    #region 開始
-                    if (born_id.real_meal_start == parm.meal_day)//開始用餐日期為當日
+                    #region 停餐
+                    var pause_DailyMeal = db0.DailyMeal.Where(x => x.born_id == born_id.born_id &
+                                                                x.product_type == (int)ProdyctType.PostnatalMeal &
+                                                                x.meal_day == parm.meal_day).FirstOrDefault();
+                    if (pause_DailyMeal == null)
                     {
-                        if (getDMItem.breakfast_state > 0)
+                        pause_meal.breakfast.Add(born_id.meal_id);
+                        pause_meal.lunch.Add(born_id.meal_id);
+                        pause_meal.dinner.Add(born_id.meal_id);
+                    }
+                    else
+                    {
+                        if (pause_DailyMeal.breakfast_state <= 0)
+                            pause_meal.breakfast.Add(born_id.meal_id);
+                        if (pause_DailyMeal.lunch_state <= 0)
+                            pause_meal.lunch.Add(born_id.meal_id);
+                        if (pause_DailyMeal.dinner_state <= 0)
+                            pause_meal.dinner.Add(born_id.meal_id);
+                    }
+                    #endregion
+
+                    #region 開始
+                    var start_DailyMeal = db0.DailyMeal.Where(x => x.born_id == born_id.born_id &
+                                                                   x.product_type == (int)ProdyctType.PostnatalMeal &
+                                                                  (x.breakfast_state > 0 || x.lunch_state > 0 || x.dinner_state > 0))
+                                                       .OrderBy(x => x.meal_day).FirstOrDefault();
+                    if (start_DailyMeal.meal_day == parm.meal_day)//開始用餐日期為當日
+                    {
+                        if (start_DailyMeal.breakfast_state > 0)
                         {
                             start_meal.breakfast.Add(born_id.meal_id);
                         }
-                        else if (getDMItem.lunch_state > 0)
+                        else if (start_DailyMeal.lunch_state > 0)
                         {
                             start_meal.lunch.Add(born_id.meal_id);
+
                         }
-                        else if (getDMItem.dinner_state > 0)
+                        else if (start_DailyMeal.dinner_state > 0)
                         {
                             start_meal.dinner.Add(born_id.meal_id);
                         }
                     }
                     #endregion
+
+                    #region 結束
+                    var end_DailyMeal = db0.DailyMeal.Where(x => x.born_id == born_id.born_id &
+                                            x.product_type == (int)ProdyctType.PostnatalMeal &
+                                            (x.breakfast_state > 0 || x.lunch_state > 0 || x.dinner_state > 0))
+                                            .OrderByDescending(x => x.meal_day).FirstOrDefault();
+                    if (end_DailyMeal.meal_day == parm.meal_day)//結束用餐日期為當日
+                    {
+                        if (end_DailyMeal.dinner_state > 0)
+                        {
+                            end_meal.dinner.Add(born_id.meal_id);
+                        }
+                        else if (end_DailyMeal.lunch_state > 0)
+                        {
+                            end_meal.lunch.Add(born_id.meal_id);
+                        }
+                        else if (end_DailyMeal.breakfast_state > 0)
+                        {
+                            end_meal.breakfast.Add(born_id.meal_id);
+                        }
+                    }
+                    #endregion
                 }
+                #region 試吃
+                var tryout_DailyMeal = db0.DailyMeal.Where(x => x.product_type == (int)ProdyctType.Tryout &
+                                                                 x.meal_day == parm.meal_day & x.company_id == this.companyId);
+                tryout_meal.breakfast = tryout_DailyMeal.Where(x => x.breakfast_state > 0).Count();
+                tryout_meal.lunch = tryout_DailyMeal.Where(x => x.lunch_state > 0).Count();
+                tryout_meal.dinner = tryout_DailyMeal.Where(x => x.dinner_state > 0).Count();
+                #endregion
+                matters.pause_meal = pause_meal;
+                matters.start_meal = start_meal;
+                matters.end_meal = end_meal;
+                matters.tryout_meal = tryout_meal;
 
 
                 //取得今天用餐排程
-                var getDailyMeal = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day && x.product_type == (int)ProdyctType.PostnatalMeal).OrderBy(x => x.meal_id).ToList();
+                var getDailyMeal = db0.DailyMeal.Where(x => x.meal_day == parm.meal_day && x.product_type == (int)ProdyctType.PostnatalMeal & x.company_id == this.companyId).OrderBy(x => x.meal_id).ToList();
 
                 List<Require> special_diet = new List<Require>();
                 MealDiet breakfast = new MealDiet();
                 MealDiet lunch = new MealDiet();
                 MealDiet dinner = new MealDiet();
-                List<Dish> dishs = new List<Dish>();
-                breakfast.dishs = dishs;
-                lunch.dishs = dishs;
-                dinner.dishs = dishs;
+                breakfast.dishs = new List<Dish>();
+                lunch.dishs = new List<Dish>();
+                dinner.dishs = new List<Dish>();
 
                 #region 取得三餐菜單
                 //取得當日菜單
-                var getDailyMenu = db0.DailyMenu.Where(x => x.day == parm.meal_day).ToList();
+                var getDailyMenu = db0.DailyMenu.Where(x => x.day == parm.meal_day & x.company_id == this.companyId).ToList();
                 foreach (var DailyMenu_item in getDailyMenu)
                 {
                     #region 取得對應組合菜單
-                    dishs = new List<Dish>();
-                    var constitute_id = db0.DailyMenuOfConstitute.Where(x => x.dail_menu_id == DailyMenu_item.dail_menu_id).Select(x => new { x.constitute_id, x.ConstituteFood.constitute_name }).ToList();
+                    List<Dish> dishs = new List<Dish>();
+                    var constitute_id = db0.DailyMenuOfConstitute.Where(x => x.dail_menu_id == DailyMenu_item.dail_menu_id & x.company_id == this.companyId)
+                                           .OrderByDescending(x => x.ConstituteFood.All_Category_L2.sort).Select(x => new { x.constitute_id, x.ConstituteFood.constitute_name }).ToList();
                     foreach (var id in constitute_id)
                     {
                         List<Require> Empty_RequireData = new List<Require>();
@@ -1867,16 +1947,19 @@ namespace DotWeb.Api
                     {
                         breakfast.dishs = dishs;
                         breakfast.isHaveData = true;
+                        breakfast.count = getDailyMeal.Where(x => x.breakfast_state > 0).Count();
                     }
                     if (DailyMenu_item.meal_type == (int)MealType.Lunch)
                     {
                         lunch.dishs = dishs;
                         lunch.isHaveData = true;
+                        lunch.count = getDailyMeal.Where(x => x.lunch_state > 0).Count();
                     }
                     if (DailyMenu_item.meal_type == (int)MealType.Dinner)
                     {
                         dinner.dishs = dishs;
                         dinner.isHaveData = true;
+                        dinner.count = getDailyMeal.Where(x => x.dinner_state > 0).Count();
                     }
                 }
                 #endregion
@@ -1885,12 +1968,12 @@ namespace DotWeb.Api
                 {
                     if (DailyMeal_Item.breakfast_state > 0 || DailyMeal_Item.lunch_state > 0 || DailyMeal_Item.dinner_state > 0)
                     {//只要三餐有一餐有,就列特殊飲食
-                        //取得該客戶需求元素id
-                        var dietary_need_id = db0.CustomerOfDietaryNeed.Where(x => x.CustomerNeed.born_id == DailyMeal_Item.born_id).Select(x => x.dietary_need_id);
+                     //取得該客戶需求元素id
+                        var dietary_need_id = db0.CustomerOfDietaryNeed.Where(x => x.CustomerNeed.born_id == DailyMeal_Item.born_id & x.company_id == this.companyId).Select(x => x.dietary_need_id);
 
                         #region 無對應特殊飲食習慣
                         //未對應
-                        var no_correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & !x.is_correspond).ToList();
+                        var no_correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & !x.is_correspond & x.company_id == this.companyId).ToList();
                         foreach (var dn_item in no_correspond)
                         {
                             //檢查此特殊飲食是否出現過
@@ -1919,7 +2002,7 @@ namespace DotWeb.Api
 
                         #region 有對應特殊飲食習慣
                         //有對應
-                        var correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & x.is_correspond).ToList();
+                        var correspond = db0.DietaryNeed.Where(x => dietary_need_id.Contains(x.dietary_need_id) & x.is_correspond & x.company_id == this.companyId).ToList();
                         foreach (var dn_item in correspond)
                         {
                             #region 早餐
@@ -2045,7 +2128,7 @@ namespace DotWeb.Api
                     }
                 }
 
-
+                data.matters = matters;
                 data.special_diet = special_diet;
                 data.breakfast = breakfast;
                 data.lunch = lunch;
@@ -2064,9 +2147,205 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
+        /// <summary>
+        /// R02 產品銷售紀錄報表
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        public async Task<IHttpActionResult> GetProductRecord([FromUri]ParmGetProductRecord parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                int page_size = 10;
+
+                var items = from x in db0.RecordDetail
+                            orderby x.ProductRecord.record_sn descending
+                            where x.company_id == this.companyId
+                            select (new R02_RecordDetail()
+                            {
+                                product_record_id = x.product_record_id,
+                                record_deatil_id = x.record_deatil_id,
+                                born_id = x.born_id,
+                                record_sn = x.ProductRecord.record_sn,
+                                customer_name = x.ProductRecord.Customer.customer_name,
+                                sell_day = x.sell_day,
+                                product_type = x.product_type,
+                                product_name = x.product_name,
+                                qty = x.qty,
+                                price = x.price,
+                                subtotal = x.subtotal,
+                                user_id = x.i_InsertUserID
+                            });
+
+                if (parm.start_date != null && parm.end_date != null)
+                {
+                    DateTime end = ((DateTime)parm.end_date).AddDays(1);
+                    items = items.Where(x => x.sell_day >= parm.start_date && x.sell_day < end);
+                }
+
+                if (parm.product_type != null)
+                {
+                    items = items.Where(x => x.product_type == parm.product_type);
+                }
+
+                if (parm.product_name != null)
+                {
+                    items = items.Where(x => x.product_name.Contains(parm.product_name));
+                }
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.record_sn.Contains(parm.word) ||
+                                             x.customer_name.Contains(parm.word));
+                }
+
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+                foreach (var item in resultItems)
+                {
+                    string User_Name = db0.AspNetUsers.FirstOrDefault(x => x.Id == item.user_id).user_name_c;
+                    item.user_name = User_Name;
+                }
+
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        /// <summary>
+        /// R03 應收帳款報表
+        /// </summary>
+        /// <param name="parm"></param>
+        /// <returns></returns>
+        public async Task<IHttpActionResult> GetAccountsPayable([FromUri]ParmGetAccountsPayable parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                int page_size = 10;
+
+                var items = from x in db0.AccountsPayable
+                            orderby x.record_sn descending
+                            where x.company_id == this.companyId
+                            select (new R03_AccountsPayable()
+                            {
+                                product_record_id = x.product_record_id,
+                                accounts_payable_id = x.accounts_payable_id,
+                                customer_id = x.customer_id,
+                                record_sn = x.ProductRecord.record_sn,
+                                customer_name = x.Customer.customer_name,
+                                record_day = x.ProductRecord.record_day,
+                                estimate_payable = x.estimate_payable,
+                                total_money = 0
+                            });
+
+                if (parm.start_date != null && parm.end_date != null)
+                {
+                    DateTime end = ((DateTime)parm.end_date).AddDays(1);
+                    items = items.Where(x => x.record_day >= parm.start_date && x.record_day < end);
+                }
+
+                if (parm.word != null)
+                {
+                    items = items.Where(x => x.record_sn.Contains(parm.word) ||
+                                             x.customer_name.Contains(parm.word));
+                }
+
+                int page = (parm.page == 0 ? 1 : parm.page);
+                int startRecord = PageCount.PageInfo(page, page_size, items.Count());
+                var resultItems = await items.Skip(startRecord).Take(page_size).ToListAsync();
+                foreach (var item in resultItems)
+                {
+                    if (db0.AccountsPayableDetail.Any(x => x.accounts_payable_id == item.accounts_payable_id))
+                        item.total_money = db0.AccountsPayableDetail.Where(x => x.accounts_payable_id == item.accounts_payable_id).Sum(x => x.actual_receipt);
+                }
+                return Ok(new
+                {
+                    rows = resultItems,
+                    total = PageCount.TotalPage,
+                    page = PageCount.Page,
+                    records = PageCount.RecordCount,
+                    startcount = PageCount.StartCount,
+                    endcount = PageCount.EndCount
+                });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
         #endregion
+        public async Task<IHttpActionResult> GetInsertRoles()
+        {
+            var system_roles = await roleManager.Roles.Where(x => x.Name != "Admins").ToListAsync();
+            IList<RoleArray> obj = new List<RoleArray>();
+            foreach (var role in system_roles)
+            {
+                obj.Add(new RoleArray() { role_id = role.Id, role_name = role.Name, role_use = false });
+            }
+            return Ok(obj);
+        }
+
+        [HttpPost]
+        public async Task<IHttpActionResult> test()
+        {
+            ResultInfo r = new ResultInfo();
+
+            try
+            {
+                #region working a
+                db0 = getDB0();
+
+                for (var i = 1; i <= 100; i++)
+                {
+                    string id = "N" + i.ToString().PadLeft(3, '0');
+                    var item = new MealID()
+                    {
+                        meal_id = id,
+                        company_id = this.companyId,
+                        i_Lang = "zh-TW"
+                    };
+                    db0.MealID.Add(item);
+                }
+
+
+
+
+                await db0.SaveChangesAsync();
+
+                r.result = true;
+                r.id = 0;
+                return Ok(r);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                r.result = false;
+                r.message = ex.Message;
+                return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
     }
     #region Parm
+    public class GetAllMealIDParm
+    {
+        public string keyword { get; set; }
+    }
     public class ParmChangeMealID
     {
         public string old_id { get; set; }
@@ -2131,7 +2410,8 @@ namespace DotWeb.Api
     public class ParmGetAllBorn
     {
         public string word { get; set; }
-        public bool? is_close { get; set; }
+        public int? customer_type { get; set; }
+        public bool? is_meal { get; set; }
     }
     public class ParmGetLeftCustomer
     {
@@ -2216,6 +2496,7 @@ namespace DotWeb.Api
         public MealDay pause_meal { get; set; }
         public MealDay start_meal { get; set; }
         public MealDay end_meal { get; set; }
+        public MealDaybyTryout tryout_meal { get; set; }
     }
     /// <summary>
     /// 一天三餐
@@ -2225,6 +2506,12 @@ namespace DotWeb.Api
         public List<string> breakfast { get; set; }
         public List<string> lunch { get; set; }
         public List<string> dinner { get; set; }
+    }
+    public class MealDaybyTryout
+    {
+        public int breakfast { get; set; }
+        public int lunch { get; set; }
+        public int dinner { get; set; }
     }
     /// <summary>
     /// 早餐、午餐、晚餐
@@ -2239,6 +2526,10 @@ namespace DotWeb.Api
         /// 判斷是否有排每日菜單
         /// </summary>
         public bool isHaveData { get; set; }
+        /// <summary>
+        /// 計算該餐有幾人用餐
+        /// </summary>
+        public int count { get; set; }
     }
     public class Require
     {
@@ -2255,6 +2546,54 @@ namespace DotWeb.Api
         public int constitute_id { get; set; }//組合菜單編號
         public string dish_name { get; set; }
         public List<Require> meal_diet { get; set; }
+    }
+    #endregion
+    #region R02
+    public class R02_RecordDetail
+    {
+        public int product_record_id { get; set; }
+        public int record_deatil_id { get; set; }
+        public int born_id { get; set; }
+        public string record_sn { get; set; }
+        public string customer_name { get; set; }
+        public DateTime sell_day { get; set; }
+        public int product_type { get; set; }
+        public string product_name { get; set; }
+        public double qty { get; set; }
+        public double price { get; set; }
+        public double subtotal { get; set; }
+        public string user_id { get; set; }
+        public string user_name { get; set; }
+    }
+    public class ParmGetProductRecord
+    {
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
+        public int? product_type { get; set; }
+        public string product_name { get; set; }
+        public string word { get; set; }
+        public int page { get; set; }
+    }
+    #endregion
+    #region R03
+    public class R03_AccountsPayable
+    {
+        public int product_record_id { get; set; }
+        public int accounts_payable_detail_id { get; set; }
+        public int accounts_payable_id { get; set; }
+        public int customer_id { get; set; }
+        public string record_sn { get; set; }
+        public string customer_name { get; set; }
+        public DateTime record_day { get; set; }
+        public double estimate_payable { get; set; }
+        public double total_money { get; set; }
+    }
+    public class ParmGetAccountsPayable
+    {
+        public DateTime? start_date { get; set; }
+        public DateTime? end_date { get; set; }
+        public string word { get; set; }
+        public int page { get; set; }
     }
     #endregion
 }

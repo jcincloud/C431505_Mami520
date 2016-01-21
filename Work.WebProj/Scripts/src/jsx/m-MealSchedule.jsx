@@ -212,14 +212,14 @@ var GirdForm = React.createClass({
                                     <div className="form-group">
                                         <label>送餐日期</label> { }                                     
                                             <span className="has-feedback">
-                                                <InputDate id="start_date" 
+                                                <InputDate id="start_date" ver={2}
                                                 onChange={this.changeGDValue} 
                                                 field_name="start_date" 
                                                 value={searchData.start_date} />
                                             </span> { }
                                         <label>~</label> { }
                                             <span className="has-feedback">
-                                                <InputDate id="end_date" 
+                                                <InputDate id="end_date" ver={2}
                                                 onChange={this.changeGDValue} 
                                                 field_name="end_date" 
                                                 value={searchData.end_date} />
@@ -421,8 +421,8 @@ var MealCalendar = React.createClass({
                           indexMonth:((this.props.day).getMonth()+1),
                           nextYear:0,
                           nextMonth:0,
-                          prveYear:0,
-                          prveMonth:0}
+                          nextNextYear:0,
+                          nextNextMonth:0}
         };  
     },
     componentWillMount:function(){
@@ -464,65 +464,71 @@ var MealCalendar = React.createClass({
             CalendarGrid.nextYear=CalendarGrid.indexYear;
             CalendarGrid.nextMonth=CalendarGrid.indexMonth+1;
         }
-
-        if((CalendarGrid.indexMonth-1)<=1){
-            CalendarGrid.prveYear=CalendarGrid.indexYear-1;
-            CalendarGrid.prveMonth=12;
+        if((CalendarGrid.indexMonth+2)>=13){
+            CalendarGrid.nextNextYear=CalendarGrid.indexYear+1;
+            CalendarGrid.nextNextMonth=(CalendarGrid.indexMonth+2)-12;
         }else{
-            CalendarGrid.prveYear=CalendarGrid.indexYear;
-            CalendarGrid.prveMonth=CalendarGrid.indexMonth-1;
+            CalendarGrid.nextNextYear=CalendarGrid.indexYear;
+            CalendarGrid.nextNextMonth=CalendarGrid.indexMonth+2;
         }
+        // if((CalendarGrid.indexMonth-1)<=1){
+        //     CalendarGrid.prveYear=CalendarGrid.indexYear-1;
+        //     CalendarGrid.prveMonth=12;
+        // }else{
+        //     CalendarGrid.prveYear=CalendarGrid.indexYear;
+        //     CalendarGrid.prveMonth=CalendarGrid.indexMonth-1;
+        // }
         this.setState({CalendarGrid:CalendarGrid});
     },
     setPrve3Month:function(){
         var CalendarGrid=this.state.CalendarGrid;
         var prve=1;
-        //中
+        //上
         if((CalendarGrid.indexMonth-prve)<=0){
             CalendarGrid.indexYear=CalendarGrid.indexYear-1;
             CalendarGrid.indexMonth=(CalendarGrid.indexMonth-prve)+12;
         }else{
             CalendarGrid.indexMonth=CalendarGrid.indexMonth-prve;
         }
-        //上
-        if((CalendarGrid.prveMonth-prve)<=0){
-            CalendarGrid.prveYear=CalendarGrid.prveYear-1;
-            CalendarGrid.prveMonth=(CalendarGrid.prveMonth-prve)+12;
-        }else{
-            CalendarGrid.prveMonth=CalendarGrid.prveMonth-prve;
-        }
-        //下
+        //中
         if((CalendarGrid.nextMonth-prve)<=0){
             CalendarGrid.nextYear=CalendarGrid.nextYear-1;
             CalendarGrid.nextMonth=(CalendarGrid.nextMonth-prve)+12;
         }else{
             CalendarGrid.nextMonth=CalendarGrid.nextMonth-prve;
         }
+        //下
+        if((CalendarGrid.nextNextMonth-prve)<=0){
+            CalendarGrid.nextNextYear=CalendarGrid.nextNextYear-1;
+            CalendarGrid.nextNextMonth=(CalendarGrid.nextNextMonth-prve)+12;
+        }else{
+            CalendarGrid.nextNextMonth=CalendarGrid.nextNextMonth-prve;
+        }
         this.setState({CalendarGrid:CalendarGrid});
     },
     setNext3Month:function(){
         var CalendarGrid=this.state.CalendarGrid;
         var next=1;
-        //中
+        //上
         if((CalendarGrid.indexMonth+next)>=13){
             CalendarGrid.indexYear=CalendarGrid.indexYear+1;
             CalendarGrid.indexMonth=(CalendarGrid.indexMonth+next)-12;
         }else{
             CalendarGrid.indexMonth=CalendarGrid.indexMonth+next;
         }
-        //上
-        if((CalendarGrid.prveMonth+next)>=13){
-            CalendarGrid.prveYear=CalendarGrid.prveYear+1;
-            CalendarGrid.prveMonth=(CalendarGrid.prveMonth+next)-12;
-        }else{
-            CalendarGrid.prveMonth=CalendarGrid.prveMonth+next;
-        }
-        //下
+        //中
         if((CalendarGrid.nextMonth+next)>=13){
             CalendarGrid.nextYear=CalendarGrid.nextYear+1;
             CalendarGrid.nextMonth=(CalendarGrid.nextMonth+next)-12;
         }else{
             CalendarGrid.nextMonth=CalendarGrid.nextMonth+next;
+        }
+        //下
+        if((CalendarGrid.nextNextMonth+next)>=13){
+            CalendarGrid.nextNextYear=CalendarGrid.nextNextYear+1;
+            CalendarGrid.nextNextMonth=(CalendarGrid.nextNextMonth+next)-12;
+        }else{
+            CalendarGrid.nextNextMonth=CalendarGrid.nextNextMonth+next;
         }
         this.setState({CalendarGrid:CalendarGrid}); 
     },
@@ -597,16 +603,16 @@ var MealCalendar = React.createClass({
 
                     <hr className="condensed" />
 
-                    <Calendar ref="Calendar1"
+                    {/*<Calendar ref="Calendar1"
                     year={this.state.CalendarGrid.prveYear}
                     month={this.state.CalendarGrid.prveMonth}
                     record_deatil_id={this.props.record_deatil_id}
                     customer_id={this.props.customer_id}
                     born_id={this.props.born_id}
                     queryChangeRecord={this.queryChangeRecord}
-                    queryRecordDetail={this.queryRecordDetail} />
+                    queryRecordDetail={this.queryRecordDetail} />*/}
 
-                    <Calendar ref="Calendar2"
+                    <Calendar ref="Calendar1"
                     year={this.state.CalendarGrid.indexYear}
                     month={this.state.CalendarGrid.indexMonth}
                     record_deatil_id={this.props.record_deatil_id}
@@ -615,9 +621,18 @@ var MealCalendar = React.createClass({
                     queryChangeRecord={this.queryChangeRecord}
                     queryRecordDetail={this.queryRecordDetail} />
 
-                    <Calendar ref="Calendar3"
+                    <Calendar ref="Calendar2"
                     year={this.state.CalendarGrid.nextYear}
                     month={this.state.CalendarGrid.nextMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />
+
+                    <Calendar ref="Calendar3"
+                    year={this.state.CalendarGrid.nextNextYear}
+                    month={this.state.CalendarGrid.nextNextMonth}
                     record_deatil_id={this.props.record_deatil_id}
                     customer_id={this.props.customer_id}
                     born_id={this.props.born_id}
@@ -739,10 +754,11 @@ var Calendar = React.createClass({
     },
     addDailyMeal:function(meal_day,e){
         var meal_day_f=new Date(moment(meal_day).format('YYYY/MM/DD'));//轉換日期格式
-        if(getNowDate()>=meal_day_f)
-        {//今天 >= 用餐日期 不可編輯
-            return;
-        }
+        //正常判斷式先隱藏
+        // if(getNowDate()>=meal_day_f)
+        // {//今天 >= 用餐日期 不可編輯
+        //     return;
+        // }
         if(!confirm('是否增加此天用餐排程?')){
             return;
         }
@@ -937,7 +953,7 @@ var MealCheckBox = React.createClass({
         var MealData=this.state.MealData;
         var meal_day=new Date(moment(this.props.meal_day).format('YYYY/MM/DD'));
 
-        if(this.props.today>=meal_day && this.props.meal_state>0)
+        if(this.props.Yesterday>=meal_day && this.props.meal_state>0)
         {
             name_out_html=(<span className="disabled">{this.props.meal_name +'(已吃)'}</span>);
         }
@@ -953,12 +969,13 @@ var MealCheckBox = React.createClass({
         {
             name_out_html=(<span>{this.props.meal_name}</span>);
         }
-        if(this.props.today>=meal_day)
+        if(this.props.Yesterday>=meal_day)
         {//用餐日期 < 今天 不可編輯
             this.state.isMealFinished=true;
         }
-            
-            outHtml =
+
+        var disabledOutHtml=null;//正常判斷式,日期已結束之排餐不可修改
+            disabledOutHtml =
             (
                 <div className="checkbox">
                     <label>
@@ -971,6 +988,17 @@ var MealCheckBox = React.createClass({
                 </div>
             );
 
+            outHtml =
+            (
+                <div className="checkbox">
+                    <label>
+                        <input type="checkbox"                             
+                        onChange={this.changeMealValue.bind(this)}
+                        checked={MealData.meal_state > 0}  />
+                        {name_out_html}
+                     </label>
+                </div>
+            );
         return outHtml;
     }
 });

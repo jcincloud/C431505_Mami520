@@ -30,6 +30,7 @@ namespace DotWeb.Api
             using (db0 = getDB0())
             {
                 var qr = db0.ElementFood
+                    .Where(x => x.company_id == this.companyId)
                     .OrderByDescending(x => new { c_sort = x.All_Category_L2.sort, x.sort }).AsQueryable();
 
 
@@ -80,6 +81,19 @@ namespace DotWeb.Api
             {
                 db0 = getDB0();
 
+                #region 重複檢查
+                bool check_name = db0.ElementFood.Any(x => x.element_name == md.element_name & x.element_id != md.element_id);
+                if (check_name)
+                {
+                    if (check_name)
+                    {
+                        r.message = string.Format(Resources.Res.Log_Err_RepeatName, "基礎菜單名稱");
+                        r.result = false;
+                        return Ok(r);
+                    }
+                }
+                #endregion
+
                 item = await db0.ElementFood.FindAsync(md.element_id);
                 item.element_name = md.element_name;
                 item.category_id = md.category_id;
@@ -122,9 +136,23 @@ namespace DotWeb.Api
                 #region working a
                 db0 = getDB0();
 
+                #region 重複檢查
+                bool check_name = db0.ElementFood.Any(x => x.element_name == md.element_name);
+                if (check_name)
+                {
+                    if (check_name)
+                    {
+                        r.message = string.Format(Resources.Res.Log_Err_RepeatName, "基礎菜單名稱");
+                        r.result = false;
+                        return Ok(r);
+                    }
+                }
+                #endregion
+
                 md.i_InsertUserID = this.UserId;
                 md.i_InsertDateTime = DateTime.Now;
                 md.i_InsertDeptID = this.departmentId;
+                md.company_id = this.companyId;
                 md.i_Lang = "zh-TW";
 
                 db0.ElementFood.Add(md);

@@ -376,4 +376,19 @@
   <data name="Log_Err_PRecord_Close_Mealid" xml:space="preserve">
     <value>有未釋放的用餐編號,無法結案!請將用餐編號釋放後再結案。</value>
   </data>
+  <data name="Log_Err_Delete_Product" xml:space="preserve">
+    <value>此筆產品已在銷售紀錄使用，無法刪除！！</value>
+  </data>
+  <data name="Log_Check_MealId_Exist" xml:space="preserve">
+    <value>此用餐編號不存在!請重新選擇用餐編號。</value>
+  </data>
+  <data name="Log_Check_MealId_Use" xml:space="preserve">
+    <value>此用餐編號已被使用!請重新選擇用餐編號。</value>
+  </data>
+  <data name="Log_Err_RepeatName" xml:space="preserve">
+    <value>此{0}已存在，請確認後再新增！</value>
+  </data>
+  <data name="Log_Err_RDetail_Delete_release" xml:space="preserve">
+    <value>用餐編號未釋放,無法刪除此產品銷售明細~!!!</value>
+  </data>
 </root>

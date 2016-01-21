@@ -20,6 +20,7 @@ namespace DotWeb
         [NotMapped]
         public IList<RoleArray> role_array { get; set; }
         public int department_id { get; set; }
+        public int company_id { get; set; }
         /// <summary>
         /// 真實姓名，非帳號登錄。
         /// </summary>
