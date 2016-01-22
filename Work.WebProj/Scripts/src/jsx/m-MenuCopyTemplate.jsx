@@ -16,8 +16,8 @@
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
-					<td>{moment(this.props.itemData.day).format('YYYY/MM/DD')}</td>
-                    <td><StateForGrid stateData={CommData.MealType} id={this.props.itemData.meal_type} /></td>
+					<td>{this.props.itemData.template_name}</td>
+					<td>{this.props.itemData.memo}</td>
 				</tr>
 			);
 		}
@@ -33,33 +33,22 @@ var GirdForm = React.createClass({
 			searchData:{title:null},
 			edit_type:0,
 			checkAll:false,
-			category:[]
+			err_list:[],
+			copyData:{copy_start:null,copy_end:null,range_day:7}
 		};  
 	},
 	getDefaultProps:function(){
 		return{	
 			fdName:'fieldData',
 			gdName:'searchData',
-			apiPathName: gb_approot + 'api/DailyMenu',
-			initPathName: gb_approot + 'Active/Food/constitute_food_Init'
+			apiPathName: gb_approot + 'api/MenuCopyTemplate'
 		};
 	},	
 	componentDidMount:function(){
 		this.queryGridData(1);
-		//this.getAjaxInitData();//載入init資料
 	},
 	shouldComponentUpdate:function(nextProps,nextState){
 		return true;
-	},
-	getAjaxInitData:function(){
-		jqGet(this.props.initPathName)
-		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({category:data.options_category});
-			//載入下拉是選單內容
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			showAjaxError(errorThrown);
-		});
 	},
 	handleSubmit: function(e) {
 
@@ -111,7 +100,7 @@ var GirdForm = React.createClass({
 		var ids = [];
 		for(var i in this.state.gridData.rows){
 			if(this.state.gridData.rows[i].check_del){
-			    ids.push('ids=' + this.state.gridData.rows[i].dail_menu_id);
+			    ids.push('ids=' + this.state.gridData.rows[i].menu_copy_template_id);
 			}
 		}
 
@@ -223,10 +212,18 @@ var GirdForm = React.createClass({
 		}
 		this.setState({fieldData:obj});
 	},
-	onCategoryChange:function(e){
-		var obj = this.state.searchData;
-		obj['meal_type'] = e.target.value;
-		this.setState({searchData:obj});
+	setCopyVal:function(name,e){
+		var obj = this.state.copyData;
+		
+		if(e.target.value!=null & e.target.value!=''){
+
+			obj.copy_start=e.target.value;
+			var tmp_date = new Date(obj.copy_start);
+			var end_date=addDate(tmp_date,parseInt(obj.range_day)-1);
+
+			obj.copy_end=format_Date(end_date);
+		}
+		this.setState({copyData:obj});
 	},
 	render: function() {
 		var outHtml = null;
@@ -246,32 +243,11 @@ var GirdForm = React.createClass({
 								<div className="form-inline">
 									<div className="form-group">
 
-										<label>日期區間</label> { }										
-											<span className="has-feedback">
-												<InputDate id="start_date" ver={2}
-												onChange={this.changeGDValue} 
-												field_name="start_date" 
-												value={searchData.start_date} />
-											</span> { }
-										<label>~</label> { }
-											<span className="has-feedback">
-												<InputDate id="end_date" ver={2}
-												onChange={this.changeGDValue} 
-												field_name="end_date" 
-												value={searchData.end_date} />
-											</span> { }
-
-										<label>餐別</label> { }
-										<select className="form-control input-sm" 
-												value={searchData.meal_type}
-												onChange={this.onCategoryChange}>
-											<option value="">全部</option>
-										{
-											CommData.MealType.map(function(itemData,i) {
-												return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-											})
-										}
-										</select> { }
+					                    <label for="">版型名稱</label> { }
+					                    <input type="text" className="form-control input-sm"
+                                               value={searchData.word}
+                                               onChange={this.changeGDValue.bind(this,'word')}
+                                               placeholder="請擇一填寫" />{ }
 
 										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
@@ -288,8 +264,8 @@ var GirdForm = React.createClass({
 										</label>
 									</th>
 									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">日期</th>
-									<th className="col-xs-8">餐別</th>
+									<th className="col-xs-2">版型名稱</th>
+									<th className="col-xs-8">備註說明</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -298,7 +274,7 @@ var GirdForm = React.createClass({
 								return <GridRow 
 								key={i}
 								ikey={i}
-								primKey={itemData.dail_menu_id} 
+								primKey={itemData.menu_copy_template_id} 
 								itemData={itemData} 
 								delCheck={this.delCheck}
 								updateType={this.updateType}
@@ -325,15 +301,16 @@ var GirdForm = React.createClass({
 		else if(this.state.edit_type==1 || this.state.edit_type==2)
 		{
 			var fieldData = this.state.fieldData;
-			var map_out_html=null;
+			var copyData=this.state.copyData;
+
+			var sub_out_html=null;
 			if(this.state.edit_type==2){//只在修改時顯示下方對應程式
-				map_out_html=(<GirdDofC main_id={fieldData.dail_menu_id} main_name={fieldData.meal_type} />);
+				sub_out_html=(<MenuCopy ref="SubFrom" main_id={fieldData.menu_copy_template_id} />);
 			}else{
-				map_out_html=(
+				sub_out_html=(
 					<div>
-						<hr className="condensed" />
-						<h4 className="title">每日菜單對應設定</h4>
-						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
+						<h4 className="title">每日菜單樣板</h4>
+						<div className="alert alert-warning">請先按上方的 <strong>儲存</strong>，再進行設定。</div>
 					</div>
 					);
 			}
@@ -341,41 +318,105 @@ var GirdForm = React.createClass({
 			outHtml=(
 			<div>
                 <h3 className="title">{this.props.Caption} 編輯</h3>
-				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
+				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit} id="main-form">
 					<div className="form-group">
-						<label className="col-xs-1 control-label">選擇日期</label>
-						<div className="col-xs-2">
-							<span className="has-feedback">
-								<InputDate id="day" 
-								onChange={this.changeFDValue} 
-								field_name="day" 
-								value={fieldData.day} />
-							</span>
+						<label className="col-xs-1 control-label">版型名稱</label>
+						<div className="col-xs-3">
+							<input type="text"
+                                   className="form-control"
+                                   value={fieldData.template_name}
+                                   onChange={this.changeFDValue.bind(this,'template_name')}
+                                   maxLength="64"
+                                   required />
 						</div>
-						<small className="help-inline col-xs-1 text-danger">(必填)</small>
-
-						<label className="col-xs-1 control-label">選擇餐別</label>
-						<div className="col-xs-2">
-							<select className="form-control" 
-							value={fieldData.meal_type}
-							onChange={this.changeFDValue.bind(this,'meal_type')}
-							required>
-							{
-								CommData.MealType.map(function(itemData,i) {
-									return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-								})
-							}
-							</select>
+						<small className="help-inline col-xs-1"><span className="text-danger">(必填)</span></small>					
+					</div>
+					<div className="form-group">
+						<label className="col-xs-1 control-label">備註說明</label>
+						<div className="col-xs-6">
+							<textarea col="30" row="3" className="form-control"
+                                      value={fieldData.memo}
+                                      onChange={this.changeFDValue.bind(this,'memo')}
+                                      maxLength="256"></textarea>
 						</div>
 						<small className="help-inline col-xs-1 text-danger">(必填)</small>
 						<div className="col-xs-4 pull-right">
-							<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+							<button type="submit" className="btn-primary" name="btn-1" form="main-form"><i className="fa-check"></i> 儲存</button> { }
 							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
 						</div>	
 					</div>
 				</form>
-			{/* 每日菜單對應的組合菜單 */}
-				{map_out_html}
+
+				{/*複製樣板*/}
+				<form className="form-horizontal clearfix" id="copy-form">
+					<div className="col-xs-8 col-xs-offset-1">
+							<div className="item-box">
+								<div className="item-title">
+									<h5>複製此樣板至每日菜單</h5>
+								</div>
+								<div className="form-group">
+									<label className="col-xs-2 control-label">起始日期</label>
+									<div className="col-xs-3">
+										<span className="has-feedback">
+											<InputDate id="copy_start" 
+											onChange={this.setCopyVal} 
+											field_name="copy_start" 
+											value={copyData.copy_start}
+											required={true}
+											disabled={false} />
+										</span>
+									</div>
+									<small className="help-inline col-xs-1 text-center">~</small>
+									<label className="col-xs-2 control-label">結束日期</label>
+									<div className="col-xs-3">
+										<span className="has-feedback">
+											<InputDate id="copy_end" 
+											onChange={this.setCopyVal} 
+											field_name="copy_end" 
+											value={copyData.copy_end}
+											required={true}
+											disabled={true} />
+										</span>
+									</div>								
+								</div>
+								<div className="col-xs-10 col-xs-offset-1">
+					                <div className="form-group">
+					                    <div className="alert alert-info">
+											<p><strong className="text-info">此樣板共{copyData.range_day}天</strong></p>
+											{
+												this.state.err_list.map(function(itemData,i) {
+													var error_html=
+													<p key={i}>
+														<strong className="text-danger">{itemData.error_name} : </strong> { }
+														{
+															itemData.r_customers.map(function(customer,i) {
+																return <span>
+																<span className="label label-primary">店名 - {customer.customer_name}</span> { }
+																<span className="label label-primary">電話 - {customer.tel}</span> { }
+																<span className="label label-primary">地址 - {customer.tw_city+customer.tw_country+customer.tw_address}</span>
+																</span>;
+															})
+														}
+													</p>;
+													return error_html;
+												})
+											}
+					                    </div>
+				                    </div>
+				                </div>
+								<div className="form-group">								
+									<div className="col-xs-4 pull-right">
+										<button type="submit" className="btn-info"><i className="fa-files-o"></i> 複製</button>
+									</div>	
+								</div>							
+							</div>
+						</div>
+					</form>
+				{/*複製樣板*/}
+
+				<hr className="condensed" />
+			{/* 版型菜單內容 */}
+				{sub_out_html}
 			</div>
 			);
 		}else{
@@ -386,7 +427,453 @@ var GirdForm = React.createClass({
 	}
 });
 
-//主表單
+
+
+//菜單編輯list
+var MenuCopyGridRow = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return { 
+		};  
+	},
+	delCheck:function(i,chd){
+		this.props.delCheck(i,chd);
+	},
+	modify:function(){
+		this.props.updateType(this.props.primKey);
+	},
+	render:function(){
+		return (
+
+				<tr>
+					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td>{'第'+this.props.itemData.day+'天'}</td>
+                    <td><StateForGrid stateData={CommData.MealType} id={this.props.itemData.meal_type} /></td>
+				</tr>
+			);
+		}
+});
+
+//菜單編輯主表單
+var MenuCopy = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			gridSubData:{rows:[],page:1},
+			fieldSubData:{meal_type:1,menu_copy_template_id:this.props.main_id},
+			searchSubData:{main_id:this.props.main_id,start_day:1},
+			edit_sub_type:1,//一開始就新增狀態
+			checkAll:false,
+			category:[]
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldSubData',
+			gdName:'searchSubData',
+			apiPathName:gb_approot+'api/MenuCopy'
+		};
+	},	
+	componentDidMount:function(){
+		this.queryGridSubData(1);
+	},
+	handleSubSubmit: function(e) {
+
+		e.preventDefault();
+
+		if(this.state.edit_sub_type==1){
+			jqPost(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
+					this.updateSubType(data.id);
+					this.queryGridSubData(0);
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		}		
+		else if(this.state.edit_sub_type==2){
+			jqPut(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
+					this.queryGridSubData(0);
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		};
+		return;
+	},
+	deleteSubSubmit:function(e){
+
+		if(!confirm('確定是否刪除?')){
+			return;
+		}
+		var ids = [];
+		var check_id=false;
+		for(var i in this.state.gridSubData.rows){
+			if(this.state.gridSubData.rows[i].check_del){
+			    ids.push('ids=' + this.state.gridSubData.rows[i].menu_copy_id);
+			    if(this.state.gridSubData.rows[i].menu_copy_id==this.state.fieldSubData.menu_copy_id){
+					check_id=true;
+				}
+			}
+		}
+
+		if(ids.length==0){
+			tosMessage(null,'未選擇刪除項',2);
+			return;
+		}
+
+		jqDelete(this.props.apiPathName + '?' + ids.join('&'),{})			
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'刪除完成',1);
+				this.queryGridSubData(0);
+				if(check_id){
+					this.setState({edit_sub_type:1,fieldSubData:{meal_type:1,menu_copy_template_id:this.props.main_id}});
+				}
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	handleSubSearch:function(e){
+		e.preventDefault();
+		this.queryGridSubData(0);
+		return;
+	},
+	delCheck:function(i,chd){
+
+		var newState = this.state;
+		this.state.gridSubData.rows[i].check_del = !chd;
+		this.setState(newState);
+	},
+	checkAll:function(){
+
+		var newState = this.state;
+		newState.checkAll = !newState.checkAll;
+		for (var prop in this.state.gridSubData.rows) {
+			this.state.gridSubData.rows[prop].check_del=newState.checkAll;
+		}
+		this.setState(newState);
+	},
+	gridSubData:function(page){
+
+		var parms = {
+			page:0
+		};
+
+		if(page==0){
+			parms.page=this.state.gridSubData.page;
+		}else{
+			parms.page=page;
+		}
+
+		$.extend(parms, this.state.searchSubData);
+
+		return jqGet(this.props.apiPathName,parms);
+	},
+	queryGridSubData:function(page){
+		this.gridSubData(page)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({gridSubData:data});
+		}.bind(this))
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			showAjaxError(errorThrown);
+		});
+	},
+	insertSubType:function(){
+		this.setState({edit_sub_type:1,fieldSubData:{meal_type:1,menu_copy_template_id:this.props.main_id}});
+		$('a[href="#edit"]').tab('show');
+	},
+	updateSubType:function(id){
+		jqGet(this.props.apiPathName,{id:id})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({edit_sub_type:2,fieldSubData:data.data});
+			$('a[href="#edit"]').tab('show');
+			this.refs.GridDofC.queryLeftConstitute();
+			this.refs.GridDofC.queryRightConstitute();
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	changeFDValue:function(name,e){
+		this.setInputValue(this.props.fdName,name,e);
+	},
+	changeGDValue:function(name,e){
+		this.setInputValue(this.props.gdName,name,e);
+	},
+	setFDValue:function(fieldName,value){
+		//此function提供給次元件調用，所以要以屬性往下傳。
+		var obj = this.state[this.props.fdName];
+		obj[fieldName] = value;
+		this.setState({fieldData:obj});
+	},
+	setInputValue:function(collentName,name,e){
+
+		var obj = this.state[collentName];
+		if(e.target.value=='true'){
+			obj[name] = true;
+		}else if(e.target.value=='false'){
+			obj[name] = false;
+		}else{
+			obj[name] = e.target.value;
+		}
+		this.setState({fieldData:obj});
+	},
+	setSearchVal:function(name,e){
+		var obj = this.state.searchSubData;
+		if(e.target.value=='true'){
+			obj[name] = true;
+		}else if(e.target.value=='false'){
+			obj[name] = false;
+		}else{
+			obj[name] = e.target.value;
+		}
+		this.setState({searchSubData:obj});
+		this.queryGridSubData(0);
+	},
+	render: function() {
+		var outHtml = null;
+		var searchSubData=this.state.searchSubData;
+		var fieldSubData=this.state.fieldSubData;
+		var map_out_html=null;
+		if(this.state.edit_sub_type==2){//只在修改時顯示下方對應程式
+			map_out_html=(<GirdDofC ref="GridDofC" main_id={fieldSubData.menu_copy_id} main_name={fieldSubData.meal_type} />);
+		}else{
+			map_out_html=(
+				<div>
+					<hr className="condensed" />
+					<h4 className="title">每日菜單樣板對應設定</h4>
+					<div className="alert alert-warning">請先按上方的 <strong>儲存</strong>，再進行設定。</div>
+				</div>
+				);
+		}
+		outHtml =(
+			<div>
+				<h4 className="title">每日菜單樣板</h4>
+			    <ul className="nav nav-tabs" role="tablist">
+			        <li role="presentation" className="active">
+			            <a href="#list" aria-controls="home" role="tab" data-toggle="tab" id="tabAddNew">
+			            	<i className="fa-list-alt"></i> 清單
+			            </a>
+			        </li>
+			        <li role="presentation">
+			            <a href="#edit" aria-controls="profile" role="tab" data-toggle="tab" id="tabAddView">
+			                <i className="fa-pencil-square-o"></i> 編輯
+			            </a>
+			        </li>
+			    </ul>					
+
+				<div className="tab-content">
+				{/*頁籤1*/}
+					<div role="tabpanel" className="tab-pane active" id="list">
+
+						<div className="row">
+							<div className="col-xs-12">
+								<form onSubmit={this.handleSubSearch} id="search-subfrom">
+								
+									<div className="table-header">
+										<div className="table-filter">
+											<div className="form-inline">
+												<div className="form-group">
+
+													<label>天數區間</label> { }										
+														<input type="number" className="form-control input-sm"
+							                            value={searchSubData.start_day}
+							                            onChange={this.setSearchVal.bind(this,'start_day')}
+							                            min="1" />{ }
+													<label>~</label> { }
+														<input type="number" className="form-control input-sm"
+							                            value={searchSubData.end_day}
+							                            onChange={this.setSearchVal.bind(this,'end_day')}
+							                            min="1" />{ }
+							                        <label>天</label> { }
+													<label>餐別</label> { }
+													<select className="form-control input-sm" 
+															value={searchSubData.meal_type}
+															onChange={this.setSearchVal.bind(this,'meal_type')}>
+														<option value="">全部</option>
+													{
+														CommData.MealType.map(function(itemData,i) {
+															return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+														})
+													}
+													</select> { }
+
+													{/*<button className="btn-primary" type="submit" form="search-subfrom"><i className="fa-search"></i>{ }搜尋</button>*/}
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="row">
+										{/*左邊list*/}
+										<div className="col-xs-6">
+											<table className="table-condensed">
+												<thead>
+													<tr>
+														<th className="col-xs-1 text-center">
+															<label className="cbox">
+																<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
+																<i className="fa-check"></i>
+															</label>
+														</th>
+														<th className="col-xs-1 text-center">修改</th>
+														<th className="col-xs-2">天數</th>
+														<th className="col-xs-8">餐別</th>
+													</tr>
+												</thead>
+												<tbody>
+													{
+													this.state.gridSubData.rows.map(function(itemData,i) {
+														if(i>=0 && i<=9){
+														return <MenuCopyGridRow 
+														key={i}
+														ikey={i}
+														primKey={itemData.menu_copy_id} 
+														itemData={itemData} 
+														delCheck={this.delCheck}
+														updateType={this.updateSubType}
+														category={this.state.category}								
+														/>;
+														}
+													}.bind(this))
+													}
+												</tbody>
+											</table>
+										</div>
+										{/*左邊list*/}
+										{/*右邊list*/}
+										<div className="col-xs-6">
+											<table className="table-condensed">
+												<thead>
+													<tr>
+														<th className="col-xs-1 text-center">
+															<label className="cbox">
+																<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
+																<i className="fa-check"></i>
+															</label>
+														</th>
+														<th className="col-xs-1 text-center">修改</th>
+														<th className="col-xs-2">天數</th>
+														<th className="col-xs-8">餐別</th>
+													</tr>
+												</thead>
+												<tbody>
+													{
+													this.state.gridSubData.rows.map(function(itemData,i) {
+														if(i>=10 && i<=19){
+														return <MenuCopyGridRow 
+														key={i}
+														ikey={i}
+														primKey={itemData.menu_copy_id} 
+														itemData={itemData} 
+														delCheck={this.delCheck}
+														updateType={this.updateSubType}
+														category={this.state.category}								
+														/>;
+														}
+													}.bind(this))
+													}
+												</tbody>
+											</table>
+										</div>
+										{/*右邊list*/}										
+									</div>
+								<GridNavPage 
+								StartCount={this.state.gridSubData.startcount}
+								EndCount={this.state.gridSubData.endcount}
+								RecordCount={this.state.gridSubData.records}
+								TotalPage={this.state.gridSubData.total}
+								NowPage={this.state.gridSubData.page}
+								onQueryGridData={this.queryGridSubData}
+								InsertType={this.insertSubType}
+								deleteSubmit={this.deleteSubSubmit}
+								/>
+							</form>							
+							</div>
+				        </div>						
+			        </div>
+				{/*頁籤1*/}
+				{/*頁籤2*/}
+					<div role="tabpanel" className="tab-pane" id="edit">
+						<div className="row">
+							<div className="col-xs-12">
+								<form className="form-horizontal clearfix" onSubmit={this.handleSubSubmit} id="sub-form">
+									<div className="form-group">
+										<label className="col-xs-2 control-label">選擇天數</label>
+										<div className="col-xs-2">
+											<input type="number" className="form-control"
+							                value={fieldSubData.day}
+							                onChange={this.changeFDValue.bind(this,'day')}
+							                min="1" required/>{ }
+										</div>
+										<small className="help-inline col-xs-1 text-danger">(必填)</small>
+
+										<label className="col-xs-1 control-label">選擇餐別</label>
+										<div className="col-xs-2">
+											<select className="form-control" 
+											value={fieldSubData.meal_type}
+											onChange={this.changeFDValue.bind(this,'meal_type')}
+											required>
+											{
+												CommData.MealType.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+												})
+											}
+											</select>
+										</div>
+										<small className="help-inline col-xs-1 text-danger">(必填)</small>
+										<div className="col-xs-2 pull-right col-xs-offset-1">
+											<button type="submit" className="btn-primary" name="btn-1" form="sub-form"><i className="fa-check"></i> 儲存</button> { }
+											<button type="button" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button>
+										</div>	
+									</div>
+								</form>
+
+								{/* 每日菜單對應的組合菜單 */}
+								<div className="col-xs-10 col-xs-offset-1">
+									{map_out_html}
+								</div>
+
+							</div>
+				        </div>	
+					</div>
+				{/*頁籤2*/}
+			    </div>		
+
+			</div>
+
+		);
+
+		return outHtml;
+	}
+});
+
+
+//對應設定
 var GirdDofC = React.createClass({
 	mixins: [React.addons.LinkedStateMixin], 
 	getInitialState: function() {  
@@ -433,7 +920,7 @@ var GirdDofC = React.createClass({
 
 		$.extend(parms, this.state.searchData);
 
-			jqGet(gb_approot + 'api/GetAction/GetLeftConstitute',parms)
+			jqGet(gb_approot + 'api/GetAction/GetLeftConstituteByT',parms)
 			.done(function(data, textStatus, jqXHRdata) {
 				this.setState({grid_left_constitute:data});
 			}.bind(this))
@@ -442,7 +929,7 @@ var GirdDofC = React.createClass({
 			});
 	},	
 	queryRightConstitute:function(){
-			jqGet(gb_approot + 'api/GetAction/GetRightConstitute',{main_id:this.props.main_id})
+			jqGet(gb_approot + 'api/GetAction/GetRightConstituteByT',{main_id:this.props.main_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				this.setState({grid_right_constitute:data});
 			}.bind(this))
@@ -457,7 +944,7 @@ var GirdDofC = React.createClass({
 		this.queryLeftConstitute();			
 	},
 	addConstitute:function(constitute_id){
-			jqPost(gb_approot + 'api/GetAction/PostDailyMenuOfConstitute',{dail_menu_id:this.props.main_id,constitute_id:constitute_id})
+			jqPost(gb_approot + 'api/GetAction/PostMenuCopyOfConstitute',{menu_copy_id:this.props.main_id,constitute_id:constitute_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
 					this.queryLeftConstitute();
@@ -471,7 +958,7 @@ var GirdDofC = React.createClass({
 			});		
 	},
 	removeConstitute:function(constitute_id){
-			jqDelete(gb_approot + 'api/GetAction/DeleteDailyMenuOfConstitute',{dail_menu_id:this.props.main_id,constitute_id:constitute_id})
+			jqDelete(gb_approot + 'api/GetAction/DeleteMenuCopyOfConstitute',{menu_copy_id:this.props.main_id,constitute_id:constitute_id})
 			.done(function(data, textStatus, jqXHRdata) {
 				if(data.result){
 					this.queryLeftConstitute();
@@ -523,7 +1010,7 @@ var GirdDofC = React.createClass({
 		outHtml =(
 			<div>
 				<hr className="condensed" />
-				<h4 className="title">每日菜單對應設定</h4>
+				<h4 className="title">每日菜單樣板對應設定</h4>
 				<div className="row">
 					<div className="col-xs-6">
 						
