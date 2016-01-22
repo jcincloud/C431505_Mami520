@@ -34,7 +34,7 @@ var GirdForm = React.createClass({
 			edit_type:0,
 			checkAll:false,
 			err_list:[],
-			copyData:{copy_start:null,copy_end:null,range_day:7}
+			copyData:{copy_start:null,copy_end:null,range_day:null}
 		};  
 	},
 	getDefaultProps:function(){
@@ -168,7 +168,10 @@ var GirdForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{meal_type:1}});
+		this.setState({
+			edit_type:1,
+			fieldData:{meal_type:1}
+		});
 	},
 	updateType:function(id){
 		jqGet(this.props.apiPathName,{id:id})
@@ -182,7 +185,12 @@ var GirdForm = React.createClass({
 	noneType:function(){
 		this.gridData(0)
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:0,gridData:data});
+			this.setState({
+				edit_type:0,
+				gridData:data,
+				err_list:[],
+				copyData:{copy_start:null,copy_end:null,range_day:null}
+			});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -213,17 +221,57 @@ var GirdForm = React.createClass({
 		this.setState({fieldData:obj});
 	},
 	setCopyVal:function(name,e){
+		this.checkMenuCopyList();
 		var obj = this.state.copyData;
-		
 		if(e.target.value!=null & e.target.value!=''){
 
 			obj.copy_start=e.target.value;
 			var tmp_date = new Date(obj.copy_start);
-			var end_date=addDate(tmp_date,parseInt(obj.range_day)-1);
+			if(obj.range_day!=null){
+				var end_date=addDate(tmp_date,parseInt(obj.range_day)-1);
+				obj.copy_end=format_Date(end_date);
+			}else{
+				obj.copy_end=e.target.value;
+			}
 
-			obj.copy_end=format_Date(end_date);
 		}
 		this.setState({copyData:obj});
+	},
+	checkMenuCopyList:function(){
+			jqGet(gb_approot + 'api/GetAction/GetTempRangeCount',{main_id:this.state.fieldData.menu_copy_template_id})
+			.done(function(data, textStatus, jqXHRdata) {
+				var copyData=this.state.copyData;
+				copyData.range_day=data.range_day;
+				this.setState({copyData:copyData,err_list:data.list});
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+	},
+	CopySubmit: function(e) {
+
+		e.preventDefault();
+		if(!confirm('確定是否複製?')){
+			return;
+		}
+		var copyData = this.state.copyData;
+
+			jqPost(gb_approot + 'api/GetAction/CopyMenuData',
+				{main_id:this.state.fieldData.menu_copy_template_id,
+					copy_start:copyData.copy_start,
+					copy_end:copyData.copy_end
+				})
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					tosMessage(null,'複製完成',1);
+				}else{
+					alert(data.msg);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});	
+		return;
 	},
 	render: function() {
 		var outHtml = null;
@@ -304,8 +352,75 @@ var GirdForm = React.createClass({
 			var copyData=this.state.copyData;
 
 			var sub_out_html=null;
+			var copy_out_html=null;
 			if(this.state.edit_type==2){//只在修改時顯示下方對應程式
 				sub_out_html=(<MenuCopy ref="SubFrom" main_id={fieldData.menu_copy_template_id} />);
+				var err_out_html=null;
+				if(this.state.err_list.length>0){
+					err_out_html=(
+						<div>
+							<p><strong className="text-info">目前樣板還缺少下列餐別:</strong></p>
+							{
+								this.state.err_list.map(function(itemData,i) {
+									var error_html=
+										<p key={i}>
+										<strong className="text-danger">第{itemData.day}天 : </strong> { }
+										<StateForGrid stateData={CommData.MealType} id={itemData.meal_type} />
+										</p>;
+									return error_html;
+								})
+							}
+						</div>
+						);
+				}
+				copy_out_html=(				
+					<form className="form-horizontal clearfix" id="copy-form" onSubmit={this.CopySubmit}>
+					<div className="col-xs-8 col-xs-offset-1">
+							<div className="item-box">
+								<div className="item-title">
+									<h5>複製此樣板至每日菜單</h5>
+								</div>
+								<div className="form-group">
+									<label className="col-xs-2 control-label">起始日期</label>
+									<div className="col-xs-3">
+										<span className="has-feedback">
+											<InputDate id="copy_start" 
+											onChange={this.setCopyVal} 
+											field_name="copy_start" 
+											value={copyData.copy_start}
+											required={true}
+											disabled={false} />
+										</span>
+									</div>
+									<small className="help-inline col-xs-1 text-center">~</small>
+									<label className="col-xs-2 control-label">結束日期</label>
+									<div className="col-xs-3">
+										<span className="has-feedback">
+											<InputDate id="copy_end" 
+											onChange={this.setCopyVal} 
+											field_name="copy_end" 
+											value={copyData.copy_end}
+											required={true}
+											disabled={true} />
+										</span>
+									</div>								
+								</div>
+								<div className="col-xs-10 col-xs-offset-1">
+					                <div className="form-group">
+					                    <div className="alert alert-info">
+					                    	<p><strong className="text-info">此樣板共{copyData.range_day}天</strong></p>
+											{err_out_html}
+					                    </div>
+				                    </div>
+				                </div>
+								<div className="form-group">								
+									<div className="col-xs-4 pull-right">
+										<button type="submit" className="btn-info" form="copy-form" disabled={this.state.err_list.length>0}><i className="fa-files-o"></i> 複製</button>
+									</div>	
+								</div>							
+							</div>
+						</div>
+					</form>);
 			}else{
 				sub_out_html=(
 					<div>
@@ -314,6 +429,7 @@ var GirdForm = React.createClass({
 					</div>
 					);
 			}
+
 
 			outHtml=(
 			<div>
@@ -348,70 +464,7 @@ var GirdForm = React.createClass({
 				</form>
 
 				{/*複製樣板*/}
-				<form className="form-horizontal clearfix" id="copy-form">
-					<div className="col-xs-8 col-xs-offset-1">
-							<div className="item-box">
-								<div className="item-title">
-									<h5>複製此樣板至每日菜單</h5>
-								</div>
-								<div className="form-group">
-									<label className="col-xs-2 control-label">起始日期</label>
-									<div className="col-xs-3">
-										<span className="has-feedback">
-											<InputDate id="copy_start" 
-											onChange={this.setCopyVal} 
-											field_name="copy_start" 
-											value={copyData.copy_start}
-											required={true}
-											disabled={false} />
-										</span>
-									</div>
-									<small className="help-inline col-xs-1 text-center">~</small>
-									<label className="col-xs-2 control-label">結束日期</label>
-									<div className="col-xs-3">
-										<span className="has-feedback">
-											<InputDate id="copy_end" 
-											onChange={this.setCopyVal} 
-											field_name="copy_end" 
-											value={copyData.copy_end}
-											required={true}
-											disabled={true} />
-										</span>
-									</div>								
-								</div>
-								<div className="col-xs-10 col-xs-offset-1">
-					                <div className="form-group">
-					                    <div className="alert alert-info">
-											<p><strong className="text-info">此樣板共{copyData.range_day}天</strong></p>
-											{
-												this.state.err_list.map(function(itemData,i) {
-													var error_html=
-													<p key={i}>
-														<strong className="text-danger">{itemData.error_name} : </strong> { }
-														{
-															itemData.r_customers.map(function(customer,i) {
-																return <span>
-																<span className="label label-primary">店名 - {customer.customer_name}</span> { }
-																<span className="label label-primary">電話 - {customer.tel}</span> { }
-																<span className="label label-primary">地址 - {customer.tw_city+customer.tw_country+customer.tw_address}</span>
-																</span>;
-															})
-														}
-													</p>;
-													return error_html;
-												})
-											}
-					                    </div>
-				                    </div>
-				                </div>
-								<div className="form-group">								
-									<div className="col-xs-4 pull-right">
-										<button type="submit" className="btn-info"><i className="fa-files-o"></i> 複製</button>
-									</div>	
-								</div>							
-							</div>
-						</div>
-					</form>
+				{copy_out_html}
 				{/*複製樣板*/}
 
 				<hr className="condensed" />

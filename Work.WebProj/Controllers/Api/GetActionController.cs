@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using System.Web.Http;
 namespace DotWeb.Api
@@ -26,7 +27,7 @@ namespace DotWeb.Api
             db0 = getDB0();
             var item = await db0.CustomerBorn
                 .OrderBy(x => x.born_id)
-                .Where(x => x.mom_name.Contains(keyword))
+                .Where(x => x.mom_name.Contains(keyword) && x.company_id == this.companyId)
                 .Select(x => new { x.mom_name, x.meal_id, x.tel_1, x.tw_city_1, x.tw_country_1, x.tw_address_1 })
                 .Take(5).ToListAsync();
 
@@ -1609,6 +1610,7 @@ namespace DotWeb.Api
             }
         }
         #endregion
+        #region 菜單複製
         #region 每日菜單樣板對應組合菜單(E04.MenuCopyTemp)
         public async Task<IHttpActionResult> GetLeftConstituteByT([FromUri]ParmGetLeftConstitute parm)
         {
@@ -1741,6 +1743,108 @@ namespace DotWeb.Api
                 r.result = false;
                 r.message = ex.Message;
                 return Ok(r);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        #endregion
+        public IHttpActionResult GetTempRangeCount(int? main_id)
+        {
+            db0 = getDB0();
+            try
+            {
+                var items = db0.MenuCopy.Where(x => x.company_id == this.companyId & x.menu_copy_template_id == main_id)
+                    .OrderBy(x => new { x.day, x.meal_type }).AsQueryable();
+                //算目前最搭天數為
+                int maxVal = items.Max(x => x.day);
+                List<CopyErrList> err = new List<CopyErrList>();
+                for (int i = 1; i <= maxVal; i++)
+                {//檢查有沒有缺天缺餐
+                    List<int> meals = new List<int>() { 1, 2, 3 };
+                    List<int> get_meal = items.Where(x => x.day == i).Select(x => x.meal_type).ToList();
+                    if (get_meal.Count() < 3)
+                    {//有缺餐才計算
+                        List<int> lack_meal = meals.Where(x => !get_meal.Contains(x)).ToList();
+                        foreach (var meal in lack_meal)
+                        {
+                            err.Add(new CopyErrList() { day = i, meal_type = meal });
+                        }
+                    }
+
+                }
+
+                return Ok(new { range_day = maxVal, list = err });
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+        }
+        [HttpPost]
+        public async Task<IHttpActionResult> CopyMenuData([FromBody]ParmCopyMenuData parm)
+        {
+            db0 = getDB0();
+            try
+            {
+                if (parm.copy_start == null || parm.copy_end == null)
+                {
+                    return Ok(new { result = false, msg = "請填寫完整的日期~!" });
+                }
+
+                DateTime start = (DateTime)parm.copy_start;
+                DateTime end = ((DateTime)parm.copy_end).AddDays(1);
+
+                bool check_dailyMenu = db0.DailyMenu.Any(x => x.company_id == this.companyId & x.day >= start & x.day < end);
+                if (check_dailyMenu)
+                {
+                    return Ok(new { result = false, msg = "要複製的日期內已有安排「每日菜單」,請確認後再複製~!" });
+                }
+
+                #region copy
+                var items = db0.MenuCopy.Where(x => x.company_id == this.companyId & x.menu_copy_template_id == parm.main_id)
+                            .OrderBy(x => new { x.day, x.meal_type }).ToList();
+                foreach (var i in items)
+                {
+                    var setDayObj = start.AddDays(i.day - 1);
+                    var item = new DailyMenu()
+                    {
+                        dail_menu_id = GetNewId(ProcCore.Business.CodeTable.DailyMenu),
+                        day = setDayObj,
+                        meal_type = i.meal_type,
+                        i_InsertUserID = this.UserId,
+                        i_InsertDateTime = DateTime.Now,
+                        i_InsertDeptID = this.departmentId,
+                        company_id = this.companyId,
+                        i_Lang = "zh-TW"
+                    };
+
+                    db0.DailyMenu.Add(item);
+
+                    foreach (var corr in i.MenuCopyOfConstitute)
+                    {
+                        var c = new DailyMenuOfConstitute()
+                        {
+                            constitute_id = corr.constitute_id,
+                            dail_menu_id = item.dail_menu_id,
+                            i_InsertUserID = this.UserId,
+                            i_InsertDateTime = DateTime.Now,
+                            i_InsertDeptID = this.departmentId,
+                            company_id = this.companyId,
+                            i_Lang = "zh-TW"
+                        };
+                        db0.DailyMenuOfConstitute.Add(c);
+                    }
+                }
+                await db0.SaveChangesAsync();
+                #endregion
+
+                return Ok(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { result = false, msg = ex.ToString() });
             }
             finally
             {
@@ -2609,6 +2713,12 @@ namespace DotWeb.Api
         public int constitute_id { get; set; }
         public int menu_copy_id { get; set; }
     }
+    public class ParmCopyMenuData
+    {
+        public DateTime? copy_start { get; set; }
+        public DateTime? copy_end { get; set; }
+        public int main_id { get; set; }
+    }
     #endregion
     public class MealTotalCount
     {
@@ -2740,4 +2850,10 @@ namespace DotWeb.Api
         public int page { get; set; }
     }
     #endregion
+
+    public class CopyErrList
+    {
+        public int day { get; set; }
+        public int meal_type { get; set; }
+    }
 }
