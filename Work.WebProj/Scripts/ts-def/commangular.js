@@ -4,7 +4,7 @@ var services;
         function workService() {
         }
         return workService;
-    })();
+    }());
     services.workService = workService;
 })(services || (services = {}));
 ;

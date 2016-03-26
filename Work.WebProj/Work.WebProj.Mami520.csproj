@@ -27,7 +27,7 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -58,6 +58,10 @@
     </Reference>
     <Reference Include="EPPlus, Version=4.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.0.4\lib\net20\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqKit, Version=1.1.3.1, Culture=neutral, PublicKeyToken=bc217f8844052a91, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqKit.1.1.3.1\lib\net45\LinqKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -97,7 +101,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Web.Administration.7.0.0.0\lib\net20\Microsoft.Web.Administration.dll</HintPath>
@@ -207,6 +210,7 @@
     <Compile Include="Areas\Active\Controllers\ReportController.cs" />
     <Compile Include="Areas\Base\Controllers\ExcelReportController.cs" />
     <Compile Include="Areas\Base\Controllers\LoginController.cs" />
+    <Content Include="app_modules\comm-func\package.js" />
     <Content Include="Areas\Active\Views\Customer\Main.cshtml" />
     <Content Include="Areas\Active\Views\Product\Main.cshtml" />
     <Content Include="Areas\Active\Views\Visit\Main.cshtml" />
@@ -243,8 +247,8 @@
     <Content Include="Areas\Active\Views\Home\Main.cshtml" />
     <Content Include="Areas\Active\Views\Home\fake.cshtml" />
     <Content Include="Areas\Active\Views\Food\MenuCopyTemplate.cshtml" />
+    <Content Include="app_modules\comm-func\package.json" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
-    <Compile Include="Areas\Base\Controllers\ReportToPdfController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
     <Compile Include="Areas\Base\Controllers\MenuController.cs" />
     <Compile Include="Areas\Base\Controllers\UsersController.cs" />
@@ -296,6 +300,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\DynamicLibrary.cs" />
     <Compile Include="Models\MealCalendar.cs" />
     <Compile Include="Models\DotWeb.Controller.cs" />
     <Compile Include="Models\DotWeb.Api.cs" />
@@ -310,16 +315,6 @@
     <Compile Include="Models\IGetMasterNewId.cs" />
     <Compile Include="Models\MvcSiteMapProvider.Def.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="_Code\Ashx\AjaxDownLoadFile.ashx.cs">
       <DependentUpon>AjaxDownLoadFile.ashx</DependentUpon>
@@ -462,7 +457,6 @@
     <Content Include="Content\js\bxslider\jquery.bxslider.min.js" />
     <Content Include="Content\js\swiper\swiper.min.js" />
     <Content Include="index.html" />
-    <Content Include="Scripts\angular\plugging\angularjs-nvd3-directives.min.js" />
     <Content Include="ckeditor\adapters\jquery.js" />
     <Content Include="ckeditor\build-config.js" />
     <Content Include="ckeditor\ckeditor.js" />
@@ -711,8 +705,6 @@
     <Content Include="ckeditor\skins\moono\images\lock.png" />
     <Content Include="ckeditor\skins\moono\images\refresh.png" />
     <Content Include="ckeditor\styles.js" />
-    <Content Include="Scripts\angular\angular-aria.js" />
-    <Content Include="Scripts\angular\angular-messages.js" />
     <Content Include="Scripts\app\BootSideMenu.js" />
     <Content Include="Scripts\app\bootstrap.min.js" />
     <Content Include="Scripts\app\codrops\classie.js" />
@@ -732,6 +724,8 @@
     <Content Include="Scripts\app\ReactRouter.min.js" />
     <Content Include="Scripts\app\swipe.js" />
     <Content Include="Scripts\app\toastr.min.js" />
+    <Content Include="Scripts\build\app\m_community.js" />
+    <Content Include="Scripts\build\app\vendors.js" />
     <Content Include="Scripts\build\comminc.js" />
     <Content Include="Scripts\build\func\inc\c-Comm.js" />
     <Content Include="Scripts\build\func\inc\c-ImgFileSort.js" />
@@ -785,6 +779,7 @@
     <Content Include="Scripts\app\moment\moment.js" />
     <Content Include="Scripts\app\moment\locale\zh-tw.js" />
     <Content Include="Scripts\app\react-sortable-mixin.js" />
+    <Content Include="Scripts\react-typehead\typeahead.css" />
     <Content Include="Scripts\react\JSXTransformer.js" />
     <Content Include="Scripts\react\react-with-addons.js" />
     <Content Include="Scripts\react\react-with-addons.min.js" />
@@ -809,33 +804,6 @@
     <Content Include="Views\Index\Index.cshtml" />
     <Content Include="Scripts\src\ts-controller\tmp\modalEditFuel.html" />
     <Content Include="Scripts\src\ts-controller\tmp\modalQueryEquipment.html" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\angular-file-upload-html5-shim.js" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\angular-file-upload-html5-shim.min.js" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\angular-file-upload-shim.js" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\angular-file-upload-shim.min.js" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\angular-file-upload.js" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\angular-file-upload.min.js" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\FileAPI.flash.swf" />
-    <Content Include="Scripts\angular\plugging\angular-file-upload\FileAPI.min.js" />
-    <Content Include="Scripts\angular\plugging\angular-input-date.js" />
-    <Content Include="Scripts\angular\plugging\ng-ckeditor.js" />
-    <Content Include="Scripts\angular\plugging\signalr-hub.js" />
-    <Content Include="Scripts\angular\plugging\toaster.js" />
-    <Content Include="Scripts\angular\plugging\ui-bootstrap-tpls-0.11.0.js" />
-    <Content Include="Scripts\angular\plugging\ui-bootstrap-tpls-0.11.2.js" />
-    <Content Include="Scripts\angular\angular-animate.js" />
-    <Content Include="Scripts\angular\angular-cookies.js" />
-    <Content Include="Scripts\angular\angular-csp.css" />
-    <Content Include="Scripts\angular\angular-loader.js" />
-    <Content Include="Scripts\angular\angular-mocks.js" />
-    <Content Include="Scripts\angular\angular-resource.js" />
-    <Content Include="Scripts\angular\angular-route.js" />
-    <Content Include="Scripts\angular\angular-sanitize.js" />
-    <Content Include="Scripts\angular\angular-scenario.js" />
-    <Content Include="Scripts\angular\angular-touch.js" />
-    <Content Include="Scripts\angular\angular.js" />
-    <Content Include="Scripts\angular\angular.min.js" />
-    <Content Include="Scripts\angular\i18n\angular-locale_zh-tw.js" />
     <Content Include="Scripts\app\BrowerInfo.js" />
     <Content Include="Scripts\app\chart\Chart.js" />
     <Content Include="Scripts\app\chart\Chart.min.js" />
@@ -849,7 +817,6 @@
     <Content Include="Scripts\app\chart\src\Chart.Radar.js" />
     <Content Include="Scripts\app\jquery.signalR-2.1.2.js" />
     <Content Include="Scripts\app\jquery.signalR-2.1.2.min.js" />
-    <Content Include="Scripts\angular\version.json" />
     <Content Include="Scripts\src\jsx\m-login.jsx" />
     <Content Include="Scripts\src\jsx-inc\c-Comm.jsx" />
     <Content Include="Scripts\app\respond.min.js" />
@@ -863,6 +830,7 @@
     <Content Include="Scripts\app\shadowbox\shadowbox.js" />
     <Content Include="Scripts\app\shadowbox\LICENSE" />
     <Content Include="Scripts\app\shadowbox\README" />
+    <Content Include="webpack.config.js" />
     <Content Include="_Code\CSS\css\ie9-page-blessed1.css" />
     <Content Include="_Code\CSS\css\ie9-page.css" />
     <Content Include="_Code\CSS\css\mobile.css" />
@@ -1059,10 +1027,6 @@
     <Content Include="Views\Fake\Tel4_2.cshtml" />
     <Content Include="Views\Fake\Tel4_3.cshtml" />
     <Content Include="Scripts\src\jsx\m-MealSchedule.jsx" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <Content Include="Scripts\src\jsx\m-GiftRecord.jsx" />
     <Content Include="Scripts\src\jsx\m-AccountsPayable.jsx" />
     <Content Include="Scripts\src\jsx\m-R01_DailyMeal.jsx" />
@@ -1128,7 +1092,11 @@
     <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModelList.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapNodeModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
+    <TypeScriptCompile Include="app_modules\comm-func\comm-func.d.ts" />
+    <TypeScriptCompile Include="app_modules\comm-func\comm-func.tsx" />
     <TypeScriptCompile Include="GitTest\play.ts" />
+    <TypeScriptCompile Include="Scripts\react-typehead\comm-typeahead.d.ts" />
+    <TypeScriptCompile Include="Scripts\react-typehead\main.tsx" />
     <TypeScriptCompile Include="Scripts\ts-def\commangular.ts" />
     <TypeScriptCompile Include="Scripts\src\ts-controller\login.ts" />
     <TypeScriptCompile Include="Scripts\src\ts-controller\rolesCtr.ts" />
@@ -1146,11 +1114,11 @@
     <TypeScriptCompile Include="Scripts\ts-def\d.ts\IMakeScope.d.ts" />
     <TypeScriptCompile Include="Scripts\ts-def\d.ts\PutGetId.d.ts" />
     <TypeScriptCompile Include="Scripts\ts-def\d.ts\ServerModals.d.ts" />
+    <TypeScriptCompile Include="Scripts\ts-def\d.ts\Toastr.d.ts" />
     <TypeScriptCompile Include="Scripts\ts-def\dynScript\defData.ts" />
     <TypeScriptCompile Include="Scripts\ts-def\dynScript\defGlobal.ts" />
     <TypeScriptCompile Include="Scripts\ts-def\index.ts" />
     <TypeScriptCompile Include="Scripts\ts-def\widegt\gridInfo.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angular-file-upload\angular-file-upload.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -1161,6 +1129,10 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery.cookie\jquery.cookie.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react-dom\react-dom.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react\react-global.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react\react-mixin.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\react\react.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\toastr\toastr.d.ts" />
   </ItemGroup>
   <ItemGroup>
@@ -1182,7 +1154,6 @@
     <Content Include="Views\Shared\EditorTemplates\edit_Date.cshtml" />
     <Content Include="Views\Shared\Layout.cshtml" />
     <Content Include="Views\Shared\Manage\JSGlobalVar.cshtml" />
-    <Content Include="Views\Shared\Manage\ALayout.cshtml" />
     <Content Include="Views\Shared\Manage\vucFooter.cshtml" />
     <Content Include="Views\Shared\Manage\vucMenu.cshtml" />
   </ItemGroup>
@@ -1224,10 +1195,6 @@
     <Content Include="Areas\Active\Views\AccountsPayable\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Base\Views\Menu\App_LocalResources\Main.cshtml.resx" />
     <Content Include="Areas\Active\Views\Home\App_LocalResources\Main.cshtml.resx" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="_Code\RPTFile\MemeberLabel.rdlc" />
   </ItemGroup>
   <PropertyGroup>
@@ -1262,6 +1229,17 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

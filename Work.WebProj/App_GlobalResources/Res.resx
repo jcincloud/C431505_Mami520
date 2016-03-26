@@ -285,6 +285,7 @@
   </data>
   <data name="Button_Edit" xml:space="preserve">
     <value>編輯</value>
+    <comment>編輯Edit</comment>
   </data>
   <data name="Info_Detail_Picture" xml:space="preserve">
     <value>產品圖</value>

@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Web;
 using System.Web.Http;
+using LinqKit;
+
 namespace DotWeb.Api
 {
     public class GetActionController : BaseApiController
@@ -2538,6 +2540,35 @@ namespace DotWeb.Api
                 obj.Add(new RoleArray() { role_id = role.Id, role_name = role.Name, role_use = false });
             }
             return Ok(obj);
+        }
+        [HttpGet]
+        public async Task<IHttpActionResult> ta_Customer(string keyword)
+        {
+            db0 = getDB0();
+            var predicate = PredicateBuilder.True<Customer>();
+            if (keyword != null)
+                predicate = predicate.And(x => x.customer_name.Contains(keyword));
+
+            var result = await db0.Customer.AsExpandable()
+                .Where(predicate)
+                .OrderBy(x => x.customer_name)
+                .Select(x => new { value = x.customer_id, text = x.customer_name })
+                .Take(5)
+                .ToListAsync();
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetCustomerById(int customer_id)
+        {
+            db0 = getDB0();
+
+            var customer = await db0.Customer.FindAsync(customer_id);
+            var born = customer.CustomerBorn;
+            var productRecord = customer.ProductRecord;
+
+            return Ok(new { customer, born, productRecord });
         }
 
         [HttpPost]
