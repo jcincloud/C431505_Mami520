@@ -12,6 +12,12 @@ var Bootstrap = require('bootstrap');
 
 require('react-datepicker/dist/react-datepicker.css');
 
+var MntV = function (date) {
+    //將日期設定成moment物件
+    var r = date === null || date === undefined ? null : moment(date);
+    return r;
+}
+
 var GirdForm = React.createClass({
     mixins: [LinkedStateMixin],
     getInitialState: function () {
@@ -35,23 +41,42 @@ var GirdForm = React.createClass({
     },
     componentDidMount: function () {
     },
-    shouldComponentUpdate: function (nextProps, nextState) {
-        return true;
-    },
-    changeGDValue: function (name, e) {
-        this.setInputValue(this.props.gdName, name, e);
-    },
-    setInputValue: function (collentName, name, e) {
-
-        var obj = this.state[collentName];
+    setEventValue: function (collect, name, e) {
+        var v;
         if (e.target.value == 'true') {
-            obj[name] = true;
+            v = true;
         } else if (e.target.value == 'false') {
-            obj[name] = false;
+            v = false;
         } else {
-            obj[name] = e.target.value;
+            v = e.target.value;
         }
-        this.setState({ fieldData: obj });
+
+        var objForUpdate = {
+            collect:
+                {
+                    [collect]: {
+                        [name]: {
+                            $set: v
+                        }
+                    }
+                }
+        };
+        var newState = update(this.state, objForUpdate);
+        this.setState(newState);
+    },
+    setInputValue: function (collect, name, v) {
+        var objForUpdate = {
+            collect:
+                {
+                    [collect]: {
+                        [name]: {
+                            $set: v
+                        }
+                    }
+                }
+        };
+        var newState = update(this.state, objForUpdate);
+        this.setState(newState);
     },
     handleSearch: function (e) {
         e.preventDefault();
@@ -60,7 +85,7 @@ var GirdForm = React.createClass({
     CompleteTACustomer(f, i, select_item) {
         CommFunc.jqGet(gb_approot + 'api/GetAction/GetCustomerById', { customer_id: select_item.value })
         .done(function (data, textStatus, jqXHRdata) {
-            console.log(data);
+            //console.log(data);
             this.setState({ collect: data })
         }.bind(this))
         .fail(function (jqXHR, textStatus, errorThrown) {
@@ -170,8 +195,12 @@ var GirdForm = React.createClass({
                         </div>
                     </form>
 
-                    <Tabs defaultActiveKey={1}>
-                      <Tab eventKey={1} title="基本資料">基本資料</Tab>
+                    <Tabs defaultActiveKey={1} animation={false}>
+                      <Tab eventKey={1} title="基本資料">
+                          <CustData customer={this.state.collect.customer}
+                                    setEventValue={this.setEventValue}
+                                    setInputValue={this.setInputValue} />
+                      </Tab>
                       <Tab eventKey={2} title="生產記錄">
                           <CustBorn born={this.state.collect.born}
                                     setBornEventValue={this.setBornEventValue}
@@ -202,10 +231,7 @@ var CustBorn = React.createClass({
     },
     formSubmit: function (i, e) {
         e.preventDefault();
-
         var data = this.props.born[i];
-        //console.log(data);
-
         return false;
     },
     onChangeDate: function (i, name, date) {
@@ -215,7 +241,6 @@ var CustBorn = React.createClass({
     },
     render: function () {
         var isNew = this.props.born.length > 0 && this.props.born[0].born_id == 0;;
-
 
         var outHtml = null;
         outHtml =
@@ -230,7 +255,7 @@ var CustBorn = React.createClass({
                 {
                 this.props.born.map(function (item, i) {
 
-                    var mon_birthday = item.birthday === null || item.birthday === undefined ? null : moment(item.birthday);
+                    var mnt_birthday = MntV(item.birthday);
 
                     var out_sub_1 = (
                         <form className="form-horizontal" key={item.born_id} onSubmit={this.formSubmit.bind(null,i)}>
@@ -248,7 +273,7 @@ var CustBorn = React.createClass({
                             <div className="form-group">
                                 <label className="col-xs-2 control-label">生產日期</label>
                                 <div className="col-xs-8">
-                                    <DatePicker selected={mon_birthday}
+                                    <DatePicker selected={mnt_birthday}
                                                 dateFormat="YYYY-MM-DD"
                                                 isClearable={true}
                                                 required={true}
@@ -288,7 +313,72 @@ var CustBorn = React.createClass({
     }
 });
 
+var CustData = React.createClass({
+    getInitialState: function () {
+        return {
 
+        };
+    },
+    getDefaultProps: function () {
+        return {
+            customer: {}
+        };
+    },
+    formSubmit: function (e) {
+        e.preventDefault();
+        //console.log(this.props.customer);
+        return false;
+    },
+    onChangeDate: function (name, date) {
+        //console.log(name, date, e);
+        var v = date == null ? null : date.format();
+        this.props.setInputValue('customer', name, v);
+    },
+    render: function () {
+        var customer = this.props.customer === null ? {} : this.props.customer;
+        var outHtml = null;
+
+        var mnt_birthday = MntV(customer.birthday);
+        console.log(mnt_birthday);
+        outHtml =
+        (
+            <div>
+                <form className="form-horizontal" onSubmit={this.formSubmit}>
+                            <div className="form-group">
+                                <label className="col-xs-2 control-label">姓名</label>
+                                <div className="col-xs-8">
+                                    <input type="text"
+                                           className="form-control"
+                                           value={customer.customer_name}
+                                           onChange={this.props.setEventValue.bind(null, 'customer', 'customer_name')}
+                                           maxLength="64"
+                                           required />
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="col-xs-2 control-label">生日</label>
+                                <div className="col-xs-8">
+                                    <DatePicker selected={mnt_birthday}
+                                                dateFormat="YYYY-MM-DD"
+                                                isClearable={true}
+                                                required={true}
+                                                locale="zh-TW"
+                                                showYearDropdown
+                                                onChange={this.onChangeDate.bind(this, 'birthday')}
+                                                className="form-control" />
+
+                                </div>
+                            </div>
+                            <div className="form-action text-right">
+						        <button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+                            </div>
+                </form>
+            </div>
+        );
+        return outHtml;
+    }
+});
 
 var dom = document.getElementById('page_content');
 ReactDOM.render(<GirdForm caption={'gb_caption'} menuName={'gb_menuname'} iconClass="fa-list-alt" />, dom); 
