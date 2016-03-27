@@ -724,7 +724,7 @@
     <Content Include="Scripts\app\ReactRouter.min.js" />
     <Content Include="Scripts\app\swipe.js" />
     <Content Include="Scripts\app\toastr.min.js" />
-    <Content Include="Scripts\build\app\m_community.js" />
+    <Content Include="Scripts\build\app\m_Home.js" />
     <Content Include="Scripts\build\app\vendors.js" />
     <Content Include="Scripts\build\comminc.js" />
     <Content Include="Scripts\build\func\inc\c-Comm.js" />

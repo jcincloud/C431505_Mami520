@@ -2,12 +2,15 @@ global.jQuery = require('jquery');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var update = require('react-addons-update');
+var DatePicker = require('react-datepicker');
 var moment = require('moment');
 var CommFunc = require('comm-func');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ReactBootstrap = require('react-bootstrap');
 var Typeahead = require('../../react-typehead/main.js');
-var Bootstrap = require('bootstrap')
+var Bootstrap = require('bootstrap');
+
+require('react-datepicker/dist/react-datepicker.css');
 
 var GirdForm = React.createClass({
     mixins: [LinkedStateMixin],
@@ -69,8 +72,8 @@ var GirdForm = React.createClass({
         var text = 'Customer:' + data.text;
         return text;
     },
-    setBornValue: function (i, name, e) {
-        var v = e.target.value;;
+    setBornEventValue: function (i, name, e) {
+        var v = e.target.value;
         var objForUpdate = {
             collect:
                 {
@@ -80,6 +83,50 @@ var GirdForm = React.createClass({
                                 $set: v
                             }
                         }
+                    }
+                }
+        };
+        var newState = update(this.state, objForUpdate);
+        this.setState(newState);
+    },
+    setBornToValue: function (i, name, v) {
+        var objForUpdate = {
+            collect:
+                {
+                    born: {
+                        [i]: {
+                            [name]: {
+                                $set: v
+                            }
+                        }
+                    }
+                }
+        };
+        var newState = update(this.state, objForUpdate);
+        this.setState(newState);
+    },
+    addNewBorn: function () {
+
+        var objForUpdate = {
+            collect:
+                {
+                    born: {
+                        $unshift: [{
+                            born_id: 0,
+                            mom_name: '新增'
+                        }]
+                    }
+                }
+        };
+        var newState = update(this.state, objForUpdate);
+        this.setState(newState);
+    },
+    delBorn: function () {
+        var objForUpdate = {
+            collect:
+                {
+                    born: {
+                        $splice: [[0, 1]]
                     }
                 }
         };
@@ -125,7 +172,13 @@ var GirdForm = React.createClass({
 
                     <Tabs defaultActiveKey={1}>
                       <Tab eventKey={1} title="基本資料">基本資料</Tab>
-                      <Tab eventKey={2} title="生產記錄"><CustBorn born={this.state.collect.born} setBornValue={this.setBornValue} /></Tab>
+                      <Tab eventKey={2} title="生產記錄">
+                          <CustBorn born={this.state.collect.born}
+                                    setBornEventValue={this.setBornEventValue}
+                                    setBornToValue={this.setBornToValue}
+                                    addNewBorn={this.addNewBorn}
+                                    delBorn={this.delBorn} />
+                      </Tab>
                       <Tab eventKey={3} title="需求設定">需求設定</Tab>
                       <Tab eventKey={4} title="用餐記錄">用餐記錄</Tab>
                     </Tabs>
@@ -151,33 +204,43 @@ var CustBorn = React.createClass({
         e.preventDefault();
 
         var data = this.props.born[i];
-        console.log(data);
+        //console.log(data);
 
         return false;
     },
+    onChangeDate: function (i, name, date) {
+        //console.log('Get Date', i, name, date.format());
+        var v = date == null ? null : date.format();
+        this.props.setBornToValue(i, name, v);
+    },
     render: function () {
+        var isNew = this.props.born.length > 0 && this.props.born[0].born_id == 0;;
+
+
         var outHtml = null;
         outHtml =
         (
             <div>
                 <div className="row">
                    <div className="col-xs-8">
-                        <button type="button"><i className="fa-times"></i> 新增生產紀錄</button>
+                        <button type="button" onClick={this.props.addNewBorn} disabled={isNew}><i className="fa-times"></i> 新增生產紀錄</button>
                    </div>
                 </div>
 
                 {
                 this.props.born.map(function (item, i) {
+
+                    var mon_birthday = item.birthday === null || item.birthday === undefined ? null : moment(item.birthday);
+
                     var out_sub_1 = (
                         <form className="form-horizontal" key={item.born_id} onSubmit={this.formSubmit.bind(null,i)}>
-
                             <div className="form-group">
                                 <label className="col-xs-2 control-label">姓名</label>
                                 <div className="col-xs-8">
                                     <input type="text"
                                            className="form-control"
                                            value={item.mom_name}
-                                           onChange={this.props.setBornValue.bind(null, i, 'mom_name')}
+                                           onChange={this.props.setBornEventValue.bind(null, i, 'mom_name')}
                                            maxLength="64"
                                            required />
                                 </div>
@@ -185,11 +248,15 @@ var CustBorn = React.createClass({
                             <div className="form-group">
                                 <label className="col-xs-2 control-label">生產日期</label>
                                 <div className="col-xs-8">
-                                    <input type="text"
-                                           className="form-control"
-                                           value={item.birthday}
-                                           maxLength="64"
-                                           required />
+                                    <DatePicker selected={mon_birthday}
+                                                dateFormat="YYYY-MM-DD"
+                                                isClearable={true}
+                                                required={true}
+                                                locale="zh-TW"
+                                                showYearDropdown
+                                                onChange={this.onChangeDate.bind(null, i, 'birthday')}
+                                                className="form-control" />
+
                                 </div>
                             </div>
                             <div className="form-group">
@@ -198,13 +265,17 @@ var CustBorn = React.createClass({
                                     <input type="text"
                                            className="form-control"
                                            value={item.tel_1}
+                                           onChange={this.props.setBornEventValue.bind(null, i, 'tel_1')}
                                            maxLength="64"
                                            required />
                                 </div>
                             </div>
                             <div className="form-action text-right">
 						        <button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-
+                                <button type="button" className="btn-danger" name="btn-1"
+                                        onClick={this.props.delBorn}>
+                                    <i className="fa-times"></i> 刪除
+                                </button> { }
                             </div>
                         </form>
                         );
