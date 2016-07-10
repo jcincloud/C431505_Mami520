@@ -1,0 +1,6 @@
+{
+  "name": "comm",
+  "version": "1.0.0",
+  "main": "./comm-cmpt.js",
+  "license": "MIT"
+}

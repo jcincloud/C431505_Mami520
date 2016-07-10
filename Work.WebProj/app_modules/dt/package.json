@@ -1,0 +1,6 @@
+{
+  "name": "def-data",
+  "version": "1.0.0",
+  "main": "./def-data.js",
+  "license": "MIT"
+}

@@ -2726,8 +2726,10 @@ namespace DotWeb.Api
             var customer = await db0.Customer.FindAsync(customer_id);
             var born = customer.CustomerBorn;
             var productRecord = customer.ProductRecord;
+            var customerNeed = customer.CustomerNeed;
+            //var MealSchedule = DailyMeal
 
-            return Ok(new { customer, born, productRecord });
+            return Ok(new { customer, born, productRecord, customerNeed });
         }
 
         [HttpPost]
