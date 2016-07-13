@@ -7,7 +7,7 @@
     <!-- 主節點有子選單 -->
     <li class="panel-heading">
         <a class="panel-title" data-toggle="collapse" data-parent="#submenu" href="#submenu-1">
-            <i class="fa-list-alt"></i> @Model.Title
+            <i class="fa-list-alt"></i> @Model.Title <small class="ti-angle-down"></small>
         </a>
     </li>
 }
@@ -20,13 +20,13 @@ else if (Model.IsClickable)
         if (string.IsNullOrEmpty(Model.Description))
         {
             <a href="@Model.Url" class="current">
-                <i class="fa-caret-right"></i>@Model.Title
+                @Model.Title
             </a>
         }
         else
         {
             <a href="@Model.Url" class="current" title="@Model.Description">
-                <i class="fa-caret-right"></i>@Model.Title
+                @Model.Title
             </a>
         }
     }
@@ -35,11 +35,11 @@ else if (Model.IsClickable)
         <!--非目前的的子節點-->
         if (string.IsNullOrEmpty(Model.Description))
         {
-            <a href="@Model.Url"><i class="fa-caret-right"></i>@Model.Title</a>
+            <a href="@Model.Url">@Model.Title</a>
         }
         else
         {
-            <a href="@Model.Url" title="@Model.Description"><i class="fa-caret-right"></i>@Model.Title</a>
+            <a href="@Model.Url" title="@Model.Description">@Model.Title</a>
         }
     }
 }
@@ -49,32 +49,32 @@ else
         <!-- 主節點有子選單-->
         @if (Model.Parent != null)
         {
-            <a href="#menu-@Model.Key" class="panel-title"
+            <a href="#menu-@Model.Key" class="panel-title collapsed"
                data-toggle="collapse"
                data-parent="#submenu">
 
                 @if (Model.Attributes.Any(x => x.Key == "IconClass"))
                 {
-                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title
+                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title <small class="ti-angle-down"></small>
                 }
                 else
                 {
-                    <i></i>@Model.Title
+                    @Model.Title <small class="ti-angle-down"></small>
                 }
             </a>
         }
         else
         {
-            <a href="#menu-@Model.Key" class="panel-title"
+            <a href="#menu-@Model.Key" class="panel-title collapsed"
                data-toggle="collapse">
 
                 @if (Model.Attributes.Any(x => x.Key == "IconClass"))
                 {
-                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title
+                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title <small class="ti-angle-down"></small>
                 }
                 else
                 {
-                    <i></i>@Model.Title
+                    @Model.Title <small class="ti-angle-down"></small>
                 }
             </a>
         }

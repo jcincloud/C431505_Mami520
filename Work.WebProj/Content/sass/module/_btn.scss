@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+$btn-disabled:       $gray-light !default;
+$btn-state-color:    #fff !default;
+
+$btn-color:          $btn-state-color !default;
+$btn-hover-color:    $btn-state-color !default;
+$btn-bg-color:       #e8a656 !default;
+$btn-bg-hover:       #C2AB6F !default;
+$btn-shadow:         none !default;
+
+$btn-width:          auto !default;
+
+$btn-padding-base: nth($padding-vertical,1) nth($padding-horizontal,1) !default;
+$btn-padding-lg: nth($padding-vertical,2) nth($padding-horizontal,2) !default;
+$btn-padding-sm: nth($padding-vertical,3) nth($padding-horizontal,3) !default;
+
+$btn-border:         2px solid #f2f2f2 !default;
+$btn-border-radius:  nth($border-radius,1) !default;
+
+$btn-font-size:      $font-size-base !default;
+$btn-line-height:    1.01 !default;
+
+
+
+// button
+// ----------------------------------------------
+
+.btn {
+    display: inline-block;
+    padding: $btn-padding-base;
+    min-width: $btn-width;
+
+    background: $btn-bg-color;
+    border-radius: $btn-border-radius;
+    border: $btn-border;
+    // box-shadow: $btn-shadow;
+
+    position: relative;
+
+    color: $btn-color;
+    // font-family: $font-family-base;
+    font-size: $btn-font-size;
+    line-height: $btn-line-height;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition: background 0.3s;
+
+    &, &:active, &.active {
+        &:focus, &.focus {
+            @include tab-focus;
+        }
+    }
+    &:hover, &:active, &.active {
+    // &:hover, &:focus, &.focus {
+    }
+    &:active, &.active {
+        outline: 0;
+    }
+    &.disabled, &[disabled], fieldset[disabled] & {
+        cursor: $cursor-disabled;
+        opacity: .65;
+    }
+}
+
+.btn-link {
+    color: $link-color;
+    transition: color 0.3s;
+
+    padding: 0 !important;
+
+    &:hover {color: $link-hover-color;}
+
+    @if $states {
+        @each $type, $color in $state-type {
+
+            &.text-#{$type} {
+                @include state($color);
+
+                &:hover, &:active, &.active {
+                    @include state(darken($color,5%));
+                }
+            }
+
+        }
+    }
+
+}
+
+@if $states {
+    // [class*="btn-"] {
+    //     background: $btn-state-color;
+    // }
+    @each $type, $color in $state-type {
+        .btn-#{$type} {
+            @include state($color, btn);
+
+            &:hover, &:active, &.active {
+                @include state(darken($color,5%), btn);
+            }
+        }
+    }
+}
+
+@if $sizes {
+    @each $size in $size-type {
+        .btn-#{$size} {
+            @include size-type($size, btn);
+        }
+        .form-#{$size} {
+            .btn {
+                @include size-type($size, btn);
+            }
+        }
+    }
+}

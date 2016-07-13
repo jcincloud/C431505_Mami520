@@ -1,88 +1,166 @@
 @charset "UTF-8";
 
-//
-// Forms
-// --------------------------------------------------
+// var
+// -----------------------------------------------------------------
+$input-radius-base: nth($border-radius,1) !default;
+$input-radius-lg: nth($border-radius,1) !default;
+$input-radius-sm: nth($border-radius,3) !default;
+$input-height-base: $line-height-computed + (nth($padding-vertical,1) * 2) !default;
+$input-height-lg: ceil($font-size-lg * $line-height-lg) + (nth($padding-vertical,2) * 2) !default;
+$input-height-sm: floor($font-size-sm * $line-height-sm) + (nth($padding-vertical,3) * 2) + 8px !default; // 8px for select elements
+$input-padding-base: nth($padding-vertical,1) nth($padding-horizontal,1) !default;
+$input-padding-lg: nth($padding-vertical,2) nth($padding-horizontal,2) !default;
+$input-padding-sm: nth($padding-vertical,3) nth($padding-horizontal,3) !default;
 
-// Normalize non-controls
+$form-group-margin-bottom: 10px !default; // '.form-group' 邊距
+
+$form-color:(
+    input-bg:               #fff,
+    input-bg-disabled:      $gray-lighter,
+    input-color:            $gray,
+    input-border:           #ccc,
+    input-border-focus:     $warning,
+    input-placeholder:      #999,
+    input-addon-bg:         $gray-lighter,
+    input-addon-border:     #ccc
+);
+
+// 合併配色
+$color: map-extend($color, $form-color);
+
+
+// 函數程式
+// -----------------------------------------------------------------
+// TEXT INPUT TYPES
+@function text-inputs( $types: all, $selector: input ) {
+
+    $return: ();
+
+    $all-text-types: (text, password, date, datetime, datetime-local, month, week, email, number, search, tel, time, url, color, textarea);
+    $all-text-input-types: (text, password, date, datetime, datetime-local, month, week, email, number, search, tel, time, url, color);
+
+    @if $types == all { $types: $all-text-types; }
+
+    @if $types == input { $types: $all-text-input-types; }
+
+    @each $type in $types {
+        @if $type == textarea {
+            @if $selector == input {
+                $return: append($return, unquote('#{$type}'), comma)
+            } @else {
+                $return: append($return, unquote('#{$type}#{$selector}'), comma)
+            }
+        } @else {
+            $return: append($return, unquote('#{$selector}[type="#{$type}"]'), comma)
+        }
+    }
+
+    @return $return;
+
+}
+
+// 聚焦樣式(WebKit)
+@mixin form-control-focus($color: color(input-border-focus)) {
+    $color-rgba: rgba(red($color), green($color), blue($color), .6);
+    &:focus {
+        border-color: $color;
+        outline: 0;
+        // box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px $color-rgba;
+    }
+}
+
+//  輸入欄未輸入資料時顯示的文字顏色
+@mixin placeholder($color: color(input-placeholder)) {
+    // Firefox
+    &::-moz-placeholder,
+    &:-ms-input-placeholder,
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+    &::-moz-placeholder { opacity: 1; }
+}
+
+
+// Forms
+// -----------------------------------------------------------------
+
+// == Normalize
 legend {
     display: block;
     width: 100%;
     margin-bottom: $line-height-computed;
     font-size: em($font-size-base * 1.5);
     line-height: inherit;
-    color: color('legend', 'color');
-    border-bottom: 1px solid color('legend', 'border');
+    color: color(legend-color);
+    border-bottom: 1px solid color(legend-border);
 }
 
 label {
     display: inline-block;
     max-width: 100%; // 強制 IE8 能容納長元素
-    margin-bottom: 5px;
-    font-weight: bold;
-}
 
-// Normalize form controls
-#{text-inputs(search)} {
-    box-sizing: border-box;
+    margin-bottom: 5px;
+    padding-right: 5px;
+    
+    font-weight: bold;
+    vertical-align: middle;
+
+    &[class*="col-"] {margin-bottom:0;}
 }
 
 #{text-inputs(radio checkbox)} {
-    margin: 4px 0 0;
+    margin-top: 4px;
     margin-top: 1px \9; // IE8-9
     line-height: normal;
+    cursor: pointer;
 }
 
-#{text-inputs(file range)} {
-    display: block;
-}
+#{text-inputs(search)} { box-sizing: border-box; }
 
-#{text-inputs(range)} {
-    width: 100%;
-}
+#{text-inputs(file range)} { display: block; }
 
-#{text-inputs(file radio checkbox)} {
-    &:focus {
-        @include tab-focus;
-    }
-}
+#{text-inputs(range)} { width: 100%; }
 
-select[multiple],
-select[size] {
-    height: auto;
-}
+#{text-inputs(file radio checkbox)} { &:focus { @include tab-focus; } }
 
+select[multiple], select[size] { height: auto; }
+
+button { background: none; border: none; }
 
 // 調整輸出元素
 output {
     display: block;
-    padding-top: (nth($padding-base,1) + 1);
+    padding-top: (nth($padding-vertical,1) + 1);
     font-size: em($font-size-base);
     line-height: $line-height-base;
-    color: color('input', 'color');
+    color: color(input-color);
 }
 
+.form-group {
+    @extend .row;
+    margin-bottom: $gutter;
+}
+
+// == styles
 .form-element {
     display: block;
     width: 100%;
-    height: nth($input-height,1); // Make inputs at least the height of their button counterpart (base line-height + padding + border)
-    padding: nth($padding-base,1) nth($padding-base,2);
-    color: color('input', 'color');
-    background-color: color('input', 'bg');
+    padding: $input-padding-base;
+    color: color(input-color);
+    background-color: color(input-bg);
     background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
-    border: 1px solid color('input', 'border-color');
-    border-radius: nth($input-radius,1); // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
+    border: 1px solid color(input-border);
+    border-radius: $input-radius-base; // Note: This has no effect on <select>s in some browsers, due to the limited stylability of <select>s in CSS.
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 
     @include placeholder;
-
     @include form-control-focus;
 
     &[disabled],
     &[readonly],
     fieldset[disabled] & {
-        background-color: color('input', 'bg')-disabled;
+        background-color: color(input-bg-disabled);
         opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
     }
 
@@ -92,32 +170,182 @@ output {
     }
 }
 
+// == inline
+.form-element-inline,
+.form-inline .form-element {
+    display: inline-block !important;
+    width:auto;
+
+    margin-left: $gutter/2;
+    font-weight: normal;
+
+    &:first-child { margin-left: 0; }
+    @include mq(phone) { display:block; margin-left:0; }
+}
+.form-inline .form-group {
+    display: inline-block;
+    vertical-align: middle;
+
+    margin: $gutter/4 0;
+    margin-right: $gutter/2;
+}
+
+// == horizontal
+.form-horizontal {
+    .form-label, .help-inline {line-height: $input-height-base;}
+    .form-label {text-align: right;}
+}
+
+
 input:not([type]), #{text-inputs(all)} {
     @extend .form-element;
+}
+
+#{text-inputs(input)} {
+    height: $input-height-base; // Make inputs at least the height of their button counterpart (base line-height + padding + border)
+}
+
+// == sizes
+@if $sizes {
+    @each $size in $size-type {
+        .form-element.input-#{$size} {
+            @include size-type($size, input);
+        }
+        .form-#{$size} {
+            @include size-type($size, form);
+            .form-element {@include size-type($size, input);}
+        }
+    }
 }
 
 // iOS 的時間欄位垂直對齊 - safari
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
     #{text-inputs(date time datetime-local month)} {
-        line-height: nth($input-height,1);
+        line-height: $input-height-base;
 
         &.input-sm,
         .input-group-sm & {
-            line-height: nth($input-height,3);
+            line-height: $input-height-sm;
         }
 
         &.input-lg,
         .input-group-lg & {
-            line-height: nth($input-height,2);
+            line-height: $input-height-lg;
         }
     }
 }
 
-// Checkboxes and radios
-
-
 // 禁用元素的滑鼠樣式(含label)
-*[disabled],
-.disabled {
-    cursor: $cursor-disabled;
+*[disabled], .disabled { cursor: $cursor-disabled; }
+
+
+// == input group
+.input-group {
+    display: table;
+    width: 100%;
+    border-collapse: separate;
+
+    .input-addon, .form-control {
+        display: table-cell;
+    }
+
+    .input-addon {
+        height: $input-height-base;
+        white-space: nowrap;
+        text-align: center;
+        vertical-align: middle;
+        color: $gray;
+
+        background: color(input-addon-bg);
+        border:1px solid color(input-addon-border);
+
+        padding: 0 nth($padding-horizontal, 3);
+
+        &:first-child {
+            border-right: 0;
+            border-radius: $input-radius-base 0 0 $input-radius-base;
+        }
+        &:last-child {
+            border-left: 0;
+            border-radius: 0 $input-radius-base $input-radius-base 0;
+        }
+
+        &.btn {
+            &:hover {background: darken(color(input-addon-bg),5%);}
+        }
+    }
+
+    .form-control {
+        border-radius: 0;
+
+        &:first-child {
+            border-radius: $input-radius-base 0 0 $input-radius-base;
+        }
+        &:last-child {
+            border-radius: 0 $input-radius-base $input-radius-base 0;
+        }
+    }
+
+}
+
+
+// == checkbox
+.checkbox {
+    width: 100%;
+    font-weight: normal;
+    line-height: $font-size-base;
+    position: relative;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+
+    input[type*="checkbox"] {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0; top: 0;
+        margin:0;
+        opacity: 0;
+
+        + span {
+
+            &::before {
+                display: inline-block;
+                content: " ";
+
+                @include size(17px);
+                border: 1px solid color(input-border);
+                background: #fff;
+            }
+
+            i {
+                position: absolute;
+                left: 0; top:45%;
+                transform: translateY(-50%);
+
+                display:none;
+            }
+
+            small {margin-left: 5px;}
+        }
+
+        &:checked + span {
+            i {display: block;}
+        }
+
+        &:hover + span {
+            &::before {border-color: color(input-border-focus);}
+        }
+    }
+
+    &.text-center {
+        input[type*="checkbox"] {
+            + span {
+                i {
+                    left: 53%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+        }
+    }
 }

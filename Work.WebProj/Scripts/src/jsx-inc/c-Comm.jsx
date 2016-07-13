@@ -9,7 +9,7 @@
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-link btn-lg" onClick={this.onClick}><i className="fa-pencil"></i></button>
+			<button type="button" className="btn-lg btn-link" onClick={this.onClick}><i className="ti-pencil"></i></button>
 			);
 	}
 });
@@ -25,7 +25,7 @@ var GridButtonView = React.createClass({
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-link btn-lg" onClick={this.onClick}><i className="fa-search-plus"></i></button>
+			<button type="button" className="btn-lg btn-link" onClick={this.onClick}><i className="fa-search-plus"></i></button>
 			);
 	}
 });
@@ -40,7 +40,7 @@ var GridButtonPopupWindow = React.createClass({
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-link btn-lg" data-toggle="modal" data-target={'#myModal-'+this.props.MainId} onClick={this.onClick}><i className="fa-pencil"></i></button>
+			<button type="button" className="btn-lg btn-link" data-toggle="modal" data-target={'#myModal-'+this.props.MainId} onClick={this.onClick}><i className="fa-pencil"></i></button>
 			);
 	}
 });
@@ -79,7 +79,7 @@ var GridButtonSub = React.createClass({
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-link btn-lg" onClick={this.onClick}><i className={this.state.subHtml}></i></button>
+			<button type="button" className="btn-lg btn-link" onClick={this.onClick}><i className={this.state.subHtml}></i></button>
 			);
 	}
 });
@@ -93,9 +93,11 @@ var GridCheckDel = React.createClass({
 	},
 	render:function(){
 		return (
-			<label className="cbox">
+			<label className="checkbox text-center text-primary">
 				<input type="checkbox" checked={this.props.chd} onChange={this.onChange} />
-				<i className="fa-check"></i>
+				<span>
+					<i className="fa-check"></i>
+				</span>
 			</label>
 			);
 	}
@@ -141,46 +143,46 @@ var GridNavPage = React.createClass({
 
 		var setAddButton = null,setDeleteButton=null;
 		if(this.props.showAdd){
-			setAddButton = <button className="btn-link text-success"
+			setAddButton = <button className="btn btn-success"
 			                type="button"
 			                onClick={this.props.InsertType}>
-			            	<i className="fa-plus-circle"></i> 新增
+			            	<i className="ti-file"></i> 新增
 			        		</button>;			        		
 		}
 
 		if(this.props.showDelete){
-			setDeleteButton = 	<button className="btn-link text-danger" type="button"
+			setDeleteButton = 	<button className="btn btn-muted" type="button"
 			                		onClick={this.props.deleteSubmit}>
-			            			<i className="fa-trash-o"></i> 刪除
+			            			<i className="ti-trash"></i> 刪除
 			        			</button>;
 
 		}
 		var oper = null;
 		if(this.props.ver==1){
 		oper = (
-			<div className="table-footer">
-			    <div className="pull-left">
+			<div className="table-footer card">
+			    <div className="action float-l">
 			        {setAddButton}
 			        {setDeleteButton}
 			    </div>
-			    <small className="pull-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+			    <small className="info float-r">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
 
 			    <ul className="pager">
 			        <li>
 			            <a href="#" title="移至第一頁" tabIndex="-1" onClick={this.firstPage}>
-			                <i className="fa-angle-double-left"></i>
+			                <i className="ti-angle-double-left"></i>
 			            </a>
 			        </li> { } 
 			        <li>
 			            <a href="#" title="上一頁" tabIndex="-1" onClick={this.prvePage}>
-			                <i className="fa-angle-left"></i>
+			                <i className="ti-angle-left"></i>
 			            </a>
 			        </li> { } 
 			        <li className="form-inline">
 			            <div className="form-group">
 			                <label>第</label>
 			                {' '}
-			                <input className="form-control text-center" type="number" min="1" tabIndex="-1" value={this.props.NowPage}
+			                <input className="form-element input-sm text-center" style={{"width":"5em"}} type="number" min="1" tabIndex="-1" value={this.props.NowPage}
 			                       onChange={this.jumpPage} />
 			                {' '}
 			                <label>頁，共{this.props.TotalPage}頁</label>
@@ -188,12 +190,12 @@ var GridNavPage = React.createClass({
 			        </li> { } 
 			        <li>
 			            <a href="#" title="@Resources.Res.NextPage" tabIndex="-1" onClick={this.nextPage}>
-			                <i className="fa-angle-right"></i>
+			                <i className="ti-angle-right"></i>
 			            </a>
 			        </li> { } 
 			        <li>
 			            <a href="#" title="移至最後一頁" tabIndex="-1" onClick={this.lastPage}>
-			                <i className="fa-angle-double-right"></i>
+			                <i className="ti-angle-double-right"></i>
 			            </a>
 			        </li>
 			    </ul>
@@ -201,12 +203,12 @@ var GridNavPage = React.createClass({
 		);
 		}else if(this.props.ver==2){
 		oper = (
-			<div className="table-footer">
-			    <div className="pull-left">
+			<div className="table-footer card">
+			    <div className="action float-l">
 			        {setAddButton}
 			        {setDeleteButton}
 			    </div>
-			    <small className="pull-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+			    <small className="info float-r">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
 
 			    <ul className="pager">
 			        <li>
@@ -277,8 +279,8 @@ var GridNavPageOnlyView = React.createClass({
 		var oper = null;
 
 		oper = (
-			<div className="table-footer">
-			    <small className="pull-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+			<div className="table-footer card">
+			    <small className="float-r">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
 
 			    <ul className="pager">
 			        <li>
@@ -359,7 +361,7 @@ var GridNavPageUsePopup = React.createClass({
 
 		var setAddButton = null,setDeleteButton=null;
 		if(this.props.showAdd){
-			setAddButton = <button className="btn-link text-success"
+			setAddButton = <button className="btn btn-success"
 			                type="button"
 			                data-toggle="modal"
 			                data-target={'#myModal-'+this.props.MainId}
@@ -369,7 +371,7 @@ var GridNavPageUsePopup = React.createClass({
 		}
 
 		if(this.props.showDelete){
-			setDeleteButton = 	<button className="btn-link text-danger" type="button"
+			setDeleteButton = 	<button className="btn btn-muted" type="button"
 			                		onClick={this.props.deleteSubmit}>
 			            			<i className="fa-trash-o"></i> 刪除
 			        			</button>;
@@ -378,12 +380,12 @@ var GridNavPageUsePopup = React.createClass({
 		var oper = null;
 
 		oper = (
-			<div className="table-footer">
-			    <div className="pull-left">
-			        {setAddButton}
+			<div className="table-footer card">
+			    <div className="action float-l">
+			        {setAddButton} { }
 			        {setDeleteButton}
 			    </div>
-			    <small className="pull-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+			    <small className="info float-r">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
 
 			    <ul className="pager">
 			        <li>
@@ -884,7 +886,7 @@ var TwAddress = React.createClass({
 			outHtml=(
 			<div>
 				<div className="form-group">
-						<label for="" className="control-label col-xs-2 text-danger">{this.props.label_name}</label>
+						<label for="" className="control-label col-xs-2 text-error">{this.props.label_name}</label>
 						<div className="col-xs-3">
 							<input 	type="text" 
 									className="form-control"	

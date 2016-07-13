@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+//
+// Pager
+// --------------------------------------------------
+
+.pager {
+    @extend .list-inline;
+    
+    text-align: center;
+    margin: 0;
+
+    .form-group {margin:0;}
+
+    li {vertical-align:middle;}
+
+    a {
+        @include circle($input-height-sm);
+        border:1px solid $gray-lighter;
+        font-size: em(10px);
+
+        &:hover {
+            background: $gray-lighter;
+            color: $link-color;
+        }
+    }
+}

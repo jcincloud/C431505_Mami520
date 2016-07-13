@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+// 輸出大中小元件
+@mixin size-type($size, $types: false) {
+
+    @if($size == "lg") {
+        @if($types == false or $types == "text") {
+            font-size: $font-size-lg;
+            line-height: $line-height-lg;
+        }
+        @if($types == "btn") {
+            font-size: $font-size-lg;
+            line-height: $line-height-lg;
+            padding: $btn-padding-lg;
+        }
+        @if($types == "input") {
+            height: $input-height-lg;
+            font-size: $font-size-lg;
+            line-height: $input-height-lg;
+            padding: $input-padding-lg;
+            border-radius: $input-radius-lg;
+        }
+        @if($types == "form") {
+            font-size: $font-size-lg;
+            .form-label, .help-inline {line-height: $input-height-lg;}
+        }
+    }
+
+    @if($size == "sm") {
+        @if($types == "text" or $types == false) {
+            font-size: $font-size-sm;
+            line-height: $line-height-sm;
+        }
+        @if($types == "btn") {
+            font-size: $font-size-sm;
+            line-height: $line-height-sm;
+            padding: $btn-padding-sm;
+        }
+        @if($types == "input") {
+            height: $input-height-sm;
+            font-size: $font-size-sm;
+            line-height: $input-height-sm;
+            padding: $input-padding-sm;
+            border-radius: $input-radius-sm;
+        }
+        @if($types == "form") {
+            font-size: $font-size-sm;
+            .form-group               {margin-bottom: $gutter/2;}
+            .form-label, .help-inline {line-height: $input-height-sm;}
+        }
+    }
+
+}

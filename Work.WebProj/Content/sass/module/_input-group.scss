@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+
+// button
+// ----------------------------------------------
+
+// == input group
+.input-group {
+    display: table;
+
+    .input-addon {
+        display: table-cell;
+
+        line-height: $input-height-base;
+
+        background: #f7f7f7;
+    }
+
+    .form-control {
+        display: table-cell;
+        width:100%;
+    }
+}
+
+@if $states {
+    // @each $type, $color in $state-type {
+    //     .input-addon-#{$type} {
+    //         @include state($color, btn);
+
+    //         &:hover, &:active, &.active {
+    //             @include state(darken($color,5%), btn);
+    //         }
+    //     }
+    // }
+}
+
+@if $sizes {
+    // @each $size in $size-type {
+    //     .btn-#{$size} {
+    //         @include size-type($size, btn);
+    //     }
+    // }
+}

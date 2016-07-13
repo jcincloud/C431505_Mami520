@@ -1,0 +1,362 @@
+@charset "UTF-8";
+
+
+/*      basic
+-----------------------------------------------------------------------*/
+@for $i from 3 through 6 {
+    $headings: $font-size-h1 $font-size-h2 $font-size-h3 $font-size-h4 $font-size-h5 $font-size-h6;
+
+    h#{$i} { font-size: em(nth($headings, $i)); }
+}
+
+
+/*      layout
+-----------------------------------------------------------------------*/
+// 有最小寬度，滿版
+%container {
+    position: relative;
+    min-width: $min-width;
+}
+
+// 有最大寬度，非滿版
+%center {
+    max-width: $max-width;
+    margin: 0 auto;
+}
+
+// 容器內主體部份(header、wrap、main、footer等)
+%box {
+    @extend %clearfix;
+
+    @include mq(phone) {
+        padding: 0 ($gutter / 2);
+        width: 100%;
+    }
+}
+
+#wrapper {
+    @extend %container;
+    @if $lte7 {
+        _height: 100%;
+    }
+    height:100%;
+    min-height: 100%;
+}
+
+.wrap {
+    @extend %container;
+    @extend %box;
+    @extend %center;
+    @extend .text-left;
+}
+
+
+// header
+// ----------------------------------------------------------------------
+#header {
+    @extend .text-left;
+    width: 100%;
+    height: $header-height;
+    background: $header-bg;
+    z-index: z(header);
+
+    padding-left: $gutter/2;
+    padding-right: $gutter/2;
+
+    .logo {
+        z-index: z(logo);
+
+        float:left;
+        
+        font-size: em(16px);
+        font-weight: normal;
+        line-height: $header-height;
+        letter-spacing: 0.1em;
+
+        margin: 0 0 0 9.5px;
+
+        a {color: $text-color;}
+    }
+}
+
+#top-nav {
+    float:right;
+
+    font-size: em(14px);
+    height: $top-nav-height;
+
+    .nav-menu {
+        @extend %list-inline;
+
+        > li {
+            line-height: $top-nav-height;
+            color: lighten($gray-light,10%);
+
+            a {
+                color: lighten($gray-light,10%);
+                &:hover {color: $link-hover-color;}
+            }
+
+            i {
+                font-size: em(20px, 14px);
+                vertical-align: middle;
+
+                margin-right:5px;
+            }
+
+            .name {color: $brand-primary;}
+        }
+    }
+}
+
+
+// main
+// ----------------------------------------------------------------------
+#main {
+    background: $body-bg;
+
+    display: table;
+    width: 100%;
+    height: calc(100% - #{$header-height});
+
+    > .wrap {display: table-row;}
+}
+
+// sidebar
+#sidebar {
+    display: table-cell;
+    vertical-align: top;
+
+    width: $sidebar-width;
+
+    background: $sidebar-bg;
+    box-shadow: inset 0 4px 4px -4px lighten($gray-light,20%);
+
+    .title {
+        height: $sidebar-title-height;
+
+        margin: 0;
+        padding: 20px 16px;
+
+        i {
+            @include circle(64px, default, block);
+
+            float: left;
+            background:#000;
+
+            margin-right:16px;
+        }
+
+        strong {
+            display: block;
+            font-size: em(16px, $font-size-h3);
+
+            margin:12px 0 5px 0;
+        }
+
+        em {
+            display: block;
+            font-size: em(10px, $font-size-h3);
+            font-style: normal;
+            letter-spacing: 0.1em;
+            color: $gray-light;
+        }
+    }
+
+    #submenu {
+        a {
+            color: $gray;
+            &:hover {}
+        }
+
+        .panel {
+            font-size: em(14px);
+
+            .panel-heading {
+                a {
+                    display: block;
+                    position: relative;
+                    padding: 12px 32px 12px 45px;
+
+                    &:hover {background: #f9f9f9;}
+                }
+
+                i, small {
+                    display: block;
+                    position: absolute;
+                }
+
+                i {
+                    font-size: em(18px, 14px);
+                    left: 0; top: 0; bottom: 0;
+                    padding: 9px 0 9px 16px;
+                }
+
+                small {
+                    font-size: em(8px, 14px);
+                    color: lighten($gray-light, 30%);
+
+                    right: 0; top:50%;
+                    transform: translateY(-50%);
+                    padding-right: 16px;
+                }
+
+                .panel-title {
+                    &.collapsed {
+                        small::before {
+                            content: "\e649";
+                        }
+                    }
+                }
+            }
+
+            .panel-body {
+                background: #eee;
+                padding: 8px 0;
+
+                a {
+                    display: block;
+                    padding: 6px 16px 6px 45px;
+
+                    &:hover, &.current {background: #e1e1e1;}
+                }
+            }
+        }
+    }
+}
+
+// content
+#content {
+    display: table-cell;
+    vertical-align: top;
+
+    padding: $gutter;
+
+    box-shadow: inset 0 4px 4px -4px lighten($gray-light,20%);
+
+    .breadcrumb {
+        @extend %list-inline;
+
+        font-size: em(12px);
+        color: $brand-primary;
+
+        li {
+            &::after {
+                content: "\e649";
+
+                font-family: 'themify';
+                speak: none;
+                font-style: normal;
+                font-weight: normal;
+                line-height: 1;
+
+                /* Better Font Rendering =========== */
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+
+                vertical-align: middle;
+                font-size: em(8px, 14px);
+                color: lighten($gray-light, 30%);
+                margin-left: 10px;
+            }
+            &:last-child {
+                &::after {display:none;}
+            }
+        }
+    }
+
+    h3.title {
+        color: $font-color-h3;
+    }
+}
+
+
+// footer
+// ----------------------------------------------------------------------
+#footer {
+    margin-top: -($footer-height);
+    height: $footer-height;
+    z-index: z(footer);
+}
+
+.goTop {
+    display: none;
+    transition: all .5s ease;
+    opacity: .8;
+
+    z-index: z(goTop);
+    position: fixed;
+
+    @each $attr, $value in $goTop {
+        #{$attr}: $value;
+    }
+    @include text-pic('gotop.png', 50px, 30px);
+
+    &:hover {
+        background-image: url(#{$img-path}/gotop2.png);
+        opacity: 1
+    }
+}
+
+
+// index
+// ----------------------------------------------------------------------
+.login {
+    background: $login-bg;
+
+    #main {
+        display: block;
+        width: 100%;
+        min-width: 600px;
+        min-height: 600px;
+
+        text-align: center;
+        background: none;
+
+        position: fixed;
+        left:50%; top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .logo {
+        font-size: em(26px);
+        color: lighten($gray-dark,15%);
+
+        margin-bottom:1.25em;
+    }
+
+    #login-box {
+        @extend .col-4;
+        
+        float:none;
+        text-align: left;
+        color: $gray;
+        margin:0 auto;
+        margin-bottom:1.5em;
+
+        .panel {
+            @extend .card;
+            margin:0;
+            padding:0;
+        }
+
+        .panel-heading, .panel-body, .panel-footer {padding: $gutter;}
+        .panel-heading, .panel-footer {background: $panel-bg;}
+
+        .panel-heading {
+            font-size: em(18px);
+            color: $font-color-h3;
+        }
+
+        form {
+            .control-label {
+                font-size: em(14px);
+            }
+        }
+    }
+
+    .copyright {
+        font-size: em(10px);
+        color: $gray-light;
+    }
+}

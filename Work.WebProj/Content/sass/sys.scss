@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+
+// import
+// ------------------------------------------------------------
+@import "helper/function";
+@import "helper/var";
+@import "helper/mixins";
+
+
+// var
+// ------------------------------------------------------------
+$body-bg:              #F5F5F5;
+$font-size-h3:         $font-size-base*1.25;
+$font-size-h4:         $font-size-base*1.125;
+$font-color-h3:        darken($gray-light,15%);
+$font-color-h4:        $font-color-h3;
+$border-color:         #E0E0E0;
+$border-radius:        2px 2px 2px;
+
+// header
+$header-bg:            #fff !default;
+$header-height:        56px !default;
+$top-nav-height:       $header-height;
+
+// footer
+$footer-height:        30px !default;
+$footer-bg:            #E5E6DE !default;
+$goTop:                (bottom: 10px, right: 15px) !default;
+
+// sidebar
+$sidebar-bg:           #fff;
+$sidebar-width:        240px;
+$sidebar-title-height: 105px;
+
+// login
+$login-bg:              #FAFAFA;
+$panel-bg:              $brand-primary-light;
+
+
+// import
+// ------------------------------------------------------------
+@import "base/basic";
+@import "base/extend";
+@import "base/classes";
+@import "base/form";
+@import "base/table";
+
+@import "module/collapse";
+@import "module/btn";
+@import "module/pager";
+@import "module/icon";
+@import "module/card";
+
+@import "layout/grid";
+@import "layout/sysLayout";

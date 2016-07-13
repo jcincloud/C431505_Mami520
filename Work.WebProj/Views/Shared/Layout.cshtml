@@ -8,45 +8,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@Resources.Res.System_Name:@ViewBag.Title</title>
     @RenderSection("CSS", required: false)
-    <link rel="stylesheet" href="~/_Code/css/css/page.css">
+    <link rel="stylesheet" href="~/Content/css/_new/sys.css">
     <!--[if IE 9]><link rel="stylesheet" href="@Url.Content("~/_Code/css/css/ie9-page.css")"><![endif]-->
 </head>
 <body class="@ViewBag.BodyClass">
 
-    <div id="container">
+    <div id="wrapper">
 
         @if (ViewBag.IsFirstPage) {}
         else {
-        <div id="header">
-            <div class="wrap">
-                
-                <h1><a href="">@Resources.Res.System_Name</a></h1>
+        <header id="header">
 
-                <div id="menu">
-                    <ul class="menu">
-                        <li class="dropdown user">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa-user"></i>登入身分: manager
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li>
-                                    <a href="~/Base/Users/ChangePassword" tabindex="-1">
-                                        <i class="fa-lock"></i> 修改密碼
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown activity">
-                            <a href="#" class="dropdown-toggle"><i class="fa-power-off"></i>登出</a>
-                        </li>
-                    </ul>
-                </div>
+            <h1 class="logo"><a href="">@Resources.Res.System_Name</a></h1>
 
-            </div>
-        </div><!-- header //-->
+            <nav id="top-nav">
+                <h2 class="hidden">基本設定</h2>
+                <ul class="nav-menu">
+                    <li>
+                        <i class="ti-user"></i>登入身分: <span class="name">manager</span>
+                    </li>
+                    <li>
+                        <a href="#"><i class="ti-power-off"></i>登出</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </header><!-- header //-->
         }
 
-        <div id="main">
+        <main id="main">
 
             @if (ViewBag.IsFirstPage) {
                 @RenderBody()
@@ -54,27 +44,12 @@
             
             else {
 
-            <div id="content">
+            <aside id="sidebar">
 
-                <ul class="breadcrumb">
-                    <li><a href=""><i class="fa-home"></i> @Resources.Res.System_Name</a></li>
-                    @RenderSection("breadCrumb", required: false)
-                    <li>@ViewBag.Title</li>
-                </ul>
-
-                @RenderBody()
-
-            </div><!-- content //-->
-
-            <div id="sidebar">
                 <h3 class="title">
-                    <span class="icon">
-                        <i class="fa-square text-success"></i>
-                        <i class="fa-square text-info"></i>
-                        <i class="fa-square text-warning"></i>
-                        <i class="fa-square text-danger"></i>
-                    </span>
-                    功能選單 MENU
+                    <i class="brand"><img src="" alt=""></i>
+                    <strong>功能選單</strong>
+                    <em>MENU</em>
                 </h3>
 
                 <div id="submenu">
@@ -82,14 +57,14 @@
 
                         <li id="submenu-1" class="panel-heading">
                             <a class="panel-title collapsed" data-toggle="collapse" data-parent="#submenu" href="#submenu-1-list">
-                                <i class="fa-list-alt"></i> A. 生產紀錄
+                                <i class="fa-list-alt"></i> A. 生產紀錄 <small class="ti-angle-right"></small>
                             </a>
                         </li>
                         <li id="submenu-1-list" class="panel-collapse collapse">
                             <ul class="panel-body">
-                                <li><a href="~/Fake/Birth"><i class="fa-caret-right"></i>01. 客戶基本資料 管理</a></li>
-                                <li><a href="~/Fake/Birth2"><i class="fa-caret-right"></i>02. 客戶生產紀錄 管理</a></li>
-                                <li><a href="~/Fake/Birth3"><i class="fa-caret-right"></i>03. 用餐編號 管理</a></li>
+                                <li><a href="~/Fake/Birth">01. 客戶基本資料 管理</a></li>
+                                <li><a href="~/Fake/Birth2">02. 客戶生產紀錄 管理</a></li>
+                                <li><a href="~/Fake/Birth3">03. 用餐編號 管理</a></li>
                             </ul>
                         </li>
 
@@ -100,8 +75,8 @@
                         </li>
                         <li id="submenu-2-list" class="panel-collapse collapse">
                             <ul class="panel-body">
-                                <li><a href="~/Fake/Sell"><i class="fa-caret-right"></i>01. 產品基本資料 管理</a></li>
-                                <li><a href="~/Fake/Sell2"><i class="fa-caret-right"></i>02. 產品銷售資料 管理</a></li>
+                                <li><a href="~/Fake/Sell">01. 產品基本資料 管理</a></li>
+                                <li><a href="~/Fake/Sell2">02. 產品銷售資料 管理</a></li>
                             </ul>
                         </li>
 
@@ -112,8 +87,8 @@
                         </li>
                         <li id="submenu-3-list" class="panel-collapse collapse">
                             <ul class="panel-body">
-                                <li><a href="~/Fake/Require"><i class="fa-caret-right"></i>01. 需求元素 管理</a></li>
-                                <li><a href="~/Fake/Require2"><i class="fa-caret-right"></i>02. 客戶需求 管理</a></li>
+                                <li><a href="~/Fake/Require">01. 需求元素 管理</a></li>
+                                <li><a href="~/Fake/Require2">02. 客戶需求 管理</a></li>
                             </ul>
                         </li>
 
@@ -130,10 +105,10 @@
                         </li>
                         <li id="submenu-5-list" class="panel-collapse collapse">
                             <ul class="panel-body">
-                                <li><a href="~/Fake/Dishes"><i class="fa-caret-right"></i>01. 基礎菜單 管理</a></li>
-                                <li><a href="~/Fake/Dishes2"><i class="fa-caret-right"></i>02. 基礎菜單分類 管理</a></li>
-                                <li><a href="~/Fake/Dishes3"><i class="fa-caret-right"></i>03. 組合菜單 管理</a></li>
-                                <li><a href="~/Fake/Dishes4"><i class="fa-caret-right"></i>04. 每日菜單 管理</a></li>
+                                <li><a href="~/Fake/Dishes">01. 基礎菜單 管理</a></li>
+                                <li><a href="~/Fake/Dishes2">02. 基礎菜單分類 管理</a></li>
+                                <li><a href="~/Fake/Dishes3">03. 組合菜單 管理</a></li>
+                                <li><a href="~/Fake/Dishes4">04. 每日菜單 管理</a></li>
                             </ul>
                         </li>
 
@@ -144,8 +119,8 @@
                         </li>
                         <li id="submenu-6-list" class="panel-collapse collapse">
                             <ul class="panel-body">
-                                <li><a href="~/Fake/Gift"><i class="fa-caret-right"></i>01. 活動基本資料 管理</a></li>
-                                <li><a href="~/Fake/Gift2"><i class="fa-caret-right"></i>02. 禮品贈送紀錄 管理</a></li>
+                                <li><a href="~/Fake/Gift">01. 活動基本資料 管理</a></li>
+                                <li><a href="~/Fake/Gift2">02. 禮品贈送紀錄 管理</a></li>
                             </ul>
                         </li>
 
@@ -156,11 +131,11 @@
                         </li>
                         <li id="submenu-7-list" class="panel-collapse collapse">
                             <ul class="panel-body">
-                                <li><a href="~/Fake/Tel"><i class="fa-caret-right"></i>01. 每日電訪名單 管理</a></li>
-                                <li><a href="~/Fake/Tel2"><i class="fa-caret-right"></i>02. 電訪名單 管理</a></li>
-                                <li><a href="~/Fake/Tel3"><i class="fa-caret-right"></i>03. 發送訊息 管理</a></li>
-                                <li><a href="~/Fake/Tel4"><i class="fa-caret-right"></i>04. 發送條件 管理</a></li>
-                                <li><a href="~/Fake/Tel5"><i class="fa-caret-right"></i>05. 文案內容 管理</a></li>
+                                <li><a href="~/Fake/Tel">01. 每日電訪名單 管理</a></li>
+                                <li><a href="~/Fake/Tel2">02. 電訪名單 管理</a></li>
+                                <li><a href="~/Fake/Tel3">03. 發送訊息 管理</a></li>
+                                <li><a href="~/Fake/Tel4">04. 發送條件 管理</a></li>
+                                <li><a href="~/Fake/Tel5">05. 文案內容 管理</a></li>
                             </ul>
                         </li>
 
@@ -177,27 +152,39 @@
                         </li>
                         <li id="submenu-9-list" class="panel-collapse collapse">
                             <ul class="panel-body">
-                                <li><a href="~/Fake/Report"><i class="fa-caret-right"></i>01. 每日菜單報表</a></li>
-                                <li><a href="~/Fake/Report2"><i class="fa-caret-right"></i>02. 產品銷售報表</a></li>
-                                <li><a href="~/Fake/Report3"><i class="fa-caret-right"></i>03. 應收帳款明細</a></li>
+                                <li><a href="~/Fake/Report">01. 每日菜單報表</a></li>
+                                <li><a href="~/Fake/Report2">02. 產品銷售報表</a></li>
+                                <li><a href="~/Fake/Report3">03. 應收帳款明細</a></li>
                             </ul>
                         </li>
 
                     </ul>
                 </div>
-            </div><!-- sidebar //-->
+            </aside><!-- sidebar //-->
+
+            <div id="content">
+
+                <ul class="breadcrumb">
+                    <li><a href=""><i class="ti-home"></i> @Resources.Res.System_Name</a></li>
+                    @RenderSection("breadCrumb", required: false)
+                    <li>@ViewBag.Title</li>
+                </ul>
+
+                @RenderBody()
+
+            </div><!-- content //-->
 
             }
 
-        </div><!-- main //-->
+        </main><!-- main //-->
 
-    </div><!-- container //-->
+    </div><!-- wrapper //-->
 
-    <div id="footer">
+    @* <footer id="footer">
 
         <a href="#content" class="goTop"><i class="fa-angle-double-up"></i></a>
 
-    </div><!-- footer //-->
+    </footer><!-- footer //--> *@
 
     <script src="~/Scripts/jquery/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/app/bootstrap.min.js"></script>

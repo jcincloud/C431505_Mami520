@@ -11,18 +11,20 @@ var InputAccount = React.createClass({
 	},
 	render:function(){
 		return (
-			<div className="form-group has-feedback">
+			<div className="form-group">
 				<label className="control-label">{this.props.label} Username</label>
-				<input 
-				className="form-control"
-				name={this.props.idName}
-				id={this.props.idName}
-				type="text"
-				valueLink={this.linkState('value')}
-				tabIndex="1"
-				placeholder={this.props.memo}
-				required />
-				<i className="fa-user form-control-feedback"></i>
+				<div className="input-group">
+					<i className="ti-user input-addon"></i>
+					<input 
+					className="form-control"
+					name={this.props.idName}
+					id={this.props.idName}
+					type="text"
+					valueLink={this.linkState('value')}
+					tabIndex="1"
+					placeholder={this.props.memo}
+					required />
+				</div>
 			</div>
 			);
 		}
@@ -43,18 +45,20 @@ var InputPassword = React.createClass({
 	},
 	render:function(){
 		return (
-			<div className="form-group has-feedback">
+			<div className="form-group">
 				<label className="control-label">{this.props.label} Password</label>
-				<input 
-				className="form-control"
-				name={this.props.idName}
-				id={this.props.idName}
-				type="password"
-				valueLink={this.linkState('value')}
-				tabIndex="2"
-				placeholder={this.props.memo}
-				required />
-				<i className="fa-lock form-control-feedback"></i>
+				<div className="input-group">
+					<i className="ti-key input-addon"></i>
+					<input 
+					className="form-control"
+					name={this.props.idName}
+					id={this.props.idName}
+					type="password"
+					valueLink={this.linkState('value')}
+					tabIndex="2"
+					placeholder={this.props.memo}
+					required />
+				</div>
 			</div>
 			);
 	}
@@ -84,27 +88,20 @@ var Inputvalidate = React.createClass({
 		return (
                     <div className="form-group">
                         <label className="control-label">{this.props.label} Code</label>
-                        <div className="row">
-                            <div className="col-xs-3">
-                                <img alt={this.props.label} src={this.state.validateUrl} />
-                            </div>
-                            <div className="col-xs-5">
-                                <input type="text"
-                                       className="form-control"
-                                       tabIndex="3"
-                                       onChange={this.onChange}
-                                       value={this.state.value}
-                                       required
-                                       placeholder={this.props.memo} />
-                            </div>
-                            <div className="col-xs-4">
-                                <button 
-                                className="btn btn-warning" 
-                                type="button" 
-                                tabIndex="-1"
-                                onClick={this.reLoadValidateUrl}
-                                ><i className="fa-refresh"></i> 重取</button>
-                            </div>
+                        <div className="input-group">
+                        	<i className="input-addon">
+                        		<img alt={this.props.label} src={this.state.validateUrl} />
+                        	</i>
+                        	<input type="text"
+	                            className="form-control"
+	                            tabIndex="3"
+	                            onChange={this.onChange}
+	                            value={this.state.value}
+	                            required
+	                            placeholder={this.props.memo} />
+	                        <span className="btn input-addon" onClick={this.reLoadValidateUrl}>
+			                    <i className="ti-reload"></i> 重取
+                            </span>
                         </div>
                     </div>
 			);
@@ -200,29 +197,28 @@ var LoginForm = React.createClass({
 	},
 	render: function() {
 		return (
-			<div>
-				<h3>{this.props.systemName}</h3>
+			<div className="panel">
+				<div className="panel-heading">
+					{this.props.systemName}
+				</div>
 				<form onSubmit={this.handleSubmit}>
-					<InputAccount label={'帳號'} idName={'account'} memo={'帳號'} ref="account" />
-					<InputPassword label={'密碼'} idName={'password'} memo={'密碼'} ref="password" />
-					<Inputvalidate label={'驗證碼'} idName={'validate'} memo={'驗證碼'} ref="validate" webRoot={this.props.webRoot} />
-                    <div className="form-action">
-                        <div className="row">
-                            <div className="col-xs-4">
-                                <div className="checkbox">
-                                    <label>
-                                        <input type="checkbox" tabIndex="-1" />
-                                        <span>記住</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="col-xs-3 col-xs-offset-1">
-                                <button className="btn btn-info" tabIndex="4" type="submit"><i className="fa-key"></i> 登錄</button>
-                            </div>
-                            <div className="col-xs-4">
-                                <button tabIndex="-1" type="button"><i className="fa-question-circle"></i> 忘記密碼</button>
-                            </div>
+					<div className="panel-body">
+						<InputAccount label={'帳號'} idName={'account'} memo={'帳號'} ref="account" />
+						<InputPassword label={'密碼'} idName={'password'} memo={'密碼'} ref="password" />
+						<Inputvalidate label={'驗證碼'} idName={'validate'} memo={'驗證碼'} ref="validate" webRoot={this.props.webRoot} />
+						<div>
+							<label className="checkbox">
+	                            <input type="checkbox" tabIndex="-1" />
+	                            <span>
+	                            	<i className="ti-check text-success"></i>
+	                            	<small>記住登入資訊</small>
+	                            </span>
+	                        </label>
                         </div>
+					</div>
+                    <div className="panel-footer text-right">
+                        <button className="btn btn-primary" tabIndex="4" type="submit">登入 LOGIN</button>
+                        {/*<button tabIndex="-1" type="button"><i className="fa-question-circle"></i> 忘記密碼</button>*/}
                     </div>
 				</form>
 			</div>

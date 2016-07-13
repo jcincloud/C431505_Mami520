@@ -1,0 +1,66 @@
+@charset "UTF-8";
+
+
+// common
+// ------------------------------------------------------------
+%clearfix {
+    &::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+    @if $lte7 { zoom: 1 }
+}
+%center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+%full   { width: 100%; max-width: 100%; }
+%half   { width: 46.9% }
+
+%clear  { clear: both }
+%hidden { display: none; }
+
+
+// float
+// ------------------------------------------------------------
+%float-l { float:left; }
+%float-r { float:right; }
+%float-n { float:none; }
+
+
+// shape
+// ------------------------------------------------------------
+%circle { border-radius: 50%; } // 圓形
+%border  { border:$border; }
+
+
+// text
+// ------------------------------------------------------------
+%list-unstyled { list-style: none; }
+
+%list-inline {
+    @extend %list-unstyled;
+
+    margin-left: -5px;
+
+    > li {
+        display: inline-block;
+        padding-left: nth($padding-x,1);
+        padding-right: nth($padding-x,1);
+    }
+}
+
+%text-left { text-align: left; }
+%text-right { text-align: right; }
+%text-center { text-align: center; }
+%text-middle {
+    &::before {
+        content: '';
+        display: inline-block;
+        vertical-align:middle;
+        height: 100%;
+    }
+}

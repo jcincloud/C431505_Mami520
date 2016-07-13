@@ -1,254 +1,320 @@
+@charset "UTF-8";
 
 // wrapper
-$wrapper-bg:            #fff url(#{$img-path}/bg.gif) center 0 repeat-y !default;
-$content-spacing:       70px !default;
+$wrapper-bg:            #fff !default;
+$content-spacing:       30px !default;
 
 // header
-$header-bg:             #315400 !default;
-$header-height:         395px !default;
+$header-height:         126px !default;
+$logo-img:              'logo.gif' !default;
 
-$menu:                  (top, 55px), (right, 1.5%) !default;
-$menu-link:             #C2D217 !default;
-$menu-link-hover:       #D5E8C2 !default;
-
-$banner-bg:             url(#{$img-path}/banner.png) center 0 no-repeat !default;
-$banner-height:         270px !default;
+$menu-height:           70px !default;
+$menu-link:             transparent !default;
+$menu-link-hover:       #F6EFCB !default;
 
 // footer
-$footer-height:         178px !default;
-$footer-bg:             #E5E6DE !default;
-$goTop:                 (bottom, 10px), (right, 15px) !default;
-$footer-height2:        140px !default;
-$footer-contact-color:  #406947 !default;
+$footer-height:         452px !default;
+$footer-bg:             $gray-dark;
+$footer-color:          $text-color;
+$goTop:                 (bottom 10px), (right 15px) !default;
 
-
-
-// Grid/ var.scss> $grid-col-switch = true 時才會輸出
-// -----------------------------------------------------------------------
-@if $grid-col-switch {
-
-    .container {
-        @extend %clearfix;
-        @include row;
-
-        padding: 0 ($gutter / 2);
-    }
-
-    .row {
-        @include row(true);
-        & + & {
-            margin-top: $gutter;
-        }
-    }
-
-    [class*="col-"] {
-        @extend .float-l;
-
-        padding: 0 ($gutter / 2);
-
-        &:last-child {
-            padding-right: 0;
-        }
-    }
-
-    @include make-col; // 預設: md
-    @include media(sm) { @include make-col(sm); }
-    @include media(xs) { @include make-col(xs); }
-    @include media(lg) { @include make-col(lg); }
-}
 
 /*      layout
 -----------------------------------------------------------------------*/
-#wrapper, section, main {
+// 外層-內容有絕對定位
+%container {
     position: relative;
-    min-width: $min-width;
 }
 
-// 有寬度限制，非滿版
-.wrap {
-    @extend .text-left;
-
-    min-width: $min-width;
+// 最大寬度限制 (非滿版才需要)
+%center {
     max-width: $max-width;
     margin: 0 auto;
 }
 
-.wrap, section, main {
-    @extend %clearfix;
+// 內容器-header、wrap、main、footer等
+%contain {
 
-    @include media(sm) {
-        padding: 0 ($gutter / 2);
-        width: 100%;
-    }
+    // 最小寬度限制 (無 RWD)
+    min-width: $min-width;
+
+    @extend %clearfix;
 }
 
 #wrapper {
+    @extend %container;
     @if $lte7 {
         _height: 100%;
     }
     min-height: 100%;
+
     padding-bottom: $footer-height + $content-spacing; // 內容與footer間距
-    background: $wrapper-bg;
 }
 
-main {
-    z-index: z(main);
+.wrap {
+    @extend %center;
+    @extend %contain;
+    @extend %clearfix;
+
+    padding:0 20px;
+}
+
+#header, #footer, #main {
+    @extend %container;
+    @extend %contain;
 }
 
 
 // header
 // ----------------------------------------------------------------------
 #header {
-    height: $header-height;
+    height:$header-height;
+
     z-index: z(header);
 
-    &::before {
-        content: '';
-        background: $header-bg;
-        height: 125px;
-        width: 100%;
-        position: absolute;
-        z-index: z(banner)-1;
+    box-shadow:0 3px 3px hsla(0,0,0,0.12);
+
+    .wrap {
+        position: relative;
+        height:$header-height;
     }
-}
 
-h1, #menu, .top-nav {
-    position: absolute;
-}
+    .logo {
+        height:66px;
+        width:330px;
+        font-size: 1em;
+        font-weight: normal;
 
-h1 {
-    @include text-pic('logo.gif',305px,125px);
+        position: absolute;
+        left:35px; top:30px;
+        z-index: z(logo);
 
-    left: 0;
-    z-index: z(logo);
+        a {
+            @include text-hide;
+
+            display: block;
+            height:100%;
+            background:url(#{$img-path}/#{$logo-img}) left center no-repeat;
+
+            // font-size: em(58px);
+            // color:$text-color;
+
+            // padding-left:90px;
+            // padding-top:5px;
+        }
+    }
 }
 
 #menu {
-    @extend %clearfix;
-
-    @each $attr, $value in $menu {
-        #{$attr}: $value;
-    };
-
-    z-index: z(menu);
+    position: absolute;
+    right:20px; bottom:0;
 
     a {
-        background-position: center 5px;
-        color: $menu-link;
+        display: inline-block;
+        height: 80px;
+        color:$text-color;
         font-size: em(18px);
-        font-weight: bold;
-        text-align: center;
 
-        display: block;
-        float: left;
-        padding-top: 24px;
-        width: 135px;
+        position: relative;
+        padding:20px 25px;
 
+        &::after {
+            @include content($content:'\e901', $width:13px, $height:8px);
+            font-family: 'icomoon';
+            font-size: em(12.8px);
+            color:#ccc;
+            left: 50%; top: -100px;
+            transform: translateX(-50%);
+            transition: top 0.3s;
+        }
+
+        $selector: ();
+        @each $item in $pages {
+            $i: index($pages, $item);
+
+            $selector: append($selector, unquote(".#{$item} &:nth-of-type(#{$i})"), comma);
+        }
         &:hover,
-        .index &:nth-child(1),
-        .AboutUs &:nth-child(2),
-        .Products &:nth-child(3),
-        .News &:nth-child(4),
-        .contactUs &:nth-child(5) {
-            background: url(#{$img-path}/icon-menu.png) center 0 no-repeat;
-            color: $menu-link-hover;
+        #{$selector} {
+            color:#666;
+            &::after {top:48px;}
         }
     }
 }
 
-.top-nav {
-    font-size: em(12px);
+.topNav {
+    position: absolute;
+    top:0;
+    right:20px;
 
-    right: 20px;
-    top: 10px;
-    z-index: z(menu)+1;
-
-    a {
-        color: #C8C190;
-        margin-right: 5px;
-    }
-}
-
-#banner {
-    background: $banner-bg;
-    height: $banner-height;
-    z-index: z(banner);
-}
-
-
-// footer
-// ----------------------------------------------------------------------
-#footer {
-    margin-top: -($footer-height);
-    height: $footer-height;
-    z-index: z(footer);
-
-    .list-inline {
-        background: $footer-bg;
-        color: $footer-contact-color;
-        line-height: $footer-height2;
-        padding: 20px 0;
+    li {
+        display: block;
+        float:left;
+        padding:0 0 0 4px;
 
         a {
-            color: $footer-contact-color;
+            display: block;
+            width:65px; height:47px;
+            background:#EFEFEF;
+
+            span {display: none;}
+
+            i {
+                font-size:em(37px);
+                color:#666;
+                line-height: 53px;
+            }
 
             &:hover {
-                color: $brand-secondary;
+                background:#E89024;
+                i {color:#fff;}
             }
         }
-        em {
-            font-style: normal;
 
-            display: inline-block;
-            vertical-align: top;
-            min-width: 45px;
-            margin-right: 5px;
+        &.hello {
+            padding-top:12px;
+            padding-right:10px;
+
+            a {
+                background:none;
+                display: inline;
+            }
         }
-        li {
-            background-attachment: fixed;
-            background: url(#{$img-path}/icon-contact.png) 0 0 no-repeat;
-            font-size: em(20px);
-            font-weight: 500;
-            line-height: nth($line-height,2);
-            text-align: left;
-            vertical-align: middle;
 
-            width: 300px; min-height: 33px;
-            padding-left: 48px;
+        &.cart {
+            a {
+                position: relative;
 
-            &:nth-child(1) {
-                width: 370px;
-            }
-            &:nth-child(2) {
-                background-position: 0 -100px;
-            }
-            &:nth-child(3) {
-                background-position: 0 -210px;
+                i {
+                    font-size:em(33.5px);
+                    line-height: 1;
+
+                    position: absolute;
+                    left:10px; top:12px;
+                }
 
                 em {
                     display: block;
-                    margin-bottom: -5px;
+                    min-width:20px;
+                    height:20px;
+                    background:#E89024;
+                    border-radius:10px;
+
+                    font: normal 13px/20px $font-family-base;
+                    color:#fff;
+
+                    position: absolute;
+                    left:50%; top:8px;
+
+                    padding:0 5px;
+                }
+
+                &:hover {
+                    em {background:$success;}
                 }
             }
         }
     }
 }
 
+
+// footer
+// ----------------------------------------------------------------------
+#footer {
+    background: $footer-bg;
+
+    margin-top: -($footer-height);
+    height: $footer-height;
+    z-index: z(footer);
+
+    color: #F2F2F2;
+    text-align: left;
+
+    padding:45px 0;
+
+    h2.title {
+        font-size: em(20px);
+        font-weight: bold;
+        color:#EFEFEF;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+
+        border-bottom:1px solid #4D4D4D;
+
+        margin-bottom: 22px;
+
+        span {
+            background:$footer-bg;
+        }
+    }
+
+    .about, .info, .contact {
+        width:40%;
+        float:left;
+
+        padding-right:50px;
+    }
+
+    .about {
+        font-size: em(15px);
+    }
+
+    .info {
+        li {
+            margin-right:34px;
+            margin-bottom:22px;
+
+            a {
+                color:#B3B3B3;
+                font-weight: bold;
+
+                &:hover {color:#E89024;}
+            }
+        }
+    }
+
+    .contact {
+        font-size: em(15px);
+        margin-bottom: 35px;
+
+        li {
+            margin-bottom: 12px;
+
+            strong {
+                font-size: em(22px,15px);
+                color:#E89024;
+
+                &:first-child {margin-right:30px;}
+            }
+        }
+    }
+
+    .fb {}
+}
+
+.copyright {
+    clear:both;
+    border-top:1px solid #4d4d4d;
+    font-size: em(12px);
+    color:#666;
+
+    padding-top:15px;
+}
 .goTop {
+    @include fixed(bottom cp(10px) right cp(10px));
+    @include circle(40px);
+
     display: none;
-    transition: all .5s ease;
-    opacity: .8;
+    background: $brand-primary;
+    font-size: em(12px);
+    color: #fff;
+    opacity: 0.5;
 
     z-index: z(goTop);
-    position: fixed;
+    transition: opacity 0.3s;
 
-    @each $attr, $value in $goTop {
-        #{$attr}: $value;
-    }
-    @include text-pic('gotop.png', 50px, 30px);
-
-    &:hover {
-        background-image: url(#{$img-path}/gotop2.png);
-        opacity: 1
+    &:hover, &:active {
+        opacity: 1;
+        color:#fff;
     }
 }

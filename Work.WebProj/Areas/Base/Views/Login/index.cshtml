@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@Resources.Res.System_Name</title>
-    <link rel="stylesheet" href="~/_Code/css/css/page.css">
+    <link rel="stylesheet" href="~/Content/css/sys.css">
     <script>
         var ver_warn = '@Html.Lang("ver_warn")';
         var lab_input_email = '@Html.Lang("lab_input_email")';
@@ -23,19 +23,20 @@
     </script>
 </head>
 <body class="login">
-    <div id="container">
+    <div id="wrapper">
         <div id="main">
-            <h1 class="logo"><span>@Resources.Res.System_Name</span>Web Manager</h1>
+            <h1 class="logo"><span>@Resources.Res.System_Name</span></h1>
             @*<p class="copyright">@Html.Lang("copyright")</p>*@
-            <p class="copyright">Mani520 &#169; @ViewBag.Year</p>
+
             <div class="login-box" id="login-box"></div>
+            <p class="copyright">&#169; @ViewBag.Year</p>
         </div>
     </div>
     <script src="~/Scripts/build/comminc.js"></script>
     <script src="~/Scripts/build/func/m-login.js"></script>
     <script>
         var rootParm = {
-            systemName: '管理系統登入',
+            systemName: '系統登入',
             webRoot: '@Url.Content("~")'
         };
         var getRootDOM = document.getElementById('login-box');
