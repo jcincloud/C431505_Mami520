@@ -26,17 +26,17 @@ namespace DotWeb.Api
         public async Task<IHttpActionResult> Get([FromUri]q_MenuCopy q)
         {
             #region 連接BusinessLogicLibary資料庫並取得資料
-
+            int pageSize = 20;
             using (db0 = getDB0())
             {
                 var qr = db0.MenuCopy
-                    .Where(x => x.company_id == this.companyId)
-                    .OrderByDescending(x => new { x.day, x.meal_type }).AsQueryable();
+                    .Where(x => x.company_id == this.companyId & x.menu_copy_template_id == q.main_id)
+                    .OrderBy(x => new { x.day, x.meal_type }).AsQueryable();
 
 
-                if (q.day != null)
+                if (q.start_day != null && q.end_day != null)
                 {
-                    qr = qr.Where(x => x.day == q.day);
+                    qr = qr.Where(x => x.day >= q.start_day && x.day <= q.end_day);
                 }
 
                 if (q.meal_type != null)
@@ -53,8 +53,8 @@ namespace DotWeb.Api
 
 
                 int page = (q.page == null ? 1 : (int)q.page);
-                int position = PageCount.PageInfo(page, this.defPageSize, qr.Count());
-                var segment = await result.Skip(position).Take(this.defPageSize).ToListAsync();
+                int position = PageCount.PageInfo(page, pageSize, qr.Count());
+                var segment = await result.Skip(position).Take(pageSize).ToListAsync();
 
                 return Ok<GridInfo<m_MenuCopy>>(new GridInfo<m_MenuCopy>()
                 {
@@ -74,7 +74,8 @@ namespace DotWeb.Api
             try
             {
                 db0 = getDB0();
-                bool check = db0.MenuCopy.Any(x => x.day == md.day & x.meal_type == md.meal_type & x.menu_copy_id != md.menu_copy_id);
+                bool check = db0.MenuCopy.Any(x => x.day == md.day & x.meal_type == md.meal_type
+                                                 & x.menu_copy_template_id == md.menu_copy_template_id & x.menu_copy_id != md.menu_copy_id);
                 if (check)
                 {//不能有同日期同餐別的資料存在
                     r.message = "已有同日期同餐別的資料存在!!";
@@ -119,7 +120,7 @@ namespace DotWeb.Api
             {
                 #region working a
                 db0 = getDB0();
-                bool check = db0.MenuCopy.Any(x => x.day == md.day & x.meal_type == md.meal_type);
+                bool check = db0.MenuCopy.Any(x => x.day == md.day & x.meal_type == md.meal_type & x.menu_copy_template_id == md.menu_copy_template_id);
                 if (check)
                 {//不能有同日期同餐別的資料存在
                     r.message = "已有同天同餐別的資料存在!!";

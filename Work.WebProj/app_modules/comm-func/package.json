@@ -1,0 +1,6 @@
+{
+  "name": "comm-func",
+  "version": "1.0.0",
+  "main": "./comm-func.js",
+  "license": "MIT"
+}

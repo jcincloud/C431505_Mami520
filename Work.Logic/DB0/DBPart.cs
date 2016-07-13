@@ -518,8 +518,10 @@ namespace ProcCore.Business.DB0
     }
     public class q_MenuCopy : QueryBase
     {
-        public int? day { get; set; }//查詢第幾天
+        public int? start_day { get; set; }//查詢第幾天
+        public int? end_day { get; set; }//查詢第幾天
         public int? meal_type { get; set; }
+        public int main_id { get; set; }
     }
     #endregion
 
