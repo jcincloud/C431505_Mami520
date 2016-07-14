@@ -1,17 +1,13 @@
 ﻿@{
     Layout = "~/Views/Shared/Manage/RLayout.cshtml";
 }
-@section breadCrumb {
-    @*<li><a href="~/Active/Home"><i class="fa-phone"></i>首頁</a></li>*@
-    <li>首頁</li>
-}
 @section IncludeCSS{
     <link rel="stylesheet" href="~/Content/css/bootstrap-datetimepicker-build.css" />
 }
 @section IncludeScript{
     @Html.Partial("Manage/JSGlobalVar")
-    <script src="~/Scripts/build/app/vendors.js"></script>
-    <script src="~/Scripts/build/app/m_Home.js"></script>
+    <script src="~/Scripts/build/app/vendors.js?v=@CommWebSetup.CacheVer"></script>
+    <script src="~/Scripts/build/app/m_Home.js?v=@CommWebSetup.CacheVer"></script>
 }
 @section sidebar{
     @Html.Partial("Manage/vucMenu")

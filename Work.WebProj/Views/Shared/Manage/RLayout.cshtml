@@ -24,21 +24,27 @@
         @if (ViewBag.IsFirstPage)
         { }
         else {
-            <header id="header">
+            <header id="header" class="navbar navbar-fixed-top navbar-dark bg-primary">
                 <h1 class="logo">
-                    <a href="~/Active/Home" title="@Resources.Res.Info_Home" tabindex="-1">@Resources.Res.System_Name</a>
+                    <a class="navbar-brand" href="~/Active/Home" title="@Resources.Res.Info_Home" tabindex="-1">@Resources.Res.System_Name</a>
                 </h1>
-                <nav id="top-nav">
-                    <h2 class="hidden">基本設定</h2>
-                    <ul class="nav-menu">
-                        <li>
-                            <i class="ti-user"></i>登入身分: <span class="name">@Cookie_UserName.Value</span>
-                        </li>
-                        <li>
-                            <a href="~/Login/Logout"><i class="ti-power-off"></i>@Resources.Res.Button_Logout</a>
-                        </li>
-                    </ul>
-                </nav>
+                <ul class="nav navbar-nav pull-xs-right">
+                    <li class="nav-item">
+                        <span class="nav-link">
+                            <i class="fa-user"></i> <span>登入身分:</span> @Cookie_UserName.Value
+                        </span>
+                    </li>
+                    <li class="nav-item bg-warning">
+                        <a href="~/Active/Home" class="nav-link">
+                            <i class="fa-home"></i> 回首頁
+                        </a>
+                    </li>
+                    <li class="nav-item bg-success">
+                        <a href="~/Login/Logout" class="nav-link">
+                            <i class="fa-power-off"></i> @Resources.Res.Button_Logout
+                        </a>
+                    </li>
+                </ul>
             </header><!-- header //-->
         }
 
@@ -71,6 +77,10 @@
         var gb_approot = '@Url.Content("~")';
     </script>
     @RenderSection("IncludeScript", false)
+
+    <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"></script>
+    <script src="~/Content/js/bootstrap/util.js"></script>
+    <script src="~/Content/js/bootstrap/collapse.js"></script>
 
 </body>
 </html>

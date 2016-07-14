@@ -85,12 +85,12 @@ a {
     .nav-item {
         &:first-of-type .nav-link {background: hsla(0,0,100%,0.2);}
         &:nth-of-type(2) .nav-link {
-            background: desaturate(darken($brand-warning,10%),10%);
-            @include hover-focus {background: darken(desaturate(darken($brand-warning,10%),10%),5%)}
+            // background: desaturate(darken($brand-warning,10%),10%);
+            // @include hover-focus {background: darken(desaturate(darken($brand-warning,10%),10%),5%)}
         }
         &:last-of-type .nav-link {
-            background: $brand-success;
-            @include hover-focus {background: darken($brand-success,10%)}
+            // background: $brand-success;
+            // @include hover-focus {background: darken($brand-success,10%)}
         }
     }
 }
@@ -129,7 +129,7 @@ a {
         border-bottom: 1px solid #e5e5e5;
         border-right: 1px solid #ccc;
 
-        .fa-bars {color: lighten($brand-danger,20%);}
+        // .fa-bars {color: lighten($brand-danger,20%);}
     }
 }
 
