@@ -1,0 +1,896 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"trans",
+				"translate"
+			],
+			[
+				"tr",
+				"transform"
+			],
+			[
+				"pos",
+				"pos:a	position:absolute"
+			],
+			[
+				"d",
+				"display"
+			],
+			[
+				"bac",
+				"background"
+			],
+			[
+				"bo",
+				"bottom"
+			],
+			[
+				"ba",
+				"background"
+			],
+			[
+				"back",
+				"background-position"
+			],
+			[
+				"add",
+				"addClass"
+			],
+			[
+				"im",
+				"important"
+			],
+			[
+				"impo",
+				"important"
+			],
+			[
+				"pad",
+				"padding-bottom"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"bor",
+				"border"
+			],
+			[
+				"min",
+				"min-width"
+			],
+			[
+				"w",
+				"width"
+			],
+			[
+				"list",
+				"list-style"
+			],
+			[
+				"ov",
+				"overflow"
+			],
+			[
+				"padd",
+				"padding-bottom"
+			],
+			[
+				"font-st",
+				"font-style"
+			],
+			[
+				"br",
+				"brand-primary"
+			],
+			[
+				"form",
+				"form-group"
+			],
+			[
+				"gr",
+				"grid-gutter-width"
+			],
+			[
+				"form-con",
+				"form-control-static"
+			],
+			[
+				"fff",
+				"fff"
+			],
+			[
+				"no",
+				"nowrap"
+			],
+			[
+				"font-",
+				"font-size"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"margin-",
+				"margin-right"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"max-",
+				"max-width"
+			],
+			[
+				"col",
+				"color"
+			],
+			[
+				"po",
+				"pos:r	position:relative"
+			],
+			[
+				"filter",
+				"filter-control"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"btn",
+				"btn-primary"
+			],
+			[
+				"bra",
+				"brand-primary"
+			],
+			[
+				"co",
+				"color"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"fw",
+				"fw:b	font-weight:bold"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"col-x",
+				"col-xs-12"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"ln",
+				"line-height"
+			],
+			[
+				"up",
+				"uppercase"
+			],
+			[
+				"si",
+				"sixteen"
+			],
+			[
+				"cl",
+				"cl:b	clear:both"
+			],
+			[
+				"base",
+				"baseGutterWidth"
+			],
+			[
+				"hd",
+				"hidden"
+			],
+			[
+				"main",
+				"main-bg-light"
+			],
+			[
+				"gray-li",
+				"gray-light"
+			],
+			[
+				"gray",
+				"gray-light"
+			],
+			[
+				"border",
+				"border-radius"
+			],
+			[
+				"mg",
+				"margin-bottom"
+			],
+			[
+				"h",
+				"hidden"
+			],
+			[
+				"main-",
+				"main-bg-dark"
+			],
+			[
+				"gra",
+				"gray-light"
+			],
+			[
+				"tra",
+				"text-transform"
+			],
+			[
+				"box-sh",
+				"box-shadow"
+			],
+			[
+				"lin",
+				"link-hover-color"
+			],
+			[
+				"op",
+				"opacity"
+			],
+			[
+				"li",
+				"li"
+			],
+			[
+				"a",
+				"absolute"
+			],
+			[
+				"lo",
+				"link-hover-color"
+			],
+			[
+				"ex",
+				"extend"
+			],
+			[
+				"n",
+				"none"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 58.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: list",
+				"Package Control: List Packages"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: re",
+				"Package Control: Remove Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa",
+				"Package Control: Remove Package"
+			],
+			[
+				"raz",
+				"Set Syntax: Razor"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"sass",
+				"Set Syntax: Sass"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+	],
+	"file_history":
+	[
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work3.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work7.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Clients/Clients.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work4.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work2.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work5.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/_mobile.scss",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/page.scss",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/News/News.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/_layout.scss",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/AboutUs/AboutUs.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/AboutUs/AboutUs.html",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/ContactUs/ContactUs.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/ContactUs/ContactUs.html",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/News/News.html",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Services/Services.html",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Tour/Tour.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Tour/Tour.html",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work.html",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Work6.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Services/Services.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/_basic.scss",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/News/images/tycg/do/images/layout.css",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/css/page.css",
+		"/C/Users/stacey/Dropbox/Public/test/ie.html",
+		"/C/Users/stacey/Desktop/functions.js",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_include/footer.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_include/header.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_include/recent.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_JScript/fancyBox/source/jquery.fancybox.min.js",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_JScript/fancyBox/source/jquery.fancybox.min.css",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/fa/_variables.scss",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/Works/Works.asp",
+		"//192.168.0.241/dmo/JCIN/index.asp",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/mobile000.scss",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/bs/_non-responsive.scss",
+		"/D/1_web/JCIN/web/index.asp",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/_Code/css/sass/_basic.scss",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_JScript/settings.js",
+		"/C/Users/stacey/Dropbox/2_webDev/me/php/root/wp/wp-content/themes/mytheme/welcome.html",
+		"/C/Users/stacey/Dropbox/文件/網站/web/index.html",
+		"/D/1_web/JCIN/web/OutWeb/L_CT/_css/sass/bs/mixins/_opacity.scss",
+		"//192.168.0.12/jciyp/OutWeb/L_CT/Aboutus/Directorate_42.asp",
+		"//192.168.0.12/jciyp/OutWeb/L_CT/Aboutus/Chung-Li_JC.asp",
+		"//192.168.0.12/jciyp/OutWeb/L_CT/index.asp",
+		"//192.168.0.12/jciyp/OutWeb/L_CT/Index/ad.asp",
+		"//192.168.0.12/jciyp/OutWeb/L_CT/Aboutus/President_OB.asp",
+		"//192.168.0.12/jciyp/OutWeb/L_CT/Aboutus/TaiwanJC.asp",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/_Code/css/css/ie-page-blessed1.css",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/_Code/css/css/ie-page.css",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/_Code/css/css/bs/bootstrap-ie7.css",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Angular/Component.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/header-angular.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Scripts/Angular/controller.js",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Scripts/Angular/ui-bootstrap/controller.js",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Scripts/settings.js",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/sidebar-angular.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/sidebar.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Elements/Form.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Layout/Grid.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Angular/Component.html",
+		"//192.168.0.241/dmo/stacey/noIE/index.html",
+		"//192.168.0.241/dmo/stacey/noIE/noIE.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Elements/Component.html",
+		"/D/VS2/C321408_TaoyuanAlgal/Work.WebProj/Views/Shared/Manage/SysLayoutPage.cshtml",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/_Code/css/sass/bs/_variables.scss",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Elements/Typography.html",
+		"/D/VS2/C321408_TaoyuanAlgal/Work.WebProj/Areas/Sys_Active/Views/ReApplyData/Main.cshtml",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/_Code/css/sass/_layout.scss",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/_Code/css/sass/bs/_non-responsive.scss",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Form/Form.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Table/Table.html",
+		"//192.168.0.241/dmo/TYCG/index.html",
+		"//192.168.0.241/dmo/TYCG/CG/illus_v5-5.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Index.html",
+		"//192.168.0.241/shr/EEI_Oil.Release/Ajoe.2014.12.10.1057/_Code/CSS/css/ie-page-blessed1.css",
+		"//192.168.0.241/shr/EEI_Oil.Release/Ajoe.2014.12.10.1057/_Code/CSS/css/ie-page.css",
+		"//192.168.0.241/shr/EEI_Oil.Release/Ajoe.2014.12.10.1057/Views/Shared/Manage/SysLayoutPage.cshtml",
+		"//192.168.0.241/shr/EEI_Oil.Release/Stacey.20141209/Views/Shared/Manage/SysLayoutPage.cshtml",
+		"//192.168.0.241/shr/EEI_Oil.Release/Stacey.20141209/Areas/Sys_Base/Views/MNGLogin/index.cshtml",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/header.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Table/Table3.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/Layout.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/Layout_custom.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Form/Form2.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Elements/Elements2.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Elements/Elements1.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Page/ChangePW.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Page/Login.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/Manage/sidebar.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Table/Table2.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/Manage/Layout.html",
+		"/C/Users/stacey/Dropbox/Public/Sites/JCIN_sysadm/Views/Shared/Manage/Layout_custom.html",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/_Code/CSS/sass/_basic.scss",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/_Code/CSS/sass/_layout.scss",
+		"//192.168.0.241/dmo/TYCG/CG/illus_v4-3.html",
+		"/D/1_web/JCIN_sysadm/_Code/css/sass/_layout.scss",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/_Code/css/sass/bs/_variables.scss",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/_Code/css/sass/bs/non-responsive.scss",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/Views/Shared/Manage/SysLayoutPage.cshtml",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/_Code/css/sass/_layout.scss",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/_Code/css/sass/_basic.scss",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Shared/Manage/Layout.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Shared/Manage/Layout_custom.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Table/Table.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Table/Table2.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Table/Table3.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Elements/Elements1.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Form/Form.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Form/Form2.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Page/ChangePW.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Page/Login.html",
+		"//192.168.0.241/dmo/stacey/JCIN_sysadm/Views/Elements/Elements2.html",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/Areas/Sys_Active/Views/Apply/Main.cshtml",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/Areas/Sys_Active/Views/_ViewStart.cshtml",
+		"/D/VS2/C071415_EEI_Electronic/Work.WebProj/_Code/CSS/sass/_layout.scss",
+		"/D/VS2/C071415_EEI_Electronic/Work.WebProj/_Code/CSS/sass/_basic.scss",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/Areas/Sys_Active/Views/ClientReport/MonthAverage.cshtml",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/Areas/Sys_Active/Views/ClientReport/YearAverage.cshtml",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/Areas/Sys_Base/Views/MNGLogin/index.cshtml",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/_Code/CSS/css/ie-page.css",
+		"/C/Users/stacey/Desktop/bless.js-master/ie-page.css",
+		"/C/Users/stacey/Desktop/bless.js-master/ie-page-blessed1.css",
+		"/C/Users/stacey/Desktop/test/test.css",
+		"/C/Users/stacey/Desktop/test/test.scss",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/_Code/CSS/css/page.css",
+		"/D/VS2/C071411_EEI_Energy/Work.WebProj/Views/Shared/DisplayTemplates/SiteMapNodeModel.cshtml"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"<open files>",
+			"",
+			"<open files>",
+			"C:\\Users\\stacey\\Desktop\\JCIN\\OutWeb\\L_CT\\_css\\sass",
+			"<open files>",
+			"C:\\Users\\stacey\\Dropbox\\0_public\\_webdev\\php\\USBWebserver\\root\\wp\\wp-content\\themes\\mytheme",
+			"C:\\Dropbox\\0_public\\_webdev\\php\\USBWebserver\\root\\wp\\wp-content\\themes\\mytheme",
+			"E:\\Dropbox\\0_public\\_webdev\\php\\USBWebserver\\root\\wp\\wp-content\\themes\\mytheme"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"client",
+			"富利源",
+			"NAKATOMI",
+			"神州",
+			"積慶",
+			"泓海",
+			"isim",
+			"jfdn",
+			"lenita",
+			"honghae",
+			"jq-biotech",
+			"lenita",
+			"popup",
+			"ie8",
+			"tydo",
+			"tydi",
+			"737",
+			"潭",
+			"../Works/images/tycg/",
+			"images/tycg/",
+			"/*",
+			"img class=\"",
+			"img class=\"border\" src",
+			"img",
+			"img src=\"",
+			"text",
+			"\">\n								<span>",
+			"jquery.fancybox.js",
+			"jquery.fancybox.css",
+			"../_JScript/fancybox/jquery.fancybox.min.css",
+			"img",
+			"block",
+			"class=\"hidden\" ",
+			".html",
+			"border-bottom:",
+			"border-bottom",
+			"em",
+			".col",
+			"</em>\n						</li>",
+			"<em>\n								<span>",
+			"\">\n									<span>",
+			"ite id=\"",
+			"\">\n									<span>",
+			"</em>\n							</li>",
+			"<em id=\"",
+			"</em>\n						</li>",
+			"<em id=\"",
+			"\">\n								<span>",
+			"</em>\n						</li>",
+			"<em id=\"",
+			".asp",
+			"em",
+			"<link rel=\"stylesheet\" href=\"../_JScript/fancybox/jquery.fancybox.min.css\">",
+			"input",
+			"w-sm",
+			"w-lg",
+			"lg",
+			"sm",
+			"caret-right",
+			"進入模擬手機畫面",
+			"<a class=\"zoom\" ",
+			"進入模擬手機畫面",
+			"class=\"caret-right\"",
+			"ADFlash",
+			"images/41/",
+			"border-radius",
+			"<em><i class=\"fa-search\"></i></em>",
+			"inline-block",
+			"behavior:url(/_Code/css/css/bs/boxsizing.htc)",
+			"*behavior",
+			"box-sizing",
+			"boxsizing.htc",
+			"ng-",
+			"ng",
+			"modal",
+			"& > ",
+			"open",
+			"radio",
+			"horizontal",
+			"form-inline",
+			"fa-chevron-right text-warning",
+			"sub",
+			"fa-chev",
+			"<li><a href=\"../../",
+			"load(\"Shared/Manage/",
+			"../../../Scripts/settings.js",
+			"\").load(\"",
+			".ie8",
+			"ie8",
+			"<!--[if gte IE 11]><!--><link rel=\"stylesheet\" href=\"../../_Code/css/css/page.css\"><!--<![endif]-->\n	<!--[if lte IE 11]><link rel=\"stylesheet\" href=\"../../_Code/css/css/ie-page.css\"><![endif]-->",
+			"form-inline",
+			"$border-radius-base",
+			"dropdown",
+			"navbar",
+			"<!--[if gte IE 11]><!--><link rel=\"stylesheet\" href=\"../../_Code/css/css/page.css\"><!--<![endif]-->\n	<!--[if lte IE 11]><link rel=\"stylesheet\" href=\"../../_Code/css/css/ie-page.css\"><![endif]-->",
+			"table",
+			"機台編號",
+			"radio",
+			"form-inline",
+			"file",
+			"form-control-static\"",
+			"fa-search",
+			"modal",
+			"just for test",
+			"儲存",
+			"table",
+			"padding",
+			"form",
+			"input",
+			"ie8",
+			"table-footer",
+			".modal",
+			"background:hsla(0,0,0,0.5)",
+			"danger",
+			"水泥磨",
+			"<label class=\"col-xs-3 text-right",
+			"<label class=\"col-xs-5 text-right",
+			"<label class=\"col-xs-4 text-right",
+			"<label class=\"col-xs-1 text-right",
+			"<label class=\"col-xs-3 text-right",
+			"<label class=\"col-xs-2 text-right",
+			"<label class=\"col-xs-1 text-right",
+			"<label class=\"col-xs-3 text-right",
+			"<label class=\"col-xs-2 text-right",
+			"label",
+			"<label class=\"col-xs-3 text-right",
+			"<label class=\"col-xs-2 text-right",
+			"#main"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"smith",
+			"tpmi",
+			"jfdn",
+			"olec",
+			"honghae",
+			"sz-biotech",
+			"images/tycg/",
+			"../Works/images/tycg/",
+			"img class=\"border\" data-original",
+			"img data-original=\"",
+			"\">\n								<p><span>",
+			"jquery.fancybox.min.js",
+			"jquery.fancybox.min.css",
+			"../_JScript/fancyBox/source/jquery.fancybox.min.css",
+			"",
+			".asp",
+			"</cite>\n						</li>",
+			"<cite>\n								<p><span>",
+			"\">\n									<p><span>",
+			"</cite>\n							</li>",
+			"<cite id=\"",
+			"</cite>\n						</li>",
+			"<cite id=\"",
+			"\">\n								<p><span>",
+			"</cite>\n						</li>",
+			"<cite id=\"",
+			".html",
+			"",
+			"w-sm h-sm",
+			"w-lg h-sm",
+			"w-lg",
+			"w-sm",
+			"fa-caret-right",
+			"行動版",
+			"<a ",
+			"行動版",
+			"class=\"fa-caret-right\"",
+			"images/42/",
+			"<i class=\"fa-search\"></i>",
+			"*behavior:url(../../_Code/css/css/bs/boxsizing.htc)",
+			"behavior",
+			"> ",
+			"fa-chevron-right",
+			"<li><a href=\"../",
+			"load(\"../Shared/Manage/",
+			"../../Scripts/settings.js",
+			"\").load(\"Shared/Manage/",
+			"<link rel=\"stylesheet\" href=\"../../../_Code/css/css/page.css\">\n	<!--[if IE 9]><link rel=\"stylesheet\" href=\"../../../_Code/css/css/ie-page.css\"><![endif]-->\n	<!--[if IE 9]><link rel=\"stylesheet\" href=\"../../_Code/css/css/ie-page.css\"><![endif]-->",
+			"<link rel=\"stylesheet\" href=\"../../_Code/css/css/page.css\">\n	<!--[if IE 9]><link rel=\"stylesheet\" href=\"../../_Code/css/css/ie-page.css\"><![endif]-->",
+			"form-control-static text-info\"",
+			"<label class=\"col-xs-3 control-label",
+			"<label class=\"col-xs-5 control-label",
+			"<label class=\"col-xs-4 control-label",
+			"<label class=\"col-xs-1 control-label",
+			"<label class=\"col-xs-3 control-label",
+			"<label class=\"col-xs-2 control-label",
+			"<label class=\"col-xs-1 control-label",
+			"<label class=\"col-xs-3 control-label",
+			"<label class=\"col-xs-2 control-label",
+			"<label class=\"col-xs-3 control-label",
+			"<label class=\"col-xs-2 control-label",
+			")",
+			"(",
+			"form-control\" /",
+			"<td style=\"padding: 10px 8px;vertical-align: middle;border:1px solid #CAD8F1;\">",
+			"<th style=\"padding:10px 8px; text-align:right; vertical-align:middle; font-weight:bold; color:#396487; background:#f7f7f7; border:1px solid #CAD8F1;\">",
+			"<img width=\"600\" height=\"600\" src=\"",
+			"\"></a>",
+			"><img src=\"",
+			"<em class=\"lipsum(1)\"></em>",
+			"jungli",
+			"中壢",
+			"fushing",
+			"復興",
+			"yangmei",
+			"楊梅",
+			"<i class=\"fa-pencil\"></i>",
+			"Content/images/video.jpg",
+			"286x161",
+			"137x77",
+			"110x77",
+			"440x310",
+			"<td class=\"text-center\"><input type=\"checkbox\"></td><td class=\"text-center\">001</td>",
+			"~/List/List",
+			"~/Add/Add",
+			"~/List/List",
+			"~/Edit/Edit",
+			"~/Content/images/video.jpg",
+			"~/Add/Add",
+			"~/Edit/Edit",
+			"~/Content/images/video.jpg",
+			"<a href=\"list.html\">回列表</a>",
+			"",
+			"<a href=\"index.html\"><img src=\"holder.js/220x80/text:工研院 LOGO\"></a>",
+			"<button class=\"del\">刪除</button>",
+			"<a href=\"video_edit.html\">修改</a>",
+			"<a href=\"video_edit.html\">編輯</a>",
+			"<a href=\"Content/images/video.jpg\" class=\"screenshot\">",
+			"em class=\"public\"",
+			"<em class=\"open\">公開</em>",
+			"218x130",
+			"<a href=\"#\">",
+			"activity.html",
+			"週邊",
+			".asp#content\"><img src=\"images/hotel",
+			".asp#content\">詳細介紹",
+			".jpg\"></a></i>",
+			"<i><a href=\"Hotel01.asp\"><img src=\"",
+			"room",
+			"hotel22",
+			"room",
+			"hotel21",
+			"room",
+			"hotel17",
+			"room",
+			"hotel16",
+			"room",
+			"hotel01",
+			"hotel02",
+			"room",
+			"hotel03",
+			"hotel05",
+			"hotel04",
+			"hotel07",
+			"hotel06",
+			"room",
+			"hotel08",
+			"hotel10"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "好婆婆中壢店.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"D:\\Github\\__sublime-project\\GoldenBell.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 247.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
