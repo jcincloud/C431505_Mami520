@@ -1,14 +1,10 @@
-﻿@{
-    Layout = null;
+﻿@using ProcCore.NetExtension;
+@{
+    Layout = "~/Views/Shared/Manage/RLayout.cshtml";
+    ViewBag.BodyClass = "Login";
+    ViewBag.IsFirstPage = true;
 }
-@using ProcCore.NetExtension;
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@Resources.Res.System_Name</title>
-    <link rel="stylesheet" href="~/Content/css/sys.css">
+@section IncludeScript{
     <script>
         var ver_warn = '@Html.Lang("ver_warn")';
         var lab_input_email = '@Html.Lang("lab_input_email")';
@@ -21,19 +17,8 @@
         var Info_ForgetMial_Success = '@Html.Lang("Info_ForgetMial_Success")';
         var gb_approot = '@Url.Content("~")';
     </script>
-</head>
-<body class="login">
-    <div id="wrapper">
-        <div id="main">
-            <h1 class="logo"><span>@Resources.Res.System_Name</span></h1>
-            @*<p class="copyright">@Html.Lang("copyright")</p>*@
-
-            <div class="login-box" id="login-box"></div>
-            <p class="copyright">&#169; @ViewBag.Year</p>
-        </div>
-    </div>
-    <script src="~/Scripts/build/comminc.js"></script>
-    <script src="~/Scripts/build/func/m-login.js"></script>
+    <script src="~/Scripts/build/comminc.js?v=@CommWebSetup.CacheVer"></script>
+    <script src="~/Scripts/build/func/m-login.js?v=@CommWebSetup.CacheVer"></script>
     <script>
         var rootParm = {
             systemName: '系統登入',
@@ -42,5 +27,10 @@
         var getRootDOM = document.getElementById('login-box');
         var Comp = React.render(React.createElement(LoginForm, rootParm), getRootDOM);
     </script>
-</body>
-</html>
+}
+
+<h1 class="logo">
+    <span class="name text-primary">@Resources.Res.System_Name</span>Web Manager
+</h1>
+<p class="copyright text-muted">@Html.Lang("copyright") @ViewBag.Year</p>
+<div class="login-box" id="login-box"></div>

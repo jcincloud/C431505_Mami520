@@ -1,92 +1,85 @@
-@charset "UTF-8";
-
-//
-// tooltip
-// --------------------------------------------------
-
-
+// Base class
 .tooltip {
-  position: relative;
-  cursor: pointer;
+  position: absolute;
+  z-index: $zindex-tooltip;
+  display: block;
+  // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
+  // So reset our font and text properties to avoid inheriting weird values.
+  @include reset-text();
+  font-size: $font-size-sm;
+  opacity: 0;
 
-    &::before,
-    &::after {
-        position: absolute;
-        visibility: hidden;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-        opacity: 0;
+  &.in { opacity: $tooltip-opacity; }
 
-        $prefixs: '-webkit-' '-moz-' null;
+  &.tooltip-top,
+  &.bs-tether-element-attached-bottom {
+    padding: $tooltip-arrow-width 0;
+    margin-top: -3px;
 
-        @each $prefix in $prefixs {
-            #{$prefix}transition:
-                opacity 0.2s ease-in-out,
-                visibility 0.2s ease-in-out,
-                #{$prefix}transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);;
-        }
-
-        @include prefix(transform, translate3d(0, 0, 0), webkit moz);
-
-        pointer-events: none;
+    .tooltip-arrow {
+      bottom: 0;
+      left: 50%;
+      margin-left: -$tooltip-arrow-width;
+      border-width: $tooltip-arrow-width $tooltip-arrow-width 0;
+      border-top-color: $tooltip-arrow-color;
     }
+  }
+  &.tooltip-right,
+  &.bs-tether-element-attached-left {
+    padding: 0 $tooltip-arrow-width;
+    margin-left: 3px;
 
-    &:hover::before,
-    &:hover::after,
-    &:focus::before,
-    &:focus::after {
-        visibility: visible;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-        opacity: 1;
+    .tooltip-arrow {
+      top: 50%;
+      left: 0;
+      margin-top: -$tooltip-arrow-width;
+      border-width: $tooltip-arrow-width $tooltip-arrow-width $tooltip-arrow-width 0;
+      border-right-color: $tooltip-arrow-color;
     }
+  }
+  &.tooltip-bottom,
+  &.bs-tether-element-attached-top {
+    padding: $tooltip-arrow-width 0;
+    margin-top: 3px;
 
-    &::before {
-        z-index: z(tooltip);
-        border: 6px solid transparent;
-        background: transparent;
-        content: "";
+    .tooltip-arrow {
+      top: 0;
+      left: 50%;
+      margin-left: -$tooltip-arrow-width;
+      border-width: 0 $tooltip-arrow-width $tooltip-arrow-width;
+      border-bottom-color: $tooltip-arrow-color;
     }
+  }
+  &.tooltip-left,
+  &.bs-tether-element-attached-right {
+    padding: 0 $tooltip-arrow-width;
+    margin-left: -3px;
 
-    &::after {
-        z-index: z(tooltip) - 1;
-        padding: 8px;
-        width: 100%;
-        background-color: #000;
-        background-color: hsla(0, 0%, 20%, 0.9);
-        color: #fff;
-        content: attr(data-tooltip);
-        font-size: em(15px);
-        line-height: 1.2;
-        text-align: center;
+    .tooltip-arrow {
+      top: 50%;
+      right: 0;
+      margin-top: -$tooltip-arrow-width;
+      border-width: $tooltip-arrow-width 0 $tooltip-arrow-width $tooltip-arrow-width;
+      border-left-color: $tooltip-arrow-color;
     }
-
-    &::before,
-    &::after {
-        bottom: 100%;
-        left: 50%;
-    }
-
-    &::before {
-        margin-left: -6px;
-        margin-bottom: -12px;
-        border-top-color: #000;
-        border-top-color: hsla(0, 0%, 20%, 0.9);
-    }
-
-    // Horizontally align top/bottom tooltips
-    &::after {
-        left: 0;
-    }
-
-    &:hover::before,
-    &:hover::after,
-    &:focus::before,
-    &:focus::after {
-        @include prefix(transform, translateY(-12px), webkit moz);
-    }
+  }
 }
 
-a.tooltip {
-    display: inline-block;
+// Wrapper for the tooltip content
+.tooltip-inner {
+  max-width: $tooltip-max-width;
+  padding: 3px 8px;
+  color: $tooltip-color;
+  text-align: center;
+  background-color: $tooltip-bg;
+  @include border-radius($border-radius);
+}
+
+// Arrows
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
 }

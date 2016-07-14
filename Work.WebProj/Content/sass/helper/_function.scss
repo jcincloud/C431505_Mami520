@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 // px換算至em
-@function em($px, $context: $font-size-base) {
+@function em($px, $context: $font-size-root) {
     @if (unitless($px)) {
         $px: $px * 1px;
     }
@@ -28,18 +28,41 @@
 }
 
 
+// mixins
+// -----------------------------------------------------------------
+
+// 字換圖
+@mixin text-pic($img, $width, $height, $display: block, $pic: false, $position: 0 0) {
+    @include text-hide;
+    @if $pic == fixed {
+        background-attachment: fixed;
+    }
+    background: url(#{$img-path}/#{$img}) $position no-repeat;
+    display: $display;
+    width: $width; height: $height;
+    
+    overflow: hidden;
+}
+
+@mixin make-content($content: " ", $display: block, $position: absolute) {
+    content:$content;
+    display: $display;
+    position: $position;
+}
+
+
 // var Maps
 // -----------------------------------------------------------------
 
-// colors
-@function color($key) {
-    @return map-get($color, $key);
-}
+// // colors
+// @function color($key) {
+//     @return map-get($color, $key);
+// }
 
-// z-index
-@function z($key) {
-    @return map-get($z-index, $key);
-}
+// // z-index
+// @function z($key) {
+//     @return map-get($z-index, $key);
+// }
 
 // 取多層值
 // 範例 background: m-get($color-theme, 'default', 'background');

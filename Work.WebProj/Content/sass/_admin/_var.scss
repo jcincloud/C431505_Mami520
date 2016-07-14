@@ -1,0 +1,217 @@
+@charset "UTF-8";
+
+// Settiings
+$enable-lte8:                   false;
+$enable-rounded:                false;
+$img-path:                      '../images';
+$font-path:                     '../font/';
+
+
+// Grid columns
+$wrapper-min-width:             map-get($container-max-widths, xl);
+$grid-gutter-width:             0.7rem;
+
+
+// Colors
+$brand-primary:                 #E84466;
+$brand-primary-light:           lighten($brand-primary,30%);
+$brand-primary-dark:            darken($brand-primary,20%);
+$brand-secondary:               #2E2B5B !default;
+$red:                             #F44336 !default;
+$pink:                            #E91E63 !default;
+$purple:                          #9C27B0 !default;
+$deep-purple:                     #673AB7 !default;
+$indigo:                          #3F51B5 !default;
+$blue:                            #2196F3 !default;
+$light-blue:                      #87CEEB !default;
+$cyan:                            #00BCD4 !default;
+$aqua:                            #67EAEA !default;
+$teal:                            #009688 !default;
+$green:                           #4CAF50 !default;
+$light-green:                     #8BC34A !default;
+$lime:                            #CDDC39 !default;
+$sand:                            #FDF5E6 !default;
+$khaki:                           #F0E68C !default;
+$yellow:                          #FFEB3B !default;
+$amber:                           #FFC107 !default;
+$orange:                          #FF9800 !default;
+$deep-orange:                     #FF5722 !default;
+$blue-grey:                       #607D8B !default;
+$brown:                           #795548 !default;
+$light-grey:                      #F1F1F1 !default;
+$grey:                            #9E9E9E !default;
+$dark-grey:                       #616161 !default;
+$black:                           #000    !default;
+$white:                           #fff    !default;
+$pale-red:                        #FFE7E7 !default;
+$pale-yellow:                     #FFFFD7 !default;
+$pale-green:                      #E7FFE7 !default;
+$pale-blue:                       #E7FFFF !default;
+
+
+// Typography
+$body-color:                    $gray-dark;
+$font-family-sans-serif:        "Helvetica Neue", Helvetica, Arial, 'Microsoft Jhenghei', \5FAE\8EDF\6B63\9ED1\9AD4, sans-serif;
+$font-family-en:                $font-family-sans-serif !default;
+$link-color:                    $brand-primary;
+$link-hover-color:              darken($link-color, 15%);
+
+$headings-font-weight:          500;
+
+
+// Tables
+$table-cell-padding:            .5rem ;
+$table-sm-cell-padding:         .2rem;
+
+
+// Forms
+$form-group-margin-bottom:       $spacer*0.8;
+
+
+// Buttons
+$btn-primary-bg:                 $brand-primary;
+$btn-primary-border:             $btn-primary-bg;
+
+$btn-secondary-color:            #fff;
+$btn-secondary-bg:               $brand-secondary;
+$btn-secondary-border:           $btn-secondary-bg;
+
+$btn-red-color:                   $white !default;
+$btn-red-bg:                      $red !default;
+$btn-red-border:                  $btn-red-bg !default;
+
+$btn-pink-color:                  $white !default;
+$btn-pink-bg:                     $pink !default;
+$btn-pink-border:                 $btn-pink-bg !default;
+
+$btn-purple-color:                $white !default;
+$btn-purple-bg:                   $purple !default;
+$btn-purple-border:               $btn-purple-bg !default;
+
+$btn-deep-purple-color:           $white !default;
+$btn-deep-purple-bg:              $deep-purple !default;
+$btn-deep-purple-border:          $btn-deep-purple-bg !default;
+
+$btn-indigo-color:                $white !default;
+$btn-indigo-bg:                   $indigo !default;
+$btn-indigo-border:               $btn-indigo-bg !default;
+
+$btn-blue-color:                  $white !default;
+$btn-blue-bg:                     $blue !default;
+$btn-blue-border:                 $btn-blue-bg !default;
+
+$btn-light-blue-color:            $black !default;
+$btn-light-blue-bg:               $light-blue !default;
+$btn-light-blue-border:           $btn-light-blue-bg !default;
+
+$btn-cyan-color:                  $black !default;
+$btn-cyan-bg:                     $cyan !default;
+$btn-cyan-border:                 $btn-cyan-bg !default;
+
+$btn-aqua-color:                  $black !default;
+$btn-aqua-bg:                     $aqua !default;
+$btn-aqua-border:                 $btn-aqua-bg !default;
+
+$btn-teal-color:                  $white !default;
+$btn-teal-bg:                     $teal !default;
+$btn-teal-border:                 $btn-teal-bg !default;
+
+$btn-green-color:                 $white !default;
+$btn-green-bg:                    $green !default;
+$btn-green-border:                $btn-green-bg !default;
+
+$btn-light-green-color:           $black !default;
+$btn-light-green-bg:              $light-green !default;
+$btn-light-green-border:          $btn-light-green-bg !default;
+
+$btn-lime-color:                  $black !default;
+$btn-lime-bg:                     $lime !default;
+$btn-lime-border:                 $btn-lime-bg !default;
+
+$btn-sand-color:                  $black !default;
+$btn-sand-bg:                     $sand !default;
+$btn-sand-border:                 $btn-sand-bg !default;
+
+$btn-khaki-color:                 $black !default;
+$btn-khaki-bg:                    $khaki !default;
+$btn-khaki-border:                $btn-khaki-bg !default;
+
+$btn-yellow-color:                $black !default;
+$btn-yellow-bg:                   $yellow !default;
+$btn-yellow-border:               $btn-yellow-bg !default;
+
+$btn-amber-color:                 $black !default;
+$btn-amber-bg:                    $amber !default;
+$btn-amber-border:                $btn-amber-bg !default;
+
+$btn-orange-color:                $black !default;
+$btn-orange-bg:                   $orange !default;
+$btn-orange-border:               $btn-orange-bg !default;
+
+$btn-deep-orange-color:           $white !default;
+$btn-deep-orange-bg:              $deep-orange !default;
+$btn-deep-orange-border:          $btn-deep-orange-bg !default;
+
+$btn-blue-grey-color:             $white !default;
+$btn-blue-grey-bg:                $blue-grey !default;
+$btn-blue-grey-border:            $btn-blue-grey-bg !default;
+
+$btn-brown-color:                 $white !default;
+$btn-brown-bg:                    $brown !default;
+$btn-brown-border:                $btn-brown-bg !default;
+
+$btn-light-grey-color:            $black !default;
+$btn-light-grey-bg:               $light-grey !default;
+$btn-light-grey-border:           $btn-light-grey-bg !default;
+
+$btn-dark-grey-color:             $white !default;
+$btn-dark-grey-bg:                $dark-grey !default;
+$btn-dark-grey-border:            $btn-dark-grey-bg !default;
+
+$btn-black-color:                 $white !default;
+$btn-black-bg:                    $black !default;
+$btn-black-border:                $btn-black-bg !default;
+
+$btn-pale-red-color:              $black !default;
+$btn-pale-red-bg:                 $pale-red !default;
+$btn-pale-red-border:             $btn-pale-red-bg !default;
+
+$btn-pale-yellow-color:           $black !default;
+$btn-pale-yellow-bg:              $pale-yellow !default;
+$btn-pale-yellow-border:          $btn-pale-yellow-bg !default;
+
+$btn-pale-green-color:            $black !default;
+$btn-pale-green-bg:               $pale-green !default;
+$btn-pale-green-border:           $btn-pale-green-bg !default;
+
+$btn-pale-blue-color:             $black !default;
+$btn-pale-blue-bg:                $pale-blue !default;
+$btn-pale-blue-border:            $btn-pale-blue-bg !default;
+
+$btn-white-color:                 $black !default;
+$btn-white-bg:                    $white !default;
+$btn-white-border:                $btn-white-bg !default;
+
+
+// Modal
+$modal-inner-padding:            $grid-gutter-width;
+$modal-title-padding:            $grid-gutter-width;
+
+
+// Navbar
+$navbar-padding-vertical:        0;
+$navbar-dark-color:              #fff;
+$navbar-dark-hover-color:        $navbar-dark-color;
+$navbar-dark-active-color:       $navbar-dark-color;
+$navbar-dark-disabled-color:     $navbar-dark-color;
+
+
+// Pager
+$pager-hover-bg:                 $brand-primary-light;
+$pager-active-bg:                $brand-primary;
+$pager-active-color:             #fff;
+
+
+// Nav
+$nav-link-padding:               .3em .7em;
+

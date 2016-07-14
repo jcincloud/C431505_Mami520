@@ -1,136 +1,146 @@
-@charset "UTF-8";
+// .modal-open      - body class for killing the scroll
+// .modal           - container to scroll within
+// .modal-dialog    - positioning shell for the actual modal
+// .modal-content   - actual modal w/ bg and corners and shit
 
-$modal-max-width: 630px;
-$modal-min-width: 320px;
 
-.md-modal {
-    width: 65%;
-    max-width: $modal-max-width;
-    min-width: $modal-min-width;
-    height: auto;
-    z-index: 2000;
-    visibility: hidden;
-    @include fixed(top 50% left 50%);
-    @include prefix(backface-visibility,hidden);
-    @include prefix-add(transform,translateX(-50%) translateY(-50%), ms);
+// Kill the scroll on the body
+.modal-open {
+  overflow: hidden;
 }
 
-.md-show {
-    visibility: visible;
+// Container that the modal scrolls within
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-modal;
+  display: none;
+  overflow: hidden;
+  // Prevent Chrome on Windows from adding a focus outline. For details, see
+  // https://github.com/twbs/bootstrap/pull/10951.
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+
+  // When fading in the modal, animate it to slide down
+  &.fade .modal-dialog {
+    transition: transform .3s ease-out;
+    transform: translate(0, -25%);
+  }
+  &.in .modal-dialog { transform: translate(0, 0); }
+}
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-.md-overlay {
-    width: 100%;
-    height: 100%;
-    visibility: hidden;
-    z-index: 1000;
-    opacity: 0;
-    background: rgba(0,0,0,.2);
-    @include fixed(top 0 left 0);
+// Shell div to position the modal with bottom padding
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
 }
 
-.md-show ~ .md-overlay {
-    opacity: 1;
-    visibility: visible;
+// Actual modal
+.modal-content {
+  position: relative;
+  background-color: $modal-content-bg;
+  background-clip: padding-box;
+  border: 1px solid $modal-content-border-color;
+  border-radius: $border-radius-lg;
+  @include box-shadow(0 3px 9px rgba(0,0,0,.5));
+  // Remove focus outline from opened modal
+  outline: 0;
 }
 
-.md-close {
-    @include absolute(top 10px right 10px);
-    @include text-pic('icon.png',33px,33px);
-    // background: none;
-    // font-size: em(30px);
+// Modal background
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-modal-bg;
+  background-color: $modal-backdrop-bg;
+
+  // Fade for backdrop
+  &.fade { opacity: 0; }
+  &.in { opacity: $modal-backdrop-opacity; }
 }
 
-.md-overlay, .md-content {
-    @include prefix(transition,all .3s)
+// Modal header
+// Top section of the modal w/ title and dismiss
+.modal-header {
+  padding: $modal-title-padding;
+  border-bottom: 1px solid $modal-header-border-color;
+  @include clearfix;
+}
+// Close icon
+.modal-header .close {
+  margin-top: -2px;
 }
 
-// Content styles
-.md-content {
-    position: relative;
-    opacity: 0;
-    margin: 0 auto;
-
-    color: #fff;
-    background: $brand-primary;
-    border-radius: 0 0 6px 6px;
-    padding-bottom: 10px;
-
-    h3 {
-        margin: 0;
-        padding: 0.4em;
-        color: #fff;
-        text-align: center;
-        font-size: em(32px);
-        font-weight: 300;
-        background: #0646A3;
-        @include mq-max(phone) {
-            font-size: em(26px);
-        }
-    }
-    // input, .btn, table, .row {
-    //     margin: 30px auto;
-    // }
-    // input, .row { width: 85%; }
-    // input { line-height: 2; }
-    // .btn { font-size: em(19px); margin-top: 0; }
-    // table {
-    //     background: #E5E5E5;
-    //     width: 93%;
-    // }
-    // th, td { border-color: #fff; }
-    // .row {
-    //     input {
-    //         max-width: 420px;
-    //         margin: 0;
-    //     }
-    // }
-    // span { vertical-align: middle; line-height: 1.1; }
+// Title text within header
+.modal-title {
+  margin: 0;
+  line-height: $modal-title-line-height;
 }
 
-.md-effect-7 {
-    top: 0;
-
-    @include prefix-add(transform,translateX(-50%), ms);
-
-    .md-content {
-        @include prefix(transform,translateY(-200%));
-    }
-}
-.md-show.md-effect-7 .md-content {
-    opacity: 1;
-    @include prefix(transform,translateY(0%));
+// Modal body
+// Where all modal content resides (sibling of .modal-header and .modal-footer)
+.modal-body {
+  position: relative;
+  padding: $modal-inner-padding;
 }
 
-.joinus {
-    cursor: pointer; cursor: hand;
-    color: #fff;
-    margin-left: 20px;
-    &:hover, &:active { color: #CBCBCB; }
-}
-#login {
-    input, .btn, .row {
-        margin: 30px auto;
-    }
-    input, .row { width: 85%; }
-    input { line-height: 2; }
-    .btn { font-size: em(19px); margin-top: 0; }
-    .row {
-        text-align: center;
-        input, button, img, span { vertical-align: middle; }
-        input {
-            width: 100%;
-            max-width: 420px;
-            margin: 0;
+// Footer (for actions)
+.modal-footer {
+  padding: $modal-inner-padding;
+  text-align: right; // right align buttons
+  border-top: 1px solid $modal-footer-border-color;
+  @include clearfix(); // clear it in case folks use .pull-* classes on buttons
 
-            @include mq-max(tablet) {
-                max-width: 344px;
-            }
-            @include mq-max(mobile) {
-                max-width: 172px;
-            }
-        }
-        img { margin-top: 6px; }
-    }
-    span { display: inline-block; }
+  // Properly space out buttons
+  .btn + .btn {
+    margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
+    margin-left: 5px;
+  }
+  // but override that for button groups
+  .btn-group .btn + .btn {
+    margin-left: -1px;
+  }
+  // and override it for block buttons as well
+  .btn-block + .btn-block {
+    margin-left: 0;
+  }
+}
+
+// Measure scrollbar width for padding body during modal show/hide
+.modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+// Scale up the modal
+@include media-breakpoint-up(sm) {
+  // Automatically set modal's width for larger viewports
+  .modal-dialog {
+    width: $modal-md;
+    margin: 30px auto;
+  }
+  .modal-content {
+    @include box-shadow(0 5px 15px rgba(0,0,0,.5));
+  }
+
+  // Modal sizes
+  .modal-sm { width: $modal-sm; }
+}
+
+@include media-breakpoint-up(md) {
+  .modal-lg { width: $modal-lg; }
 }

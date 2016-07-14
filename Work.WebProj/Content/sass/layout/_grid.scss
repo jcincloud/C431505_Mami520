@@ -1,80 +1,76 @@
-@charset "UTF-8";
+// Container widths
+//
+// Set the container width, and override it for fixed navbars in media queries.
 
-$cols: 12 !default;
+.container {
+  @include make-container();
+  @include make-container-max-widths();
 
-// 函數程式
-// ------------------------------------------------------------
-// tin
-// $one_col: (100% - (cp($gutter) * ($cols - 1))) / $cols;
-// @mixin cols($num) {
-//     width: ($one_col * $num) + (cp($gutter) * ($num - 1));
-// }
-
-// stacy
-$one_col: 100% / $cols;
-@mixin cols($num) {
-    width: ($one_col * $num);
-    float: left;
-    padding-left: $gutter/2;
-    padding-right: $gutter/2;
 }
 
-@mixin make-cols($class: md) {
-    @for $i from 1 through $cols {
-        @if($class == md) {
-            .col-#{$i} { @include cols($i); }
-        }
-        @else {
-            .col-#{$class}-#{$i} { @include cols($i); }
-        }
+
+// Fluid container
+//
+// Utilizes the mixin meant for fixed width containers, but without any defined
+// width for fluid, full width layouts.
+
+.container-fluid {
+  @include make-container();
+}
+
+
+// Row
+//
+// Rows contain and clear the floats of your columns.
+
+@if $enable-grid-classes {
+  .row {
+    @include make-row();
+  }
+}
+
+
+// Columns
+//
+// Common styles for small and large grid columns
+
+@if $enable-grid-classes {
+  @include make-grid-columns();
+}
+
+
+// Flex variation
+//
+// Custom styles for additional flex alignment options.
+
+@if $enable-flex and $enable-grid-classes {
+
+  // Flex column reordering
+
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      .col-#{$breakpoint}-first { order: -1; }
+      .col-#{$breakpoint}-last  { order: 1; }
     }
-}
+  }
 
-// 偏移
-@mixin offset($num) {
-    $one_col: 100% / $cols;
-    margin-left: ($one_col * $num);
-}
+  // Alignment for every column in row
 
-@mixin make-offset($class: md) {
-    @for $i from 0 through $cols {
-        @if($class == md) {
-            .offset-#{$i} { @include offset($i); }
-        }
-        @else {
-            .offset-#{$class}-#{$i} { @include offset($i); }
-        }
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      .row-#{$breakpoint}-top    { align-items: flex-start; }
+      .row-#{$breakpoint}-center { align-items: center; }
+      .row-#{$breakpoint}-bottom { align-items: flex-end; }
     }
+  }
+
+  // Alignment per column
+
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      .col-#{$breakpoint}-top    { align-self: flex-start; }
+      .col-#{$breakpoint}-center { align-self: center; }
+      .col-#{$breakpoint}-bottom { align-self: flex-end; }
+    }
+  }
 }
-
-
-// output
-// ------------------------------------------------------------
-.row {
-    @extend %clearfix;
-
-    margin-left:-$gutter/2;
-    margin-right:-$gutter/2;
-
-    // tin
-    // margin-bottom: $gutter;
-}
-
-// tin
-// [class*="col-"] {
-//     float: left;
-//     padding-left: $gutter/2;
-//     padding-right: $gutter/2;
-// }
-
-@include make-cols(md); // 預設: md
-@include mq-max(break(tablet,-1))  { @include make-cols(xs); }
-@include mq-max(break(desktop,-1)) { @include make-cols(sm); }
-@include mq(wide)                  { @include make-cols(lg); }
-@include mq(wider)                 { @include make-cols(xl); }
-
-@include make-offset(md); // 預設: md
-@include mq-max(break(tablet,-1))  { @include make-offset(xs); }
-@include mq-max(break(desktop,-1)) { @include make-offset(sm); }
-@include mq(wide)                  { @include make-offset(lg); }
-@include mq(wider)                 { @include make-offset(xl); }

@@ -14,52 +14,58 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="~/Content/css/sys.css" rel="stylesheet" />
+    <link href="~/Content/css/vendor/fontAwesome/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/css/toastr.css" rel="stylesheet" />
     @RenderSection("IncludeCSS", false)
 </head>
-<body>
+<body class="@ViewBag.BodyClass">
 
     <div id="wrapper">
-        <header id="header">
-            <h1 class="logo">
-                <a href="~/Active/Home" title="@Resources.Res.Info_Home" tabindex="-1">@Resources.Res.System_Name</a>
-            </h1>
-            <nav id="top-nav">
-                <h2 class="hidden">基本設定</h2>
-                <ul class="nav-menu">
-                    <li>
-                        <i class="ti-user"></i>登入身分: <span class="name">@Cookie_UserName.Value</span>
-                    </li>
-                    <li>
-                        <a href="~/Login/Logout"><i class="ti-power-off"></i>@Resources.Res.Button_Logout</a>
-                    </li>
-                </ul>
-            </nav>
-        </header><!-- header //-->
+        @if (ViewBag.IsFirstPage)
+        { }
+        else {
+            <header id="header">
+                <h1 class="logo">
+                    <a href="~/Active/Home" title="@Resources.Res.Info_Home" tabindex="-1">@Resources.Res.System_Name</a>
+                </h1>
+                <nav id="top-nav">
+                    <h2 class="hidden">基本設定</h2>
+                    <ul class="nav-menu">
+                        <li>
+                            <i class="ti-user"></i>登入身分: <span class="name">@Cookie_UserName.Value</span>
+                        </li>
+                        <li>
+                            <a href="~/Login/Logout"><i class="ti-power-off"></i>@Resources.Res.Button_Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header><!-- header //-->
+        }
 
-        <main id="main"><div class="wrap">
+        <main id="main">
 
-            <aside id="sidebar">
-                @RenderSection("sidebar", false)
-            </aside><!-- sidebar //-->
+            @if (ViewBag.IsFirstPage) {
+                @RenderBody()
+            }
+            else {
+                <div id="content">
+                    @RenderBody()
+                    <div id="page_content"></div>
+                </div><!-- content //-->
+                <div id="sidebar">
+                    @RenderSection("sidebar", false)
+                </div><!-- sidebar //-->
+            }
 
-            <div id="content">
-                <ul class="breadcrumb">
-                    <li><a href="~/Active/Home"><i class="ti-home"></i> @Resources.Res.System_Name</a></li>
-                    @RenderSection("breadCrumb", required: false)
-                </ul>
-
-                <div id="page_content"></div>
-
-            </div><!-- content //-->
-
-        </div></main><!-- main //-->
+        </main><!-- main //-->
 
     </div><!-- wrapper //-->
 
-    @* <footer id="footer">
-        <a href="#content" class="goTop"><i class="fa-angle-double-up"></i></a>
-    </footer><!-- footer //--> *@
+    <footer id="footer">
+        <p class="copyright text-muted">
+            <span>Powered By <a href="http://www.jcin.com.tw" target="new">JCIN Information Co.</a></span>
+        </p>
+    </footer><!-- footer //-->
 
     <script type="text/javascript">
         var gb_approot = '@Url.Content("~")';

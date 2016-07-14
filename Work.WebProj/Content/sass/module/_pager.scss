@@ -1,27 +1,57 @@
-@charset "UTF-8";
-
-//
-// Pager
-// --------------------------------------------------
-
 .pager {
-    @extend .list-inline;
-    
-    text-align: center;
-    margin: 0;
+  padding-left: 0;
+  margin-top: $spacer-y;
+  margin-bottom: $spacer-y;
+  text-align: center;
+  list-style: none;
+  @include clearfix();
 
-    .form-group {margin:0;}
+  li {
+    display: inline;
 
-    li {vertical-align:middle;}
-
-    a {
-        @include circle($input-height-sm);
-        border:1px solid $gray-lighter;
-        font-size: em(10px);
-
-        &:hover {
-            background: $gray-lighter;
-            color: $link-color;
-        }
+    > a,
+    > span {
+      display: inline-block;
+      padding: 5px 14px;
+      background-color: $pager-bg;
+      border: $pager-border-width solid $pager-border-color;
+      border-radius: $pager-border-radius;
     }
+
+    > a {
+      @include hover-focus {
+        text-decoration: none;
+        background-color: $pager-hover-bg;
+      }
+    }
+  }
+
+  .disabled {
+    > a {
+      @include plain-hover-focus {
+        color: $pager-disabled-color;
+        cursor: $cursor-disabled;
+        background-color: $pager-bg;
+      }
+    }
+    > span {
+      color: $pager-disabled-color;
+      cursor: $cursor-disabled;
+      background-color: $pager-bg;
+    }
+  }
+}
+
+.pager-next {
+  > a,
+  > span {
+    float: right;
+  }
+}
+
+.pager-prev {
+  > a,
+  > span {
+    float: left;
+  }
 }
