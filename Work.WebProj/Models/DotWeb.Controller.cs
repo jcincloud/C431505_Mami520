@@ -110,6 +110,7 @@ namespace DotWeb.Controller
         {
             base.OnActionExecuting(filterContext);
 
+            ViewBag.IsFirstPage = false;
             this.aspUserId = User.Identity.GetUserId();
             this.departmentId = int.Parse(Request.Cookies[CommWebSetup.Cookie_DepartmentId].Value);
 
