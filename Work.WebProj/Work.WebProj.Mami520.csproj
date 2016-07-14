@@ -1034,7 +1034,6 @@
     <Content Include="Scripts\src\jsx\m-R03_AccountsPayable.jsx" />
     <Content Include="Scripts\src\jsx\m-Company.jsx" />
     <Content Include="Scripts\src\jsx\m-Menu.jsx" />
-    <Content Include="Scripts\src\jsx\m-Home.jsx" />
     <Content Include="Scripts\src\jsx-inc\c-Typeahead.jsx" />
     <Content Include="Scripts\src\jsx\m-MenuCopyTemplate.jsx" />
     <None Include="Web.Amoz.config">
