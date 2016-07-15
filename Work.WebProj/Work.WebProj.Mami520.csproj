@@ -1043,6 +1043,7 @@
     <Content Include="Scripts\src\jsx\m-Menu.jsx" />
     <Content Include="Scripts\src\jsx-inc\c-Typeahead.jsx" />
     <Content Include="Scripts\src\jsx\m-MenuCopyTemplate.jsx" />
+    <Content Include="Scripts\src\jsx\m-HomeRoute.jsx" />
     <None Include="Web.Amoz.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
