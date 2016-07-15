@@ -101,7 +101,6 @@
 	.copyright {
 		margin-bottom: $spacer*1.5;
 		font-size: em(18px);
-		color: $brand-primary-light;
 	}
 
 	.login-box {
@@ -127,6 +126,7 @@
 		.form-action {
 			margin-bottom: 0;
 			padding: $spacer*0.7 $spacer;
+			background: lighten($brand-primary,30%);
 		}
 	}
 }

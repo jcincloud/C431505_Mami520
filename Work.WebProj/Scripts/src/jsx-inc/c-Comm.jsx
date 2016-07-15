@@ -9,7 +9,7 @@
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-lg btn-link" onClick={this.onClick}><i className="ti-pencil"></i></button>
+			<button type="button" className="btn-lg btn-link text-info" onClick={this.onClick}><i className="fa-pencil"></i></button>
 			);
 	}
 });
@@ -25,7 +25,7 @@ var GridButtonView = React.createClass({
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-lg btn-link" onClick={this.onClick}><i className="fa-search-plus"></i></button>
+			<button type="button" className="btn-lg btn-link text-info" onClick={this.onClick}><i className="fa-search-plus"></i></button>
 			);
 	}
 });
@@ -40,7 +40,7 @@ var GridButtonPopupWindow = React.createClass({
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-lg btn-link" data-toggle="modal" data-target={'#myModal-'+this.props.MainId} onClick={this.onClick}><i className="fa-pencil"></i></button>
+			<button type="button" className="btn-lg btn-link text-info" data-toggle="modal" data-target={'#myModal-'+this.props.MainId} onClick={this.onClick}><i className="fa-pencil"></i></button>
 			);
 	}
 });
@@ -93,11 +93,9 @@ var GridCheckDel = React.createClass({
 	},
 	render:function(){
 		return (
-			<label className="checkbox text-center text-primary">
+			<label className="c-input c-checkbox">
 				<input type="checkbox" checked={this.props.chd} onChange={this.onChange} />
-				<span>
-					<i className="fa-check"></i>
-				</span>
+				<span className="c-indicator"></span>
 			</label>
 			);
 	}
@@ -143,46 +141,46 @@ var GridNavPage = React.createClass({
 
 		var setAddButton = null,setDeleteButton=null;
 		if(this.props.showAdd){
-			setAddButton = <button className="btn btn-success"
+			setAddButton = <button className="btn btn-success btn-sm"
 			                type="button"
 			                onClick={this.props.InsertType}>
-			            	<i className="ti-file"></i> 新增
+			            	<i className="fa-plus-circle"></i> 新增
 			        		</button>;			        		
 		}
 
 		if(this.props.showDelete){
-			setDeleteButton = 	<button className="btn btn-muted" type="button"
+			setDeleteButton = 	<button className="btn btn-primary btn-sm" type="button"
 			                		onClick={this.props.deleteSubmit}>
-			            			<i className="ti-trash"></i> 刪除
+			            			<i className="fa-trash-o"></i> 刪除勾選項目
 			        			</button>;
 
 		}
 		var oper = null;
 		if(this.props.ver==1){
 		oper = (
-			<div className="table-footer card">
-			    <div className="action float-l">
-			        {setAddButton}
+			<div className="table-footer clearfix">
+			    <div className="pull-xs-left">
+			        {setAddButton} { }
 			        {setDeleteButton}
 			    </div>
-			    <small className="info float-r">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+			    <small className="pull-xs-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
 
-			    <ul className="pager">
+			    <ul className="pager pager-sm">
 			        <li>
 			            <a href="#" title="移至第一頁" tabIndex="-1" onClick={this.firstPage}>
-			                <i className="ti-angle-double-left"></i>
+			                <i className="fa-angle-double-left"></i>
 			            </a>
 			        </li> { } 
 			        <li>
 			            <a href="#" title="上一頁" tabIndex="-1" onClick={this.prvePage}>
-			                <i className="ti-angle-left"></i>
+			                <i className="fa-angle-left"></i>
 			            </a>
 			        </li> { } 
-			        <li className="form-inline">
+			        <li className="form-inline form-sm">
 			            <div className="form-group">
 			                <label>第</label>
 			                {' '}
-			                <input className="form-element input-sm text-center" style={{"width":"5em"}} type="number" min="1" tabIndex="-1" value={this.props.NowPage}
+			                <input className="form-control text-xs-center" style={{"width":"5em"}} type="number" min="1" tabIndex="-1" value={this.props.NowPage}
 			                       onChange={this.jumpPage} />
 			                {' '}
 			                <label>頁，共{this.props.TotalPage}頁</label>
@@ -190,12 +188,12 @@ var GridNavPage = React.createClass({
 			        </li> { } 
 			        <li>
 			            <a href="#" title="@Resources.Res.NextPage" tabIndex="-1" onClick={this.nextPage}>
-			                <i className="ti-angle-right"></i>
+			                <i className="fa-angle-right"></i>
 			            </a>
 			        </li> { } 
 			        <li>
 			            <a href="#" title="移至最後一頁" tabIndex="-1" onClick={this.lastPage}>
-			                <i className="ti-angle-double-right"></i>
+			                <i className="fa-angle-double-right"></i>
 			            </a>
 			        </li>
 			    </ul>
@@ -466,7 +464,8 @@ var InputDate = React.createClass({
 		var out_html=null;
 		if(this.props.ver==1){
 			out_html=(
-			<div>
+			<div className="input-group input-group-sm">
+				<span className="input-group-addon"><i className="fa-calendar"></i></span>
 				<input 
 					type="date" 
 					className="form-control datetimepicker"
@@ -476,12 +475,12 @@ var InputDate = React.createClass({
 					onChange={this.onChange}
 					required={this.props.required}
 					disabled={this.props.disabled} />
-					<i className="fa-calendar form-control-feedback"></i>
 			</div>
 				);
 		}else if(this.props.ver==2){
 		out_html=(
-			<div>
+			<div className="input-group input-group-sm">
+				<span className="input-group-addon"><i className="fa-calendar"></i></span>
 				<input 
 					type="date" 
 					className="form-control input-sm datetimepicker"
@@ -491,7 +490,6 @@ var InputDate = React.createClass({
 					onChange={this.onChange}
 					required={this.props.required}
 					disabled={this.props.disabled} />
-					<i className="fa-calendar form-control-feedback"></i>
 			</div>
 				);
 		}
@@ -886,7 +884,7 @@ var TwAddress = React.createClass({
 			outHtml=(
 			<div>
 				<div className="form-group">
-						<label for="" className="control-label col-xs-2 text-error">{this.props.label_name}</label>
+						<label for="" className="form-control-label col-xs-2 text-danger">{this.props.label_name}</label>
 						<div className="col-xs-3">
 							<input 	type="text" 
 									className="form-control"	
@@ -929,7 +927,7 @@ var TwAddress = React.createClass({
 									className="form-control"	
 									value={this.props.address_value}
 									onChange={this.valueChange.bind(this,this.props.address_field)}
-									maxLength="128"
+									maxLength="256"
 									required={this.props.required}
 									disabled={this.props.disabled} />
 			        </div>
@@ -982,7 +980,7 @@ var TwAddress = React.createClass({
 								className="form-control"	
 								value={this.props.address_value}
 								onChange={this.valueChange.bind(this,this.props.address_field)}
-								maxLength="128"
+								maxLength="256"
 								disabled={this.props.disabled} />
 					</div>
 				</div>

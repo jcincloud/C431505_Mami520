@@ -205,7 +205,7 @@ var LoginForm = React.createClass({
                     <InputAccount label={'帳號'} idName={'account'} memo={'帳號'} ref="account" />
                     <InputPassword label={'密碼'} idName={'password'} memo={'密碼'} ref="password" />
                     <Inputvalidate label={'驗證碼'} idName={'validate'} memo={'驗證碼'} ref="validate" webRoot={this.props.webRoot} />
-                    <div className="form-group form-action text-xs-center bg-primary-light">
+                    <div className="form-group form-action text-xs-center">
                         <button className="btn btn-primary" tabIndex="4" type="submit">登入 LOGIN</button>
                     </div>
 				</form>

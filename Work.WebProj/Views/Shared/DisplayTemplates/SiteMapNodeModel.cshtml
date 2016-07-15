@@ -5,11 +5,11 @@
 @if (Model.IsCurrentNode && Model.SourceMetadata["HtmlHelper"].ToString() != "MvcSiteMapProvider.Web.Html.MenuHelper")
 {
     <!-- 主節點有子選單 -->
-    <li class="panel-heading">
+    <div class="panel-heading">
         <a class="panel-title" data-toggle="collapse" data-parent="#submenu" href="#submenu-1">
-            <i class="fa-list-alt"></i> @Model.Title <small class="ti-angle-down"></small>
+            <i class="fa-list-alt"></i> @Model.Title
         </a>
-    </li>
+    </div>
 }
 else if (Model.IsClickable)
 {
@@ -19,13 +19,13 @@ else if (Model.IsClickable)
         <!--目前的的子節點-->
         if (string.IsNullOrEmpty(Model.Description))
         {
-            <a href="@Model.Url" class="current">
+            <a href="@Model.Url" class="active">
                 @Model.Title
             </a>
         }
         else
         {
-            <a href="@Model.Url" class="current" title="@Model.Description">
+            <a href="@Model.Url" class="active" title="@Model.Description">
                 @Model.Title
             </a>
         }
@@ -45,7 +45,7 @@ else if (Model.IsClickable)
 }
 else
 {
-    <li class="panel-heading">
+    <div class="panel-heading">
         <!-- 主節點有子選單-->
         @if (Model.Parent != null)
         {
@@ -55,11 +55,11 @@ else
 
                 @if (Model.Attributes.Any(x => x.Key == "IconClass"))
                 {
-                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title <small class="ti-angle-down"></small>
+                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title
                 }
                 else
                 {
-                    @Model.Title <small class="ti-angle-down"></small>
+                    @Model.Title
                 }
             </a>
         }
@@ -70,13 +70,13 @@ else
 
                 @if (Model.Attributes.Any(x => x.Key == "IconClass"))
                 {
-                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title <small class="ti-angle-down"></small>
+                    <i class="@Model.Attributes["IconClass"]"></i> @Model.Title
                 }
                 else
                 {
-                    @Model.Title <small class="ti-angle-down"></small>
+                    @Model.Title
                 }
             </a>
         }
-    </li>
+    </div>
 }

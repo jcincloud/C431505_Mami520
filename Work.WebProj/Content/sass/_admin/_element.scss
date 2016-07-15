@@ -13,7 +13,7 @@
 
 	.sub {
 		margin-left: $spacer;
-		color: #8089A0;
+		color: desaturate($brand-primary, 40%);
 	}
 }
 
@@ -26,7 +26,7 @@
 }
 
 hr {
-	
+	&.lg {margin: $spacer*1.5 0;}
 }
 
 

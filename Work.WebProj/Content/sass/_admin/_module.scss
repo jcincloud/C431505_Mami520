@@ -116,9 +116,14 @@
 .c-indicator {
     margin-top: $spacer*0.2;
     background: #fafafa;
+    background-size: 75%;
+    background-position: 60% 40%;
+    background-repeat: no-repeat;
     border: 1px solid #c8c8c8;
 
-    .c-checkbox & {border-radius: 0;}
+    .c-checkbox & {
+      border-radius: 0;
+    }
 
     .c-input > input:checked ~ &,
     .c-input > input:indeterminate ~ & { border-color: $brand-warning; background-color: $brand-warning; }
