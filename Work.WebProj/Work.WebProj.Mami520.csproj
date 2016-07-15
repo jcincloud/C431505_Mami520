@@ -843,6 +843,7 @@
     <Content Include="_Code\CSS\css\mobile.css" />
     <Content Include="_Code\CSS\css\page.css" />
     <Content Include="_Code\CSS\css\popup.css" />
+    <Content Include="_Code\CSS\css\toastr.css" />
     <Content Include="_Code\CSS\fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="_Code\CSS\fonts\fontAwesome\fontawesome-webfont.svg" />
     <Content Include="_Code\RPTExcel\DownExcel.xls" />

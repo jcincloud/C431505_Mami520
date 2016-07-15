@@ -15,7 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="~/Content/css/sys.css" rel="stylesheet" />
     <link href="~/Content/css/vendor/fontAwesome/font-awesome.css" rel="stylesheet" />
-    <link href="~/Content/css/toastr.css" rel="stylesheet" />
+    <link href="~/_Code/CSS/css/toastr.css" rel="stylesheet" />
     @RenderSection("IncludeCSS", false)
 </head>
 <body class="@ViewBag.BodyClass">
@@ -23,7 +23,8 @@
     <div id="wrapper">
         @if (ViewBag.IsFirstPage)
         { }
-        else {
+        else
+        {
             <header id="header" class="navbar navbar-fixed-top navbar-dark bg-primary">
                 <h1 class="logo">
                     <a class="navbar-brand" href="~/Active/Home" title="@Resources.Res.Info_Home" tabindex="-1">@Resources.Res.System_Name</a>
@@ -50,10 +51,12 @@
 
         <main id="main">
 
-            @if (ViewBag.IsFirstPage) {
+            @if (ViewBag.IsFirstPage)
+            {
                 @RenderBody()
             }
-            else {
+            else
+            {
                 <div id="content">
                     @RenderBody()
                     <div id="page_content"></div>
@@ -78,7 +81,7 @@
     <script type="text/javascript">
         var gb_approot = '@Url.Content("~")';
     </script>
-    
+
     @RenderSection("IncludeScript", false)
 
     <script src="~/Content/js/bootstrap/util.js"></script>
