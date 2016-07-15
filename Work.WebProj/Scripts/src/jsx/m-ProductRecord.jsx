@@ -478,7 +478,7 @@ var GirdForm = React.createClass({
 			var born_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowCustomerBornSelect){
 				born_select_out_html = 					
-					<MdoalCustomerBornSelect bsSize="large"  title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
+					<MdoalCustomerBornSelect bsSize="medium"  title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
 							<div className="modal-body">
 								<div className="table-header">
 							        <div className="table-filter">
@@ -489,7 +489,7 @@ var GirdForm = React.createClass({
 							      			    value={searchBornData.word}
 												onChange={this.changeGDBornValue.bind(this,'word')}
 											 	placeholder="請擇一填寫" />
-							                </div>
+							                </div> { }
 											<label className="text-sm">客戶分類</label> { }
 											<select className="form-control" 
 													value={searchBornData.customer_type}
@@ -500,7 +500,7 @@ var GirdForm = React.createClass({
 													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
 												})
 											}
-											</select> { }							                
+											</select> { }
 							                <div className="form-group">
 							                    <label className="text-sm">是否正在用餐</label> { }
 							                    <select className="form-control"
@@ -510,7 +510,7 @@ var GirdForm = React.createClass({
 							                        <option value="true">是</option>
 							                        <option value="false">否</option>
 							                    </select>
-							                </div>
+							                </div> { }
 							                <button className="btn btn-secondary btn-sm"><i className="fa-search"></i> 搜尋</button>
 							            </div>
 							        </div>
@@ -533,9 +533,9 @@ var GirdForm = React.createClass({
 												var born_out_html = 
 													<tr key={itemData.born_id}>
 														<td className="text-center">
-															<label className="cbox">
+															<label className="c-input c-checkbox">
 										                        <input type="checkbox" onClick={this.selectCustomerBorn.bind(this,itemData.customer_id,itemData.born_id,itemData.meal_id)} />
-										                        <i className="fa-check"></i>
+										                        <span className="c-indicator"></span>
 										                    </label>
 														</td>
 														<td>{itemData.customer_name}</td>
@@ -574,12 +574,12 @@ var GirdForm = React.createClass({
 				meal_id={fieldData.meal_id}
 				is_close={fieldData.is_close} />;
 				if(!fieldData.is_close){
-					close_out_html=<button className="btn btn-success" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
+					close_out_html=<button className="btn btn-success btn-block" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
 				}
 				if(fieldData.is_receipt){//轉應收後出現可檢視應收帳款按鈕
-					receipt_out_html=<button className="btn btn-info" type="button" onClick={this.setAccountsPayable.bind(this)}><i className="fa-search"></i> 檢視 應收帳款</button>;
+					receipt_out_html=<button className="btn btn-info btn-block" type="button" onClick={this.setAccountsPayable.bind(this)}><i className="fa-search"></i> 檢視 應收帳款</button>;
 				}else{
-					receipt_out_html=<button className="btn btn-success" type="button" onClick={this.insertAccountsPayable.bind(this)}><i className="fa-check"></i>轉 應收帳款</button>;
+					receipt_out_html=<button className="btn btn-success btn-block" type="button" onClick={this.insertAccountsPayable.bind(this)}><i className="fa-check"></i>轉 應收帳款</button>;
 				}
 			}
 			var blankStyle={
@@ -766,27 +766,32 @@ var GirdForm = React.createClass({
 							<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-arrow-left"></i> 回前頁</button>
 						</div>
 				</form>
-				<hr className="lg" />
+				<hr />
 				{/* ---是否結案按鈕start--- */}
-				<h4 className="h4 text-default">
-					是否結案：{fieldData.is_close?<strong className="text-success">已結案</strong>:<strong className="text-danger">未結案</strong>} { }
-					{/*<button className="btn-danger"><i className="fa-times"></i> 設為 未結案</button>*/}
-					{close_out_html}
-					<small className="text-danger">結案後，無法新增、修改及刪除產品明細</small>
-				</h4>
-				<h4 className="h4 text-default">
-					是否轉應收：{fieldData.is_receipt?<strong className="text-success">已轉應收</strong>:<strong className="text-danger">未轉應收</strong>} { }
-					{receipt_out_html}
-				</h4>
+				<div className="row">
+					<div className="col-xs-6">
+						<div className="card">
+							<div className="card-header"><i className="fa-file-text-o"></i> 訂單狀態【{fieldData.is_close?<strong>已結案</strong>:<strong className="text-danger">未結案</strong>}】</div>
+							<div className="card-block">
+								{close_out_html}
+								<small className="text-muted">結案後，無法新增、修改及刪除產品明細</small>
+							</div>
+						</div>
+					</div>
+					<div className="col-xs-6">
+						<div className="card">
+							<div className="card-header"><i className="fa-dollar"></i> 帳務狀態【{fieldData.is_receipt?<strong>已轉應收帳款</strong>:<strong className="text-danger">未轉應收帳款</strong>}】</div>
+							<div className="card-block">
+								{receipt_out_html}
+								<small className="text-muted">　</small>
+							</div>
+						</div>
+					</div>
+				</div>
 				{/* ---是否結案按鈕end--- */}
-				
+				<hr />
 				{/*---產品明細---*/}
 				{detail_out_html}
-
-
-				<div className="col-xs-12" style={blankStyle}>
-				</div>
-				<hr className="lg" />
 
 			</div>
 			);
@@ -1253,20 +1258,20 @@ var SubForm = React.createClass({
 			<ModalProductSelect bsSize="medium" title="選擇產品" onRequestHide={this.closeSelectProduct}>
 						<div className="modal-body">
 						<div className="alert alert-warning">
-							<p>1.一筆生產紀錄只能對應一筆試吃</p>
+							一筆生產紀錄只能對應一筆試吃
 						</div>
 							<div className="table-header">
 			                    <div className="table-filter">
-			                        <div className="form-inline">
+			                        <div className="form-inline form-sm">
 			                            <div className="form-group">
-			                                <label for="">產品名稱</label> { }
-			                                <input type="text" className="form-control input-sm"
+			                                <label className="text-sm">產品名稱</label> { }
+			                                <input type="text" className="form-control"
 			                            	value={searchProductData.name}
 											onChange={this.changeGDProductValue.bind(this,'name')} />
-			                            </div>
+			                            </div> { }
 			                            <div className="form-group">
-			                                <label for="">產品分類</label> { }
-			                                <select className="form-control input-sm"
+			                                <label className="text-sm">產品分類</label> { }
+			                                <select className="form-control"
 			                                	value={searchProductData.product_type}
 												onChange={this.changeGDProductValue.bind(this,'product_type')}>
 			                                    <option value="">全部</option>
@@ -1276,30 +1281,28 @@ var SubForm = React.createClass({
 													})
 												}
 			                                </select>
-			                            </div>
-			                            <div className="form-group">
-			                                <button className="btn-primary btn-sm" onClick={this.queryAllProduct}><i className="fa-search"></i> 搜尋</button>
-			                            </div>
+			                            </div> { }
+			                            <button className="btn btn-secondary btn-sm" onClick={this.queryAllProduct}><i className="fa-search"></i> 搜尋</button>
 			                        </div>
 			                    </div>
 			                </div>
-			                <table className="table-condensed">
+			                <table className="table table-sm table-bordered table-striped">
 			                <tbody>
 				                    <tr>
-				                        <th className="col-xs-1 text-center">選擇</th>
-				                        <th className="col-xs-3">產品名稱</th>
-				                        <th className="col-xs-3">產品分類</th>
-				                        <th className="col-xs-2">售價</th>
+				                        <th style={{"width":"10%;"}} className="text-xs-center">選擇</th>
+				                        <th style={{"width":"20%;"}}>產品名稱</th>
+				                        <th style={{"width":"20%;"}}>產品分類</th>
+				                        <th style={{"width":"50%;"}}>售價</th>
 				                    </tr>
 				                    {
 										this.state.product_list.map(function(itemData,i) {
 											
 											var product_out_html = 
 												<tr key={itemData.product_id}>
-													<td className="text-center">
-														<label className="cbox">
+													<td className="text-xs-center">
+														<label className="c-input c-checkbox">
 				                                			<input type="checkbox" onClick={this.selectProduct.bind(this,itemData.product_id)} />
-				                                			<i className="fa-check"></i>
+				                                			<span className="c-indicator"></span>
 				                            			</label>
 				                            		</td>
 													<td>{itemData.product_name}</td>
@@ -1312,8 +1315,8 @@ var SubForm = React.createClass({
 			                    </tbody>                   
 			                </table>
 						</div>
-						<div className="modal-footer">
-			                <button type="button" onClick={this.closeSelectProduct}><i className="fa-times"></i> 關閉</button>
+						<div className="modal-footer form-action">
+			                <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectProduct}><i className="fa-times"></i> 關閉</button>
 			            </div>
 				</ModalProductSelect>;
 		}
@@ -1413,7 +1416,7 @@ var SubForm = React.createClass({
 				<div>
 					{product_select_out_html}
 				{/*---產品明細編輯start---*/}
-					<h4 className="title">新增產品明細</h4>
+					<h3 className="h3">新增產品明細</h3>
 					<div className="row">
 						<div className="col-xs-9">
 							<div className="item-box">
