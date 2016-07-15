@@ -317,6 +317,7 @@
     <Compile Include="_Code\Ashx\ValidateCode.ashx.cs">
       <DependentUpon>ValidateCode.ashx</DependentUpon>
     </Compile>
+    <Content Include="Content\css\sys.css" />
     <Content Include="Content\css\vendor\animate.css" />
     <Content Include="Content\css\vendor\bootstrap-datetimepicker-build.css" />
     <Content Include="Content\css\vendor\fontAwesome\font-awesome.css" />
