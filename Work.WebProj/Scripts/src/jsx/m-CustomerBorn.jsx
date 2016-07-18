@@ -1032,7 +1032,7 @@ var GirdSubForm = React.createClass({
 							</div>
 							<div className="modal-footer form-action row">
 			        			<div className="col-xs-11">
-			        				<button  type="submit" form="form2" className="btn btn-sm btn-primary"><i className="fa-check"></i> 儲存</button> { }
+			        				<button  type="submit" form="form2" className="btn btn-sm btn-primary"><i className="fa-check"></i> 存檔確認</button> { }
 			       					<button className="btn btn-sm btn-blue-grey" type="button" onClick={this.closeEditDetail}><i className="fa-times"></i>關閉</button>
 			        			</div>
 							</div>

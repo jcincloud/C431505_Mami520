@@ -352,7 +352,7 @@ var GirdForm = React.createClass({
 				map_out_html=(
 					<div>
 						<hr className="lg" />
-						<h4 className="h4">需求元素對應設定 <small className="text-muted">需求元素設為 "有對應" 才需填寫!!</small></h4>
+						<h3 className="h3">需求元素對應設定 <small className="sub">需求元素設為【有對應】才需填寫！</small></h3>
 						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 					</div>
 					);
@@ -413,7 +413,7 @@ var GirdForm = React.createClass({
 								<span className="text-sm">不須對應</span>
 							</label>
 						</div>
-						<small className="col-xs-4 text-muted">ex. 不薑 / 不酒 (有對應)、清淡 / 素食 (無對應)</small>
+						<small className="col-xs-4 text-muted">ex. 不薑 / 不酒 (須對應)、清淡 / 素食 (不須對應)</small>
 					</div>
 
 					<div className="form-group row">
@@ -447,7 +447,7 @@ var GirdForm = React.createClass({
 								<span className="text-sm">晚餐</span>
 							</label>
 						</div>
-						<small className="col-xs-4 text-muted">需求元素設為【有對應】才需填寫！</small>
+						<small className="col-xs-4 text-muted">需求元素設為【須對應】才需填寫！</small>
 					</div>
 					<div className="form-group row">
 						<label className="col-xs-1 form-control-label text-xs-right">狀態</label>
@@ -496,7 +496,7 @@ var GirdForm = React.createClass({
 						</div>
 					</div>
 					<div className="form-action">
-						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
 						<button type="button" onClick={this.noneType} className="btn btn-sm btn-blue-grey"><i className="fa-times"></i> 回前頁</button>
 					</div>
 				</form>
@@ -642,47 +642,46 @@ var GirdCofE = React.createClass({
 
 		outHtml =(
 			<div>
-			<hr className="condensed" />
-			<h4 className="title">需求元素對應設定 <small class="text-muted">需求元素設為 "有對應" 才需填寫!!</small></h4>
+			<hr className="lg" />
+			<h3 className="h3">需求元素對應設定 <small className="sub">需求元素設為【須對應】才需填寫！</small></h3>
 				<div className="row">
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>
-								    <div className="form-inline break pull-right">
-				                        <div className="form-group">
-				                            <input type="text" className="form-control input-sm" placeholder="食材名稱"
-				                           	value={searchData.name} 
-	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
-				                            <select name="" id="" className="form-control input-sm"
-				                            onChange={this.queryChangeElementParam.bind(this,'category_id')}
-											value={searchData.category_id}> { }
-				                                <option value="">分類</option>
-											{
-												this.state.category_element.map(function(itemData,i) {
-													return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
-												})
-											}
-				                            </select> { }			             
-
-				                        </div>
-				                    </div>
-				                    食材
-								</caption>
-								<tbody>
+						<div className="table-header">
+							<div className="form-inline form-sm">
+		                        <div className="form-group">
+		                            <select name="" id="" className="form-control"
+		                            onChange={this.queryChangeElementParam.bind(this,'category_id')}
+									value={searchData.category_id}> { }
+		                                <option value="">全部分類</option>
+									{
+										this.state.category_element.map(function(itemData,i) {
+											return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
+										})
+									}
+		                            </select> { }
+		                            <input type="text" className="form-control" placeholder="搜尋食材名稱..."
+		                           	value={searchData.name} 
+            						onChange={this.queryChangeElementParam.bind(this,'name')} />
+		                        </div>
+		                    </div>
+						</div>
+							<table className="table table-sm table-bordered table-striped">
+								<thead>
 									<tr>
 										<th>分類</th>
 										<th>食材名稱</th>
-					                	<th className="text-center">加入</th>
+					                	<th className="text-xs-center">加入</th>
 									</tr>
+								</thead>
+								<tbody>
 									{
 										this.state.grid_left_element.rows.map(function(itemData,i) {
 											var out_sub_html =                     
 												<tr key={itemData.element_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
 							                        <td>{itemData.element_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.element_id)}>
+				                        			<td className="text-xs-center">
+														<button className="btn btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.element_id)}>
 															<i className="fa-plus"></i>
 														</button>
 							                        </td>
@@ -692,31 +691,34 @@ var GirdCofE = React.createClass({
 									}
 								</tbody>
 	        				</table>
-	        				<hr className="condensed" />
-							<ul className="pager list-inline">
-								<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-angle-double-left"></i> 上一頁</a></li>
-								<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_element.total}</li>
-								<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-angle-double-right"></i></a></li>
-							</ul>
+	        				<div className="table-footer">
+	        					<ul className="pager pager-sm list-inline">
+									<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-angle-double-left"></i> 上一頁</a></li>
+									<li>{this.state.LeftGridPageIndex +' / ' + this.state.grid_left_element.total}</li>
+									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-angle-double-right"></i></a></li>
+								</ul>
+	        				</div>
         			</div>
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>已加入對應</caption>
-								<tbody>
+							
+						<div className="table-header"><span className="text-secondary">已加入對應的食材：</span></div>
+							<table className="table table-sm table-bordered table-striped">
+								<thead>
 									<tr>
 										<th>分類</th>
 										<th>食材名稱</th>
-					                	<th className="text-center">刪除</th>
+					                	<th className="text-xs-center">刪除</th>
 									</tr>
+								</thead>
+								<tbody>
 									{
 										this.state.grid_right_element.map(function(itemData,i) {
 											var out_sub_html =                     
 												<tr key={itemData.element_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
 							                        <td>{itemData.element_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-danger" type="button" onClick={this.removeElement.bind(this,itemData.element_id)}>
+				                        			<td className="text-xs-center">
+														<button className="btn btn-link text-danger" type="button" onClick={this.removeElement.bind(this,itemData.element_id)}>
 															<i className="fa-times"></i>
 														</button>
 							                        </td>

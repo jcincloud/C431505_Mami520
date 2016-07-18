@@ -14,7 +14,7 @@ var GridRow = React.createClass({
         return (
 
                 <tr>
-                    <td className="text-center"><GridButtonModify modify={this.modify} /></td>
+                    <td className="text-xs-center"><GridButtonModify modify={this.modify} /></td>
                     <td>{this.props.itemData.meal_id}</td>
                     <td>{this.props.itemData.mom_name}</td>
                     <td>{this.props.itemData.sno}</td>
@@ -195,52 +195,46 @@ var GirdForm = React.createClass({
             outHtml =
             (
             <div>
-                <h3 className="title">{this.props.Caption} 列表</h3>
+                <h3 className="h3">{this.props.Caption}</h3>
 
                 <form onSubmit={this.handleSearch}>
                     
                         <div className="table-header">
                             <div className="table-filter">
-                                <div className="form-inline">
+                                <div className="form-inline form-sm">
                                     <div className="form-group">
-                                        <label for="">用餐編號/媽媽姓名/身分證號/電話</label> { }
-                                        <input type="text" className="form-control input-sm"
+                                        <label className="text-sm">用餐編號/媽媽姓名/身分證號/電話</label> { }
+                                        <input type="text" className="form-control"
                                                value={searchData.word}
                                                onChange={this.changeGDValue.bind(this,'word')}
                                                placeholder="請擇一填寫" />
-                                    </div>
+                                    </div> { } 
                                     <div className="form-group">
-                                        <label>送餐日期</label> { }                                     
-                                            <span className="has-feedback">
+                                        <label className="text-sm">送餐日期</label> { }                                     
                                                 <InputDate id="start_date" ver={2}
                                                 onChange={this.changeGDValue} 
                                                 field_name="start_date" 
-                                                value={searchData.start_date} />
-                                            </span> { }
-                                        <label>~</label> { }
-                                            <span className="has-feedback">
+                                                value={searchData.start_date} /> { }
+                                        <label className="text-sm">~</label> { }
                                                 <InputDate id="end_date" ver={2}
                                                 onChange={this.changeGDValue} 
                                                 field_name="end_date" 
-                                                value={searchData.end_date} />
-                                            </span> { }                                    
-                                    </div>
-                                    <div className="form-group">
-                                        <button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
-                                    </div>
+                                                value={searchData.end_date} />                                   
+                                    </div> { } 
+                                    <button className="btn btn-secondary btn-sm" type="submit"><i className="fa-search"></i> 搜尋</button>
                                 </div>
                             </div>
                         </div>
-                        <table className="table-condensed">
+                        <table className="table table-sm table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th className="col-xs-1 text-center">修改</th>
-                                    <th className="col-xs-1">用餐編號</th>
-                                    <th className="col-xs-1">媽媽姓名</th>
-                                    <th className="col-xs-2">身分證號</th>
-                                    <th className="col-xs-2">電話1</th>
-                                    <th className="col-xs-2">送餐起日</th>
-                                    <th className="col-xs-2">送餐迄日</th>
+                                    <th style={{"width":"7%;"}} className="text-xs-center">修改</th>
+                                    <th style={{"width":"15%;"}}>用餐編號</th>
+                                    <th style={{"width":"15%;"}}>媽媽姓名</th>
+                                    <th style={{"width":"20%;"}}>身分證號</th>
+                                    <th style={{"width":"13%;"}}>電話1</th>
+                                    <th style={{"width":"15%;"}}>送餐起日</th>
+                                    <th style={{"width":"15%;"}}>送餐迄日</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -278,12 +272,11 @@ var GirdForm = React.createClass({
 
             outHtml=(
             <div>
-                <h3 className="title">{this.props.Caption} 編輯</h3>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
 
-                <form className="form-horizontal clearfix" role="form">
-                    <div className="col-xs-9">                    
-                        <div className="form-group">
-                            <label className="col-xs-2 control-label">用餐編號</label>
+                <form className="form form-sm" role="form">              
+                        <div className="form-group row">
+                            <label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
                             <div className="col-xs-3">
                                 <input type="text" 
                                 className="form-control"    
@@ -292,7 +285,7 @@ var GirdForm = React.createClass({
                                 required
                                 disabled />
                             </div>
-                            <label className="col-xs-2 control-label">媽媽姓名</label>
+                            <label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
                             <div className="col-xs-3">
                                 <input type="text"                          
                                 className="form-control"    
@@ -303,10 +296,10 @@ var GirdForm = React.createClass({
                                 disabled />
                             </div>  
                         </div>
-                        <div className="bg-warning">
-                            <div className="form-group">
-                                <label className="col-xs-2 control-label">連絡電話1</label>
-                                <div className="col-xs-3">
+
+                            <div className="form-group row">
+                                <label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
+                                <div className="col-xs-4">
                                     <input type="tel" 
                                     className="form-control"    
                                     value={fieldData.tel_1}
@@ -314,8 +307,8 @@ var GirdForm = React.createClass({
                                     maxLength="16"
                                     disabled />
                                 </div>
-                                <label className="col-xs-2 control-label">連絡電話2</label>
-                                <div className="col-xs-3">
+                                <label className="col-xs-1 form-control-label text-xs-right">連絡電話2</label>
+                                <div className="col-xs-4">
                                     <input type="tel" 
                                     className="form-control"    
                                     value={fieldData.tel_2}
@@ -324,8 +317,8 @@ var GirdForm = React.createClass({
                                     disabled />
                                 </div>
                             </div>                      
-                            <div className="form-group">
-                                <label className="col-xs-2 control-label">身分證字號</label>
+                            <div className="form-group row">
+                                <label className="col-xs-1 form-control-label text-xs-right">身分證字號</label>
                                 <div className="col-xs-3">
                                     <input type="text" 
                                     className="form-control"    
@@ -334,8 +327,8 @@ var GirdForm = React.createClass({
                                     maxLength="10"
                                     disabled />
                                 </div>
-                                <label className="col-xs-2 control-label">生日</label>
-                                <div className="col-xs-3">
+                                <label className="col-xs-1 form-control-label text-xs-right">生日</label>
+                                <div className="col-xs-4">
                                     <span className="has-feedback">
                                         <InputDate id="birthday" 
                                         onChange={this.changeFDValue} 
@@ -345,8 +338,8 @@ var GirdForm = React.createClass({
                                     </span>
                                 </div>
                             </div>
-                            <div className="form-group">
-                                <label className="col-xs-2 control-label">送餐地址</label>
+                            <div className="form-group row">
+                                <label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
                                     <TwAddress ver={1}
                                     onChange={this.changeFDValue}
                                     setFDValue={this.setFDValue}
@@ -361,8 +354,8 @@ var GirdForm = React.createClass({
                                     disabled={true}/>
                             </div>
 
-                            <div className="form-group">
-                                <label className="col-xs-2 control-label">備用地址</label>
+                            <div className="form-group row">
+                                <label className="col-xs-1 form-control-label text-xs-right">備用地址</label>
                                     <TwAddress ver={1}
                                     onChange={this.changeFDValue}
                                     setFDValue={this.setFDValue}
@@ -376,17 +369,15 @@ var GirdForm = React.createClass({
                                     address_field="tw_address_2"
                                     disabled={true}/>
                             </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="col-xs-2 control-label">用餐週期<br />說明</label>
-                            <div className="col-xs-10">
+                        <div className="form-group row">
+                            <label className="col-xs-1 form-control-label text-xs-right">用餐週期<br />說明</label>
+                            <div className="col-xs-8">
                                 <textarea col="30" row="2" className="form-control"
                                 value={fieldData.meal_memo}
                                 onChange={this.changeFDValue.bind(this,'meal_memo')}
                                 maxLength="256" disabled></textarea>
                             </div>
                         </div>
-                    </div>
                 </form>
 
             {/*---用餐排程---*/}
@@ -541,14 +532,16 @@ var MealCalendar = React.createClass({
         var change_record_html=null;
         if(this.state.isHaveRecord){
             change_record_html=(
-                <table className="table-condensed">
-                    <tr>
-                        <th className="col-xs-4">異動時間</th>
-                        <th className="col-xs-3">用餐日期</th>
-                        <th className="col-xs-1 text-center">餐別</th>
-                        <th className="col-xs-2 text-center">停／增餐</th>
-                        <th className="col-xs-2 text-center">操作人員</th>
-                    </tr>
+                <table className="table table-sm table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style={{"width":"20;"}}>異動時間</th>
+                            <th style={{"width":"15;"}}>用餐日期</th>
+                            <th style={{"width":"20;"}} className="text-xs-center">餐別</th>
+                            <th style={{"width":"20;"}} className="text-xs-center">停／增餐</th>
+                            <th style={{"width":"25;"}} className="text-xs-center">操作人員</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         {
                             this.state.ChangeRecord_list.map(function(itemData,i) {                                           
@@ -556,9 +549,9 @@ var MealCalendar = React.createClass({
                                     <tr key={itemData.change_record_id}>
                                         <td>{moment(itemData.change_time).format('YYYY/MM/DD HH:mm:ss')}</td>
                                         <td>{moment(itemData.meal_day).format('YYYY/MM/DD')}</td>
-                                        <td className="text-center"><StateForGrid stateData={CommData.MealType} id={itemData.meal_type} /></td>
-                                        <td className="text-center"><StateForGrid stateData={CommData.ChangeMealType} id={itemData.change_type} /></td>
-                                        <td className="text-center">{itemData.user_name}</td>
+                                        <td className="text-xs-center"><StateForGrid stateData={CommData.MealType} id={itemData.meal_type} /></td>
+                                        <td className="text-xs-center"><StateForGrid stateData={CommData.ChangeMealType} id={itemData.change_type} /></td>
+                                        <td className="text-xs-center">{itemData.user_name}</td>
                                     </tr>;
                                 return product_out_html;
                             }.bind(this))
@@ -579,8 +572,8 @@ var MealCalendar = React.createClass({
             (
                 <div>
                 {/*---用餐排程start---*/}
-                    <hr className="condensed" />
-                    <h4 className="title">用餐排程</h4>
+                    <hr className="lg" />
+                    <h3 className="h3">用餐排程</h3>
 
                     <div className="alert alert-warning">
                         <p> 已停 <strong>{MealCount.pause_meal}</strong> 餐／
@@ -592,16 +585,12 @@ var MealCalendar = React.createClass({
                         <p><strong className="text-default">黑色：正常</strong>／<strong className="text-danger">紅色：停餐</strong>／<strong className="text-success">綠色：增餐</strong></p>
                     </div>
 
-                    <ul className="pager">
-                        <li className="previous">
-                            <a onClick={this.setPrve3Month.bind(this)}>← 前 1 個月</a>
-                        </li>
-                        <li className="next">
-                            <a onClick={this.setNext3Month.bind(this)}>後 1 個月 →</a>
-                        </li>
-                    </ul>
-
-                    <hr className="condensed" />
+                    <p className="text-xs-center">
+                        <span className="btn-group">
+                            <button className="btn btn-sm btn-primary-outline" onClick={this.setPrve3Month.bind(this)}><i className="fa-arrow-left"></i> 前 1 個月</button>
+                            <button className="btn btn-sm btn-primary-outline" onClick={this.setNext3Month.bind(this)}>後 1 個月 <i className="fa-arrow-right"></i></button>
+                        </span>
+                    </p>
 
                     {/*<Calendar ref="Calendar1"
                     year={this.state.CalendarGrid.prveYear}
@@ -640,65 +629,65 @@ var MealCalendar = React.createClass({
                     queryRecordDetail={this.queryRecordDetail} />
 
                     <div className="clearfix">
-                        <p className="pull-left"><strong>開始送餐後(含送餐當日) 請勿任意修改用餐排程，如有異動會留下紀錄!!</strong></p>
-                        <p className="pull-right text-right">
-                            <button type="button" onClick={this.props.noneType}><i className="fa-times"></i> 回列表</button> { }
-                            <button type="button" className="btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
+                        <p className="pull-xs-left"><strong>開始送餐後(含送餐當日) 請勿任意修改用餐排程，如有異動會留下紀錄！</strong></p>
+                        <p className="pull-xs-right text-xs-right">
+                            <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.props.noneType}><i className="fa-arrow-left"></i> 回列表</button> { }
+                            <button type="button" className="btn btn-sm btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
                         </p>
                     </div>
                 {/*---用餐排程end---*/}
                 {/*---異動紀錄start---*/}
-                    <hr className="condensed" />
+                    <hr className="lg" />
 
-                    <h4 className="title">異動紀錄</h4>
-
-                    <div className="row">
-                        <div className="col-xs-9">
+                    <h3 className="h3">異動紀錄</h3>
+                        
                             <ul className="nav nav-tabs" role="tablist">
-                                <li className="active"><a href="#changeLog1" role="tab" data-toggle="tab">用餐排程異動紀錄</a></li>
-                                <li><a href="#changeLog2" role="tab" data-toggle="tab">訂餐日期及餐數異動紀錄</a></li>
+                                <li className="nav-item"><a className="nav-link active" href="#changeLog1" role="tab" data-toggle="tab">用餐排程異動紀錄</a></li>
+                                <li className="nav-item"><a href="#changeLog2" role="tab" data-toggle="tab">訂餐日期及餐數異動紀錄</a></li>
                             </ul>{/*---tab-nav---*/}
                             <div className="tab-content">
                                 <div className="tab-pane active" id="changeLog1">
                                     {change_record_html}
                                 </div>
                                 <div className="tab-pane" id="changeLog2">
-                                    <table className="table-condensed">
-                                        <tr>
-                                            <th className="col-xs-2"></th>
-                                            <th className="col-xs-3">送餐起日</th>
-                                            <th className="col-xs-3">送餐迄日</th>
-                                            <th className="col-xs-4">餐數</th>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-right"><strong>原訂</strong></td>
-                                            <td>{moment(RecordDetailData.meal_start).format('YYYY/MM/DD')}</td>
-                                            <td>{moment(RecordDetailData.meal_end).format('YYYY/MM/DD')}</td>
-                                            <td>早 {RecordDetailData.estimate_breakfast}／
-                                                午 {RecordDetailData.estimate_lunch}／
-                                                晚 {RecordDetailData.estimate_dinner}</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-right"><strong>實訂</strong></td>
-                                            <td>{moment(RecordDetailData.real_estimate_meal_start).format('YYYY/MM/DD')}</td>
-                                            <td>{moment(RecordDetailData.real_estimate_meal_end).format('YYYY/MM/DD')}</td>
-                                            <td>早 {RecordDetailData.real_estimate_breakfast}／
-                                                午 {RecordDetailData.real_estimate_lunch}／
-                                                晚 {RecordDetailData.real_estimate_dinner}</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="text-right"><strong>實際</strong></td>
-                                            <td>{moment(RecordDetailData.real_meal_start).format('YYYY/MM/DD')}</td>
-                                            <td>{moment(RecordDetailData.real_meal_end).format('YYYY/MM/DD')}</td>
-                                            <td>早 {RecordDetailData.real_breakfast}／
-                                                午 {RecordDetailData.real_lunch}／
-                                                晚 {RecordDetailData.real_dinner}</td>
-                                        </tr>
+                                    <table className="table table-sm table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style={{"width":"20%;"}}></th>
+                                                <th style={{"width":"30%;"}}>送餐起日</th>
+                                                <th style={{"width":"30%;"}}>送餐迄日</th>
+                                                <th style={{"width":"20%;"}}>餐數</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-xs-right"><strong>原訂</strong></td>
+                                                <td>{moment(RecordDetailData.meal_start).format('YYYY/MM/DD')}</td>
+                                                <td>{moment(RecordDetailData.meal_end).format('YYYY/MM/DD')}</td>
+                                                <td>早 {RecordDetailData.estimate_breakfast}／
+                                                    午 {RecordDetailData.estimate_lunch}／
+                                                    晚 {RecordDetailData.estimate_dinner}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="text-xs-right"><strong>實訂</strong></td>
+                                                <td>{moment(RecordDetailData.real_estimate_meal_start).format('YYYY/MM/DD')}</td>
+                                                <td>{moment(RecordDetailData.real_estimate_meal_end).format('YYYY/MM/DD')}</td>
+                                                <td>早 {RecordDetailData.real_estimate_breakfast}／
+                                                    午 {RecordDetailData.real_estimate_lunch}／
+                                                    晚 {RecordDetailData.real_estimate_dinner}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="text-xs-right"><strong>實際</strong></td>
+                                                <td>{moment(RecordDetailData.real_meal_start).format('YYYY/MM/DD')}</td>
+                                                <td>{moment(RecordDetailData.real_meal_end).format('YYYY/MM/DD')}</td>
+                                                <td>早 {RecordDetailData.real_breakfast}／
+                                                    午 {RecordDetailData.real_lunch}／
+                                                    晚 {RecordDetailData.real_dinner}</td>
+                                            </tr>
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>{/*table-content*/}
-                        </div>
-                    </div>
                 {/*---異動紀錄end---*/}            
                 </div>
             );
@@ -780,28 +769,31 @@ var Calendar = React.createClass({
         var MonthObj=this.state.MonthObj;
             outHtml =
             (
-                <div className="panel-group">
+                <div className="card m-b-1">
                    <div className="panel">
-                        <div className="panel-heading">
-                            <h4 className="panel-title">
-                                <a data-toggle="collapse"  href={'#'+this.state.Calendar_id}>
-                                    <i className="fa-plus"></i> {MonthObj.year} 年 {MonthObj.month} 月
+                        <div className="card-header panel-heading bg-primary-light">
+                            <span className="panel-title">
+                                <a className="center-block text-xs-left text-secondary" data-toggle="collapse"  href={'#'+this.state.Calendar_id}>
+                                    <i className="fa-calendar"></i> { }
+                                    {MonthObj.year} 年 {MonthObj.month} 月
                                 </a>
-                            </h4>
+                            </span>
                         </div>
                         <div id={this.state.Calendar_id} className="panel-collapse collapse in">
-                            <div className="panel-body">
-                                <table className="table-condensed calendar">
-                                    <tbody>
+                            <div className="card-block panel-body">
+                                <table className="table table-sm table-bordered calendar">
+                                    <thead>
                                         <tr>
-                                            <th className="text-center">日</th>
-                                            <th className="text-center">一</th>
-                                            <th className="text-center">二</th>
-                                            <th className="text-center">三</th>
-                                            <th className="text-center">四</th>
-                                            <th className="text-center">五</th>
-                                            <th className="text-center">六</th>
+                                            <th className="text-xs-center">日</th>
+                                            <th className="text-xs-center">一</th>
+                                            <th className="text-xs-center">二</th>
+                                            <th className="text-xs-center">三</th>
+                                            <th className="text-xs-center">四</th>
+                                            <th className="text-xs-center">五</th>
+                                            <th className="text-xs-center">六</th>
                                         </tr>
+                                    </thead>
+                                    <tbody>
                                         {
                                             MonthObj.weekInfo.map(function(weekObj,i) {                                                    
                                                 var week_out_html = 
@@ -813,7 +805,7 @@ var Calendar = React.createClass({
                                                                 day_out_html=
                                                                 <td key={moment(dayObj.meal_day).format('MM-DD')}> {/* 非當月的日期 class="disabled" */}
                                                                     <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
-                                                                    <div className="meal">
+                                                                    <div className="c-inputs-stacked">
                                                                         <MealCheckBox
                                                                         meal_type={1}
                                                                         meal_day={dayObj.meal_day}
@@ -977,27 +969,25 @@ var MealCheckBox = React.createClass({
         var disabledOutHtml=null;//正常判斷式,日期已結束之排餐不可修改
             disabledOutHtml =
             (
-                <div className="checkbox">
-                    <label>
-                        <input type="checkbox"                             
+                <label className="c-input c-checkbox">
+                    <input type="checkbox"                             
                         onChange={this.changeMealValue.bind(this)}
                         checked={MealData.meal_state > 0}
                         disabled={this.state.isMealFinished}  />
-                        {name_out_html}
-                     </label>
-                </div>
+                    <span className="c-indicator"></span>
+                    {name_out_html}
+                </label>
             );
 
             outHtml =
             (
-                <div className="checkbox">
-                    <label>
-                        <input type="checkbox"                             
+                <label className="c-input c-checkbox">
+                    <input type="checkbox"                             
                         onChange={this.changeMealValue.bind(this)}
                         checked={MealData.meal_state > 0}  />
-                        {name_out_html}
-                     </label>
-                </div>
+                    <span className="c-indicator"></span>
+                    {name_out_html}
+                </label>
             );
         return outHtml;
     }

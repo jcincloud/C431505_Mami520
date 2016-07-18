@@ -552,7 +552,7 @@ var GirdForm = React.createClass({
 									</tbody>
 								</table>
 							</div>
-							<div className="modal-footer action">
+							<div className="modal-footer form-action">
 								<button onClick={this.closeSelectCustomerBorn} className="btn btn-sm btn-blue-grey"><i className="fa-times"></i> { } 關閉</button>
 							</div>
 					</MdoalCustomerBornSelect>;
@@ -563,7 +563,7 @@ var GirdForm = React.createClass({
 			var receipt_out_html=null;//轉應收按鈕
 			var detail_out_html=null;//明細檔
 			if(this.state.edit_type==1){
-				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 儲存</button>;
+				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
 			}else{
 				save_out_html=<strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
 				detail_out_html=
@@ -1293,9 +1293,9 @@ var SubForm = React.createClass({
 			                <tbody>
 				                    <tr>
 				                        <th style={{"width":"10%;"}} className="text-xs-center">選擇</th>
-				                        <th style={{"width":"20%;"}}>產品名稱</th>
+				                        <th style={{"width":"30%;"}}>產品名稱</th>
 				                        <th style={{"width":"20%;"}}>產品分類</th>
-				                        <th style={{"width":"50%;"}}>售價</th>
+				                        <th style={{"width":"40%;"}}>售價</th>
 				                    </tr>
 				                    {
 										this.state.product_list.map(function(itemData,i) {
@@ -1334,10 +1334,10 @@ var SubForm = React.createClass({
 							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
 								<div className="table-header">
 							        <div className="table-filter">
-							            <div className="form-inline">
+							            <div className="form-inline form-sm">
 							                <div className="form-group">
-							                    <label for="">用餐編號分類</label> { }
-							                    <select className="form-control input-sm"
+							                    <label className="text-sm">用餐編號分類</label> { }
+							                    <select className="form-control"
 							                    value={searchMealIDData.keyword}
 												onChange={this.changeGDMealIDValue.bind(this,'keyword')}>
 							                        <option value="">全部</option>
@@ -1348,23 +1348,28 @@ var SubForm = React.createClass({
 							                        <option value="N">N</option>
 							                        <option value="T">T</option>
 							                    </select> { }
-							                    <button type="button" className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
+							                    <button type="button" className="btn btn-secondary btn-sm"><i className="fa-search"></i> 搜尋</button>
 							                </div>
 							            </div>
 							        </div>
 							    </div>							
-							<table>
+							<table className="table table-sm table-bordered table-striped">
 								<tbody>
 									<tr>
-										<th className="col-xs-1 text-center">選擇</th>
-										<th className="col-xs-4">用餐編號</th>
+										<th style={{"width":"20%;"}} className="text-xs-center">選擇</th>
+										<th style={{"width":"80%;"}}>用餐編號</th>
 									</tr>
 									{
 										this.state.mealid_list.map(function(itemData,i) {
 										
 											var mealid_out_html = 
 												<tr key={itemData.meal_id}>
-													<td className="text-center"><input type="checkbox" onClick={this.selectMealid.bind(this,itemData.meal_id)} /></td>
+													<td className="text-xs-center">
+														<label className="c-input c-checkbox">
+															<input type="checkbox" onClick={this.selectMealid.bind(this,itemData.meal_id)} />	
+															<span className="c-indicator"></span>
+														</label>
+													</td>
 													<td>{itemData.meal_id}</td>
 												</tr>;
 											return mealid_out_html;
@@ -1373,8 +1378,8 @@ var SubForm = React.createClass({
 								</tbody>
 							</table>
 						</div>
-						<div className="modal-footer">
-							<button onClick={this.closeSelectMealid}><i className="fa-times"></i> { } 關閉</button>
+						<div className="modal-footer form-action">
+							<button className="btn btn-sm btn-blue-grey" onClick={this.closeSelectMealid}><i className="fa-times"></i> 關閉</button>
 						</div>
 				</MdoalMealidSelect>;
 		}
@@ -1382,11 +1387,11 @@ var SubForm = React.createClass({
 		var meal_id_html=null;
 		if(fieldSubData.product_type==2){
 			meal_id_html=(
-				<div className="form-group">
+				<div className="form-group row">
 					{mealid_select_out_html}
 					<label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
-					<div className="col-xs-2">
-						<div className="input-group">
+					<div className="col-xs-4">
+						<div className="input-group input-group-sm">
 				            <input type="text" 
 							className="form-control"	
 							value={fieldSubData.meal_id}
@@ -1394,19 +1399,19 @@ var SubForm = React.createClass({
 							required
 							disabled={true} />
 			            	<span className="input-group-btn">
-			         			<a className="btn"
+			         			<a className="btn btn-success"
 								onClick={this.showSelectMealid}>
 								{/*---disabled={this.state.edit_sub_type==2 & fieldSubData.meal_id!=null}---*/}
 									<i className="fa-plus"></i>
 								</a>
 			            	</span>
 			        	</div>
+			        	<small className="text-muted">請按 <i className="fa-plus"></i> 選取</small>
 					</div>
-					<small className="help-inline col-xs-2">請按 <i className="fa-plus"></i> 選取</small>
-					<button className="btn-success" type="button" 
+					<button className="btn btn-indigo btn-sm" type="button" 
 					onClick={this.setReleaseMealID.bind(this,fieldSubData.meal_id,fieldSubData.record_deatil_id)}
 					disabled={this.state.edit_sub_type==1 || fieldSubData.meal_id==null}>
-						<i className="fa-check"></i>釋放用餐編號
+						<i className="fa-check"></i> 釋放用餐編號
 					</button>
 				</div>
 				);
@@ -1421,19 +1426,7 @@ var SubForm = React.createClass({
 				{/*---產品明細編輯start---*/}
 					<h3 className="h3">產品銷售明細 <small className="sub"><i className="fa-angle-double-right"></i> 新增</small></h3>
 					<form className="form form-sm" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
-						<h4 className="h4">1. 選擇日期 &amp; 產品</h4>
-						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">銷售日期</label>
-							<div className="col-xs-4">
-								<InputDate id="sell_day" 
-									onChange={this.changeFDValue} 
-									field_name="sell_day" 
-									value={fieldSubData.sell_day}
-									disabled={true}
-									placeholder="系統自動產生" />
-							</div>
-							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
-						</div>
+						<h4 className="h4">1. 填寫產品資料</h4>
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇產品</label>
 							<div className="col-xs-4">
@@ -1449,8 +1442,18 @@ var SubForm = React.createClass({
 										disabled={this.state.edit_sub_type==2} ><i className="fa-plus"></i></a>
 									</span>
 								</div>
+								<small className="text-muted">請按 <i className="fa-plus"></i> 選取</small>
 							</div>
-							<small className="text-muted col-xs-6">請按 <i className="fa-plus"></i> 選取</small>
+							<label className="col-xs-1 form-control-label text-xs-right">銷售日期</label>
+							<div className="col-xs-4">
+								<InputDate id="sell_day" 
+									onChange={this.changeFDValue} 
+									field_name="sell_day" 
+									value={fieldSubData.sell_day}
+									disabled={true}
+									placeholder="系統自動產生" />
+								<small className="text-muted">系統自動產生，無法修改</small>
+							</div>
 						</div>
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right">產品分類</label>
@@ -1466,8 +1469,6 @@ var SubForm = React.createClass({
 								}
 								</select>
 							</div>
-						</div>
-						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right">規格</label>
 							<div className="col-xs-4">
 								<input type="text" 							
@@ -1481,12 +1482,15 @@ var SubForm = React.createClass({
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right">售價</label>
 							<div className="col-xs-2">
-								<input type="number" 
-								className="form-control"	
-								value={fieldSubData.price}
-								onChange={this.changePriceCount.bind(this,'price')} />
+								<div className="input-group input-group-sm">
+									<input type="number" 
+									className="form-control"	
+									value={fieldSubData.price}
+									onChange={this.changePriceCount.bind(this,'price')} />
+									<span className="input-group-addon">元</span>
+								</div>
 							</div>
-							<label className="col-xs-1 control-label">數量</label>
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 數量</label>
 							<div className="col-xs-1">
 								<input type="text"				
 								className="form-control"	
@@ -1494,21 +1498,21 @@ var SubForm = React.createClass({
 								onChange={this.changePriceCount.bind(this,'qty')}
 								required/>
 							</div>
-							<small className="text-muted col-xs-2 text-danger">(必填)</small>
-						</div>
-						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right">小計</label>
 							<div className="col-xs-4">
-								<input type="number" 							
-								className="form-control"	
-								value={fieldSubData.subtotal}
-								onChange={this.changeFDValue.bind(this,'subtotal')}
-								required disabled　/>
+								<div className="input-group input-group-sm">
+									<input type="number" 							
+									className="form-control"	
+									value={fieldSubData.subtotal}
+									onChange={this.changeFDValue.bind(this,'subtotal')}
+									required disabled　/>
+									<span className="input-group-addon">元</span>
+								</div>
 							</div>
 						</div>
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right">備註</label>
-							<div className="col-xs-4">
+							<div className="col-xs-9">
 								<textarea col="30" row="2" className="form-control"
 								value={fieldSubData.memo}
 								onChange={this.changeFDValue.bind(this,'memo')}
@@ -1523,142 +1527,134 @@ var SubForm = React.createClass({
 						
 						{meal_id_html}
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">預計送餐起日</label>
-							<div className="col-xs-6">
+							<label className="col-xs-1 form-control-label text-xs-right">預計<br/>送餐起日</label>
+							<div className="col-xs-4">
 								<InputDate id="meal_start" 
 									onChange={this.changeMealday} 
 									field_name="meal_start" 
 									value={fieldSubData.meal_start}
 									required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!='')|| fieldSubData.product_type==1}
 									disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
-							</div>
-							{/*---早開始、午開始、晚開始---*/}
+								{/*---早開始、午開始、晚開始---*/}
+								<div>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_start_meal"
+												value={1}
+												checked={fieldSubData.set_start_meal==1} 
+												onChange={this.changeFDValue.bind(this,'set_start_meal')}
+										/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">早開始</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_start_meal"
+												value={2}
+												checked={fieldSubData.set_start_meal==2} 
+												onChange={this.changeFDValue.bind(this,'set_start_meal')}
+										/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">午開始</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_start_meal"
+												value={3}
+												checked={fieldSubData.set_start_meal==3} 
+												onChange={this.changeFDValue.bind(this,'set_start_meal')}
+										/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">晚開始</span>
+									</label>									
+								</div>
+								{/*---早開始、午開始、晚開始---*/}	
+							</div>					
+							<label className="col-xs-1 form-control-label text-xs-right">預計<br/>送餐迄日</label>
 							<div className="col-xs-4">
-								<label className="c-input c-radio">
-									<input type="radio" 
-											name="set_start_meal"
-											value={1}
-											checked={fieldSubData.set_start_meal==1} 
-											onChange={this.changeFDValue.bind(this,'set_start_meal')}
-									/>
-									<span className="c-indicator"></span>
-									<span className="text-sm">早開始</span>
-								</label>
-								<label className="c-input c-radio">
-									<input type="radio" 
-											name="set_start_meal"
-											value={2}
-											checked={fieldSubData.set_start_meal==2} 
-											onChange={this.changeFDValue.bind(this,'set_start_meal')}
-									/>
-									<span className="c-indicator"></span>
-									<span className="text-sm">午開始</span>
-								</label>
-								<label className="c-input c-radio">
-									<input type="radio" 
-											name="set_start_meal"
-											value={3}
-											checked={fieldSubData.set_start_meal==3} 
-											onChange={this.changeFDValue.bind(this,'set_start_meal')}
-									/>
-									<span className="c-indicator"></span>
-									<span className="text-sm">晚開始</span>
-								</label>									
-							</div>
-							{/*---早開始、午開始、晚開始---*/}								
-							</div>
-							<div className="form-group row">
-								<label className="col-xs-1 form-control-label text-xs-right">預計送餐迄日</label>
-								<div className="col-xs-6">
-									<span className="has-feedback">
-										<InputDate id="meal_end" 
-										onChange={this.changeMealday} 
-										field_name="meal_end" 
-										value={fieldSubData.meal_end}
-										required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
-										disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
-									</span>
+								<InputDate id="meal_end" 
+									onChange={this.changeMealday} 
+									field_name="meal_end" 
+									value={fieldSubData.meal_end}
+									required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
+									disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
+							
+								{/*---早結束、午結束、晚結束---*/}
+								<div>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_end_meal"
+												value={1}
+												checked={fieldSubData.set_end_meal==1} 
+												onChange={this.changeFDValue.bind(this,'set_end_meal')}
+											/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">早結束</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_end_meal"
+												value={2}
+												checked={fieldSubData.set_end_meal==2} 
+												onChange={this.changeFDValue.bind(this,'set_end_meal')}
+											/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">午結束</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_end_meal"
+												value={3}
+												checked={fieldSubData.set_end_meal==3} 
+												onChange={this.changeFDValue.bind(this,'set_end_meal')}
+												/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">晚結束</span>
+									</label>											
 								</div>
 								{/*---早結束、午結束、晚結束---*/}
-								<div className="col-xs-4">
-									<div className="radio-inline">
-										<label>
-											<input type="radio" 
-													name="set_end_meal"
-													value={1}
-													checked={fieldSubData.set_end_meal==1} 
-													onChange={this.changeFDValue.bind(this,'set_end_meal')}
-											/>
-											<span>早結束</span>
-										</label>
-									</div>
-									<div className="radio-inline">
-										<label>
-											<input type="radio" 
-													name="set_end_meal"
-													value={2}
-													checked={fieldSubData.set_end_meal==2} 
-													onChange={this.changeFDValue.bind(this,'set_end_meal')}
-													/>
-											<span>午結束</span>
-										</label>
-									</div>
-									<div className="radio-inline">
-										<label>
-											<input type="radio" 
-													name="set_end_meal"
-													value={3}
-													checked={fieldSubData.set_end_meal==3} 
-													onChange={this.changeFDValue.bind(this,'set_end_meal')}
-													/>
-											<span>晚結束</span>
-										</label>
-									</div>											
-								</div>
-								{/*---早結束、午結束、晚結束---*/}																				
-							</div>
+							</div>																		
+						</div>
 							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">預計天數</label>
-								<div className="col-xs-6">
-									<input type="number" 							
-									className="form-control"	
-									value={fieldSubData.diff_day}
-									onChange={this.changeMealDayCount.bind(this)}
-									min="0"
-									disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}/>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.diff_day}
+										onChange={this.changeMealDayCount.bind(this)}
+										min="0"
+										disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}/>
+										<span className="input-group-addon">天</span>
+									</div>
+									<small className="text-muted">系統自動計算</small>
 								</div>
-								<small className="help-inline col-xs-4">系統自動計算</small>
-							</div>
-							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">餐別</label>
-								<div className="col-xs-6">
+								<div className="col-xs-3">
 								{
 									this.state.tryout_array.map(function(itemData,i) {
 										var out_check = 							
-										<div className="checkbox-inline" key={i}>
-											<label>
-												<input  type="checkbox" 
-														checked={itemData.value}
-														onChange={this.onMealChange.bind(this,i)}
+										<label className="c-input c-checkbox" key={i}>
+											<input  type="checkbox" 
+													checked={itemData.value}
+													onChange={this.onMealChange.bind(this,i)}
 												 />
-												{itemData.name_c}
-											</label>
-										</div>;
+											<span className="c-indicator"></span>
+											<span className="text-sm">{itemData.name_c}</span>
+										</label>;
 										return out_check;
 
 									}.bind(this))
 								}
 								</div>
-							</div>									
-							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">特殊排餐</label>
-								<div className="col-xs-4">
+								<div className="col-xs-2">
 									<select className="form-control" 
 									value={fieldSubData.meal_select_state}
 									onChange={this.changeFDValue.bind(this,'meal_select_state')}
 									disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}>
 									<option value="0">無</option>
-									<option value="1">基數天排餐</option>
+									<option value="1">奇數天排餐</option>
 									<option value="2">偶數天排餐</option>
 									</select>
 								</div>
@@ -1698,21 +1694,19 @@ var SubForm = React.createClass({
 										min="0"/>
 									</div>
 								</div>
-							</div>
-							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">預計點數</label>
-								<div className="col-xs-6">
+								<div className="col-xs-2">
 									<input type="number" 							
 									className="form-control"	
 									value={fieldSubData.estimate_count}
 									onChange={this.changeFDValue.bind(this,'estimate_count')}
 									min="0" disabled/>
+									<small className="text-muted">系統自動計算</small>
 								</div>
-								<small className="help-inline col-xs-4">系統自動計算</small>
 							</div>
 							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">用餐週期<br />說明</label>
-								<div className="col-xs-6">
+								<div className="col-xs-9">
 									<textarea col="30" rows="3" className="form-control"
 									value={fieldSubData.meal_memo}
 									onChange={this.changeFDValue.bind(this,'meal_memo')}
@@ -1751,10 +1745,8 @@ var SubForm = React.createClass({
 										min="0" disabled/>
 									</div>
 								</div>
-							</div>
-							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">實際點數</label>
-								<div className="col-xs-6">
+								<div className="col-xs-2">
 									<input type="number" 							
 									className="form-control"	
 									value={fieldSubData.real_count}
@@ -1817,9 +1809,9 @@ var SubForm = React.createClass({
 										return sub_out_html;
 								}.bind(this))
 							}
-							<tr>
-								<th className="text-xs-center text-danger" colSpan={5}>總計</th>
-								<th className="text-xs-danger" colSpan={2}>{total}</th>
+							<tr className="table-warning">
+								<th className="text-xs-center text-danger" colSpan={5}>總　計</th>
+								<th className="text-xs-danger" colSpan={2}><strong className="text-danger">{total}</strong></th>
 							</tr>
 						</tbody>
 					</table>

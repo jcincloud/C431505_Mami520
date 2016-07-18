@@ -539,7 +539,7 @@ var GirdForm = React.createClass({
     						</div>
     					</div>
     					<div className="form-action">
-    						<button type="submit" className="btn btn-primary btn-sm col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+    						<button type="submit" className="btn btn-primary btn-sm col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
     						<button type="button" className="btn btn-blue-grey btn-sm" onClick={this.noneType}><i className="fa-times"></i> 回列表</button>
     					</div>
     				</form>
@@ -1040,7 +1040,7 @@ var GirdSubForm = React.createClass({
                             </div>
                             <div className="modal-footer form-action row">
                                 <div className="col-xs-11">
-                                    <button  type="submit" form="form2" className="btn btn-primary btn-sm col-xs-offset-2"><i className="fa-check"></i> 儲存</button> { }
+                                    <button  type="submit" form="form2" className="btn btn-primary btn-sm col-xs-offset-2"><i className="fa-check"></i> 存檔確認</button> { }
                                     <button className="btn btn-blue-grey btn-sm" type="button" onClick={this.closeEditDetail}><i className="fa-times"></i> 關閉</button>
                                 </div>
                             </div>

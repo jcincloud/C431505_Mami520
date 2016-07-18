@@ -108,7 +108,7 @@
 
 .c-input {
     & + & {margin-left: 0;}
-    &:not(:last-child) {margin-right: $spacer;}
+    + & {margin-right: $spacer;}
 
     .input-block-group & {display: block;}
 }
