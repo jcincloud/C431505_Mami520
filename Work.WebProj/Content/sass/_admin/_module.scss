@@ -107,9 +107,6 @@
 // ----------------------------------------------------------------------
 
 .c-input {
-    & + & {margin-left: 0;}
-    + & {margin-right: $spacer;}
-
     .input-block-group & {display: block;}
 }
 

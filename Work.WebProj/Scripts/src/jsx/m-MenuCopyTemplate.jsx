@@ -14,8 +14,8 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.template_name}</td>
 					<td>{this.props.itemData.memo}</td>
 				</tr>
@@ -283,37 +283,35 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-                <h3 className="title">{this.props.Caption} 列表</h3>
+                <h3 className="h3">{this.props.Caption}</h3>
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
-
-					                    <label for="">版型名稱</label> { }
-					                    <input type="text" className="form-control input-sm"
+					                    <label className="text-sm">版型名稱</label> { }
+					                    <input type="text" className="form-control"
                                                value={searchData.word}
                                                onChange={this.changeGDValue.bind(this,'word')}
-                                               placeholder="請擇一填寫" />{ }
-
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+                                               placeholder="請擇一填寫" /> { }
+										<button className="btn btn-sm btn-secondary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th style={{"width":"10%;"}} className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">版型名稱</th>
-									<th className="col-xs-8">備註說明</th>
+									<th  style={{"width":"10%;"}} className="text-xs-center">修改</th>
+									<th  style={{"width":"30%;"}}>版型名稱</th>
+									<th  style={{"width":"50%;"}}>備註說明</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -358,73 +356,62 @@ var GirdForm = React.createClass({
 				var err_out_html=null;
 				if(this.state.err_list.length>0){
 					err_out_html=(
-						<div>
-							<p><strong className="text-info">目前樣板還缺少下列餐別:</strong></p>
+						<div className="alert alert-warning">
+							<p><strong>目前樣板還缺少下列餐別:</strong></p>
+							<ul className="list-unstyled text-sm">
 							{
 								this.state.err_list.map(function(itemData,i) {
 									var error_html=
-										<p key={i}>
-										<strong className="text-danger">第{itemData.day}天 : </strong> { }
-										<StateForGrid stateData={CommData.MealType} id={itemData.meal_type} />
-										</p>;
+										<li key={i}>
+											<i className="fa-angle-double-right"></i> <strong>第 {itemData.day} 天：</strong> { }
+											<StateForGrid stateData={CommData.MealType} id={itemData.meal_type} />
+										</li>;
 									return error_html;
 								})
 							}
+							</ul>
 						</div>
 						);
 				}
 				copy_out_html=(				
-					<form className="form-horizontal clearfix" id="copy-form" onSubmit={this.CopySubmit}>
-					<div className="col-xs-8 col-xs-offset-1">
-							<div className="item-box">
-								<div className="item-title">
-									<h5>複製此樣板至每日菜單</h5>
-								</div>
-								<div className="form-group">
-									<label className="col-xs-2 control-label">起始日期</label>
-									<div className="col-xs-3">
-										<span className="has-feedback">
-											<InputDate id="copy_start" 
-											onChange={this.setCopyVal} 
-											field_name="copy_start" 
-											value={copyData.copy_start}
-											required={true}
-											disabled={false} />
-										</span>
+					<form className="form form-sm" id="copy-form" onSubmit={this.CopySubmit}>
+							<div className="card">
+								<div className="card-header bg-primary-light text-secondary"><i className="fa-copy"></i> 複製此樣板至每日菜單</div>
+								<div className="card-block">
+									<div className="form-group row">
+										<label className="col-xs-1 form-control-label">起始日期</label>
+										<div className="col-xs-3">
+												<InputDate id="copy_start" 
+												onChange={this.setCopyVal} 
+												field_name="copy_start" 
+												value={copyData.copy_start}
+												required={true}
+												disabled={false} />
+										</div>
 									</div>
-									<small className="help-inline col-xs-1 text-center">~</small>
-									<label className="col-xs-2 control-label">結束日期</label>
-									<div className="col-xs-3">
-										<span className="has-feedback">
+									<div className="form-group row">
+										<label className="col-xs-1 form-control-label">結束日期</label>
+										<div className="col-xs-3">
 											<InputDate id="copy_end" 
 											onChange={this.setCopyVal} 
 											field_name="copy_end" 
 											value={copyData.copy_end}
 											required={true}
 											disabled={true} />
-										</span>
-									</div>								
+										</div>
+									</div>
+									{err_out_html}
 								</div>
-								<div className="col-xs-10 col-xs-offset-1">
-					                <div className="form-group">
-					                    <div className="alert alert-info">
-					                    	<p><strong className="text-info">此樣板共{copyData.range_day}天</strong></p>
-											{err_out_html}
-					                    </div>
-				                    </div>
-				                </div>
-								<div className="form-group">								
-									<div className="col-xs-4 pull-right">
-										<button type="submit" className="btn-info" form="copy-form" disabled={this.state.err_list.length>0}><i className="fa-files-o"></i> 複製</button>
-									</div>	
-								</div>							
+								<div className="card-footer">
+									<button type="submit" className="btn btn-sm btn-indigo" form="copy-form" disabled={this.state.err_list.length>0}><i className="fa-check"></i> 複製</button> { }
+									<strong className="text-danger">【此樣板共 {copyData.range_day} 天】</strong>
+								</div>
 							</div>
-						</div>
 					</form>);
 			}else{
 				sub_out_html=(
 					<div>
-						<h4 className="title">每日菜單樣板</h4>
+						<h3 className="h3">每日菜單樣板</h3>
 						<div className="alert alert-warning">請先按上方的 <strong>儲存</strong>，再進行設定。</div>
 					</div>
 					);
@@ -433,42 +420,41 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-                <h3 className="title">{this.props.Caption} 編輯</h3>
-				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit} id="main-form">
-					<div className="form-group">
-						<label className="col-xs-1 control-label">版型名稱</label>
-						<div className="col-xs-3">
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
+				<form className="form form-sm" onSubmit={this.handleSubmit} id="main-form">
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 版型名稱</label>
+						<div className="col-xs-6">
 							<input type="text"
                                    className="form-control"
                                    value={fieldData.template_name}
                                    onChange={this.changeFDValue.bind(this,'template_name')}
                                    maxLength="64"
                                    required />
-						</div>
-						<small className="help-inline col-xs-1"><span className="text-danger">(必填)</span></small>					
+						</div>					
 					</div>
-					<div className="form-group">
-						<label className="col-xs-1 control-label">備註說明</label>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 備註說明</label>
 						<div className="col-xs-6">
 							<textarea col="30" row="3" className="form-control"
                                       value={fieldData.memo}
                                       onChange={this.changeFDValue.bind(this,'memo')}
                                       maxLength="256"></textarea>
 						</div>
-						<small className="help-inline col-xs-1 text-danger">(必填)</small>
-						<div className="col-xs-4 pull-right">
-							<button type="submit" className="btn-primary" name="btn-1" form="main-form"><i className="fa-check"></i> 儲存</button> { }
-							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
-						</div>	
+					</div>
+					<div className="form-action">
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1" form="main-form"><i className="fa-check"></i> 存檔確認</button> { }
+						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-arrow-left"></i> 回前頁</button>
 					</div>
 				</form>
 
+				<hr className="lg" />
 				{/*複製樣板*/}
 				{copy_out_html}
 				{/*複製樣板*/}
 
-				<hr className="condensed" />
-			{/* 版型菜單內容 */}
+				<hr className="lg" />
+				{/* 版型菜單內容 */}
 				{sub_out_html}
 			</div>
 			);
@@ -499,8 +485,8 @@ var MenuCopyGridRow = React.createClass({
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{'第'+this.props.itemData.day+'天'}</td>
                     <td><StateForGrid stateData={CommData.MealType} id={this.props.itemData.meal_type} /></td>
 				</tr>
@@ -718,23 +704,23 @@ var MenuCopy = React.createClass({
 		}else{
 			map_out_html=(
 				<div>
-					<hr className="condensed" />
-					<h4 className="title">每日菜單樣板對應設定</h4>
-					<div className="alert alert-warning">請先按上方的 <strong>儲存</strong>，再進行設定。</div>
+					<hr />
+					<h3 className="h3">每日菜單樣板對應設定</h3>
+					<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 				</div>
 				);
 		}
 		outHtml =(
 			<div>
-				<h4 className="title">每日菜單樣板</h4>
+				<h3 className="h3">每日菜單樣板</h3>
 			    <ul className="nav nav-tabs" role="tablist">
-			        <li role="presentation" className="active">
-			            <a href="#list" aria-controls="home" role="tab" data-toggle="tab" id="tabAddNew">
+			        <li role="presentation" className="nav-item">
+			            <a className="nav-link active" href="#list" aria-controls="home" role="tab" data-toggle="tab" id="tabAddNew">
 			            	<i className="fa-list-alt"></i> 清單
 			            </a>
 			        </li>
-			        <li role="presentation">
-			            <a href="#edit" aria-controls="profile" role="tab" data-toggle="tab" id="tabAddView">
+			        <li role="presentation" className="nav-item">
+			            <a className="nav-link" href="#edit" aria-controls="profile" role="tab" data-toggle="tab" id="tabAddView">
 			                <i className="fa-pencil-square-o"></i> 編輯
 			            </a>
 			        </li>
@@ -743,29 +729,28 @@ var MenuCopy = React.createClass({
 				<div className="tab-content">
 				{/*頁籤1*/}
 					<div role="tabpanel" className="tab-pane active" id="list">
-
-						<div className="row">
-							<div className="col-xs-12">
 								<form onSubmit={this.handleSubSearch} id="search-subfrom">
 								
 									<div className="table-header">
 										<div className="table-filter">
-											<div className="form-inline">
+											<div className="form-inline form-sm">
 												<div className="form-group">
 
-													<label>天數區間</label> { }										
-														<input type="number" className="form-control input-sm"
+													<label className="text-sm">天數區間</label> { }										
+														<input type="number" className="form-control"
 							                            value={searchSubData.start_day}
 							                            onChange={this.setSearchVal.bind(this,'start_day')}
 							                            min="1" />{ }
-													<label>~</label> { }
-														<input type="number" className="form-control input-sm"
-							                            value={searchSubData.end_day}
-							                            onChange={this.setSearchVal.bind(this,'end_day')}
-							                            min="1" />{ }
-							                        <label>天</label> { }
-													<label>餐別</label> { }
-													<select className="form-control input-sm" 
+													<label className="text-sm">~</label> { }
+													<div className="input-group input-group-sm">
+														<input type="number" className="form-control"
+								                            value={searchSubData.end_day}
+								                            onChange={this.setSearchVal.bind(this,'end_day')}
+								                            min="1" />
+														<span className="input-group-addon">天</span>
+													</div> { }
+													<label className="text-sm">餐別</label> { }
+													<select className="form-control" 
 															value={searchSubData.meal_type}
 															onChange={this.setSearchVal.bind(this,'meal_type')}>
 														<option value="">全部</option>
@@ -775,8 +760,6 @@ var MenuCopy = React.createClass({
 														})
 													}
 													</select> { }
-
-													{/*<button className="btn-primary" type="submit" form="search-subfrom"><i className="fa-search"></i>{ }搜尋</button>*/}
 												</div>
 											</div>
 										</div>
@@ -784,18 +767,18 @@ var MenuCopy = React.createClass({
 									<div className="row">
 										{/*左邊list*/}
 										<div className="col-xs-6">
-											<table className="table-condensed">
+											<table className="table table-sm table-bordered table-striped">
 												<thead>
 													<tr>
-														<th className="col-xs-1 text-center">
-															<label className="cbox">
+														<th style={{"width":"20%;"}} className="text-xs-center">
+															<label className="c-input c-checkbox">
 																<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-																<i className="fa-check"></i>
+																<span className="c-indicator"></span>
 															</label>
 														</th>
-														<th className="col-xs-1 text-center">修改</th>
-														<th className="col-xs-2">天數</th>
-														<th className="col-xs-8">餐別</th>
+														<th style={{"width":"20%;"}} className="text-xs-center">修改</th>
+														<th style={{"width":"30%;"}}>天數</th>
+														<th style={{"width":"30%;"}}>餐別</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -820,18 +803,18 @@ var MenuCopy = React.createClass({
 										{/*左邊list*/}
 										{/*右邊list*/}
 										<div className="col-xs-6">
-											<table className="table-condensed">
+											<table className="table table-sm table-bordered table-striped">
 												<thead>
 													<tr>
-														<th className="col-xs-1 text-center">
-															<label className="cbox">
+														<th style={{"width":"20%;"}} className="text-xs-center">
+															<label className="c-input c-checkbox">
 																<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-																<i className="fa-check"></i>
+																<span className="c-indicator"></span>
 															</label>
 														</th>
-														<th className="col-xs-1 text-center">修改</th>
-														<th className="col-xs-2">天數</th>
-														<th className="col-xs-8">餐別</th>
+														<th style={{"width":"20%;"}} className="text-xs-center">修改</th>
+														<th style={{"width":"30%;"}} className="">天數</th>
+														<th style={{"width":"30%;"}} className="">餐別</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -865,27 +848,21 @@ var MenuCopy = React.createClass({
 								InsertType={this.insertSubType}
 								deleteSubmit={this.deleteSubSubmit}
 								/>
-							</form>							
-							</div>
-				        </div>						
+							</form>												
 			        </div>
 				{/*頁籤1*/}
 				{/*頁籤2*/}
 					<div role="tabpanel" className="tab-pane" id="edit">
-						<div className="row">
-							<div className="col-xs-12">
-								<form className="form-horizontal clearfix" onSubmit={this.handleSubSubmit} id="sub-form">
-									<div className="form-group">
-										<label className="col-xs-2 control-label">選擇天數</label>
+								<form className="form form-sm" onSubmit={this.handleSubSubmit} id="sub-form">
+									<div className="form-group row m-b-0">
+										<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇天數</label>
 										<div className="col-xs-2">
 											<input type="number" className="form-control"
 							                value={fieldSubData.day}
 							                onChange={this.changeFDValue.bind(this,'day')}
 							                min="1" required/>{ }
 										</div>
-										<small className="help-inline col-xs-1 text-danger">(必填)</small>
-
-										<label className="col-xs-1 control-label">選擇餐別</label>
+										<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇餐別</label>
 										<div className="col-xs-2">
 											<select className="form-control" 
 											value={fieldSubData.meal_type}
@@ -898,21 +875,18 @@ var MenuCopy = React.createClass({
 											}
 											</select>
 										</div>
-										<small className="help-inline col-xs-1 text-danger">(必填)</small>
-										<div className="col-xs-2 pull-right col-xs-offset-1">
-											<button type="submit" className="btn-primary" name="btn-1" form="sub-form"><i className="fa-check"></i> 儲存</button> { }
-											<button type="button" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button>
+										<div className="col-xs-6 text-xs-right">
+											<button type="submit" className="btn btn-sm btn-primary" name="btn-1" form="sub-form"><i className="fa-check"></i> 存檔確認</button> { }
+											<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button>
 										</div>	
 									</div>
 								</form>
 
 								{/* 每日菜單對應的組合菜單 */}
-								<div className="col-xs-10 col-xs-offset-1">
+								<div>
 									{map_out_html}
 								</div>
 
-							</div>
-				        </div>	
 					</div>
 				{/*頁籤2*/}
 			    </div>		
@@ -1062,47 +1036,46 @@ var GirdDofC = React.createClass({
 
 		outHtml =(
 			<div>
-				<hr className="condensed" />
-				<h4 className="title">每日菜單樣板對應設定</h4>
+				<hr />
+				<h3 className="h3">每日菜單樣板對應設定</h3>
 				<div className="row">
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>
-								    <div className="form-inline break pull-right">
-				                        <div className="form-group">
-				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
-				                           	value={searchData.name} 
-	                						onChange={this.queryChangeConstituteParam.bind(this,'name')} /> { }
-				                            <select name="" id="" className="form-control input-sm"
-				                            onChange={this.queryChangeConstituteParam.bind(this,'category_id')}
-											value={searchData.category_id}> { }
-				                                <option value="">分類</option>
-											{
-												this.state.category_element.map(function(itemData,i) {
-													return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
-												})
-											}
-				                            </select> { }			             
-
-				                        </div>
-				                    </div>
-				                    全部菜單
-								</caption>
-								<tbody>
+						<div className="table-header">
+							<div className="form-inline form-sm">
+								<div className="form-group">
+									<input type="text" className="form-control" placeholder="搜尋菜單"
+									value={searchData.name} 
+									onChange={this.queryChangeConstituteParam.bind(this,'name')} /> { }
+									<select name="" id="" className="form-control"
+									onChange={this.queryChangeConstituteParam.bind(this,'category_id')}
+									value={searchData.category_id}> { }
+										<option value="">分類</option>
+										{
+											this.state.category_element.map(function(itemData,i) {
+												return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
+											})
+										}
+									</select> { }			             
+								</div>
+		                    </div>
+						</div>
+							<table className="table table-sm table-bordered table-striped">
+								<thead>
 									<tr>
 										<th>分類</th>
 										<th>名稱</th>
-					                	<th className="text-center">加入</th>
+					                	<th className="text-xs-center">加入</th>
 									</tr>
+								</thead>
+								<tbody>
 									{
 										this.state.grid_left_constitute.rows.map(function(itemData,i) {
 											var out_sub_html =                     
 												<tr key={itemData.constitute_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
 							                        <td>{itemData.constitute_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-success" type="button" onClick={this.addConstitute.bind(this,itemData.constitute_id)}>
+				                        			<td className="text-xs-center">
+														<button className="btn btn-link text-success" type="button" onClick={this.addConstitute.bind(this,itemData.constitute_id)}>
 															<i className="fa-plus"></i>
 														</button>
 							                        </td>
@@ -1112,32 +1085,33 @@ var GirdDofC = React.createClass({
 									}
 								</tbody>
 	        				</table>
-	        				<div className="form-inline text-center">
-								<ul className="pager list-inline list-unstyled">
-									<li><a href="#" onClick={this.LeftGridPrev}><i className="glyphicon glyphicon-arrow-left"></i> 上一頁</a></li>
+	        				<div className="table-footer">
+	        					<ul className="pager pager-sm list-inline">
+									<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-angle-double-left"></i> 上一頁</a></li>
 									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_constitute.total}</li>
-									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="glyphicon glyphicon-arrow-right"></i></a></li>
+									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-angle-double-right"></i></a></li>
 								</ul>
-							</div>
+	        				</div>
         			</div>
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>已排入今日菜單:{this.FilterCommData(this.props.main_name,'MealType')}</caption>
-								<tbody>
+						<div className="table-header"><span className="text-secondary">已排入今日 {this.FilterCommData(this.props.main_name,'MealType')} 菜單：</span></div>
+							<table className="table table-sm table-bordered table-striped">
+								<thead>
 									<tr>
 										<th>分類</th>
 										<th>名稱</th>
-					                	<th className="text-center">刪除</th>
+					                	<th className="text-xs-center">刪除</th>
 									</tr>
+								</thead>
+								<tbody>
 									{
 										this.state.grid_right_constitute.map(function(itemData,i) {
 											var out_sub_html =                     
 												<tr key={itemData.constitute_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
 							                        <td>{itemData.constitute_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-danger" type="button" onClick={this.removeConstitute.bind(this,itemData.constitute_id)}>
+				                        			<td className="text-xs-center">
+														<button className="btn btn-link text-danger" type="button" onClick={this.removeConstitute.bind(this,itemData.constitute_id)}>
 															<i className="fa-times"></i>
 														</button>
 							                        </td>
