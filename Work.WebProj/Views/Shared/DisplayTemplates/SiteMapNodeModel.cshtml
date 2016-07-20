@@ -5,28 +5,29 @@
 @if (Model.IsCurrentNode && Model.SourceMetadata["HtmlHelper"].ToString() != "MvcSiteMapProvider.Web.Html.MenuHelper")
 {
     <!-- 主節點有子選單 -->
-    <div class="panel-heading">
-        <a class="panel-title" data-toggle="collapse" data-parent="#submenu" href="#submenu-1">
-            <i class="fa-list-alt"></i> @Model.Title
-        </a>
+    <div>
+        <div class="panel-heading">
+            <a class="panel-title" data-toggle="collapse" data-parent="#submenu" href="#submenu-1">
+                <i class="fa-list-alt"></i> @Model.Title
+            </a>
+        </div>
     </div>
 }
 else if (Model.IsClickable)
 {
-
     if (Model.IsCurrentNode)
     {
         <!--目前的的子節點-->
         if (string.IsNullOrEmpty(Model.Description))
         {
             <a href="@Model.Url" class="active">
-                @Model.Title
+                <i class="fa-caret-right"></i> @Model.Title
             </a>
         }
         else
         {
             <a href="@Model.Url" class="active" title="@Model.Description">
-                @Model.Title
+                <i class="fa-caret-right"></i> @Model.Title
             </a>
         }
     }
@@ -35,11 +36,11 @@ else if (Model.IsClickable)
         <!--非目前的的子節點-->
         if (string.IsNullOrEmpty(Model.Description))
         {
-            <a href="@Model.Url">@Model.Title</a>
+            <a href="@Model.Url"><i class="fa-caret-right"></i> @Model.Title</a>
         }
         else
         {
-            <a href="@Model.Url" title="@Model.Description">@Model.Title</a>
+            <a href="@Model.Url" title="@Model.Description"><i class="fa-caret-right"></i> @Model.Title</a>
         }
     }
 }
