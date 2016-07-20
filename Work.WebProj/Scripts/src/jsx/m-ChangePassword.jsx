@@ -94,14 +94,13 @@ var GirdForm = React.createClass({
 				<ul className="breadcrumb">
 					<li><i className="fa-list-alt"></i> {this.props.menuName}</li>
 				</ul>
-				<h3 className="title">
+				<h3 className="h3">
 					{this.props.caption}
 				</h3>
-				<div className="alert alert-warning"><p>以下皆為 <strong className="text-danger">必填項目</strong> 。</p></div>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
 
-					    <div className="form-group">
-					        <label className="col-xs-2 control-label">目前密碼</label>
+					    <div className="form-group row">
+					        <label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 目前密碼</label>
 					        <div className="col-xs-5">
 					            <input className="form-control" type="password"
 					            value={pram.OldPassword}
@@ -110,8 +109,8 @@ var GirdForm = React.createClass({
 					        </div>
 					    </div>
 
-					    <div className="form-group">
-					        <label className="col-xs-2 control-label">新密碼</label>
+					    <div className="form-group row">
+					        <label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 新密碼</label>
 					        <div className="col-xs-5">
 					            <input className="form-control" type="password"
 					            value={pram.NewPassword}
@@ -120,8 +119,8 @@ var GirdForm = React.createClass({
 					        </div>
 					    </div>
 
-					    <div className="form-group">
-					        <label className="col-xs-2 control-label">確認新密碼</label>
+					    <div className="form-group row">
+					        <label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 確認新密碼</label>
 					        <div className="col-xs-5">
 					            <input className="form-control" type="password"
 								value={pram.ConfirmPassword}
@@ -131,9 +130,7 @@ var GirdForm = React.createClass({
 					    </div>
 
 					<div className="form-action">
-						<div className="col-xs-4 col-xs-offset-2">
-							<button type="submit" className="btn-primary"><i className="fa-check"></i> 儲存</button>
-						</div>
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>
 					</div>
 				</form>
 			</div>

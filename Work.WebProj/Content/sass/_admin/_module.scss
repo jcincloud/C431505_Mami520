@@ -111,12 +111,10 @@
 }
 
 .c-indicator {
-    margin-top: $spacer*0.2;
-    background: #fafafa;
     background-size: 75%;
-    background-position: 60% 40%;
-    background-repeat: no-repeat;
+    background-color: #fafafa;
     border: 1px solid #c8c8c8;
+    box-sizing: content-box;
 
     .c-checkbox & {
       border-radius: 0;
@@ -279,4 +277,13 @@ input[type="file"] {
 // ----------------------------------------------------------------------
 [data-tip] {
   @include hover-focus {cursor: pointer;}
+}
+
+
+// sortable
+// ----------------------------------------------------------------------
+.draggable {cursor:move;}
+.ghost, .sortable-ghost {
+  border: 3px dashed #777;
+  opacity:0.4;
 }

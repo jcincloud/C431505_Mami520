@@ -14,7 +14,7 @@ var GridRow = React.createClass({
 		return (
 
 				<tr>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.record_sn}</td>
 					<td>{this.props.itemData.customer_name}</td>
 					<td>{this.props.itemData.sno}</td>
@@ -231,33 +231,33 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<h3 className="title">{this.props.Caption} 列表</h3>
+				<h3 className="h3">{this.props.Caption}</h3>
 
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
-										<label>客戶名稱/身分證號/電話/來源銷售單號</label> { }
+										<label className="text-sm">客戶名稱/身分證號/電話/來源銷售單號</label> { }
 										<input type="text" className="form-control input-sm" 
 										value={searchData.word}
 										onChange={this.changeGDValue.bind(this,'word')}
 										placeholder="請擇一填寫..." /> { }
 
-										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn btn-secondary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">修改</th>
-					                <th className="col-xs-2">銷售單號</th>
-					                <th className="col-xs-2">客戶名稱</th>
-					                <th className="col-xs-2">身分證號</th>
-					                <th className="col-xs-2">電話1</th>
+									<th style={{"width":"10%;"}} className="text-xs-center">修改</th>
+					                <th style={{"width":"20%;"}}>銷售單號</th>
+					                <th style={{"width":"25%;"}}>客戶名稱</th>
+					                <th style={{"width":"25%;"}}>身分證號</th>
+					                <th style={{"width":"20%;"}}>電話1</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -308,12 +308,11 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-				<h3 className="title">{this.props.Caption} 主檔</h3>
+				<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
 
-				<form className="form-horizontal clearfix" role="form" onSubmit={this.handleSubmit}>
-					<div className="col-xs-9">
-						<div className="form-group">
-							<label className="col-xs-2 control-label">客戶姓名</label>
+				<form className="form form-sm" role="form" onSubmit={this.handleSubmit}>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">客戶姓名</label>
 							<div className="col-xs-4">
 								<input type="text"
                                 className="form-control"
@@ -322,7 +321,7 @@ var GirdForm = React.createClass({
                                 maxLength="64"
                                 disabled />
 							</div>
-							<label className="col-xs-2 control-label">來源銷售單號</label>
+							<label className="col-xs-2 form-control-label text-xs-right">來源銷售單號</label>
 							<div className="col-xs-4">
 								<input type="text"
                                 className="form-control"
@@ -332,8 +331,8 @@ var GirdForm = React.createClass({
                                 disabled />
 							</div>
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">連絡電話1</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
 							<div className="col-xs-4">
 								<input type="tel"
                                 className="form-control"
@@ -342,7 +341,7 @@ var GirdForm = React.createClass({
                                 maxLength="16"
                                 disabled />
 							</div>
-							<label className="col-xs-2 control-label">連絡電話2</label>
+							<label className="col-xs-2 form-control-label text-xs-right">連絡電話2</label>
 							<div className="col-xs-4">
 								<input type="tel"
                                 className="form-control"
@@ -352,25 +351,30 @@ var GirdForm = React.createClass({
                                 disabled />
 							</div>
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">預計應收</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">預計應收</label>
 							<div className="col-xs-4">
-								<input type="number"
-                                className="form-control"
-                                value={fieldData.estimate_payable}
-                                onChange={this.changeFDValue.bind(this,'estimate_payable')}
-                                disabled />
+								<div className="input-group input-group-sm">
+									<input type="number"
+	                                className="form-control"
+	                                value={fieldData.estimate_payable}
+	                                onChange={this.changeFDValue.bind(this,'estimate_payable')}
+	                                disabled />
+	                                <span className="input-group-addon">元</span>
+								</div>
 							</div>
-							<label className="col-xs-2 control-label">試算應收</label>
+							<label className="col-xs-2 form-control-label text-xs-right">試算應收</label>
 							<div className="col-xs-4">
-								<input type="number"
-                                className="form-control"
-                                value={fieldData.trial_payable}
-                                onChange={this.changeFDValue.bind(this,'trial_payable')}
-                                disabled />
+                                <div className="input-group input-group-sm">
+									<input type="number"
+	                                className="form-control"
+	                                value={fieldData.trial_payable}
+	                                onChange={this.changeFDValue.bind(this,'trial_payable')}
+	                                disabled />
+	                                <span className="input-group-addon">元</span>
+								</div>
 							</div>
 						</div>
-					</div>
 				</form>
 				
 				{/*---應收帳款明細---*/}
@@ -522,21 +526,20 @@ var SubForm = React.createClass({
 		var editor_html=null;
 		var editor_colspan=4;
 		if(gb_roles=='Managers'){
-			editor_html=<th className="col-xs-1 text-center">編輯</th>;
+			editor_html=<th style={{"width":"10%;"}} className="text-xs-center">編輯</th>;
 			editor_colspan=5;
 		}
 			outHtml =
 			(
 				<div>
 				{/*---新增收款明細start---*/}
-					<hr className="condensed" />
-					<h4 className="title">新增收款明細</h4>
+					<hr className="lg" />
+					<h3 className="h3">新增收款明細</h3>
 
-					<form className="form-horizontal clearfix" role="form" id="detailForm" onSubmit={this.detailHandleSubmit}>
-						<div className="col-xs-9">
-							<div className="form-group">
-								<label className="col-xs-2 control-label">收款日期</label>
-								<div className="col-xs-4">
+					<form className="form form-sm" role="form" id="detailForm" onSubmit={this.detailHandleSubmit}>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">收款日期</label>
+								<div className="col-xs-5">
 					                <span className="has-feedback">
 										<InputDate id="receipt_day" 
 										onChange={this.changeFDValue} 
@@ -545,10 +548,19 @@ var SubForm = React.createClass({
 										required={true} />
 									</span>
 								</div>
-							</div>
-							<div className="form-group">
-								<label className="col-xs-2 control-label">收款餐別</label>
+								<label className="col-xs-1 form-control-label text-xs-right">收款單號</label>
 								<div className="col-xs-4">
+									<input type="text"
+                                    className="form-control"
+                                    value={fieldSubData.receipt_sn}
+                                    onChange={this.changeFDValue.bind(this,'receipt_sn')}
+                                    maxLength="10"
+                                    required />
+								</div>
+							</div>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">收款餐別</label>
+								<div className="col-xs-2">
 				                    <select className="form-control"
 				                    value={fieldSubData.meal_type}
 				                    onChange={this.changeFDValue.bind(this,'meal_type')}>
@@ -559,9 +571,19 @@ var SubForm = React.createClass({
 										}
 				                    </select>
 								</div>
-							</div>
-							<div className="form-group">
-								<label className="col-xs-2 control-label">收款人員</label>
+								<label className="col-xs-1 form-control-label text-xs-right">項目</label>
+								<div className="col-xs-2">
+				                    <select className="form-control"
+				                    value={fieldSubData.receipt_item}
+				                    onChange={this.changeFDValue.bind(this,'receipt_item')}>
+						                {
+											CommData.ReceiptItemType.map(function(itemData,i) {
+											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+											})
+										}
+				                    </select>
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">收款人員</label>
 								<div className="col-xs-4">
 				                    <select className="form-control"
 				                    value={fieldSubData.receipt_person}
@@ -574,108 +596,78 @@ var SubForm = React.createClass({
 				                    </select>
 								</div>
 							</div>
-							<div className="form-group">
-								<label className="col-xs-2 control-label">收款項目</label>
-								<div className="col-xs-4">
-				                    <select className="form-control"
-				                    value={fieldSubData.receipt_item}
-				                    onChange={this.changeFDValue.bind(this,'receipt_item')}>
-						                {
-											CommData.ReceiptItemType.map(function(itemData,i) {
-											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-											})
-										}
-				                    </select>
-								</div>
-							</div>
-							<div className="form-group">
-								<label className="col-xs-2 control-label">收款單號</label>
-								<div className="col-xs-4">
-									<input type="text"
-                                    className="form-control"
-                                    value={fieldSubData.receipt_sn}
-                                    onChange={this.changeFDValue.bind(this,'receipt_sn')}
-                                    maxLength="10"
-                                    required />
-								</div>
-							</div>
-							<div className="form-group">
-								<label className="col-xs-2 control-label">本次實收</label>
-								<div className="col-xs-4">
-									<input type="number"
-                                    className="form-control"
-                                    value={fieldSubData.actual_receipt}
-                                    onChange={this.changeFDValue.bind(this,'actual_receipt')}
-                                    required />
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">本次實收</label>
+								<div className="col-xs-10">
+									<div className="input-group input-group-sm">
+										<input type="number"
+	                                    className="form-control"
+	                                    value={fieldSubData.actual_receipt}
+	                                    onChange={this.changeFDValue.bind(this,'actual_receipt')}
+	                                    required />
+	                                    <span className="input-group-addon">元</span>
+									</div>
 								</div>
 							</div>
 							<div className="form-action">
-								<p className="text-right">
-									<button type="submit" form="detailForm" className="btn-primary"><i className="fa-check"></i> 存檔確認</button> { }
-									<button type="button" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button> { }
-									<button type="button" onClick={this.props.noneType}><i className="fa-times"></i> 回列表</button> { }
-                            		<button type="button" className="btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
-								</p>
+								<button type="submit" form="detailForm" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button> { }
+								<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button> { }
+								<button type="button" className="btn btn-sm btn-blue-grey col-xs-offset-6" onClick={this.props.noneType}><i className="fa-arrow-left"></i> 回列表</button> { }
+                            	<button type="button" className="btn btn-sm btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
 							</div>
-						</div>
 					</form>
 				{/*---新增收款明細end---*/}
-					<hr className="condensed" />
+					<hr className="lg" />
 				{/*---收款明細列表start---*/}
-					<h4 className="title">
-						收款明細：
-						<span className="text-muted">
-							實際已收 <strong className="text-danger">${formatMoney(this.state.Total_Money,0)}</strong>,
-							未收 <strong className="text-danger">${formatMoney(this.props.main_total-this.state.Total_Money,0)}</strong>
-						</span>
-					</h4>
-
-					<div className="row">
-						<div className="col-xs-9">
-							<table className="table-condensed">
-								<tbody>
+					<h3 className="h3">收款明細</h3>
+					<div className="table-header">
+						【實收 <strong className="text-danger">${formatMoney(this.state.Total_Money,0)}</strong>】 { }
+						【未收 <strong className="text-danger">${formatMoney(this.props.main_total-this.state.Total_Money,0)}</strong>】
+					</div>
+					<table className="table table-sm table-bordered table-striped">
+								<thead>
 									<tr>
 										{editor_html}
-										<th className="col-xs-2 text-center">收款日期</th>
-										<th className="col-xs-1 text-center">收款餐別</th>
-										<th className="col-xs-2 text-center">收款人員</th>
-										<th className="col-xs-2 text-center">收款項目</th>
-										<th className="col-xs-2">收款單號</th>
-										<th className="col-xs-2">本次實收</th>
+										<th style={{"width":"15%;"}}>收款日期</th>
+										<th style={{"width":"10%;"}} className="text-xs-center">收款餐別</th>
+										<th style={{"width":"15%;"}}>收款人員</th>
+										<th style={{"width":"10%;"}}>收款項目</th>
+										<th style={{"width":"20%;"}}>收款單號</th>
+										<th style={{"width":"20%;"}}>本次實收</th>
 									</tr>
+								</thead>
+								<tbody>
 									{
 										this.state.gridSubData.map(function(itemData,i) {
 											var button_html=null;
 											if(gb_roles=='Managers'){
 												button_html=(
-													<td className="text-center">
-														<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.accounts_payable_detail_id)}><i className="fa-pencil"></i></button>
-														<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.accounts_payable_detail_id)} disabled={this.props.is_close}><i className="fa-trash"></i></button>
+													<td className="text-xs-center">
+														<button className="btn btn-link btn-lg text-info" type="button" onClick={this.updateSubType.bind(this,itemData.accounts_payable_detail_id)}><i className="fa-pencil"></i></button> { }
+														<button className="btn btn-link btn-lg text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.accounts_payable_detail_id)} disabled={this.props.is_close}><i className="fa-trash"></i></button>
 													</td>
 													);
 											}								
 											var detail_out_html = 
 												<tr key={itemData.accounts_payable_detail_id}>
 													{button_html}												
-													<td className="text-center">{moment(itemData.receipt_day).format('YYYY/MM/DD')}</td>
-													<td className="text-center"><StateForGrid stateData={CommData.MealTypeByAccountsPayable} id={itemData.meal_type} /></td>
-													<td className="text-center"><StateForGrid stateData={CommData.ReceiptPersonType} id={itemData.receipt_person} /></td>
-													<td className="text-center"><StateForGrid stateData={CommData.ReceiptItemType} id={itemData.receipt_item} /></td>
+													<td>{moment(itemData.receipt_day).format('YYYY/MM/DD')}</td>
+													<td className="text-xs-center"><StateForGrid stateData={CommData.MealTypeByAccountsPayable} id={itemData.meal_type} /></td>
+													<td><StateForGrid stateData={CommData.ReceiptPersonType} id={itemData.receipt_person} /></td>
+													<td><StateForGrid stateData={CommData.ReceiptItemType} id={itemData.receipt_item} /></td>
 													<td>{itemData.receipt_sn}</td>
 													<td>${formatMoney(itemData.actual_receipt,0)}</td>
 												</tr>;
 											return detail_out_html;
 										}.bind(this))
 									}
-									<tr>
-										<th className="col-xs-1 text-center text-danger" colSpan={editor_colspan}>總計</th>
-										<th className="col-xs-1 text-danger">未收:${formatMoney(this.props.main_total-this.state.Total_Money,0)}</th>
-										<th className="col-xs-1 text-danger">實際已收:${formatMoney(this.state.Total_Money,0)}</th>
+									<tr className="table-warning">
+										<th className="text-xs-center text-danger" colSpan={editor_colspan}>總計</th>
+										<th>未收：<span className="text-danger">${formatMoney(this.props.main_total-this.state.Total_Money,0)}</span></th>
+										<th>實收：<span className="text-danger">${formatMoney(this.state.Total_Money,0)}</span></th>
 									</tr>
 								</tbody>
-							</table>
-						</div>
-					</div>
+					</table>
 				{/*---收款明細列表end---*/}
 
 				</div>

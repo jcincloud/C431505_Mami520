@@ -14,12 +14,12 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{moment(this.props.itemData.send_day).format('YYYY/MM/DD')}</td>
 					<td>{this.props.itemData.title}</td>
-					<td>{this.props.itemData.is_complete?<span className="label label-success">完稿</span>:<span className="label label-default">草稿</span>}</td>
-					<td>{this.props.itemData.is_send?<span className="label label-success">發佈成功</span>:<span className="label label-warning">待發佈</span>}</td>
+					<td>{this.props.itemData.is_complete?<span className="text-success">完稿</span>:<span className="text-muted">草稿</span>}</td>
+					<td>{this.props.itemData.is_send?<span className="text-info">發佈成功</span>:<span className="text-danger">待發佈</span>}</td>
 				</tr>
 			);
 		}
@@ -254,23 +254,23 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-                <h3 className="title">{this.props.Caption} 列表</h3>
+                <h3 className="h3">{this.props.Caption}</h3>
 
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
 
-										<label>標題</label> { }
-										<input type="text" className="form-control input-sm" 
+										<label className="text-sm">標題</label> { }
+										<input type="text" className="form-control" 
 										value={searchData.title}
 										onChange={this.changeGDValue.bind(this,'title')}
 										placeholder="標題名稱..." /> { }
 
-										<label>狀態</label> { }
-										<select className="form-control input-sm" 
+										<label className="text-sm">狀態</label> { }
+										<select className="form-control" 
 												value={searchData.is_complete}
 												onChange={this.changeGDValue.bind(this,'is_complete')}>
 											<option value="">全部</option>
@@ -279,8 +279,8 @@ var GirdForm = React.createClass({
 
 										</select> { }
 
-										<label>發佈狀態</label> { }
-										<select className="form-control input-sm" 
+										<label className="text-sm">發佈狀態</label> { }
+										<select className="form-control" 
 												value={searchData.is_send}
 												onChange={this.changeGDValue.bind(this,'is_send')}>
 											<option value="">全部</option>
@@ -289,25 +289,25 @@ var GirdForm = React.createClass({
 
 										</select> { }
 
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn btn-sm btn-secondary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th style={{"width":"7%;"}} className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1">發佈日期</th>
-									<th className="col-xs-2">標題</th>
-									<th className="col-xs-1">狀態</th>
-									<th className="col-xs-1">發佈狀態</th>
+									<th style={{"width":"7%;"}} className="text-xs-center">修改</th>
+									<th style={{"width":"16%;"}}>發佈日期</th>
+									<th style={{"width":"40%;"}}>標題</th>
+									<th style={{"width":"10%;"}}>狀態</th>
+									<th style={{"width":"20%;"}}>發佈狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -350,8 +350,8 @@ var GirdForm = React.createClass({
 			}else{
 				map_out_html=(
 					<div>
-						<hr className="condensed" />
-						<h4 className="title">發送訊息對應設定</h4>
+						<hr className="lg" />
+						<h3 className="h3">發送訊息對應設定</h3>
 						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 					</div>
 					);
@@ -362,28 +362,22 @@ var GirdForm = React.createClass({
 			
 			outHtml=(
 			<div>
-                <h3 className="title">{this.props.Caption} 編輯</h3>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
 
 				{send_out_html}
-				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
-				<div className="col-xs-9">
-				    <div className="form-group">
-				        <label className="col-xs-2 control-label">發送日期</label>
-				            <div className="col-xs-3">
-					           	<span className="has-feedback">
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+				    <div className="form-group row">
+				        <label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 發送日期</label>
+				        <div className="col-xs-3">
 								<InputDate id="send_day" 
 									onChange={this.changeFDValue} 
 									field_name="send_day" 
 									value={fieldData.send_day}
 									required={true} 
 									disabled={fieldData.is_send}/>
-								</span>
-				            </div>
-				        <small className="help-inline col-xs-2 text-danger">(必填)</small>
-				    </div>
-				    <div className="form-group">
-				        <label className="col-xs-2 control-label">發送時間</label>
-				            <div className="col-xs-3">
+				        </div>
+				        <label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 發送時間</label>
+				        <div className="col-xs-3">
 								<select className="form-control" 
 								value={fieldData.send_time}
 								disabled={fieldData.is_send}
@@ -394,82 +388,63 @@ var GirdForm = React.createClass({
 									})
 								}
 								</select>
-				            </div>
-				        <small className="help-inline col-xs-2 text-danger">(必填)</small>
+				        </div>
 				    </div>
-				    <div className="form-group">
-						<label className="col-xs-2 control-label">狀態</label>
+				    <div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">狀態</label>
 						<div className="col-xs-3">
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="is_complete"
-											value={true}
-											checked={fieldData.is_complete===true}
-											disabled={fieldData.is_send} 
-											onChange={this.changeFDValue.bind(this,'is_complete')}
-									/>
-									<span>完稿</span>
-								</label>
-							</div>
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="is_complete"
-											value={false}
-											checked={fieldData.is_complete===false}
-											disabled={fieldData.is_send}
-											onChange={this.changeFDValue.bind(this,'is_complete')}
-											/>
-									<span>草稿</span>
-								</label>
-							</div>
+							<label className="c-input c-radio">
+								<input type="radio" 
+										name="is_complete"
+										value={true}
+										checked={fieldData.is_complete===true}
+										disabled={fieldData.is_send} 
+										onChange={this.changeFDValue.bind(this,'is_complete')}
+								/>
+								<span className="c-indicator"></span>
+								<span className="text-sm">完稿</span>
+							</label>
+							<label className="c-input c-radio">
+								<input type="radio" 
+										name="is_complete"
+										value={false}
+										checked={fieldData.is_complete===false}
+										disabled={fieldData.is_send}
+										onChange={this.changeFDValue.bind(this,'is_complete')}
+										/>
+								<span className="c-indicator"></span>
+								<span className="text-sm">草稿</span>
+							</label>
+						</div>	
+						<label className="col-xs-1 form-control-label text-xs-right">快速發送</label>
+						<div className="col-xs-3">
+							<label className="c-input c-radio">
+								<input type="radio" 
+										name="is_quickly_send"
+										value={true}
+										checked={fieldData.is_quickly_send===true}
+										disabled={fieldData.is_send} 
+										onChange={this.changeFDValue.bind(this,'is_quickly_send')}
+								/>
+								<span className="c-indicator"></span>
+								<span className="text-sm">是</span>
+							</label>
+							<label className="c-input c-radio">
+								<input type="radio" 
+										name="is_quickly_send"
+										value={false}
+										checked={fieldData.is_quickly_send===false}
+										disabled={fieldData.is_send}
+										onChange={this.changeFDValue.bind(this,'is_quickly_send')}
+										/>
+								<span className="c-indicator"></span>
+								<span className="text-sm">否</span>
+							</label>
 						</div>	
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">快速發送</label>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">選擇文案</label>
 						<div className="col-xs-3">
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="is_quickly_send"
-											value={true}
-											checked={fieldData.is_quickly_send===true}
-											disabled={fieldData.is_send} 
-											onChange={this.changeFDValue.bind(this,'is_quickly_send')}
-									/>
-									<span>是</span>
-								</label>
-							</div>
-							<div className="radio-inline">
-								<label>
-									<input type="radio" 
-											name="is_quickly_send"
-											value={false}
-											checked={fieldData.is_quickly_send===false}
-											disabled={fieldData.is_send}
-											onChange={this.changeFDValue.bind(this,'is_quickly_send')}
-											/>
-									<span>否</span>
-								</label>
-							</div>
-						</div>	
-					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">排序</label>
-						<div className="col-xs-3">
-							<input type="number" 
-							className="form-control"	
-							value={fieldData.sort}
-							disabled={fieldData.is_send}
-							onChange={this.changeFDValue.bind(this,'sort')}
-							 />
-						</div>
-						<small className="col-xs-2 help-inline">數字越大越前面</small>					
-					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">選擇文案</label>
-						<div className="col-xs-5">
 							<select className="form-control" 
 							value={fieldData.draft_id}
 							disabled={fieldData.is_send}
@@ -482,10 +457,20 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
-					</div>					
-					<div className="form-group">
-						<label className="col-xs-2 control-label">標題</label>
-						<div className="col-xs-5">
+						<label className="col-xs-1 form-control-label text-xs-right">排序</label>
+						<div className="col-xs-3">
+							<input type="number" 
+							className="form-control"	
+							value={fieldData.sort}
+							disabled={fieldData.is_send}
+							onChange={this.changeFDValue.bind(this,'sort')}
+							 />
+						</div>
+						<small className="col-xs-2 text-muted">數字越大越前面</small>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 標題</label>
+						<div className="col-xs-7">
 							<input type="text" 							
 							className="form-control"	
 							value={fieldData.title}
@@ -494,17 +479,10 @@ var GirdForm = React.createClass({
 							required
 							disabled={fieldData.is_send} />
 						</div>
-						<small className="help-inline col-xs-2 text-danger">(必填)</small>
 					</div>
-
-
-
-					<div className="form-group">
-
-					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">內容</label>
-						<div className="col-xs-5">
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">內容</label>
+						<div className="col-xs-7">
 							<textarea col="30" rows="5" className="form-control"
 							value={fieldData.send_content}
 							onChange={this.changeFDValue.bind(this,'send_content')}
@@ -512,15 +490,10 @@ var GirdForm = React.createClass({
 							maxLength="256"></textarea>
 						</div>
 					</div>
-
-				</div>
-				<div className="col-xs-12"></div>
-				<div className="col-xs-5">
-					<div className="text-right">
-						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+					<div className="form-action">
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-arrow-left"></i> 回前頁</button>
 					</div>
-				</div>
 				</form>
 			{/* 組合菜單對應的基礎元素 */}
 				{map_out_html}
@@ -638,82 +611,83 @@ var GirdSofC = React.createClass({
 
 		outHtml =(
 			<div>
-			<hr className="expanded" />
-			<h4 className="title">發送訊息對應設定</h4>
+			<hr className="lg" />
+			<h3 className="h3">發送訊息對應設定</h3>
 				<div className="row">
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>
-								    <div className="form-inline break pull-right">
-				                        <div className="form-group">
-				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
-				                           	value={searchData.name} 
-	                						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }
-	                						<select name="" id="" className="form-control input-sm"
-				                            onChange={this.queryChangeElementParam.bind(this,'customer_type')}
-											value={searchData.customer_type}> { }
-												<option value="">全部</option>
-											    {
-												    CommData.CustomerType.map(function(itemData,i) {
-												    return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-												    })
-											    }
-				                            </select> { }	     
-				                        </div>
-				                    </div>
-				                    全部客戶
-								</caption>
-								<tbody>
-									<tr>
-										<th className="text-center">分類</th>
-										<th>名稱</th>
-					                	<th className="text-center">加入</th>
-									</tr>
-									{
-										this.state.grid_left_customer.rows.map(function(itemData,i) {
-											var out_sub_html =                     
-												<tr key={itemData.customer_id}>
-													<td className="text-center"><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
-							                        <td>{itemData.customer_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-success" type="button" onClick={this.addCustomer.bind(this,itemData.customer_id)}
-																disabled={this.props.is_send}>
-															<i className="fa-plus"></i>
-														</button>
-							                        </td>
-												</tr>;
-											return out_sub_html;
-										}.bind(this))
-									}
-								</tbody>
-	        				</table>
-	        				<div className="form-inline text-center">
-								<ul className="pager list-inline list-unstyled">
-									<li><a href="#" onClick={this.LeftGridPrev}><i className="glyphicon glyphicon-arrow-left"></i> 上一頁</a></li>
-									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_customer.total}</li>
-									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="glyphicon glyphicon-arrow-right"></i></a></li>
-								</ul>
-							</div>
+						<div className="table-header">
+							<div className="form-inline form-sm">
+		                        <div className="form-group">
+		                        	<select name="" id="" className="form-control input-sm"
+		                            onChange={this.queryChangeElementParam.bind(this,'customer_type')}
+									value={searchData.customer_type}> { }
+										<option value="">全部分類</option>
+									    {
+										    CommData.CustomerType.map(function(itemData,i) {
+										    return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+										    })
+									    }
+		                            </select> { }
+		                            <input type="text" className="form-control" placeholder="搜尋客戶..."
+		                           	value={searchData.name} 
+            						onChange={this.queryChangeElementParam.bind(this,'name')} /> { }     
+		                        </div>
+				            </div>
+						</div>
+						<table className="table table-sm table-bordered table-striped">
+							<thead>
+								<tr>
+									<th style={{"width":"20%;"}}>分類</th>
+									<th style={{"width":"60%;"}}>名稱</th>
+				                	<th style={{"width":"20%;"}} className="text-xs-center">加入</th>
+								</tr>
+							</thead>
+							<tbody>
+								{
+									this.state.grid_left_customer.rows.map(function(itemData,i) {
+										var out_sub_html =                     
+											<tr key={itemData.customer_id}>
+												<td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
+						                        <td>{itemData.customer_name}</td>
+			                        			<td className="text-xs-center">
+													<button className="btn btn-link text-success" type="button" onClick={this.addCustomer.bind(this,itemData.customer_id)}
+															disabled={this.props.is_send}>
+														<i className="fa-plus"></i>
+													</button>
+						                        </td>
+											</tr>;
+										return out_sub_html;
+									}.bind(this))
+								}
+							</tbody>
+        				</table>
+        				<div className="table-footer">
+							<ul className="pager pager-sm list-inline">
+								<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-double-arrow-left"></i> 上一頁</a></li>
+								<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_customer.total}</li>
+								<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-double-arrow-right"></i></a></li>
+							</ul>
+						</div>
         			</div>
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>已加入發送清單</caption>
-								<tbody>
+						<div className="table-header"><span className="text-secondary">已加入發送清單的客戶：</span></div>
+							<table className="table table-sm table-bordered table-striped">
+								<thead>
 									<tr>
-										<th className="text-center">分類</th>
-										<th>名稱</th>
-					                	<th className="text-center">刪除</th>
+										<th style={{"width":"20%;"}}>分類</th>
+										<th style={{"width":"60%;"}}>名稱</th>
+					                	<th style={{"width":"20%;"}} className="text-xs-center">刪除</th>
 									</tr>
+								</thead>
+								<tbody>
 									{
 										this.state.grid_right_customer.map(function(itemData,i) {
 											var out_sub_html =                     
 												<tr key={itemData.customer_id}>
-													<td className="text-center"><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
+													<td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
 							                        <td>{itemData.customer_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-danger" type="button" onClick={this.removeCustomer.bind(this,itemData.customer_id)}
+				                        			<td className="text-xs-center">
+														<button className="btn btn-link text-danger" type="button" onClick={this.removeCustomer.bind(this,itemData.customer_id)}
 																disabled={this.props.is_send}>
 															<i className="fa-times"></i>
 														</button>

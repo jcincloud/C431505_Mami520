@@ -153,51 +153,44 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<h3 className="title">
+				<h3 className="h3">
 					{this.props.Caption}
 				</h3>
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline break">
+								<div className="form-inline form-sm">
 									<div className="form-group">
-										<label>日期區間</label> { }										
-											<span className="has-feedback">
-												<InputDate id="start_date" ver={2}
+										<label className="text-sm">日期區間</label> { }										
+											<InputDate id="start_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="start_date" 
-												value={searchData.start_date} />
-											</span> { }
-										<label>~</label> { }
-											<span className="has-feedback">
-												<InputDate id="end_date" ver={2}
+												value={searchData.start_date} /> { }
+										<label className="text-sm">~</label> { }
+											<InputDate id="end_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="end_date" 
-												value={searchData.end_date} />
-											</span> { }
-										
-
-										<label>銷售單號/客戶姓名</label> { }
-										<input type="text" className="form-control input-sm" 
+												value={searchData.end_date} /> { }
+										<label className="text-sm">銷售單號/客戶姓名</label> { }
+										<input type="text" className="form-control" 
 										value={searchData.word}
 										onChange={this.changeGDValue.bind(this,'word')}
 										placeholder="請擇一填寫" /> { }
-
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button> { }
-										<button className="btn-success" type="button" onClick={this.excelPrint}><i className="fa-print"></i> 列印</button>
+										<button className="btn btn-sm btn-secondary" type="submit"><i className="fa-search"></i> 搜尋</button> { }
+										<button className="btn btn-sm btn-info" type="button" onClick={this.excelPrint}><i className="fa-print"></i> 列印</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-2">來源銷售單號</th>
-									<th className="col-xs-2">來源銷售日期</th>
-									<th className="col-xs-2">客戶名稱</th>
-									<th className="col-xs-1">實際應收金額</th>
-									<th className="col-xs-1">實際已收金額</th>
+									<th style={{"width":"15%;"}}>來源銷售單號</th>
+									<th style={{"width":"15%;"}}>來源銷售日期</th>
+									<th style={{"width":"20%;"}}>客戶名稱</th>
+									<th style={{"width":"25%;"}}>實際應收金額</th>
+									<th style={{"width":"25%;"}}>實際已收金額</th>
 								</tr>
 							</thead>
 							<tbody>

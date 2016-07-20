@@ -14,10 +14,10 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.draft_name}</td>
-					<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>
+					<td>{this.props.itemData.i_Hide?<span className="text-muted">隱藏</span>:<span className="text-success">顯示</span>}</td>
 				</tr>
 			);
 		}
@@ -225,23 +225,23 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-                <h3 className="title">{this.props.Caption} 列表</h3>
+                <h3 className="h3">{this.props.Caption}</h3>
 
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
 
-										<label>文案名稱</label> { }
-										<input type="text" className="form-control input-sm" 
+										<label className="text-sm">文案名稱</label> { }
+										<input type="text" className="form-control" 
 										value={searchData.name}
 										onChange={this.changeGDValue.bind(this,'name')}
 										placeholder="文案名稱..." /> { }
 
-										<label>狀態</label> { }
-										<select className="form-control input-sm" 
+										<label className="text-sm">狀態</label> { }
+										<select className="form-control" 
 												value={searchData.i_Hide}
 												onChange={this.onHideChange}>
 											<option value="">全部</option>
@@ -251,23 +251,23 @@ var GirdForm = React.createClass({
 										</select> { }
 
 
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn btn-sm btn-secondary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th style={{"width":"10%;"}} className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">文案名稱</th>
-									<th className="col-xs-1">狀態</th>
+									<th style={{"width":"10%;"}} className="text-xs-center">修改</th>
+									<th style={{"width":"50%;"}}>文案名稱</th>
+									<th style={{"width":"30%;"}}>狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -305,12 +305,11 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-                <h3 className="title">{this.props.Caption} 編輯</h3>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
 
-				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
-				<div className="col-xs-9">
-					<div className="form-group">
-						<label className="col-xs-2 control-label">文案名稱</label>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 文案名稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -319,10 +318,9 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
-						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">排序</label>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">排序</label>
 						<div className="col-xs-4">
 							<input type="number" 
 							className="form-control"	
@@ -330,38 +328,36 @@ var GirdForm = React.createClass({
 							onChange={this.changeFDValue.bind(this,'sort')}
 							 />
 						</div>
-						<small className="col-xs-2 help-inline">數字越大越前面</small>
+						<small className="col-xs-2 text-muted">數字越大越前面</small>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">狀態</label>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">狀態</label>
 						<div className="col-xs-4">
-							<div className="radio-inline">
-								<label>
+								<label className="c-input c-radio">
 									<input type="radio" 
 											name="i_Hide"
 											value={true}
 											checked={fieldData.i_Hide===true} 
 											onChange={this.changeFDValue.bind(this,'i_Hide')}
 									/>
-									<span>隱藏</span>
+									<span className="c-indicator"></span>
+									<span className="text-sm">隱藏</span>
 								</label>
-							</div>
-							<div className="radio-inline">
-								<label>
+								<label className="c-input c-radio">
 									<input type="radio" 
 											name="i_Hide"
 											value={false}
 											checked={fieldData.i_Hide===false} 
 											onChange={this.changeFDValue.bind(this,'i_Hide')}
 											/>
-									<span>顯示</span>
+									<span className="c-indicator"></span>
+									<span className="text-sm">顯示</span>
 								</label>
-							</div>
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">標題</label>
-						<div className="col-xs-4">
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">標題</label>
+						<div className="col-xs-7">
 							<input type="text" 							
 							className="form-control"	
 							value={fieldData.draft_title}
@@ -369,9 +365,9 @@ var GirdForm = React.createClass({
 							maxLength="64" />
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">內容</label>
-						<div className="col-xs-8">
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">內容</label>
+						<div className="col-xs-7">
 							<textarea col="30" rows="3" className="form-control"
 							value={fieldData.draft_content}
 							onChange={this.changeFDValue.bind(this,'draft_content')}
@@ -379,11 +375,10 @@ var GirdForm = React.createClass({
 						</div>
 					</div>
 
-					<div className="form-action text-right">
-						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+					<div className="form-action">
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-arrow-left"></i> 回前頁</button>
 					</div>
-				</div>
 				</form>
 			</div>
 			);

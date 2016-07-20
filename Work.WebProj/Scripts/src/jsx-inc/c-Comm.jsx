@@ -79,7 +79,7 @@ var GridButtonSub = React.createClass({
 	},
 	render:function(){
 		return (
-			<button type="button" className="btn-lg btn-link" onClick={this.onClick}><i className={this.state.subHtml}></i></button>
+			<button type="button" className="btn btn-lg btn-link text-info" onClick={this.onClick}><i className={this.state.subHtml}></i></button>
 			);
 	}
 });
@@ -163,7 +163,7 @@ var GridNavPage = React.createClass({
 			        {setAddButton} { }
 			        {setDeleteButton}
 			    </div>
-			    <small className="pull-xs-right">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+			    <small className="pull-xs-right">第 {this.props.StartCount} - {this.props.EndCount} 筆，共 {this.props.RecordCount} 筆</small>
 
 			    <ul className="pager pager-sm">
 			        <li>
@@ -183,7 +183,7 @@ var GridNavPage = React.createClass({
 			                <input className="form-control text-xs-center" style={{"width":"5em"}} type="number" min="1" tabIndex="-1" value={this.props.NowPage}
 			                       onChange={this.jumpPage} />
 			                {' '}
-			                <label>頁，共{this.props.TotalPage}頁</label>
+			                <label>頁，共 {this.props.TotalPage} 頁</label>
 			            </div>
 			        </li> { } 
 			        <li>
@@ -359,7 +359,7 @@ var GridNavPageUsePopup = React.createClass({
 
 		var setAddButton = null,setDeleteButton=null;
 		if(this.props.showAdd){
-			setAddButton = <button className="btn btn-success"
+			setAddButton = <button className="btn btn-sm btn-success"
 			                type="button"
 			                data-toggle="modal"
 			                data-target={'#myModal-'+this.props.MainId}
@@ -369,7 +369,7 @@ var GridNavPageUsePopup = React.createClass({
 		}
 
 		if(this.props.showDelete){
-			setDeleteButton = 	<button className="btn btn-muted" type="button"
+			setDeleteButton = 	<button className="btn btn-sm btn-primary" type="button"
 			                		onClick={this.props.deleteSubmit}>
 			            			<i className="fa-trash-o"></i> 刪除
 			        			</button>;
@@ -378,14 +378,14 @@ var GridNavPageUsePopup = React.createClass({
 		var oper = null;
 
 		oper = (
-			<div className="table-footer card">
-			    <div className="action float-l">
+			<div className="table-footer">
+			    <div className="pull-xs-left">
 			        {setAddButton} { }
 			        {setDeleteButton}
 			    </div>
-			    <small className="info float-r">第{this.props.StartCount}-{this.props.EndCount}筆，共{this.props.RecordCount}筆</small>
+			    <small className="pull-xs-right">第 {this.props.StartCount} - {this.props.EndCount} 筆，共 {this.props.RecordCount} 筆</small>
 
-			    <ul className="pager">
+			    <ul className="pager pager-sm">
 			        <li>
 			            <a href="#" title="移至第一頁" tabIndex="-1" onClick={this.firstPage}>
 			                <i className="fa-angle-double-left"></i>
@@ -396,14 +396,14 @@ var GridNavPageUsePopup = React.createClass({
 			                <i className="fa-angle-left"></i>
 			            </a>
 			        </li> { } 
-			        <li className="form-inline">
+			        <li className="form-inline form-sm">
 			            <div className="form-group">
 			                <label>第</label>
 			                {' '}
-			                <input className="form-control" type="number" min="1" tabIndex="-1" value={this.props.NowPage}
+			                <input className="form-control text-xs-center" style={{"width":"5em"}} type="number" min="1" tabIndex="-1" value={this.props.NowPage}
 			                       onChange={this.jumpPage} />
 			                {' '}
-			                <label>頁，共{this.props.TotalPage}頁</label>
+			                <label>頁，共 {this.props.TotalPage} 頁</label>
 			            </div>
 			        </li> { } 
 			        <li>
