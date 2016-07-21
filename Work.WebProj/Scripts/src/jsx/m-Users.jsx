@@ -14,8 +14,8 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.user_name_c}</td>					
 					<td>{this.props.itemData.UserName}</td>
 					<td>{this.props.itemData.Email}</td>
@@ -255,39 +255,39 @@ var GirdForm = React.createClass({
 				<ul className="breadcrumb">
 					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
 				</ul>
-				<h3 className="title">
+				<h3 className="h3">
 					{this.props.Caption}
 				</h3>
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
-										<label>使用者名稱</label> { }
+										<label className="text-sm">使用者名稱</label> { }
 										<input type="text" className="form-control" 
 										value={searchData.UserName}
 										onChange={this.changeGDValue.bind(this,'UserName')}
 										placeholder="請輸入關鍵字..." /> { }
-										<button className="btn-primary" type="submit"><i className="fa-search"></i> 搜尋</button>
+										<button className="btn btn-sm btn-secondary" type="submit"><i className="fa-search"></i> 搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th style={{"width":"10%;"}} className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">姓名</th>
-									<th className="col-xs-2">帳號</th>
-									<th className="col-xs-4">Email</th>
-									<th className="col-xs-3">公司名稱</th>
+									<th style={{"width":"10%;"}} className="text-xs-center">修改</th>
+									<th style={{"width":"20%;"}} >姓名</th>
+									<th style={{"width":"20%;"}} >帳號</th>
+									<th style={{"width":"20%;"}} >Email</th>
+									<th style={{"width":"20%;"}} >公司名稱</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -325,8 +325,8 @@ var GirdForm = React.createClass({
 			var company_html=null;
 			if(Role=="Admins"){
 				company_html=
-					<div className="form-group">
-						<label className="col-xs-2 control-label">選擇分公司</label>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇分公司</label>
 						<div className="col-xs-4">
 							<select className="form-control" 
 							value={fieldData.company_id}
@@ -338,7 +338,6 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
-						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>;
 			}
 			outHtml=(
@@ -346,14 +345,10 @@ var GirdForm = React.createClass({
 				<ul className="breadcrumb">
 					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
 				</ul>
-				<h4 className="title">{this.props.Caption} 基本資料維護</h4>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-					<div className="col-xs-8">
-						<div className="alert alert-warning">
-							<p><strong className="text-danger">紅色標題</strong> 為必填欄位。</p>
-						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label text-danger">帳號</label>
+				<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 帳號</label>
 							<div className="col-xs-6">
 								<input type="text" 							
 								className="form-control"	
@@ -363,8 +358,8 @@ var GirdForm = React.createClass({
 								required />
 							</div>
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label text-danger">密碼</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 密碼</label>
 							<div className="col-xs-6">
 								<input type="password" 							
 								className="form-control"	
@@ -373,11 +368,11 @@ var GirdForm = React.createClass({
 								maxLength="256"
 								required />
 							</div>
-							<small className="col-xs-4 help-inline">至少6個字元</small>
+							<small className="col-xs-4 text-muted">至少6個字元</small>
 						</div>
 
-						<div className="form-group">
-							<label className="col-xs-2 control-label text-danger">姓名</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 姓名</label>
 							<div className="col-xs-6">
 								<input type="text" 							
 								className="form-control"	
@@ -386,7 +381,7 @@ var GirdForm = React.createClass({
 								maxLength="32"
 								required />
 							</div>
-							<label className="col-xs-1 control-label">排序</label>
+							<label className="col-xs-1 form-control-label text-xs-right">排序</label>
 							<div className="col-xs-2">
 								<input type="number" 
 								className="form-control"
@@ -394,8 +389,8 @@ var GirdForm = React.createClass({
 								onChange={this.changeFDValue.bind(this,'sort')} />
 							</div>
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label text-danger">Email</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> Email</label>
 							<div className="col-xs-9">
 								<input type="email" 
 								className="form-control"	
@@ -407,36 +402,35 @@ var GirdForm = React.createClass({
 							</div>
 						</div>
 						{company_html}
-						<div className="form-group">
-							<label className="col-xs-2 control-label">角色</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">角色</label>
 							<div className="col-xs-10">
-							{
-								fieldData.role_array.map(function(itemData,i) {
+								<div className="c-inputs-stacked">
+								{
+									fieldData.role_array.map(function(itemData,i) {
 
-									var out_check = 							
-									<div className="checkbox" key={itemData.role_id}>
-										<label>
-											<input  type="checkbox" 
-													checked={itemData.role_use}
-													onChange={this.setRolesCheck.bind(this,i)}
-											 />
-											{itemData.role_name + '(' + this.props.roleDescription[itemData.role_name] + ')'}
-										</label>
-									</div>;
-									return out_check;
+										var out_check = 							
+										<label className="c-input c-checkbox" key={itemData.role_id}>
+												<input  type="checkbox" 
+														checked={itemData.role_use}
+														onChange={this.setRolesCheck.bind(this,i)}
+												 />
+												 <span className="c-indicator"></span>
+												<span className="text-sm">{itemData.role_name + '(' + this.props.roleDescription[itemData.role_name] + ')'}</span>
+										</label>;
+										return out_check;
 
-								}.bind(this))
-							}
+									}.bind(this))
+								}
+								</div>
 							</div>
 						</div>
 
 						<div className="form-action">
-							<div className="col-xs-10 col-xs-offset-2">
-								<button type="submit" className="btn-primary"><i className="fa-check"></i> 儲存</button> { }
-								<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
-							</div>
+							<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button> { }
+							<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-arrow-left"></i> 回前頁</button>
 						</div>
-					</div>
+					
 				</form>
 			</div>
 			);

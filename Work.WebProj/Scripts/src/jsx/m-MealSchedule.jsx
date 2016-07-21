@@ -286,7 +286,7 @@ var GirdForm = React.createClass({
                                 disabled />
                             </div>
                             <label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
-                            <div className="col-xs-3">
+                            <div className="col-xs-4">
                                 <input type="text"                          
                                 className="form-control"    
                                 value={fieldData.mom_name}
@@ -299,7 +299,7 @@ var GirdForm = React.createClass({
 
                             <div className="form-group row">
                                 <label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
-                                <div className="col-xs-4">
+                                <div className="col-xs-3">
                                     <input type="tel" 
                                     className="form-control"    
                                     value={fieldData.tel_1}
@@ -643,7 +643,7 @@ var MealCalendar = React.createClass({
                         
                             <ul className="nav nav-tabs" role="tablist">
                                 <li className="nav-item"><a className="nav-link active" href="#changeLog1" role="tab" data-toggle="tab">用餐排程異動紀錄</a></li>
-                                <li className="nav-item"><a href="#changeLog2" role="tab" data-toggle="tab">訂餐日期及餐數異動紀錄</a></li>
+                                <li className="nav-item"><a className="nav-link" href="#changeLog2" role="tab" data-toggle="tab">訂餐日期及餐數異動紀錄</a></li>
                             </ul>{/*---tab-nav---*/}
                             <div className="tab-content">
                                 <div className="tab-pane active" id="changeLog1">

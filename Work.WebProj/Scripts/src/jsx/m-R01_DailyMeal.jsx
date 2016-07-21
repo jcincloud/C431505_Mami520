@@ -103,9 +103,7 @@ var GirdForm = React.createClass({
 		var no_data_html=				
 				(<tr>
 					<td colSpan="2">
-						<div className="alert alert-default text-warning">
-			                <i className="fa-exclamation-triangle"></i> 目前尚無安排菜單
-			            </div>
+						<i className="fa-exclamation-triangle"></i> 目前尚無安排菜單
                		</td>
 				</tr>);
 
@@ -125,7 +123,7 @@ var GirdForm = React.createClass({
 			                            meal_diet.meal_id.map(function(meal_id,i) {                                           
 			                                return (
 			                                	<span>
-			                                		<span className="label label-warning">{meal_id}</span> { }
+			                                		<span className="label label-lg label-warning">{meal_id}</span> { }
 			                                	</span>);
 			                            }.bind(this))
 			                        }
@@ -155,7 +153,7 @@ var GirdForm = React.createClass({
 			                            meal_diet.meal_id.map(function(meal_id,i) {                                           
 			                                return (
 			                                	<span>
-			                                		<span className="label label-warning">{meal_id}</span> { }
+			                                		<span className="label label-lg label-warning">{meal_id}</span> { }
 			                                	</span>);
 			                            }.bind(this))
 			                        }
@@ -186,7 +184,7 @@ var GirdForm = React.createClass({
 			                            meal_diet.meal_id.map(function(meal_id,i) {                                           
 			                                return (
 			                                	<span>
-			                                		<span className="label label-warning">{meal_id}</span> { }
+			                                		<span className="label label-lg label-warning">{meal_id}</span> { }
 			                                	</span>);
 			                            }.bind(this))
 			                        }
@@ -203,33 +201,31 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-			    <h3 className="title">{this.props.Caption}</h3>
+			    <h3 className="h3">{this.props.Caption}</h3>
 				{/*---搜尋start---*/}
 				<form onSubmit={this.handleSearch}>
 					<div className="table-header">
 						<div className="table-filter">
-							<div className="form-inline">
+							<div className="form-inline form-sm">
 								<div className="form-group">
-									<label for="">選擇日期</label>
-									<span className="has-feedback">
-										<InputDate id="meal_day" ver={2}
+									<label className="text-sm">選擇日期</label> { }
+									<InputDate id="meal_day" ver={2}
 										onChange={this.changeGDValue} 
 										field_name="meal_day" 
-										value={searchData.meal_day} />
-									</span> { }
-								</div>
-								<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button> { }
-								<button className="btn-success btn-sm" type="button" onClick={this.excelPrint}><i className="fa-print"></i> 列印</button>
+										value={searchData.meal_day} /> { }
+								</div> { }
+								<button className="btn btn-secondary btn-sm" type="submit"><i className="fa-search"></i> 搜尋</button> { }
+								<button className="btn btn-info btn-sm" type="button" onClick={this.excelPrint}><i className="fa-print"></i> 列印</button>
 							</div>
 						</div>
 					</div>
 				</form>
 				<hr />
-				<h4 className="title">{searchData.meal_day}</h4>
+				<h4 className="h4">{searchData.meal_day}</h4>
 				{/*---搜尋end---*/}
 				{/*---報表start---*/}
-				<table>
-					<tr className="success">
+				<table className="table table-bordered table-striped">
+					<tr className="table-success">
 						<td><strong>當日事項</strong></td>
 					</tr>
 					<tr>
@@ -239,7 +235,7 @@ var GirdForm = React.createClass({
 			                matters.pause_meal.breakfast.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -248,7 +244,7 @@ var GirdForm = React.createClass({
 			                matters.pause_meal.lunch.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -257,7 +253,7 @@ var GirdForm = React.createClass({
 			                matters.pause_meal.dinner.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -270,7 +266,7 @@ var GirdForm = React.createClass({
 			                matters.start_meal.breakfast.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -279,7 +275,7 @@ var GirdForm = React.createClass({
 			                matters.start_meal.lunch.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -288,7 +284,7 @@ var GirdForm = React.createClass({
 			                matters.start_meal.dinner.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -301,7 +297,7 @@ var GirdForm = React.createClass({
 			                matters.end_meal.breakfast.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -310,7 +306,7 @@ var GirdForm = React.createClass({
 			                matters.end_meal.lunch.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -319,7 +315,7 @@ var GirdForm = React.createClass({
 			                matters.end_meal.dinner.map(function(meal_id,i) {                                           
 			                    return (
 			                        <span>
-			                            <span className="label label-success">{meal_id}</span> { }
+			                            <span className="label label-lg label-success">{meal_id}</span> { }
 			                        </span>);
 			                }.bind(this))
 			            }
@@ -334,8 +330,8 @@ var GirdForm = React.createClass({
 					</tr>
 				</table>
 				<hr />
-				<table>
-					<tr className="danger">
+				<table className="table table-bordered table-striped">
+					<tr className="table-danger">
 						<td><strong>特殊飲食</strong></td>
 					</tr>
 					<tr>
@@ -349,7 +345,7 @@ var GirdForm = React.createClass({
 			                            itemData.meal_id.map(function(meal_id,i) {                                           
 			                                return (
 			                                	<span>
-			                                		<span className="label label-danger">{meal_id}</span> { }
+			                                		<span className="label label-lg label-danger">{meal_id}</span> { }
 			                                	</span>);
 			                            }.bind(this))
 			                        }
@@ -361,25 +357,25 @@ var GirdForm = React.createClass({
 					</tr>
 				</table>
 				<hr />
-				<table>
-					<tr className="warning">
+				<table className="table table-bordered table-striped">
+					<tr className="table-warning">
 						<td colSpan="2"><strong>早餐({this.state.breakfast.count})</strong></td>
 					</tr>
-					<tbody>{breakfast}</tbody>
+					{breakfast}
 				</table>
 				<hr />
-				<table>
-					<tr className="warning">
+				<table className="table table-bordered table-striped">
+					<tr className="table-warning">
 						<td colSpan="2"><strong>午餐({this.state.lunch.count})</strong></td>
 					</tr>
-					<tbody>{lunch}</tbody>
+					{lunch}
 				</table>
 				<hr />
-				<table>
-					<tr className="warning">
+				<table className="table table-bordered table-striped">
+					<tr className="table-warning">
 						<td colSpan="2"><strong>晚餐({this.state.dinner.count})</strong></td>
 					</tr>
-					<tbody>{dinner}</tbody>
+					{dinner}
 				</table>
 				{/*---報表end---*/}
 				<iframe src={this.state.download_src} style={ {visibility:'hidden',display:'none'} } />

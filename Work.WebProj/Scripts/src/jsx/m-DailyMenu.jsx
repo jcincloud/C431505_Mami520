@@ -14,8 +14,8 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{moment(this.props.itemData.day).format('YYYY/MM/DD')}</td>
                     <td><StateForGrid stateData={CommData.MealType} id={this.props.itemData.meal_type} /></td>
 				</tr>
@@ -238,31 +238,27 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-                <h3 className="title">{this.props.Caption} 列表</h3>
+                <h3 className="h3">{this.props.Caption}</h3>
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
 
-										<label>日期區間</label> { }										
-											<span className="has-feedback">
+										<label className="text-sm">日期區間</label> { }										
 												<InputDate id="start_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="start_date" 
-												value={searchData.start_date} />
-											</span> { }
-										<label>~</label> { }
-											<span className="has-feedback">
+												value={searchData.start_date} /> { }
+										<label className="text-sm">~</label> { }
 												<InputDate id="end_date" ver={2}
 												onChange={this.changeGDValue} 
 												field_name="end_date" 
-												value={searchData.end_date} />
-											</span> { }
+												value={searchData.end_date} /> { }
 
-										<label>餐別</label> { }
-										<select className="form-control input-sm" 
+										<label className="text-sm">餐別</label> { }
+										<select className="form-control" 
 												value={searchData.meal_type}
 												onChange={this.onCategoryChange}>
 											<option value="">全部</option>
@@ -272,24 +268,23 @@ var GirdForm = React.createClass({
 											})
 										}
 										</select> { }
-
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn btn-sm btn-secondary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th style={{"width":"10%;"}} className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">日期</th>
-									<th className="col-xs-8">餐別</th>
+									<th style={{"width":"10%;"}} className="text-xs-center">修改</th>
+									<th style={{"width":"20%;"}}>日期</th>
+									<th style={{"width":"60%;"}}>餐別</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -331,8 +326,8 @@ var GirdForm = React.createClass({
 			}else{
 				map_out_html=(
 					<div>
-						<hr className="condensed" />
-						<h4 className="title">每日菜單對應設定</h4>
+						<hr className="lg" />
+						<h3 className="h3">每日菜單對應設定</h3>
 						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 					</div>
 					);
@@ -340,21 +335,17 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-                <h3 className="title">{this.props.Caption} 編輯</h3>
-				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
-					<div className="form-group">
-						<label className="col-xs-1 control-label">選擇日期</label>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇日期</label>
 						<div className="col-xs-2">
-							<span className="has-feedback">
 								<InputDate id="day" 
 								onChange={this.changeFDValue} 
 								field_name="day" 
 								value={fieldData.day} />
-							</span>
 						</div>
-						<small className="help-inline col-xs-1 text-danger">(必填)</small>
-
-						<label className="col-xs-1 control-label">選擇餐別</label>
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇餐別</label>
 						<div className="col-xs-2">
 							<select className="form-control" 
 							value={fieldData.meal_type}
@@ -367,10 +358,9 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
-						<small className="help-inline col-xs-1 text-danger">(必填)</small>
-						<div className="col-xs-4 pull-right">
-							<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-							<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+						<div className="col-xs-6 text-xs-right">
+							<button type="submit" className="btn btn-sm btn-primary" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
+							<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-arrow-left"></i> 回前頁</button>
 						</div>	
 					</div>
 				</form>
@@ -522,47 +512,46 @@ var GirdDofC = React.createClass({
 
 		outHtml =(
 			<div>
-				<hr className="condensed" />
-				<h4 className="title">每日菜單對應設定</h4>
+				<hr className="lg" />
+				<h3 className="h3">每日菜單對應設定</h3>
 				<div className="row">
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>
-								    <div className="form-inline break pull-right">
-				                        <div className="form-group">
-				                            <input type="text" className="form-control input-sm" placeholder="請輸入關鍵字..."
-				                           	value={searchData.name} 
-	                						onChange={this.queryChangeConstituteParam.bind(this,'name')} /> { }
-				                            <select name="" id="" className="form-control input-sm"
-				                            onChange={this.queryChangeConstituteParam.bind(this,'category_id')}
-											value={searchData.category_id}> { }
-				                                <option value="">分類</option>
-											{
-												this.state.category_element.map(function(itemData,i) {
-													return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
-												})
-											}
-				                            </select> { }			             
-
-				                        </div>
-				                    </div>
-				                    全部菜單
-								</caption>
-								<tbody>
+						<div className="table-header">
+							<div className="form-inline form-sm">
+								<div className="form-group">
+									<input type="text" className="form-control" placeholder="搜尋菜單..."
+									value={searchData.name} 
+									onChange={this.queryChangeConstituteParam.bind(this,'name')} /> { }
+									<select name="" id="" className="form-control input-sm"
+									onChange={this.queryChangeConstituteParam.bind(this,'category_id')}
+									value={searchData.category_id}> { }
+										<option value="">分類</option>
+										{
+											this.state.category_element.map(function(itemData,i) {
+												return <option key={i} value={itemData.val}>{itemData.Lname}</option>;
+											})
+										}
+									</select> { }
+				                </div>
+		                    </div>
+						</div>
+							<table className="table table-sm table-bordered table-striped">
+								<thead>
 									<tr>
 										<th>分類</th>
 										<th>名稱</th>
-					                	<th className="text-center">加入</th>
+					                	<th className="text-xs-center">加入</th>
 									</tr>
+								</thead>
+								<tbody>
 									{
 										this.state.grid_left_constitute.rows.map(function(itemData,i) {
 											var out_sub_html =                     
 												<tr key={itemData.constitute_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
 							                        <td>{itemData.constitute_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-success" type="button" onClick={this.addConstitute.bind(this,itemData.constitute_id)}>
+				                        			<td className="text-xs-center">
+														<button className="btn btn-link text-success" type="button" onClick={this.addConstitute.bind(this,itemData.constitute_id)}>
 															<i className="fa-plus"></i>
 														</button>
 							                        </td>
@@ -572,23 +561,24 @@ var GirdDofC = React.createClass({
 									}
 								</tbody>
 	        				</table>
-	        				<div className="form-inline text-center">
-								<ul className="pager list-inline list-unstyled">
-									<li><a href="#" onClick={this.LeftGridPrev}><i className="glyphicon glyphicon-arrow-left"></i> 上一頁</a></li>
-									<li>{this.state.LeftGridPageIndex +'/' + this.state.grid_left_constitute.total}</li>
-									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="glyphicon glyphicon-arrow-right"></i></a></li>
+							<div className="table-footer">
+	        					<ul className="pager pager-sm list-inline">
+									<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-angle-left"></i> 上一頁</a></li>
+									<li>{this.state.LeftGridPageIndex +' / ' + this.state.grid_left_constitute.total}</li>
+									<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-angle-right"></i></a></li>
 								</ul>
-							</div>
+	        				</div>
         			</div>
 					<div className="col-xs-6">
-						
-							<table className="table-condensed">
-								<caption>已排入今日菜單:{this.FilterCommData(this.props.main_name,'MealType')}</caption>
+						<div className="table-header">
+							<span className="text-secondary">已排入今日 {this.FilterCommData(this.props.main_name,'MealType')} 菜單：</span>
+						</div>
+							<table className="table table-sm table-bordered table-striped">
 								<tbody>
 									<tr>
 										<th>分類</th>
 										<th>名稱</th>
-					                	<th className="text-center">刪除</th>
+					                	<th className="text-xs-center">刪除</th>
 									</tr>
 									{
 										this.state.grid_right_constitute.map(function(itemData,i) {
@@ -596,8 +586,8 @@ var GirdDofC = React.createClass({
 												<tr key={itemData.constitute_id}>
 													<td>{this.Filter(itemData.category_id,'category_element')}</td>
 							                        <td>{itemData.constitute_name}</td>
-				                        			<td className="text-center">
-														<button className="btn-link text-danger" type="button" onClick={this.removeConstitute.bind(this,itemData.constitute_id)}>
+				                        			<td className="text-xs-center">
+														<button className="btn btn-link text-danger" type="button" onClick={this.removeConstitute.bind(this,itemData.constitute_id)}>
 															<i className="fa-times"></i>
 														</button>
 							                        </td>

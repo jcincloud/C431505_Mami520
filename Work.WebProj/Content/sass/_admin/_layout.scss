@@ -142,6 +142,13 @@ a {
 
     .panel-active {
         border-right: 2px solid $link-color;
+        
+        // for old menu bug
+        .panel-heading .panel-title.collapsed {
+            color: $link-color;
+            background: hsl(0,0,100%);
+            @include hover-focus {color: $link-hover-color;}
+        }
     }
 
     .panel-heading {
@@ -214,7 +221,7 @@ a {
                 line-height: 16px;
                 color: $link-color;
                 font-size: $font-size-sm;
-                background: lighten($link-color,47%);
+                background: $brand-primary-light;
                 opacity: 0;
                 transition: opacity 0.3s;
             }
@@ -241,7 +248,7 @@ a {
                     border-right-width: 10px;
                     border-right-color: $link-color;
                 }
-                .fa-caret-right {color: $brand-danger;}
+                .fa-caret-right {color: $blue;}
             }
         }
     }

@@ -19,7 +19,7 @@ var GridRow = React.createClass({
 			<tbody>
 				<tr>
 					{/*<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>*/}
-					<td className="text-center"><GridButtonSub iKey={this.props.ikey} chd={this.props.itemData.check_sub}  subCheck={this.subCheck}/></td>
+					<td className="text-xs-center"><GridButtonSub iKey={this.props.ikey} chd={this.props.itemData.check_sub}  subCheck={this.subCheck}/></td>
 					<td>{this.props.itemData.l1_name}</td>
 					<td>{this.props.itemData.memo}</td>
 				</tr>
@@ -46,9 +46,9 @@ var GridSubRow = React.createClass({
 		return (
 
 				<tr>
-					<td className="text-center"><i className="fa-bars text-muted draggable"></i></td>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonPopupWindow modify={this.modify} MainId={this.props.MainId}/></td>
+					<td className="text-xs-center"><i className="fa-bars text-muted draggable"></i></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonPopupWindow modify={this.modify} MainId={this.props.MainId}/></td>
 					<td>{this.props.itemData.l2_name}</td>
 					<td>{this.props.itemData.sort}</td>
 					{/*<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>*/}
@@ -270,30 +270,26 @@ var GridSubForm = React.createClass({
 		var fieldData = this.state.fieldData;
 
 		return (
-                <tr className="sub-grid">
-                    <td className="fold">
-                        <div className="row">
-                            <div className="col-xs-6 col-xs-offset-6 text-center">
-                                <i className="fa-chevron-right"></i>
-                            </div>
-                        </div>
+                <tr className="table-warning">
+                    <td className="text-xs-center text-warning">
+                        <i className="fa-chevron-right col-xs-offset-6"></i>
                     </td>
-                    <td colSpan="3">
+                    <td colSpan="2">
                         <div className="row">
-                            <div className="col-xs-10">
-                                <table>
+                            <div className="col-xs-11">
+                                <table className="table table-sm table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                        	<th className="col-xs-1"></th>
-											<th className="col-xs-1 text-center">
-												<label className="cbox">
+                                        	<th style={{"width":"10%;"}}></th>
+											<th style={{"width":"10%;"}} className="text-xs-center">
+												<label className="c-input c-checkbox">
 													<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-													<i className="fa-check"></i>
+													<span className="c-indicator"></span>
 												</label>
 											</th> 
-	                                        <th className="col-xs-1 text-center">修改</th>
-                                            <th className="col-xs-5">項目</th>
-                                            <th className="col-xs-2">排序</th>
+	                                        <th style={{"width":"10%;"}} className="text-xs-center">修改</th>
+                                            <th style={{"width":"40%;"}}>項目</th>
+                                            <th style={{"width":"30%;"}}>排序</th>
                                             {/*<th className="col-xs-2">狀態</th>*/}
                                         </tr>
                                     </thead>
@@ -333,13 +329,12 @@ var GridSubForm = React.createClass({
       					<div className="modal-content">
         					<div className="modal-header">
           						<button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          						<h4 className="modal-title" id="myModalLabel">分類項目資料維護</h4>
+          						<h5 className="modal-title" id="myModalLabel">分類項目資料維護</h5>
         					</div>
-        					<form className="form-horizontal" onSubmit={this.handleSubmit}>
+        					<form className="form form-sm" onSubmit={this.handleSubmit}>
         						<div className="modal-body">
-        							<div className="alert alert-warning"><p>以下皆為 <strong className="text-danger">必填項目</strong> 。</p></div>
-					          		<div className="form-group">
-										<label className="col-xs-2 control-label">項目名稱</label>
+					          		<div className="form-group row">
+										<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 項目名稱</label>
 										<div className="col-xs-6">
 											<input type="text" 
 												className="form-control"	
@@ -348,10 +343,10 @@ var GridSubForm = React.createClass({
 												maxLength="64"
 												required />						
 										</div>
-										<small className="col-xs-4 help-inline">最多64字</small>
+										<small className="col-xs-4 text-muted">最多64字</small>
 									</div>
-          							<div className="form-group">
-										<label className="col-xs-2 control-label">排序</label>
+          							<div className="form-group row">
+										<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 排序</label>
 										<div className="col-xs-6">
 											<input type="number" 
 												className="form-control"	
@@ -360,11 +355,11 @@ var GridSubForm = React.createClass({
 												maxLength="64"
 												required />						
 										</div>
-										<small className="col-xs-4 help-inline">數字越大越前面</small>
+										<small className="col-xs-4 text-muted">數字越大越前面</small>
 									</div>
 									
 									{/*<div className="form-group">
-										<label className="col-xs-2 control-label">狀態</label>
+										<label className="col-xs-1 form-control-label text-xs-right">狀態</label>
 										<div className="col-xs-3">
 											<div className="radio-inline">
 												<label>
@@ -391,10 +386,8 @@ var GridSubForm = React.createClass({
 
         						</div>
 	        					<div className="modal-footer">
-		        					<div className="col-xs-4 col-xs-offset-2">
-		        						<button type="button" className="btn-primary" onClick={this.handleSubmit}><i className="fa-check"></i> 儲存</button>
-		        						<button className="col-xs-offset-1" type="button" onClick={this.noneType} data-dismiss="modal"><i className="fa-times"></i>關閉</button>
-		        					</div>
+		        					<button type="button" className="btn btn-sm btn-primary" onClick={this.handleSubmit}><i className="fa-check"></i> 存檔確認</button>
+		        					<button className="btn btn-sm btn-blue-grey" type="button" onClick={this.noneType} data-dismiss="modal"><i className="fa-times"></i> 關閉</button>
 	        					</div>
 	        				</form>
       					</div>
@@ -642,19 +635,19 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-                <h3 className="title">{this.props.Caption} 列表</h3>
+                <h3 className="h3">{this.props.Caption}</h3>
 
 				<div className="alert alert-warning clear" role="alert">
 					<p>點選 <i className="fa-bars"></i> 並拖曳，可修改排列順序。</p>
 				</div>
 				<form onSubmit={this.handleSearch}>
 					
-						<table>
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">展開/收合</th>
-									<th className="col-xs-5">項目</th>
-									<th className="col-xs-6">說明</th>
+									<th style={{"width":"10%;"}} className="text-xs-center">展開/收合</th>
+									<th style={{"width":"40%;"}}>項目</th>
+									<th style={{"width":"50%;"}}>說明</th>
 								</tr>
 							</thead>
 								{

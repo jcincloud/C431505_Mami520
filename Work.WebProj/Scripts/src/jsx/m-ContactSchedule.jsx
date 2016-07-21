@@ -14,8 +14,8 @@ var GridRow = React.createClass({
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.meal_id}</td>
 					<td>{this.props.itemData.mom_name}</td>
 					<td>{this.props.itemData.sno}</td>
@@ -292,40 +292,40 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<h3 className="title">{this.props.Caption} 列表</h3>
+				<h3 className="h3">{this.props.Caption}</h3>
 
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
-										<label>用餐編號/媽媽姓名/身分證號/電話</label> { }
-										<input type="text" className="form-control input-sm" 
+										<label className="text-sm">用餐編號/媽媽姓名/身分證號/電話</label> { }
+										<input type="text" className="form-control" 
 										value={searchData.word}
 										onChange={this.changeGDValue.bind(this,'word')}
 										placeholder="請擇一填寫..." /> { }
 
-										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn btn-secondary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th style={{"width":"7%;"}} className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-					                <th className="col-xs-2">用餐編號</th>
-					                <th className="col-xs-2">媽媽姓名</th>
-					                <th className="col-xs-2">身分證號</th>
-					                <th className="col-xs-2">電話1</th>
-					                <th className="col-xs-2">電話2</th>
+									<th style={{"width":"7%;"}} className="text-xs-center">修改</th>
+					                <th style={{"width":"16%;"}}>用餐編號</th>
+					                <th style={{"width":"20%;"}}>媽媽姓名</th>
+					                <th style={{"width":"20%;"}}>身分證號</th>
+					                <th style={{"width":"15%;"}}>電話1</th>
+					                <th style={{"width":"15%;"}}>電話2</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -366,20 +366,20 @@ var GirdForm = React.createClass({
 			var born_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowCustomerBornSelect){
 				born_select_out_html = 					
-					<MdoalCustomerBornSelect bsSize="xsmall"  title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
+					<MdoalCustomerBornSelect bsSize="large"  title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
 							<div className="modal-body">
 								<div className="table-header">
 							        <div className="table-filter">
-							            <div className="form-inline">
+							            <div className="form-inline form-sm">
 							                <div className="form-group">
-							                    <label for="">客戶名稱/餐編/媽媽姓名</label> { }
-							                    <input type="text" className="form-control input-sm"
+							                    <label className="text-sm">客戶名稱/餐編/媽媽姓名</label> { }
+							                    <input type="text" className="form-control"
 							      			    value={searchBornData.word}
 												onChange={this.changeGDBornValue.bind(this,'word')}
 											 	placeholder="請擇一填寫" />
-							                </div>
-											<label>客戶分類</label> { }
-											<select className="form-control input-sm" 
+							                </div> { }
+											<label className="text-sm">客戶分類</label> { }
+											<select className="form-control" 
 													value={searchBornData.customer_type}
 													onChange={this.changeGDBornValue.bind(this,'customer_type')}>
 												<option value="">全部</option>
@@ -390,8 +390,8 @@ var GirdForm = React.createClass({
 											}
 											</select> { }							                
 							                <div className="form-group">
-							                    <label for="">正在用餐</label> { }
-							                    <select className="form-control input-sm"
+							                    <label className="text-sm">正在用餐</label> { }
+							                    <select className="form-control"
 							                    value={searchBornData.is_meal}
 												onChange={this.changeGDBornValue.bind(this,'is_meal')}>
 							                        <option value="">全部</option>
@@ -399,33 +399,32 @@ var GirdForm = React.createClass({
 							                        <option value="false">否</option>
 							                    </select>
 							                </div>
-							                {/*<div className="form-group">
-							                    <button className="btn-primary btn-sm"><i className="fa-search"></i> 搜尋</button>
-							                </div>*/}
 							            </div>
 							        </div>
 							    </div>
-								<table className="table-condensed">
-									<tbody>
+								<table className="table table-sm table-bordered table-striped">
+									<thead>
 										<tr>
-											<th className="col-xs-1 text-center">選擇</th>
-											<th className="col-xs-1">客戶姓名</th>
-											<th className="col-xs-1">客戶類別</th>
-											<th className="col-xs-1">用餐編號</th>
-											<th className="col-xs-1">媽媽姓名</th>										
-											<th className="col-xs-1">電話1</th>
-											<th className="col-xs-1">備註</th>
-											<th className="col-xs-1">預產期</th>
+											<th style={{"width":"7%;"}} className="text-xs-center">選擇</th>
+											<th style={{"width":"20%;"}}>客戶姓名</th>
+											<th style={{"width":"13%;"}}>客戶類別</th>
+											<th style={{"width":"10%;"}}>用餐編號</th>
+											<th style={{"width":"14%;"}}>媽媽姓名</th>										
+											<th style={{"width":"12%;"}}>電話1</th>
+											<th style={{"width":"12%;"}}>預產期</th>
+											<th style={{"width":"12%;"}}>備註</th>
 										</tr>
+									</thead>
+									<tbody>
 										{
 											this.state.born_list.map(function(itemData,i) {
 												
 												var born_out_html = 
 													<tr key={itemData.born_id}>
-														<td className="text-center">
-															<label className="cbox">
+														<td className="text-xs-center">
+															<label className="c-input c-checkbox">
 										                        <input type="checkbox" onClick={this.selectCustomerBorn.bind(this,itemData.customer_id,itemData.born_id,itemData.meal_id)} />
-										                        <i className="fa-check"></i>
+										                        <span className="c-indicator"></span>
 										                    </label>
 														</td>
 														<td>{itemData.customer_name}</td>
@@ -433,8 +432,8 @@ var GirdForm = React.createClass({
 														<td>{itemData.meal_id}</td>
 														<td>{itemData.mom_name}</td>
 														<td>{itemData.tel_1}</td>
-														<td>{itemData.memo}</td>
 														<td>{moment(itemData.expected_born_day).format('YYYY/MM/DD')}</td>			
+														<td>{itemData.memo}</td>
 													</tr>;
 												return born_out_html;
 											}.bind(this))
@@ -443,7 +442,7 @@ var GirdForm = React.createClass({
 								</table>
 							</div>
 							<div className="modal-footer">
-								<button onClick={this.closeSelectCustomerBorn}><i className="fa-times"></i> { } 關閉</button>
+								<button className="btn btn-sm btn-blue-grey" onClick={this.closeSelectCustomerBorn}><i className="fa-times"></i> 關閉</button>
 							</div>
 					</MdoalCustomerBornSelect>;
 			}
@@ -451,9 +450,9 @@ var GirdForm = React.createClass({
 			var save_out_html=null;
 			var detail_out_html=null;
 			if(this.state.edit_type==1){
-				save_out_html=<button type="submit" className="btn-primary"><i className="fa-check"></i> 儲存</button>;
+				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
 			}else{
-				save_out_html=<strong>主檔資料不可修改！</strong>;
+				save_out_html=<strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
 				detail_out_html=
 				<SubForm ref="SubForm" 
 				main_id={fieldData.schedule_id}
@@ -465,14 +464,13 @@ var GirdForm = React.createClass({
 			outHtml=(
 			<div>
 				{born_select_out_html}
-				<h3 className="title">{this.props.Caption} 主檔</h3>
+				<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
 
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
-					<div className="col-xs-9">
-						<div className="form-group">
-							<label className="col-xs-2 control-label">選擇客戶</label>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
 							<div className="col-xs-3">
-								<div className="input-group">
+								<div className="input-group input-group-sm">
 									<input type="text" 							
 									className="form-control"	
 									value={fieldData.customer_name}
@@ -480,16 +478,16 @@ var GirdForm = React.createClass({
 									maxLength="64"
 									disabled />
 									<span className="input-group-btn">
-										<a className="btn"
+										<a className="btn btn-success"
 										onClick={this.showSelectCustomerBorn}
 										disabled={this.state.edit_type==2} ><i className="fa-plus"></i></a>
 									</span>
 								</div>
 							</div>
-							<small className="help-inline col-xs-6"><span className="text-danger">(必填)</span> 請按 <i className="fa-plus"></i> 選取</small>
+							<small className="text-muted col-xs-6">請按 <i className="fa-plus"></i> 選取</small>
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">客戶類別</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">客戶類別</label>
 							<div className="col-xs-3">
 								<select className="form-control" 
 								value={fieldData.customer_type}
@@ -502,8 +500,8 @@ var GirdForm = React.createClass({
 								}
 								</select>
 							</div>
-							<label className="col-xs-2 control-label">客戶名稱</label>
-							<div className="col-xs-3">
+							<label className="col-xs-1 form-control-label text-xs-right">客戶名稱</label>
+							<div className="col-xs-4">
 								<input type="text" 							
 								className="form-control"	
 								value={fieldData.customer_name}
@@ -513,8 +511,8 @@ var GirdForm = React.createClass({
 								disabled />
 							</div>				
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">用餐編號</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
 							<div className="col-xs-3">
 								<input type="text" 
 								className="form-control"	
@@ -523,8 +521,8 @@ var GirdForm = React.createClass({
 								required
 								disabled />
 							</div>
-							<label className="col-xs-2 control-label">媽媽姓名</label>
-							<div className="col-xs-3">
+							<label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
+							<div className="col-xs-4">
 								<input type="text" 							
 								className="form-control"	
 								value={fieldData.mom_name}
@@ -534,8 +532,8 @@ var GirdForm = React.createClass({
 								disabled />
 							</div>	
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">生產方式</label>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">生產方式</label>
 							<div className="col-xs-3">
 								<select className="form-control" 
 								value={fieldData.born_type}
@@ -548,102 +546,93 @@ var GirdForm = React.createClass({
 								}
 								</select>
 							</div>
-							<label className="col-xs-2 control-label">生產日期</label>
-							<div className="col-xs-3">
-								<span className="has-feedback">
-									<InputDate id="born_day" 
+							<label className="col-xs-1 form-control-label text-xs-right">生產日期</label>
+							<div className="col-xs-4">
+								<InputDate id="born_day" 
 									onChange={this.changeFDValue} 
 									field_name="born_day" 
 									value={fieldData.born_day}
 									required={true}
 									disabled={true} />
-								</span>
 							</div>
 						</div>
-						<div className="bg-warning">
-						<div className="form-group">
-							<label className="col-xs-2 control-label">連絡電話1</label>
-							<div className="col-xs-3">
-								<input type="tel" 
-								className="form-control"	
-								value={fieldData.tel_1}
-								onChange={this.changeFDValue.bind(this,'tel_1')}
-								maxLength="16"
-								disabled />
-							</div>
-							<label className="col-xs-2 control-label">連絡電話2</label>
-							<div className="col-xs-3">
-								<input type="tel" 
-								className="form-control"	
-								value={fieldData.tel_2}
-								onChange={this.changeFDValue.bind(this,'tel_2')}
-								maxLength="16"
-								disabled />
-							</div>
-						</div>						
-						<div className="form-group">
-							<label className="col-xs-2 control-label">身分證字號</label>
-							<div className="col-xs-3">
-								<input type="text" 
-								className="form-control"	
-								value={fieldData.sno}
-								onChange={this.changeFDValue.bind(this,'sno')}
-								maxLength="10"
-								disabled />
-							</div>
-							<label className="col-xs-2 control-label">生日</label>
-							<div className="col-xs-3">
-								<span className="has-feedback">
-									<InputDate id="birthday" 
-									onChange={this.changeFDValue} 
-									field_name="birthday" 
-									value={fieldData.birthday}
-									disabled={true} />
-								</span>
-							</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
+						<div className="col-xs-3">
+							<input type="tel" 
+							className="form-control"	
+							value={fieldData.tel_1}
+							onChange={this.changeFDValue.bind(this,'tel_1')}
+							maxLength="16"
+							disabled />
 						</div>
-						<div className="form-group">
-							<label className="col-xs-2 control-label">送餐地址</label>
-								<TwAddress ver={1}
-								onChange={this.changeFDValue}
-								setFDValue={this.setFDValue}
-								zip_value={fieldData.tw_zip_1} 
-								city_value={fieldData.tw_city_1} 
-								country_value={fieldData.tw_country_1}
-								address_value={fieldData.tw_address_1}
-								zip_field="tw_zip_1"
-								city_field="tw_city_1"
-								country_field="tw_country_1"
-								address_field="tw_address_1"
-								disabled={true}/>
+						<label className="col-xs-1 form-control-label text-xs-right">連絡電話2</label>
+						<div className="col-xs-4">
+							<input type="tel" 
+							className="form-control"	
+							value={fieldData.tel_2}
+							onChange={this.changeFDValue.bind(this,'tel_2')}
+							maxLength="16"
+							disabled />
 						</div>
-
-						<div className="form-group">
-							<label className="col-xs-2 control-label">備用地址</label>
-								<TwAddress ver={1}
-								onChange={this.changeFDValue}
-								setFDValue={this.setFDValue}
-								zip_value={fieldData.tw_zip_2} 
-								city_value={fieldData.tw_city_2} 
-								country_value={fieldData.tw_country_2}
-								address_value={fieldData.tw_address_2}
-								zip_field="tw_zip_2"
-								city_field="tw_city_2"
-								country_field="tw_country_2"
-								address_field="tw_address_2"
-								disabled={true}/>
+					</div>						
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">身分證字號</label>
+						<div className="col-xs-3">
+							<input type="text" 
+							className="form-control"	
+							value={fieldData.sno}
+							onChange={this.changeFDValue.bind(this,'sno')}
+							maxLength="10"
+							disabled />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">生日</label>
+						<div className="col-xs-4">
+							<InputDate id="birthday" 
+								onChange={this.changeFDValue} 
+								field_name="birthday" 
+								value={fieldData.birthday}
+								disabled={true} />
 						</div>
 					</div>
-					<div className="form-action text-right">
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
+							<TwAddress ver={1}
+							onChange={this.changeFDValue}
+							setFDValue={this.setFDValue}
+							zip_value={fieldData.tw_zip_1} 
+							city_value={fieldData.tw_city_1} 
+							country_value={fieldData.tw_country_1}
+							address_value={fieldData.tw_address_1}
+							zip_field="tw_zip_1"
+							city_field="tw_city_1"
+							country_field="tw_country_1"
+							address_field="tw_address_1"
+							disabled={true}/>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">備用地址</label>
+							<TwAddress ver={1}
+							onChange={this.changeFDValue}
+							setFDValue={this.setFDValue}
+							zip_value={fieldData.tw_zip_2} 
+							city_value={fieldData.tw_city_2} 
+							country_value={fieldData.tw_country_2}
+							address_value={fieldData.tw_address_2}
+							zip_field="tw_zip_2"
+							city_field="tw_city_2"
+							country_field="tw_country_2"
+							address_field="tw_address_2"
+							disabled={true}/>
+					</div>
+					<div className="form-action">
 			            {save_out_html} { }
-			            <button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+			            <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-arrow-left"></i> 回前頁</button>
 			        </div>
 
-					</div>
 				</form>
 
-				<hr className="condensed" />
-
+				<hr className="lg" />
 				
 				{/*---產品明細---*/}
 				{detail_out_html}
@@ -756,67 +745,72 @@ var SubForm = React.createClass({
 			outHtml =
 			(
 				<div className="row">
-				    <div className="col-xs-4">
-				        <h4 className="title">新增電訪排程</h4>
-				        <form className="form-horizontal clearfix" role="form" id="detailForm" onSubmit={this.detailHandleSubmit}>
-				            <div className="form-group">
-				                <label className="col-xs-3 control-label">電訪日期</label>
-				                <div className="col-xs-7">
-					                <span className="has-feedback">
-										<InputDate id="tel_day" 
-										onChange={this.changeFDValue} 
-										field_name="tel_day" 
-										value={fieldSubData.tel_day}
-										required={true} />
-									</span>
-				                </div>
-				                <small className="help-inline col-xs-2 text-danger">(必填)</small>
-				            </div>
-				            <div className="form-group">
-				                <label className="col-xs-3 control-label">電訪原因</label>
-				                <div className="col-xs-7">
-				                    <select className="form-control"
-				                    value={fieldSubData.tel_reason}
-				                    onChange={this.changeFDValue.bind(this,'tel_reason')}>
-						                {
-											CommData.TelReasonBySchedule.map(function(itemData,i) {
-											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-											})
-										}
-				                    </select>
-				                </div>
-				            </div>
-				            <div className="form-group text-right">
-				                <div className="col-xs-10">
-				                    <button type="submit" form="detailForm" className="btn-primary"><i className="fa-check"></i> 存檔確認</button>
-				                </div>
-				            </div>
-				        </form>
+				    <div className="col-xs-6">
+				    	<div className="card">
+				    		<div className="card-header bg-primary-light text-secondary">新增電訪排程</div>
+					        <form className="form form-sm" role="form" id="detailForm" onSubmit={this.detailHandleSubmit}>
+						        <div className="card-block">
+						            <div className="form-group row">
+						                <label className="col-xs-3 form-control-label text-xs-right"><span className="text-danger">*</span> 電訪日期</label>
+						                <div className="col-xs-9">
+											<InputDate id="tel_day" 
+												onChange={this.changeFDValue} 
+												field_name="tel_day" 
+												value={fieldSubData.tel_day}
+												required={true} />
+						                </div>
+						            </div>
+						            <div className="form-group row">
+						                <label className="col-xs-3 form-control-label text-xs-right">電訪原因</label>
+						                <div className="col-xs-9">
+						                    <select className="form-control"
+						                    value={fieldSubData.tel_reason}
+						                    onChange={this.changeFDValue.bind(this,'tel_reason')}>
+								                {
+													CommData.TelReasonBySchedule.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+													})
+												}
+						                    </select>
+						                </div>
+						            </div>
+						        </div>
+						        <div className="card-footer text-xs-center">
+						            <button type="submit" form="detailForm" className="btn btn-sm btn-primary"><i className="fa-check"></i> 存檔確認</button>
+						        </div>
+					        </form>
+				        </div>
 				    </div>
-				    <div className="col-xs-5">
-				        <h4 className="title">電訪排程明細</h4>
-				        <table className="table-condensed">
-				        	<tbody>
-					            <tr>
-					                <th className="col-xs-5 text-center">電訪日期</th>
-					                <th className="col-xs-5 text-center">電訪原因</th>
-					                <th className="col-xs-2 text-center">移除</th>
-					            </tr>
-					            {
-									this.state.grid_right_detail.map(function(itemData,i) {										
-										var detail_out_html = 
-											<tr key={itemData.schedule_detail_id}>
-												<td className="text-center">{moment(itemData.tel_day).format('YYYY/MM/DD')}</td>
-												<td className="text-center"><StateForGrid stateData={CommData.TelReasonBySchedule} id={itemData.tel_reason} /></td>
-												<td className="text-center">
-								                    <button className="btn-link btn-lg text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.schedule_detail_id)}><i className="fa-times"></i></button>
-								                </td>
-											</tr>;
-										return detail_out_html;
-									}.bind(this))
-								}
-				            </tbody>
-				        </table>
+				    <div className="col-xs-6">
+				        <div className="card">
+				    		<div className="card-header bg-primary-light text-secondary">電訪排程明細</div>
+				    		<div className="card-block">
+						        <table className="table table-sm table-bordered table-striped">
+						        	<thead>
+							            <tr>
+							                <th style={{"width":"40%;"}}>電訪日期</th>
+							                <th style={{"width":"40%;"}}>電訪原因</th>
+							                <th style={{"width":"20%;"}} className="text-xs-center">移除</th>
+							            </tr>
+							        </thead>
+							        <tbody>
+							            {
+											this.state.grid_right_detail.map(function(itemData,i) {										
+												var detail_out_html = 
+													<tr key={itemData.schedule_detail_id}>
+														<td>{moment(itemData.tel_day).format('YYYY/MM/DD')}</td>
+														<td><StateForGrid stateData={CommData.TelReasonBySchedule} id={itemData.tel_reason} /></td>
+														<td className="text-xs-center">
+										                    <button className="btn btn-link btn-lg text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.schedule_detail_id)}><i className="fa-times"></i></button>
+										                </td>
+													</tr>;
+												return detail_out_html;
+											}.bind(this))
+										}
+						            </tbody>
+						        </table>
+						    </div>
+						</div>
 				    </div>
 				</div>
 			);
