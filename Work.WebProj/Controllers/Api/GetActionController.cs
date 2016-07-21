@@ -213,7 +213,8 @@ namespace DotWeb.Api
                     {
                         items = items.Where(x => x.meal_id != null);
                     }
-                    else {
+                    else
+                    {
                         items = items.Where(x => x.meal_id == null);
                     }
 
@@ -2540,6 +2541,77 @@ namespace DotWeb.Api
                 obj.Add(new RoleArray() { role_id = role.Id, role_name = role.Name, role_use = false });
             }
             return Ok(obj);
+        }
+        [HttpGet]
+        public async Task<IHttpActionResult> GetMealID()
+        {
+            try
+            {
+                db0 = getDB0();
+                var result = await db0.MealID.AsExpandable()
+                    .Where(x => x.company_id == this.companyId)
+                    .OrderBy(x => x.meal_id.Substring(0, 1))
+                    .GroupBy(x => x.meal_id.Substring(0, 1))
+                    .Select(x => new
+                    {
+                        key = x.Key,
+                        meal_idlist = x.Select(y => y.meal_id).ToList()
+                    })
+                    .ToListAsync();
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                string test = e.ToString();
+                return Ok(test);
+            }
+        }
+        [HttpGet]
+        public async Task<IHttpActionResult> GetMomName()
+        {
+            try
+            {
+                db0 = getDB0();
+                var result = await db0.CustomerBorn.AsExpandable()
+                    .Where(x => x.company_id == this.companyId & x.meal_id != null)
+                    .OrderBy(x => x.meal_id.Substring(0, 1))
+                    .Join(db0.RecordDetail,
+                    bornid => bornid.meal_id,
+                    rdid => rdid.meal_id,
+                    (bornid, rdid) => new { bornid.mom_name, meal_id = rdid.meal_id,rdid.is_release })
+                    .Where(x=>x.is_release==false)
+                    .Select(x => new
+                    {
+                        x.mom_name,
+                        x.meal_id
+                    })
+                    .ToListAsync();
+                //var test = (from a in db0.MealID
+                //            join b in db0.RecordDetail
+                //            on a.meal_id equals b.meal_id
+                //            where a.i_Use == true && b.is_release == false && b.meal_id!=null
+                //            select new
+                //            {
+
+                //            }
+                //         );
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                string test = e.ToString();
+                return Ok(test);
+            }
+
+        }
+        [HttpGet]
+        public async Task<IHttpActionResult> GetTodaySchedule()
+        {
+            db0 = getDB0();
+            var result = await db0.ScheduleDetail.AsExpandable()
+                .Where(x=>x.company_id==this.companyId)
+                .ToListAsync();
+            return Ok(result);
         }
         [HttpGet]
         public async Task<IHttpActionResult> ta_Customer(string keyword)
