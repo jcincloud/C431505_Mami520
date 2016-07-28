@@ -161,19 +161,19 @@ var GirdForm = React.createClass({
                                         <BasicData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} />
                                     </div>
                                     <div className="tab-pane" id="Birth" role="tabpanel">
-                                        <CustomerBornData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id}/>
+                                        <CustomerBornData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} />
                                     </div>
                                     <div className="tab-pane" id="Sell" role="tabpanel">
-                                        <SalesDetailData born_id={this.state.born_id} mom_id={this.state.customer_id}/>
+                                        <SalesDetailData born_id={this.state.born_id} mom_id={this.state.customer_id} />
                                     </div>
                                     <div className="tab-pane" id="MealSchedule" role="tabpanel">
-                                        <MealScheduleData born_id={this.state.born_id} mom_id={this.state.customer_id}/>
+                                        <MealScheduleData born_id={this.state.born_id} mom_id={this.state.customer_id} />
                                     </div>
                                     <div className="tab-pane" id="Query" role="tabpanel">
-                                        <DiningDemandData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} customer_need_id={this.state.customer_need_id}/>
+                                        <DiningDemandData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} customer_need_id={this.state.customer_need_id} />
                                     </div>
                                     <div className="tab-pane" id="CallSchedule" role="tabpanel">
-                                        <TelScheduleData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} schedule_id={this.state.schedule_id}/>
+                                        <TelScheduleData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} schedule_id={this.state.schedule_id} />
                                     </div>
                                     <div className="tab-pane" id="CallRecord" role="tabpanel">
                                         <TelRecordData born_id={this.state.born_id} mom_id={this.state.customer_id} />
@@ -270,7 +270,7 @@ var GridRow = React.createClass({
     modify: function () {
         this.props.updateType(this.props.primKey);
     },
-        render: function () {
+    render: function () {
 
         return (
 
@@ -284,9 +284,9 @@ var GridRow = React.createClass({
 					<td className="text-center"><StateForGrid stateData={CommData.TelReasonByDetail} id={this.props.itemData.tel_reason} /></td>
 				</tr>
 			);
-					}
-					});
-            //電訪紀錄內容
+    }
+});
+//電訪紀錄內容
 var TelRecord = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -610,7 +610,8 @@ var TelRecord = React.createClass({
                                     <option value="">全部</option>
                                         {
                                             CommData.CustomerType.map(function (itemData, i) {
-                                                return  ( <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
+                                                return  (
+                                                <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
                                             })
                                         }
                                     </select> { }
@@ -756,7 +757,7 @@ var TelRecord = React.createClass({
 					</div>
 				</form>
 						</div>
-			    {/*---產品明細---*/}{detail_out_html}
+			    {/*---產品明細---*/}{}{detail_out_html}
 			</MdoaleditCustomerBorn>;
         }
         //一次視窗
@@ -1023,7 +1024,8 @@ var SubForm = React.createClass({
                 onChange={this.changeFDValue.bind(this,'tel_state')}>
             {
             CommData.TelState.map(function (itemData, i) {
-                return(<option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
+                return(
+                <option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
             })
             }
         </select>
@@ -1730,7 +1732,8 @@ var QuickSearch = React.createClass({
                                                 disabled={this.state.detail_edit_type==3}>
                                             {
                                            CommData.BornType.map(function (itemData, i) {
-                                               return( <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
+                                               return(
+                                               <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
                                            })
                                             }
                                         </select>
@@ -1743,7 +1746,8 @@ var QuickSearch = React.createClass({
                                                 disabled={this.state.detail_edit_type==3}>
                                             {
                                            CommData.SexType.map(function (itemData, i) {
-                                               return(<option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
+                                               return(
+                                               <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
                                            })
                                             }
                                         </select>
@@ -1807,7 +1811,8 @@ var QuickSearch = React.createClass({
                                         onChange={this.changeFDValue.bind(this,'customer_type')}>
     							    {
     							    CommData.CustomerType.map(function (itemData, i) {
-    							        return(<option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
+    							        return(
+    							        <option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
     							    })
     							    }
     							</select>
@@ -2692,11 +2697,12 @@ var BasicData = React.createClass({
                                                 value={fieldDetailData.born_type}
                                                 onChange={this.changeFDDValue.bind(this,'born_type')}
                                                 disabled={this.state.detail_edit_type==3}>
-            {
+                                            {
                                            CommData.BornType.map(function (itemData, i) {
-                                               return(<option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
+                                               return(
+                                               <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
                                            })
-                                           }
+                                            }
                                         </select>
                                    </div>
                                    <label className="col-xs-2 form-control-label text-xs-right">寶寶性別</label>
@@ -2705,11 +2711,12 @@ var BasicData = React.createClass({
                                                 value={fieldDetailData.baby_sex}
                                                 onChange={this.changeFDDValue.bind(this,'baby_sex')}
                                                 disabled={this.state.detail_edit_type==3}>
-            {
+                                            {
                                            CommData.SexType.map(function (itemData, i) {
-                                               return(<option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
+                                               return(
+                                               <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
                                            })
-                                           }
+                                            }
                                         </select>
                                    </div>
                                </div>
@@ -2731,16 +2738,16 @@ var BasicData = React.createClass({
                                </div>
                            </div>
                         </form>
-            {detail_out_html}
+                        {detail_out_html}
                     </MdoaleditCustomerBorn>;
         }
-            //二次視窗
+        //二次視窗
 
         var detail_out_html = null;
         if (this.state.edit_type == 2) {
             detail_out_html =
             <SubForm ref="SubForm"
-            main_id={fieldData.schedule_detail_id}
+                     main_id={fieldData.schedule_detail_id}
                      tel_reason={fieldData.tel_reason} />;
         }
         outHtml = (
@@ -3200,8 +3207,8 @@ var CustomerBornData = React.createClass({
         var GirdSubForm_html=null;
         if(fieldData.customer_id!=undefined){
             GirdSubForm_html=( <GirdSubForm main_id={fieldData.customer_id}
-                             customer_type={fieldData.customer_type}
-                             fiedlData={fieldData} />);
+                                            customer_type={fieldData.customer_type}
+                                            fiedlData={fieldData} />);
         }
         outHtml = (
             <div>
@@ -3237,7 +3244,8 @@ var CustomerBornData = React.createClass({
                                     disabled={true}>
 							    {
 							    CommData.CustomerType.map(function (itemData, i) {
-							        return(<option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
+							        return(
+							        <option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
 							    })
 							    }
 							</select>
@@ -3247,8 +3255,8 @@ var CustomerBornData = React.createClass({
 						</div>
 					</div>
 				</form>
-            {/*---生產紀錄版面---*/}
-                   {GirdSubForm_html}
+                {/*---生產紀錄版面---*/}
+                {GirdSubForm_html}
             </div>
             );
         return outHtml;
@@ -3665,7 +3673,8 @@ var SalesDetailData = React.createClass({
 							<tbody>
 							    {
 								this.state.gridData.rows.map(function (itemData, i) {
-								    return( <GridRowForSales key={i}
+								    return(
+								    <GridRowForSales key={i}
                                                      ikey={i}
                                                      primKey={itemData.product_record_id}
                                                      itemData={itemData}
@@ -3916,12 +3925,13 @@ var MealScheduleData = React.createClass({
                             <tbody>
                                 {
                                 this.state.gridData.rows.map(function (itemData, i) {
-                                    return(<GridRowForMealSchedule key={i}
-                                                        ikey={i}
-                                                        primKey={itemData.record_deatil_id}
-                                                        itemData={itemData}
-                                                        delCheck={this.delCheck}
-                                                        updateType={this.updateType} />);
+                                    return(
+                                    <GridRowForMealSchedule key={i}
+                                                            ikey={i}
+                                                            primKey={itemData.record_deatil_id}
+                                                            itemData={itemData}
+                                                            delCheck={this.delCheck}
+                                                            updateType={this.updateType} />);
                                 }.bind(this))
                                 }
                             </tbody>
@@ -3954,10 +3964,10 @@ var DiningDemandData = React.createClass({
             category: [],
             isShowMealidSelect: false,
             mealid_list: [],
-			grid_right_element:[],
-			grid_left_element:{rows:[]},
-			category_element:[],
-			LeftGridPageIndex:1
+            grid_right_element:[],
+            grid_left_element:{rows:[]},
+            category_element:[],
+            LeftGridPageIndex:1
         };
     },
     getDefaultProps: function () {
@@ -3970,10 +3980,7 @@ var DiningDemandData = React.createClass({
         };
     },
     componentDidMount: function () {
-        console.log('test',this.props.born_id);
         this.updateType(this.props.born_id);
-		this.queryLeftElement();
-		this.queryRightElement();
     },
     shouldComponentUpdate: function (nextProps, nextState) {
         return true;
@@ -4124,7 +4131,13 @@ var DiningDemandData = React.createClass({
     updateType: function (id) {
         jqGet(this.props.apiPathName, { born_id: id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 2, fieldData: data.data });
+		    if(data!=null){
+		        this.setState({ edit_type: 2, fieldData: data });
+		        this.queryLeftElement();
+		        this.queryRightElement();
+		    }else{
+		        this.insertType();
+		    }
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -4223,207 +4236,206 @@ var DiningDemandData = React.createClass({
 		    //showAjaxError(errorThrown);
 		});
     },
-	queryLeftElement:function(){
-		var parms = {
-			page:this.state.LeftGridPageIndex
-		};
+    queryLeftElement:function(){
+        var parms = {
+            page:this.state.LeftGridPageIndex
+        };
 
-		$.extend(parms, this.state.searchData);
-			jqGet(gb_approot + 'api/GetAction/GetLeftDietaryNeed',parms)
-			.done(function(data, textStatus, jqXHRdata) {
-				this.setState({grid_left_element:data});
-			}.bind(this))
-			.fail(function( jqXHR, textStatus, errorThrown ) {
-				showAjaxError(errorThrown);
-			});
-	},	
-	queryRightElement:function(){
-			jqGet(gb_approot + 'api/GetAction/GetRightDietaryNeed',{main_id:this.props.main_id})
-			.done(function(data, textStatus, jqXHRdata) {
-				this.setState({grid_right_element:data});
-			}.bind(this))
-			.fail(function( jqXHR, textStatus, errorThrown ) {
-				showAjaxError(errorThrown);
-			});
-	},
-	queryChangeElementParam:function(name,e){
-		var obj = this.state.searchData;
-		obj[name] = e.target.value;
-		this.setState({searchData:obj});
-		this.queryLeftElement();			
-	},
-	queryMealParam:function(name,e){
-		var obj = this.state.searchData;
-		if(e.target.checked){
-			obj[name]=true;
-			
-		}else{
-			obj[name]=false;
-		}
-		this.setState({searchData:obj});
-		this.queryLeftElement();
-	},
-	addElement:function(dietary_need_id){
-			jqPost(gb_approot + 'api/GetAction/PostCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
-			.done(function(data, textStatus, jqXHRdata) {
-				if(data.result){
-					this.queryLeftElement();
-					this.queryRightElement();
-				}else{
-					alert(data.message);
-				}
-			}.bind(this))
-			.fail(function( jqXHR, textStatus, errorThrown ) {
-				showAjaxError(errorThrown);
-			});		
-	},
-	removeElement:function(dietary_need_id){
-			jqDelete(gb_approot + 'api/GetAction/DeleteCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
-			.done(function(data, textStatus, jqXHRdata) {
-				if(data.result){
-					this.queryLeftElement();
-					this.queryRightElement();
-				}else{
-					alert(data.message);
-				}
+        $.extend(parms, this.state.searchData);
+        jqGet(gb_approot + 'api/GetAction/GetLeftDietaryNeed',parms)
+        .done(function(data, textStatus, jqXHRdata) {
+            this.setState({grid_left_element:data});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });
+    },
+    queryRightElement:function(){
+        jqGet(gb_approot + 'api/GetAction/GetRightDietaryNeed',{main_id:this.props.main_id})
+        .done(function(data, textStatus, jqXHRdata) {
+            this.setState({grid_right_element:data});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });
+    },
+    queryChangeElementParam:function(name,e){
+        var obj = this.state.searchData;
+        obj[name] = e.target.value;
+        this.setState({searchData:obj});
+        this.queryLeftElement();
+    },
+    queryMealParam:function(name,e){
+        var obj = this.state.searchData;
+        if(e.target.checked){
+            obj[name]=true;
 
-			}.bind(this))
-			.fail(function( jqXHR, textStatus, errorThrown ) {
-				showAjaxError(errorThrown);
-			});	
-	},
-	Filter:function(value,CName){
-		var val="";
-		this.state[CName].forEach(function(object, i){
-        	if(value==object.val){
-  				val=object.Lname;
-        	}
-    	})
-		return val;
-	},
-	LeftGridPrev:function(){
-		if(this.state.LeftGridPageIndex>1){
-			this.state.LeftGridPageIndex --;
-			this.queryLeftElement();
-		}
-	},
-	LeftGridNext:function() {
-		if(this.state.LeftGridPageIndex < this.state.grid_left_element.total){
-			this.state.LeftGridPageIndex ++;
-			this.queryLeftElement();
-		}
-	},
-	showMealType:function(breakfast,lunch,dinner){
-		var val="";
-		if(!breakfast & !lunch & !dinner){
-			val="無";
-		}else{
-			if(breakfast){
-				val+="早";
-			}
-			if(lunch){
-				val+="午";
-			}
-			if(dinner){
-				val+="晚";
-			}
-		}
+        }else{
+            obj[name]=false;
+        }
+        this.setState({searchData:obj});
+        this.queryLeftElement();
+    },
+    addElement:function(dietary_need_id){
+        jqPost(gb_approot + 'api/GetAction/PostCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
+        .done(function(data, textStatus, jqXHRdata) {
+            if(data.result){
+                this.queryLeftElement();
+                this.queryRightElement();
+            }else{
+                alert(data.message);
+            }
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });
+    },
+    removeElement:function(dietary_need_id){
+        jqDelete(gb_approot + 'api/GetAction/DeleteCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
+        .done(function(data, textStatus, jqXHRdata) {
+            if(data.result){
+                this.queryLeftElement();
+                this.queryRightElement();
+            }else{
+                alert(data.message);
+            }
 
-		return val;
-	},
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });
+    },
+    Filter:function(value,CName){
+        var val="";
+        this.state[CName].forEach(function(object, i){
+            if(value==object.val){
+                val=object.Lname;
+            }
+        })
+        return val;
+    },
+    LeftGridPrev:function(){
+        if(this.state.LeftGridPageIndex>1){
+            this.state.LeftGridPageIndex --;
+            this.queryLeftElement();
+        }
+    },
+    LeftGridNext:function() {
+        if(this.state.LeftGridPageIndex < this.state.grid_left_element.total){
+            this.state.LeftGridPageIndex ++;
+            this.queryLeftElement();
+        }
+    },
+    showMealType:function(breakfast,lunch,dinner){
+        var val="";
+        if(!breakfast & !lunch & !dinner){
+            val="無";
+        }else{
+            if(breakfast){
+                val+="早";
+            }
+            if(lunch){
+                val+="午";
+            }
+            if(dinner){
+                val+="晚";
+            }
+        }
+
+        return val;
+    },
     render: function () {
         var searchData = this.state.searchData;
         var fieldData = this.state.fieldData;
         var map_out_html = null;
-        map_out_html = (
-					<div>
-				<hr className="lg" />
-				<h3 className="h3">飲食需求設定</h3>
-				<div className="row">
-					<div className="col-xs-6">
-						<div className="table-header">
-							<div className="form-inline form-sm">
-		                        <div className="form-group">
-		                        	<select name="" id="" className="form-control"
-		                            onChange={this.queryChangeElementParam.bind(this,'is_correspond')}
-									value={searchData.is_correspond}> { }
-		                                <option value="">全部</option>
-		                                <option value="true">有對應</option>
-		                                <option value="false">無對應</option>
+        if(this.state.edit_type==2){
+            map_out_html = (
+            <div>
+        <hr className="lg" />
+        <h3 className="h3">飲食需求設定</h3>
+        <div className="row">
+            <div className="col-xs-6">
+                <div className="table-header">
+                    <div className="form-inline form-sm">
+                        <div className="form-group">
+                            <select name="" id="" className="form-control"
+                                    onChange={this.queryChangeElementParam.bind(this,'is_correspond')}
+                                    value={searchData.is_correspond}>
+                                { }
+        <option value="">全部</option>
+        <option value="true">有對應</option>
+        <option value="false">無對應</option>
 
-		                            </select> { }
-		                            <input type="text" className="form-control" placeholder="需求元素名稱"
-		                           	value={searchData.name} onChange={this.queryChangeElementParam.bind(this,'name')} />
-		                        </div> { }
-		                        <div className="form-group">
-									<label className="c-input c-checkbox">
-										<input type="checkbox" 
-												id="is_breakfast"
-												checked={searchData.is_breakfast}
-												onChange={this.queryMealParam.bind(this,'is_breakfast')}
-										/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">早餐</span>
-									</label>
-									<label className="c-input c-checkbox">
-										<input type="checkbox" 
-												id="is_lunch"
-												checked={searchData.is_lunch}
-												onChange={this.queryMealParam.bind(this,'is_lunch')}
-												/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">午餐</span>
-									</label>
-									<label className="c-input c-checkbox">
-										<input type="checkbox" 
-												id="is_dinner"
-												checked={searchData.is_dinner}
-												onChange={this.queryMealParam.bind(this,'is_dinner')}
-												/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">晚餐</span>
-									</label>
-		                        </div>
-				            </div>
-						</div>
-						<table className="table table-sm table-bordered table-striped">
-							<thead>
-								<tr>
-									<th>元素對應</th>
-									<th>餐別</th>
-									<th>需求元素</th>
-				                	<th className="text-xs-center">加入</th>
-								</tr>
-							</thead>
-							<tbody>
-								{
-									this.state.grid_left_element.rows.map(function(itemData,i) {
-										var out_sub_html =                     
-											<tr key={itemData.dietary_need_id}>
-												<td>{itemData.is_correspond ? "有對應":"無對應"}</td>
-												<td>{this.showMealType(itemData.is_breakfast,itemData.is_lunch,itemData.is_dinner)}</td>
-						                        <td>{itemData.name}</td>
-			                        			<td className="text-xs-center">
-													<button className="btn btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.dietary_need_id)}>
-														<i className="fa-plus"></i>
-													</button>
-						                        </td>
-											</tr>;
-										return out_sub_html;
-									}.bind(this))
-								}
-							</tbody>
-        				</table>
-						<div className="table-footer">
-							<ul className="pager pager-sm list-inline">
-								<li><a href="#" onClick={this.LeftGridPrev}><i className="fa-double-arrow-left"></i> 上一頁</a></li>
-								<li>{this.state.LeftGridPageIndex +' / ' + this.state.grid_left_element.total}</li>
-								<li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-double-arrow-right"></i></a></li>
-							</ul>
-						</div>
-        			</div>
-					<div className="col-xs-6">
-						<div className="table-header"><span className="text-secondary">已加入飲食需求：</span></div>
+                            </select> { }
+    <input type="text" className="form-control" placeholder="需求元素名稱"
+           value={searchData.name} onChange={this.queryChangeElementParam.bind(this,'name')} />
+                        </div> { }
+ <div className="form-group">
+     <label className="c-input c-checkbox">
+         <input type="checkbox"
+                id="is_breakfast"
+                checked={searchData.is_breakfast}
+                onChange={this.queryMealParam.bind(this,'is_breakfast')} />
+     <span className="c-indicator"></span>
+     <span className="text-sm">早餐</span>
+     </label>
+ <label className="c-input c-checkbox">
+     <input type="checkbox"
+            id="is_lunch"
+            checked={searchData.is_lunch}
+            onChange={this.queryMealParam.bind(this,'is_lunch')} />
+     <span className="c-indicator"></span>
+     <span className="text-sm">午餐</span>
+ </label>
+ <label className="c-input c-checkbox">
+     <input type="checkbox"
+            id="is_dinner"
+            checked={searchData.is_dinner}
+            onChange={this.queryMealParam.bind(this,'is_dinner')} />
+     <span className="c-indicator"></span>
+     <span className="text-sm">晚餐</span>
+ </label>
+ </div>
+                    </div>
+                </div>
+<table className="table table-sm table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>元素對應</th>
+            <th>餐別</th>
+            <th>需求元素</th>
+            <th className="text-xs-center">加入</th>
+        </tr>
+    </thead>
+    <tbody>
+        {
+            this.state.grid_left_element.rows.map(function(itemData,i) {
+                var out_sub_html =
+                    <tr key={itemData.dietary_need_id}>
+                        <td>{itemData.is_correspond ? "有對應":"無對應"}</td>
+                        <td>{this.showMealType(itemData.is_breakfast,itemData.is_lunch,itemData.is_dinner)}</td>
+                        <td>{itemData.name}</td>
+                        <td className="text-xs-center">
+                            <button className="btn btn-link text-success" type="button" onClick={this.addElement.bind(this,itemData.dietary_need_id)}>
+                                <i className="fa-plus"></i>
+                            </button>
+                        </td>
+                    </tr>;
+                return out_sub_html;
+            }.bind(this))
+        }
+    </tbody>
+</table>
+<div className="table-footer">
+    <ul className="pager pager-sm list-inline">
+        <li><a href="#" onClick={this.LeftGridPrev}><i className="fa-double-arrow-left"></i> 上一頁</a></li>
+        <li>{this.state.LeftGridPageIndex +' / ' + this.state.grid_left_element.total}</li>
+        <li><a href="#" onClick={this.LeftGridNext}>下一頁 <i className="fa-double-arrow-right"></i></a></li>
+    </ul>
+</div>
+            </div>
+<div className="col-xs-6">
+    <div className="table-header"><span className="text-secondary">已加入飲食需求：</span></div>
 						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
@@ -4434,9 +4446,9 @@ var DiningDemandData = React.createClass({
 								</tr>
 							</thead>
 							<tbody>
-								{
+							    {
 									this.state.grid_right_element.map(function(itemData,i) {
-										var out_sub_html =                     
+									    var out_sub_html =
 											<tr key={itemData.dietary_need_id}>
 												<td>{itemData.is_correspond ? "有對應":"無對應"}</td>
 												<td>{this.showMealType(itemData.is_breakfast,itemData.is_lunch,itemData.is_dinner)}</td>
@@ -4445,127 +4457,50 @@ var DiningDemandData = React.createClass({
 													<button className="btn btn-link text-danger" type="button" onClick={this.removeElement.bind(this,itemData.dietary_need_id)}>
 														<i className="fa-times"></i>
 													</button>
-						                        </td>
+			                        			</td>
 											</tr>;
-										return out_sub_html;
+									    return out_sub_html;
 									}.bind(this))
-								}
+							    }
 							</tbody>
-        				</table>
-        			</div>
-				</div>
-			</div>
-					);
-                    if(this.props.customer_need_id !=null){
-outHtml = (
-            <div>
-                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
-
-				<form className="form form-sm" onSubmit={this.handleSubmit}>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 用餐編號</label>
-						<div className="col-xs-3">
-							<div className="input-group input-group-sm">
-								<input type="text"
-                                       className="form-control"
-                                       value={fieldData.meal_id}
-                                       onChange={this.changeFDValue.bind(this,'meal_id')}
-                                       required
-                                       disabled={true} />
-							</div>
-						</div>
-
-					</div>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
-						<div className="col-xs-3">
-							<input type="text"
-                                   className="form-control"
-                                   value={fieldData.name}
-                                   onChange={this.changeFDValue.bind(this,'name')}
-                                   maxLength="64"
-                                   required
-                                   disabled />
-						</div>
-					</div>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
-						<div className="col-xs-3">
-							<input type="text"
-                                   className="form-control"
-                                   value={fieldData.tel_1}
-                                   onChange={this.changeFDValue.bind(this,'tel_1')}
-                                   maxLength="15"
-                                   required
-                                   disabled />
-						</div>
-					</div>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">連絡電話2</label>
-						<div className="col-xs-3">
-							<input type="text"
-                                   className="form-control"
-                                   value={fieldData.tel_2}
-                                   onChange={this.changeFDValue.bind(this,'tel_2')}
-                                   maxLength="15"
-                                   required
-                                   disabled />
-						</div>
-					</div>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
-						<TwAddress ver={1}
-                                   onChange={this.changeFDValue}
-                                   setFDValue={this.setFDValue}
-                                   zip_value={fieldData.tw_zip_1}
-                                   city_value={fieldData.tw_city_1}
-                                   country_value={fieldData.tw_country_1}
-                                   address_value={fieldData.tw_address_1}
-                                   zip_field="tw_zip_1"
-                                   city_field="tw_city_1"
-                                   country_field="tw_country_1"
-                                   address_field="tw_address_1"
-                                   disabled={true} />
-					</div>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">備註</label>
-						<div className="col-xs-8">
-							<textarea col="30" row="2" className="form-control"
-                                      value={fieldData.memo}
-                                      onChange={this.changeFDValue.bind(this,'memo')}
-                                      maxLength="256"></textarea>
-						</div>
-					</div>
-					<div className="form-action">
-						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
-						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.props.closeAllEdit}><i className="fa-times"></i> 回前頁</button>
-					</div>
-				</form>
-                {map_out_html}
+						</table>
+</div>
+        </div>
             </div>
-            );
+					);
         }
-        else{
-outHtml = (
-            <div>
-                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
-
-				<form className="form form-sm" onSubmit={this.handleSubmit}>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 用餐編號</label>
-						<div className="col-xs-3">
-							<div className="input-group input-group-sm">
-								<input type="text"
-                                       className="form-control"
-                                       value={fieldData.meal_id}
-                                       onChange={this.changeFDValue.bind(this,'meal_id')}
-                                       required
-                                       disabled={true} />
-								<span className="input-group-btn">
+        var add_born_button=null;
+        var insert_info_html=null;
+        if(this.state.edit_type==1){
+            add_born_button=(
+                                <span className="input-group-btn">
 									<button className="btn btn-success" type="button" onClick={this.showSelectMealid}>
 										<i className="fa-plus"></i>
 									</button>
-								</span>
+                                </span>);
+            insert_info_html=(
+						<div className="alert alert-warning">
+							此生產紀錄無用餐需求資料,如需新增請按 <strong>存檔確認</strong>，來新增此生產紀錄之用餐需求。
+						</div>		
+                );
+        }
+
+            outHtml = (
+            <div>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
+                {insert_info_html}
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 用餐編號</label>
+						<div className="col-xs-3">
+							<div className="input-group input-group-sm">
+								<input type="text"
+                                       className="form-control"
+                                       value={fieldData.meal_id}
+                                       onChange={this.changeFDValue.bind(this,'meal_id')}
+                                       required
+                                       disabled={true} />
+                                {add_born_button}
 							</div>
 							<small className="text-muted">請按 <i className="fa-plus"></i> 選取</small>
 						</div>
@@ -4639,7 +4574,7 @@ outHtml = (
                 {map_out_html}
             </div>
             );
-        }
+
         return outHtml;
     }
 });
@@ -4943,7 +4878,8 @@ var TelScheduleData = React.createClass({
                                         onChange={this.changeFDValue.bind(this,'customer_type')}>
 								    {
 								    CommData.CustomerType.map(function (itemData, i) {
-								        return(<option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
+								        return(
+								        <option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
 								    })
 								    }
 								</select>
@@ -4989,7 +4925,8 @@ var TelScheduleData = React.createClass({
                                         disabled>
 								    {
 								    CommData.BornType.map(function (itemData, i) {
-								        return(<option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
+								        return(
+								        <option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
 								    })
 								    }
 								</select>
@@ -5389,7 +5326,8 @@ var TelRecordData = React.createClass({
 							                <option value="">全部</option>
 							                {
 							                CommData.TelReasonByDetail.map(function (itemData, i) {
-							                    return(<option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
+							                    return(
+							                    <option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
 							                })
 							                }
 							            </select> { }
@@ -5429,12 +5367,13 @@ var TelRecordData = React.createClass({
 							<tbody>
 							    {
 							    this.state.gridData.rows.map(function (itemData, i) {
-							        return(<GridRowForTelRecord key={i}
-                                                     ikey={i}
-                                                     primKey={itemData.schedule_detail_id}
-                                                     itemData={itemData}
-                                                     delCheck={this.delCheck}
-                                                     updateType={this.updateType} />);
+							        return(
+							        <GridRowForTelRecord key={i}
+                                                         ikey={i}
+                                                         primKey={itemData.schedule_detail_id}
+                                                         itemData={itemData}
+                                                         delCheck={this.delCheck}
+                                                         updateType={this.updateType} />);
 							    }.bind(this))
 							    }
 							</tbody>
@@ -5760,7 +5699,8 @@ var GiftRecordData = React.createClass({
 						                        <option value="">全部</option>
 						                    {
 						                    CommData.ReceiveState.map(function (itemData, i) {
-						                        return(<option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
+						                        return(
+						                        <option key={itemData.id} value={itemData.id}>{itemData.label}</option>);
 						                    })
 						                    }
 						                </select> { }
@@ -5790,12 +5730,13 @@ var GiftRecordData = React.createClass({
 							<tbody>
 							    {
 							    this.state.gridData.rows.map(function (itemData, i) {
-							        return(<GridRowForGift key={i}
-                                                ikey={i}
-                                                primKey={itemData.gift_record_id}
-                                                itemData={itemData}
-                                                delCheck={this.delCheck}
-                                                updateType={this.updateType} />);
+							        return(
+							        <GridRowForGift key={i}
+                                                    ikey={i}
+                                                    primKey={itemData.gift_record_id}
+                                                    itemData={itemData}
+                                                    delCheck={this.delCheck}
+                                                    updateType={this.updateType} />);
 							    }.bind(this))
 							    }
 							</tbody>
@@ -6070,12 +6011,13 @@ var AccountRecordData = React.createClass({
 							<tbody>
 							    {
 							    this.state.gridData.rows.map(function (itemData, i) {
-							        return(<GridRowForAccount key={i}
-                                                   ikey={i}
-                                                   primKey={itemData.accounts_payable_id}
-                                                   itemData={itemData}
-                                                   delCheck={this.delCheck}
-                                                   updateType={this.updateType} />);
+							        return(
+							        <GridRowForAccount key={i}
+                                                       ikey={i}
+                                                       primKey={itemData.accounts_payable_id}
+                                                       itemData={itemData}
+                                                       delCheck={this.delCheck}
+                                                       updateType={this.updateType} />);
 							    }.bind(this))
 							    }
 							</tbody>
@@ -6291,7 +6233,7 @@ var GirdSubForm = React.createClass({
     },
     updateDetailType: function (id) {//修改明細檔
         jqGet(this.props.apiSubPathName, { id: id })
-		.done(function (data, textStatus, jqXHRdata) {           
+		.done(function (data, textStatus, jqXHRdata) {
 		    this.setState({ detail_edit_type: 2, fieldDetailData: data.data });
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
@@ -6634,7 +6576,8 @@ var GirdSubForm = React.createClass({
                                                 disabled={this.state.detail_edit_type==3}>
 										    {
 											CommData.BornType.map(function (itemData, i) {
-											    return(<option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
+											    return(
+											    <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
 											})
 										    }
 										</select>
@@ -6647,7 +6590,8 @@ var GirdSubForm = React.createClass({
                                                 disabled={this.state.detail_edit_type==3}>
 										    {
 											CommData.SexType.map(function (itemData, i) {
-											    return(<option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
+											    return(
+											    <option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
 											})
 										    }
 										</select>
