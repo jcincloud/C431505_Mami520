@@ -2578,12 +2578,56 @@ namespace DotWeb.Api
                     .Join(db0.RecordDetail,
                     bornid => bornid.meal_id,
                     rdid => rdid.meal_id,
-                    (bornid, rdid) => new { bornid.mom_name, meal_id = rdid.meal_id,rdid.is_release })
-                    .Where(x=>x.is_release==false)
+                    (bornid, rdid) => new { bornid.mom_name, meal_id = rdid.meal_id, rdid.is_release, bornid.born_id, bornid.customer_id })
+                    .Where(x => x.is_release == false)
                     .Select(x => new
                     {
                         x.mom_name,
-                        x.meal_id
+                        x.meal_id,
+                        x.born_id,
+                        x.customer_id
+                    })
+                    .ToListAsync();
+                //var test = (from a in db0.MealID
+                //            join b in db0.RecordDetail
+                //            on a.meal_id equals b.meal_id
+                //            where a.i_Use == true && b.is_release == false && b.meal_id!=null
+                //            select new
+                //            {
+
+                //            }
+                //         );
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                string test = e.ToString();
+                return Ok(test);
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> GetContactSchedule()
+        {
+            try
+            {
+                db0 = getDB0();
+                var result = await db0.ContactSchedule.AsExpandable()
+                    .Where(x => x.company_id == this.companyId & x.meal_id != null)
+                    .OrderBy(x => x.meal_id.Substring(0, 1))
+                    .Join(db0.RecordDetail,
+                    bornid => bornid.meal_id,
+                    rdid => rdid.meal_id,
+                    (bornid, rdid) => new { bornid.mom_name, meal_id = rdid.meal_id, rdid.is_release, bornid.born_id, bornid.customer_id, bornid.schedule_id })
+                    .Where(x => x.is_release == false)
+                    .Select(x => new
+                    {
+                        x.mom_name,
+                        x.meal_id,
+                        x.born_id,
+                        x.customer_id,
+                        x.schedule_id
                     })
                     .ToListAsync();
                 //var test = (from a in db0.MealID
@@ -2605,11 +2649,49 @@ namespace DotWeb.Api
 
         }
         [HttpGet]
+        public IHttpActionResult GetCustomerNeed(int born_id)
+        {
+            try
+            {
+                db0 = getDB0();
+                var result = db0.CustomerNeed
+                    .Where(x => x.company_id == this.companyId & x.born_id == born_id)
+                    .Select(x => new m_CustomerNeed
+                    {
+                        customer_need_id = x.customer_need_id,
+                        customer_id = x.customer_id,
+                        born_id = x.born_id,
+                        meal_id = x.meal_id,
+                        name = x.CustomerBorn.mom_name,
+                        memo = x.memo,
+                        tel_1 = x.CustomerBorn.tel_1,
+                        tel_2 = x.CustomerBorn.tel_2,
+                        tw_zip_1 = x.CustomerBorn.tw_zip_1,
+                        tw_city_1 = x.CustomerBorn.tw_city_1,
+                        tw_country_1 = x.CustomerBorn.tw_country_1,
+                        tw_address_1 = x.CustomerBorn.tw_address_1
+                    })
+                    .FirstOrDefault();
+
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                string test = e.ToString();
+                return Ok(test);
+            }
+            finally
+            {
+                db0.Dispose();
+            }
+
+        }
+        [HttpGet]
         public async Task<IHttpActionResult> GetTodaySchedule()
         {
             db0 = getDB0();
             var result = await db0.ScheduleDetail.AsExpandable()
-                .Where(x=>x.company_id==this.companyId)
+                .Where(x => x.company_id == this.companyId)
                 .ToListAsync();
             return Ok(result);
         }

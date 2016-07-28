@@ -155,6 +155,10 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public string tel_1 { get; set; }
         public string tel_2 { get; set; }
+        public string tw_zip_1 { get; set; }
+        public string tw_city_1 { get; set; }
+        public string tw_country_1 { get; set; }
+        public string tw_address_1 { get; set; }
     }
     public partial class CustomerNeed
     {
