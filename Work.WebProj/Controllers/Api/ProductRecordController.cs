@@ -88,6 +88,10 @@ namespace DotWeb.Api
                 {
                     qr = qr.Where(x => x.Customer.customer_type == q.customer_type);
                 }
+                if(q.born_id!=null)
+                {
+                    qr = qr.Where(x => x.born_id == q.born_id);
+                }
                 var result = qr.Select(x => new m_ProductRecord()
                 {
                     product_record_id = x.product_record_id,

@@ -124,12 +124,12 @@ namespace DotWeb.Api
         {
             md.schedule_id = GetNewId(ProcCore.Business.CodeTable.ContactSchedule);
             ResultInfo r = new ResultInfo();
-            if (!ModelState.IsValid)
-            {
-                r.message = ModelStateErrorPack();
-                r.result = false;
-                return Ok(r);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    r.message = ModelStateErrorPack();
+            //    r.result = false;
+            //    return Ok(r);
+            //}
 
             try
             {

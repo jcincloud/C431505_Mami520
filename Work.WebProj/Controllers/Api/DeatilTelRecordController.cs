@@ -89,12 +89,12 @@ namespace DotWeb.Api
 
             md.deatil_tel_record_id = GetNewId(ProcCore.Business.CodeTable.DeatilTelRecord);
 
-            if (!ModelState.IsValid)
-            {
-                r.message = ModelStateErrorPack();
-                r.result = false;
-                return Ok(r);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    r.message = ModelStateErrorPack();
+            //    r.result = false;
+            //    return Ok(r);
+            //}
             try
             {
                 #region working a

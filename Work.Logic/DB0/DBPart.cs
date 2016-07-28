@@ -176,6 +176,7 @@ namespace ProcCore.Business.DB0
         public string meal_id { get; set; }
         public string tel_1 { get; set; }
         public int customer_type { get; set; }
+        public string mom_name { get; set; }
     }
     public partial class ProductRecord
     {
@@ -231,6 +232,7 @@ namespace ProcCore.Business.DB0
     public partial class m_ContactSchedule
     {
         public string mom_name { get; set; }
+        public string customer_name { get; set; }
         public string sno { get; set; }
         public string tel_1 { get; set; }
         public string tel_2 { get; set; }
@@ -389,6 +391,7 @@ namespace ProcCore.Business.DB0
         public bool? is_receipt { get; set; }
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
+        public int? born_id { get; set; }
     }
     public class q_Customer : QueryBase
     {

@@ -164,7 +164,7 @@ var GirdForm = React.createClass({
                                         <CustomerBornData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} />
                                     </div>
                                     <div className="tab-pane" id="Sell" role="tabpanel">
-                                        <SalesDetailData born_id={this.state.born_id} mom_id={this.state.customer_id} />
+                                        <SalesDetailData born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} />
                                     </div>
                                     <div className="tab-pane" id="MealSchedule" role="tabpanel">
                                         <MealScheduleData born_id={this.state.born_id} mom_id={this.state.customer_id} />
@@ -959,7 +959,8 @@ var SubForm = React.createClass({
         this.setState({
             edit_sub_type: 1, fieldSubData: {
                 schedule_detail_id: this.props.main_id,
-                tel_state: 1
+                tel_state: 1,
+                i_Lang:'zh-TW'
             }
         });
     },
@@ -2135,7 +2136,6 @@ var BasicData = React.createClass({
     },
     componentDidMount: function () {
         //this.queryGridData(1);
-        console.log(this.props.born_id,this.props.mom_id);
         this.updateType(this.props.mom_id);
     },
     queryGridData: function (page) {
@@ -2177,9 +2177,8 @@ var BasicData = React.createClass({
     },
     closeEditDetail: function () {
         //關閉生產紀錄視窗並更新list
-        this.gridDetailData(0)
+        this.gridDetailData(this.props.mom_id)
         .done(function (data, textStatus, jqXHRdata) {
-            this.setState({ isShowCustomerEdit: false, detail_edit_type: 0, gridDetailData: data });
             this.setState({ isShowCustomerBornEdit: false, detail_edit_type: 0, gridDetailData: data });
         }.bind(this))
         .fail(function (jqXHR, textStatus, errorThrown) {
@@ -2897,6 +2896,7 @@ var BasicData = React.createClass({
     					</div>
     				 </form>{/*---生產紀錄版面---*/}
                  <div>
+                 {customer_born_out_html}
                     <hr className="lg" />
                     <h3 className="h3">
                         客戶生產紀錄 明細檔 { }
@@ -3298,7 +3298,7 @@ var SalesDetailData = React.createClass({
         return {
             gridData: { rows: [], page: 1 },
             fieldData: { born_memo: null },
-            searchData: { title: null },
+            searchData: { title: null,born_id:this.props.born_id },
             searchBornData: { word: null, customer_type: null, is_meal: false },
             edit_type: 0,
             checkAll: false,
@@ -3319,6 +3319,8 @@ var SalesDetailData = React.createClass({
         //} else {//有帶id的話,直接進入修改頁面
         //    this.updateType(gb_main_id);
         //}
+        this.queryGridData(1);
+        //this.updateType(this.props.born_id);
     },
     shouldComponentUpdate: function (nextProps, nextState) {
         return true;
@@ -3448,10 +3450,10 @@ var SalesDetailData = React.createClass({
     insertType: function () {
         this.setState({ edit_type: 1, fieldData: {} });
     },
-    updateType: function (id) {
-        jqGet(this.props.apiPathName, { id: id })
+    updateType: function (page) {
+        jqGet(this.props.apiPathName, { born_id: born_id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 2, fieldData: data.data });
+		    this.setState({ edit_type: 2, fieldData: data});
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -3974,7 +3976,8 @@ var DiningDemandData = React.createClass({
         return {
             fdName: 'fieldData',
             gdName: 'searchData',
-            apiPathName: gb_approot + 'api/GetAction/GetCustomerNeed',
+            apiPathName: gb_approot + 'api/CustomerNeed',
+            apiGetDataPathName:gb_approot + 'api/GetAction/GetCustomerNeed',
             apiPathProduct:gb_approot+'api/Product',
             initPathName: gb_approot + 'Active/Food/constitute_food_Init'
         };
@@ -4118,18 +4121,18 @@ var DiningDemandData = React.createClass({
 		    showAjaxError(errorThrown);
 		});
     },
-    insertType: function () {
+    insertType: function () { 
         this.setState({
             edit_type: 1, fieldData: {
-                born_id: null,
+                born_id: this.props.born_id,
                 customer_need_id: null,
-                customer_id: null,
+                customer_id: this.props.mom_id,
                 meal_id: null
             }
         });
     },
     updateType: function (id) {
-        jqGet(this.props.apiPathName, { born_id: id })
+        jqGet(this.props.apiGetDataPathName, { born_id: id })
 		.done(function (data, textStatus, jqXHRdata) {
 		    if(data!=null){
 		        this.setState({ edit_type: 2, fieldData: data });
@@ -4251,7 +4254,7 @@ var DiningDemandData = React.createClass({
         });
     },
     queryRightElement:function(){
-        jqGet(gb_approot + 'api/GetAction/GetRightDietaryNeed',{main_id:this.props.main_id})
+        jqGet(gb_approot + 'api/GetAction/GetRightDietaryNeed',{main_id:this.state.fieldData.customer_need_id})
         .done(function(data, textStatus, jqXHRdata) {
             this.setState({grid_right_element:data});
         }.bind(this))
@@ -4277,7 +4280,7 @@ var DiningDemandData = React.createClass({
         this.queryLeftElement();
     },
     addElement:function(dietary_need_id){
-        jqPost(gb_approot + 'api/GetAction/PostCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
+        jqPost(gb_approot + 'api/GetAction/PostCustomerOfDietaryNeed',{customer_need_id:this.state.fieldData.customer_need_id,dietary_need_id:dietary_need_id})
         .done(function(data, textStatus, jqXHRdata) {
             if(data.result){
                 this.queryLeftElement();
@@ -4291,7 +4294,7 @@ var DiningDemandData = React.createClass({
         });
     },
     removeElement:function(dietary_need_id){
-        jqDelete(gb_approot + 'api/GetAction/DeleteCustomerOfDietaryNeed',{customer_need_id:this.props.main_id,dietary_need_id:dietary_need_id})
+        jqDelete(gb_approot + 'api/GetAction/DeleteCustomerOfDietaryNeed',{customer_need_id:this.state.fieldData.customer_need_id,dietary_need_id:dietary_need_id})
         .done(function(data, textStatus, jqXHRdata) {
             if(data.result){
                 this.queryLeftElement();
@@ -4469,15 +4472,8 @@ var DiningDemandData = React.createClass({
             </div>
 					);
         }
-        var add_born_button=null;
         var insert_info_html=null;
         if(this.state.edit_type==1){
-            add_born_button=(
-                                <span className="input-group-btn">
-									<button className="btn btn-success" type="button" onClick={this.showSelectMealid}>
-										<i className="fa-plus"></i>
-									</button>
-                                </span>);
             insert_info_html=(
 						<div className="alert alert-warning">
 							此生產紀錄無用餐需求資料,如需新增請按 <strong>存檔確認</strong>，來新增此生產紀錄之用餐需求。
@@ -4486,7 +4482,7 @@ var DiningDemandData = React.createClass({
         }
 
             outHtml = (
-            <div>
+            <div>            
                 <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
                 {insert_info_html}
 				<form className="form form-sm" onSubmit={this.handleSubmit}>
@@ -4498,11 +4494,9 @@ var DiningDemandData = React.createClass({
                                        className="form-control"
                                        value={fieldData.meal_id}
                                        onChange={this.changeFDValue.bind(this,'meal_id')}
-                                       required
+                                       required 
                                        disabled={true} />
-                                {add_born_button}
 							</div>
-							<small className="text-muted">請按 <i className="fa-plus"></i> 選取</small>
 						</div>
 
 					</div>
@@ -4583,8 +4577,8 @@ var TelScheduleData = React.createClass({
     getInitialState: function () {
         return {
             gridData: { rows: [], page: 1 },
-            fieldData: {},
-            searchData: { title: null },
+            fieldData: {schedule_id:null},
+            searchData: { title: null, },
             searchBornData: { word: null, is_close: null },
             edit_type: 0,
             checkAll: false,
@@ -4596,7 +4590,8 @@ var TelScheduleData = React.createClass({
         return {
             fdName: 'fieldData',
             gdName: 'searchData',
-            apiPathName: gb_approot + 'api/GetAction/GetContactSchedule'
+            apiPathName: gb_approot+'api/ContactSchedule',
+            apiGetDataPathName: gb_approot + 'api/GetAction/GetContactSchedule'
         };
     },
     componentDidMount: function () {
@@ -4729,12 +4724,21 @@ var TelScheduleData = React.createClass({
 		});
     },
     insertType: function () {
-        this.setState({ edit_type: 1, fieldData: {} });
+        this.setState({ edit_type: 1, fieldData: {
+            schedule_id:null,
+            customer_id:this.props.mom_id,
+            born_id:this.props.born_id,
+            meal_id:null
+        } });
     },
     updateType: function (id) {
-        jqGet(this.props.apiPathName, { id: id })
+        jqGet(this.props.apiGetDataPathName, { born_id: id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 2, fieldData: data.data });
+            if(data!=null){
+		    this.setState({ edit_type: 2, fieldData: data });
+            }else{
+		        this.insertType();
+            }
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -4838,17 +4842,33 @@ var TelScheduleData = React.createClass({
         var fieldData = this.state.fieldData;
         var detail_out_html = null;
         var save_out_html = null;
-        save_out_html = <strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
-        detail_out_html =
-        <SubForm ref="SubForm"
-                 main_id={fieldData.schedule_id}
-                 customer_id={fieldData.customer_id}
-                 born_id={fieldData.born_id}
-                 meal_id={fieldData.meal_id} />;
+        var insert_inpnt_button=null;
+
+var insert_info_html=null;
+			if(this.state.edit_type==1){
+				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
+                          insert_info_html=(
+						<div className="alert alert-warning">
+							此生產紀錄無電訪排程資料,如需新增請按 <strong>存檔確認</strong>，來新增此生產紀錄之電訪排程。
+						</div>		
+                );
+			}else if(this.state.edit_type==2){
+                console.log(fieldData);
+				save_out_html=<strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
+				detail_out_html=(
+                    <SubFormForTelSch ref="SubFormForTelSch" 
+				main_id={fieldData.schedule_id}
+				customer_id={fieldData.customer_id}
+				born_id={fieldData.born_id}
+				meal_id={fieldData.meal_id}/>
+                );
+			}
+
+                 
         outHtml = (
             <div>
                 <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
-
+                {insert_info_html}
 				<form className="form form-sm" onSubmit={this.handleSubmit}>
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
@@ -4860,14 +4880,8 @@ var TelScheduleData = React.createClass({
                                            onChange={this.changeFDValue.bind(this,'customer_name')}
                                            maxLength="64"
                                            disabled />
-									<span className="input-group-btn">
-										<a className="btn btn-success"
-                                           onClick={this.showSelectCustomerBorn}
-                                           disabled={this.state.edit_type==2}><i className="fa-plus"></i></a>
-									</span>
 								</div>
 							</div>
-							<small className="text-muted col-xs-6">請按 <i className="fa-plus"></i> 選取</small>
 						</div>
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right">客戶類別</label>
@@ -6037,6 +6051,176 @@ var AccountRecordData = React.createClass({
             );
         return outHtml;
     }
+});
+//明細檔編輯
+var SubFormForTelSch = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			gridSubData:[],
+			fieldSubData:{},
+			searchData:{name:null,product_type:null},
+			grid_right_detail:[]
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldSubData',
+			gdName:'searchData',
+			apiPathName:gb_approot+'api/ScheduleDetail',
+			initPathName:gb_approot+'Active/Product/aj_Init'
+		};
+	},
+	componentDidMount:function(){
+		this.queryScheduleDetail();
+		this.insertSubType();
+	},
+	shouldComponentUpdate:function(nextProps,nextState){
+		return true;
+	},
+	queryScheduleDetail:function(){//取得右邊已增加的電訪排程
+		jqGet(gb_approot + 'api/GetAction/GetScheduleDetail',{main_id:this.props.main_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({grid_right_detail:data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+	detailHandleSubmit:function(e){//新增 
+		e.preventDefault();
+			
+		jqPost(this.props.apiPathName,this.state.fieldSubData)
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				if(data.message!=null){
+					tosMessage(null,'新增完成'+data.message,1);
+				}else{
+					tosMessage(null,'新增完成',1);
+				}
+				this.queryScheduleDetail();
+				this.insertSubType();
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+		return;
+	},
+	detailDeleteSubmit:function(id,e){
+
+		if(!confirm('確定是否刪除?')){
+			return;
+		}
+		jqDelete(this.props.apiPathName + '?ids=' +id ,{})			
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'刪除完成',1);
+				this.queryScheduleDetail();
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	insertSubType:function(){
+		this.setState({fieldSubData:{
+			schedule_id:this.props.main_id,
+			customer_id:this.props.customer_id,
+			born_id:this.props.born_id,
+			meal_id:this.props.meal_id,
+			tel_reason:2
+		}});
+	},
+	changeFDValue:function(name,e){
+		var obj = this.state.fieldSubData;
+		obj[name] = e.target.value;
+
+		this.setState({fieldSubData:obj});
+	},
+	render: function() {
+		var outHtml = null;
+		var fieldSubData=this.state.fieldSubData;
+
+			outHtml =
+			(
+				<div className="row">
+				    <div className="col-xs-6">
+				    	<div className="card">
+				    		<div className="card-header bg-primary-light text-secondary">新增電訪排程</div>
+					        <form className="form form-sm" role="form" id="detailForm" onSubmit={this.detailHandleSubmit}>
+						        <div className="card-block">
+						            <div className="form-group row">
+						                <label className="col-xs-3 form-control-label text-xs-right"><span className="text-danger">*</span> 電訪日期</label>
+						                <div className="col-xs-9">
+											<InputDate id="tel_day" 
+												onChange={this.changeFDValue} 
+												field_name="tel_day" 
+												value={fieldSubData.tel_day}
+												required={true} />
+						                </div>
+						            </div>
+						            <div className="form-group row">
+						                <label className="col-xs-3 form-control-label text-xs-right">電訪原因</label>
+						                <div className="col-xs-9">
+						                    <select className="form-control"
+						                    value={fieldSubData.tel_reason}
+						                    onChange={this.changeFDValue.bind(this,'tel_reason')}>
+								                {
+													CommData.TelReasonBySchedule.map(function(itemData,i) {
+													return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+													})
+												}
+						                    </select>
+						                </div>
+						            </div>
+						        </div>
+						        <div className="card-footer text-xs-center">
+						            <button type="submit" form="detailForm" className="btn btn-sm btn-primary"><i className="fa-check"></i> 存檔確認</button>
+						        </div>
+					        </form>
+				        </div>
+				    </div>
+				    <div className="col-xs-6">
+				        <div className="card">
+				    		<div className="card-header bg-primary-light text-secondary">電訪排程明細</div>
+				    		<div className="card-block">
+						        <table className="table table-sm table-bordered table-striped">
+						        	<thead>
+							            <tr>
+							                <th style={{"width":"40%;"}}>電訪日期</th>
+							                <th style={{"width":"40%;"}}>電訪原因</th>
+							                <th style={{"width":"20%;"}} className="text-xs-center">移除</th>
+							            </tr>
+							        </thead>
+							        <tbody>
+							            {
+											this.state.grid_right_detail.map(function(itemData,i) {										
+												var detail_out_html = 
+													<tr key={itemData.schedule_detail_id}>
+														<td>{moment(itemData.tel_day).format('YYYY/MM/DD')}</td>
+														<td><StateForGrid stateData={CommData.TelReasonBySchedule} id={itemData.tel_reason} /></td>
+														<td className="text-xs-center">
+										                    <button className="btn btn-link btn-lg text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.schedule_detail_id)}><i className="fa-times"></i></button>
+										                </td>
+													</tr>;
+												return detail_out_html;
+											}.bind(this))
+										}
+						            </tbody>
+						        </table>
+						    </div>
+						</div>
+				    </div>
+				</div>
+			);
+
+		return outHtml;
+	}
 });
 var GirdSubForm = React.createClass({
     mixins: [React.addons.LinkedStateMixin],

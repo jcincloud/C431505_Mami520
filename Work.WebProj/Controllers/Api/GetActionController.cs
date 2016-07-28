@@ -2606,30 +2606,27 @@ namespace DotWeb.Api
             }
 
         }
-
         [HttpGet]
-        public async Task<IHttpActionResult> GetContactSchedule()
+        public IHttpActionResult GetContactSchedule(int born_id)
         {
             try
             {
                 db0 = getDB0();
-                var result = await db0.ContactSchedule.AsExpandable()
-                    .Where(x => x.company_id == this.companyId & x.meal_id != null)
-                    .OrderBy(x => x.meal_id.Substring(0, 1))
-                    .Join(db0.RecordDetail,
-                    bornid => bornid.meal_id,
-                    rdid => rdid.meal_id,
-                    (bornid, rdid) => new { bornid.mom_name, meal_id = rdid.meal_id, rdid.is_release, bornid.born_id, bornid.customer_id, bornid.schedule_id })
-                    .Where(x => x.is_release == false)
-                    .Select(x => new
+                var result =db0.ContactSchedule
+                    .Where(x => x.company_id == this.companyId & x.born_id == born_id)
+                    .Select(x => new m_ContactSchedule
                     {
-                        x.mom_name,
-                        x.meal_id,
-                        x.born_id,
-                        x.customer_id,
-                        x.schedule_id
+                        schedule_id=x.schedule_id,
+                        customer_id = x.customer_id,
+                        customer_name =x.CustomerBorn.Customer.customer_name,
+                        born_id = x.born_id,
+                        meal_id = x.meal_id,
+                        mom_name = x.CustomerBorn.mom_name,
+                        sno = x.CustomerBorn.sno,
+                        tel_1 = x.CustomerBorn.tel_1,
+                        tel_2 = x.CustomerBorn.tel_2
                     })
-                    .ToListAsync();
+                    .FirstOrDefault();
                 //var test = (from a in db0.MealID
                 //            join b in db0.RecordDetail
                 //            on a.meal_id equals b.meal_id
@@ -2645,6 +2642,10 @@ namespace DotWeb.Api
             {
                 string test = e.ToString();
                 return Ok(test);
+            }
+            finally
+            {
+                db0.Dispose();
             }
 
         }
