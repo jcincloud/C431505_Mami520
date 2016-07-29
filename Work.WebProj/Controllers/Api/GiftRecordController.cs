@@ -71,6 +71,10 @@ namespace DotWeb.Api
                 {
                     qr = qr.Where(x => x.receive_state == q.receive_state);
                 }
+                if (q.born_id != null)
+                {
+                    qr = qr.Where(x => x.born_id == q.born_id);
+                }
 
                 var result = qr.Select(x => new m_GiftRecord()
                 {

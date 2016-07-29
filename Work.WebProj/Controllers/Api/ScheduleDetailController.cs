@@ -68,9 +68,15 @@ namespace DotWeb.Api
                     DateTime end = ((DateTime)q.end_date).AddDays(1);
                     qr = qr.Where(x => x.tel_day >= q.start_date && x.tel_day < end);
                 }
+                if (q.born_id != null)
+                {
+                    qr = qr.Where(x => x.born_id == q.born_id);
+                }
                 var result = qr.Select(x => new m_ScheduleDetail()
                 {
                     schedule_id = x.schedule_id,
+                    born_id=x.born_id,
+                    customer_id=x.customer_id,
                     schedule_detail_id = x.schedule_detail_id,
                     meal_id = x.meal_id,
                     mom_name = x.CustomerBorn.mom_name,

@@ -44,6 +44,10 @@ namespace DotWeb.Api
                                       x.Customer.tel_1.Contains(q.word) ||
                                       x.record_sn.Contains(q.word));
                 }
+                if (q.customer_id != null)
+                {
+                    qr = qr.Where(x => x.customer_id == q.customer_id);
+                }
 
 
                 var result = qr.Select(x => new m_AccountsPayable()

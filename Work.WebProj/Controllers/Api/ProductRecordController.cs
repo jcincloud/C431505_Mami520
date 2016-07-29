@@ -162,12 +162,12 @@ namespace DotWeb.Api
         {
             md.product_record_id = GetNewId(ProcCore.Business.CodeTable.ProductRecord);
             ResultInfo r = new ResultInfo();
-            if (!ModelState.IsValid)
-            {
-                r.message = ModelStateErrorPack();
-                r.result = false;
-                return Ok(r);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    r.message = ModelStateErrorPack();
+            //    r.result = false;
+            //    return Ok(r);
+            //}
 
             try
             {

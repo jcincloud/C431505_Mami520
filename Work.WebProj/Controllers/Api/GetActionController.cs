@@ -564,6 +564,10 @@ namespace DotWeb.Api
                     DateTime end = ((DateTime)parm.end_date).AddDays(1);
                     items = items.Where(x => x.record_day >= parm.start_date && x.record_day < end);
                 }
+                if (parm.born_id != null)
+                {
+                    items = items.Where(x => x.born_id == parm.born_id);
+                }
 
                 return Ok(items.ToList());
             }
@@ -2892,6 +2896,7 @@ namespace DotWeb.Api
         public bool? is_close { get; set; }
         public string word { get; set; }
         public DateTime? start_date { get; set; }
+        public int? born_id { get; set; }
         public DateTime? end_date { get; set; }
     }
     public class ParmMenuCopyOfConstitute

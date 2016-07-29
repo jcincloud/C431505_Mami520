@@ -471,6 +471,7 @@ namespace ProcCore.Business.DB0
         public string name { get; set; }
         public string activity_name { get; set; }
         public int? receive_state { get; set; }
+        public int? born_id { get; set; }
     }
     public class q_RecordDetail : QueryBase
     {
@@ -478,6 +479,7 @@ namespace ProcCore.Business.DB0
         public string word { get; set; }
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
+        public int? born_id { get; set; }
     }
     public class q_ContactSchedule : QueryBase
     {
@@ -489,6 +491,7 @@ namespace ProcCore.Business.DB0
         public string word { get; set; }
         public DateTime? start_date { get; set; }
         public DateTime? end_date { get; set; }
+        public int? born_id { get; set; }
     }
     public class q_DeatilTelRecord : QueryBase
     {
@@ -504,6 +507,7 @@ namespace ProcCore.Business.DB0
     public class q_AccountsPayable : QueryBase
     {
         public string word { get; set; }
+        public int? customer_id { get; set; }
     }
     public class q_AccountsPayableDetail : QueryBase
     {

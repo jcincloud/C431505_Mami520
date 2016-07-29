@@ -167,7 +167,7 @@ var GirdForm = React.createClass({
                                         <SalesDetailData born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} />
                                     </div>
                                     <div className="tab-pane" id="MealSchedule" role="tabpanel">
-                                        <MealScheduleData born_id={this.state.born_id} mom_id={this.state.customer_id} />
+                                        <MealScheduleData born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id}/>
                                     </div>
                                     <div className="tab-pane" id="Query" role="tabpanel">
                                         <DiningDemandData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} customer_need_id={this.state.customer_need_id} />
@@ -176,7 +176,7 @@ var GirdForm = React.createClass({
                                         <TelScheduleData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id} schedule_id={this.state.schedule_id} />
                                     </div>
                                     <div className="tab-pane" id="CallRecord" role="tabpanel">
-                                        <TelRecordData born_id={this.state.born_id} mom_id={this.state.customer_id} />
+                                        <TelRecordData born_id={this.state.born_id} mom_id={this.state.customer_id} meal_id={this.state.meal_id}/>
                                     </div>
                                     <div className="tab-pane" id="Gift" role="tabpanel">
                                         <GiftRecordData born_id={this.state.born_id} mom_id={this.state.customer_id} />
@@ -258,6 +258,7 @@ var GirdForm = React.createClass({
         return outHtml;
     }
 });
+//電訪記錄編輯list
 var GridRow = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -271,13 +272,12 @@ var GridRow = React.createClass({
         this.props.updateType(this.props.primKey);
     },
     render: function () {
-
         return (
 
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify} /></td>
-					<td><button type="button" onClick={this.props.openAllEdit}>{this.props.itemData.mom_name}</button></td>
+					<td><button type="button" onClick={this.props.openAllEdit.bind(this,this.props.itemData.born_id,this.props.itemData.customer_id)} >{this.props.itemData.mom_name}</button></td>
 					<td>{this.props.itemData.meal_id}</td>
 					<td>{this.props.itemData.tel_1}</td>
 					<td>{this.props.itemData.tel_2}</td>
@@ -651,7 +651,7 @@ var TelRecord = React.createClass({
                                                     <i className="fa-check"></i>
                                                 </label>
                                             </td>
-                                            <td>{itemData.customer_name}</td>
+                                            <td><button  onClick={this.props.openAllEdit}>{itemData.customer_name}</button></td>
                                             <td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
                                             <td>{itemData.meal_id}</td>
                                             <td>{itemData.mom_name}</td>
@@ -848,7 +848,7 @@ var TelRecord = React.createClass({
     }
 });
 
-//明細檔編輯
+//電訪明細檔編輯
 var SubForm = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -1095,6 +1095,7 @@ var SubForm = React.createClass({
         return outHtml;
     }
 });
+//快速搜尋編輯list
 var GridRowForQuick = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -1113,7 +1114,7 @@ var GridRowForQuick = React.createClass({
 				<tr>
 					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
 					<td className="text-center"><GridButtonModify modify={this.modify} /></td>
-					<td><button type="button" onClick={this.props.openAllEdit}>{this.props.itemData.customer_name}</button></td>
+					<td>{this.props.itemData.customer_name}</td>
 					<td><StateForGrid stateData={CommData.CustomerType} id={this.props.itemData.customer_type} /></td>
 					<td>{this.props.itemData.sno}</td>
                     <td>{this.props.itemData.tel_1}</td>
@@ -1569,6 +1570,11 @@ var QuickSearch = React.createClass({
         obj[fieldName] = value;
         this.setState({ fieldDetailData: obj });
     },
+    closeQuickSearchForAllEdit: function(born_id,customer_id){
+        //此function為按下修改內姓名按鈕後，關閉修改視窗，開啟總覽視窗
+        this.props.openAllEdit(born_id,customer_id);
+        this.setState({ isShowCustomerEdit: false });
+    },
     render: function () {
         var outHtml = null;
         var searchData = this.state.searchData;
@@ -1974,7 +1980,7 @@ var QuickSearch = React.createClass({
                                             {out_sub_button}
                                             <td>{moment(itemData.born_day).format('YYYY/MM/DD')}</td>
                                             <td>{itemData.meal_id}</td>
-                                            <td>{itemData.mom_name}</td>
+                                            <td><button type="button" onClick={this.closeQuickSearchForAllEdit.bind(this,itemData.born_id,itemData.customer_id)}>{itemData.mom_name}</button></td>
                                             <td><StateForGrid stateData={CommData.SexType} id={itemData.baby_sex} /></td>
                                             <td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>{/*<td>{itemData.is_close? <span className="label label-success">結案</span>:<span className="label label-danger">未結案</span>}</td>*/}
                                             <td>{itemData.memo}</td>
@@ -2096,6 +2102,7 @@ var QuickSearch = React.createClass({
         return outHtml;
     }
 });
+//總攬視窗_基本資料
 var BasicData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -2952,6 +2959,7 @@ var BasicData = React.createClass({
     }
 
 });
+//總覽紀錄_生產紀錄
 var CustomerBornData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -3292,6 +3300,7 @@ var GridRowForSales = React.createClass({
 			);
     }
 });
+//總攬紀錄_銷售紀錄
 var SalesDetailData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -3303,6 +3312,7 @@ var SalesDetailData = React.createClass({
             edit_type: 0,
             checkAll: false,
             isShowCustomerBornSelect: false,
+            isShowModifySelect:false,
             born_list: []
         };
     },
@@ -3320,7 +3330,6 @@ var SalesDetailData = React.createClass({
         //    this.updateType(gb_main_id);
         //}
         this.queryGridData(1);
-        //this.updateType(this.props.born_id);
     },
     shouldComponentUpdate: function (nextProps, nextState) {
         return true;
@@ -3448,12 +3457,17 @@ var SalesDetailData = React.createClass({
 		});
     },
     insertType: function () {
-        this.setState({ edit_type: 1, fieldData: {} });
+        this.setState({ edit_type: 1, fieldData: {
+            customer_id:this.props.mom_id,
+            product_record_id:null,
+            i_Lang:'zh-TW',
+            born_id:this.props.born_id
+        },isShowModifySelect:true });
     },
-    updateType: function (page) {
-        jqGet(this.props.apiPathName, { born_id: born_id })
+    updateType: function (id) {
+        jqGet(this.props.apiPathName, { id: id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 2, fieldData: data});
+		    this.setState({ edit_type: 2, fieldData: data.data,isShowModifySelect:true});
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -3509,10 +3523,10 @@ var SalesDetailData = React.createClass({
     },
     showSelectCustomerBorn: function () {
         this.queryAllCustomerBorn();
-        this.setState({ isShowCustomerBornSelect: true });
+        this.setState({ isShowCustomerBornSelect: true,isShowModifySelect:true });
     },
     closeSelectCustomerBorn: function () {
-        this.setState({ isShowCustomerBornSelect: false });
+        this.setState({ isShowCustomerBornSelect: false,isShowModifySelect:false });
     },
     selectCustomerBorn: function (customer_id, born_id, meal_id) {
         jqGet(gb_approot + 'api/GetAction/GetCustomerAndBorn', { born_id: born_id, customer_id: customer_id })
@@ -3541,7 +3555,7 @@ var SalesDetailData = React.createClass({
 		    fieldData.tw_address_2 = data.getBorn.tw_address_2;
 		    fieldData.born_memo = data.getBorn.memo;
 
-		    this.setState({ isShowCustomerBornSelect: false, fieldData: fieldData });
+		    this.setState({ isShowCustomerBornSelect: false, fieldData: fieldData ,isShowModifySelect:false});
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    //showAjaxError(errorThrown);
@@ -3608,10 +3622,251 @@ var SalesDetailData = React.createClass({
         document.location.href = gb_approot + 'Active/AccountsPayable?product_record_id=' + this.state.fieldData.product_record_id;
     },
     render: function () {
-
         var searchData = this.state.searchData;
+        var modify_html=null;
+        var ModalProductSelect=ReactBootstrap.Modal;
+		var detail_out_html=null;//明細檔
+        var fieldData=this.state.fieldData;
+        if(this.state.edit_type==1){
+				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
+			}else{
+				save_out_html=<strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
+				detail_out_html=
+				<SubFormForSalesProduct ref="SubFormForSalesProduct" 
+				main_id={fieldData.product_record_id}
+				customer_id={fieldData.customer_id}
+				born_id={fieldData.born_id} 
+				meal_id={fieldData.meal_id}
+				is_close={fieldData.is_close} />;
+				if(!fieldData.is_close){
+					close_out_html=<button className="btn btn-success btn-block" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
+				}
+				if(fieldData.is_close){
+					close_out_html=<button className="btn btn-default btn-block disabled"><i className="fa-check"></i> 已結案</button>;
+				}
+				if(fieldData.is_receipt){//轉應收後出現可檢視應收帳款按鈕
+					receipt_out_html=<button className="btn btn-info btn-block" type="button" onClick={this.setAccountsPayable.bind(this)}><i className="fa-search"></i> 檢視 應收帳款</button>;
+				}else{
+					receipt_out_html=<button className="btn btn-success btn-block" type="button" onClick={this.insertAccountsPayable.bind(this)}><i className="fa-check"></i>轉 應收帳款</button>;
+				}
+			}
+        if(this.state.isShowModifySelect){
+            modify_html=(
+                <ModalProductSelect bsSize="medium" title="產品銷售資料" onRequestHide={this.closeSelectCustomerBorn}>
+                <div>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">銷售單號</label>
+							<div className="col-xs-3">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.record_sn}
+								onChange={this.changeFDValue.bind(this,'record_sn')}
+								maxLength="64"
+								disabled
+								placeholder="系統自動產生" />
+							</div>
+							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">訂單日期</label>
+							<div className="col-xs-3">
+								<InputDate id="record_day" 
+									onChange={this.changeFDValue} 
+									field_name="record_day" 
+									value={fieldData.record_day}
+									disabled={true}
+									placeholder="系統自動產生" />
+							</div>
+							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
+							<div className="col-xs-3">
+								<div className="input-group input-group-sm">
+									<input type="text" 							
+									className="form-control"	
+									value={fieldData.customer_name}
+									onChange={this.changeFDValue.bind(this,'customer_name')}
+									maxLength="64"
+									disabled />
+									<span className="input-group-btn">
+										<a className="btn btn-success"
+										onClick={this.showSelectCustomerBorn}
+										disabled={this.state.edit_type==2} ><i className="fa-plus"></i></a>
+									</span>
+								</div>
+							</div>
+							<small className="text-muted col-xs-6">請按 <i className="fa-plus"></i> 選取</small>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">客戶類別</label>
+							<div className="col-xs-3">
+								<select className="form-control" 
+								value={fieldData.customer_type}
+								disabled
+								onChange={this.changeFDValue.bind(this,'customer_type')}>
+								{
+									CommData.CustomerType.map(function(itemData,i) {
+										return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+									})
+								}
+								</select>
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right">客戶名稱</label>
+							<div className="col-xs-3">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.customer_name}
+								onChange={this.changeFDValue.bind(this,'customer_name')}
+								maxLength="64"
+								required 
+								disabled />
+							</div>				
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
+							<div className="col-xs-3">
+								<input type="text" 
+								className="form-control"	
+								value={fieldData.meal_id}
+								onChange={this.changeFDValue.bind(this,'meal_id')}
+								required
+								disabled />
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
+							<div className="col-xs-3">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.name}
+								onChange={this.changeFDValue.bind(this,'name')}
+								maxLength="64"
+								required 
+								disabled />
+							</div>	
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
+							<div className="col-xs-3">
+								<input type="tel" 
+								className="form-control"	
+								value={fieldData.tel_1}
+								onChange={this.changeFDValue.bind(this,'tel_1')}
+								maxLength="16"
+								disabled />
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right">連絡電話2</label>
+							<div className="col-xs-3">
+								<input type="tel" 
+								className="form-control"	
+								value={fieldData.tel_2}
+								onChange={this.changeFDValue.bind(this,'tel_2')}
+								maxLength="16"
+								disabled />
+							</div>
+						</div>						
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">身分證字號</label>
+							<div className="col-xs-3">
+								<input type="text" 
+								className="form-control"	
+								value={fieldData.sno}
+								onChange={this.changeFDValue.bind(this,'sno')}
+								maxLength="10"
+								disabled />
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right">生日</label>
+							<div className="col-xs-3">
+								<InputDate id="birthday" 
+									onChange={this.changeFDValue} 
+									field_name="birthday" 
+									value={fieldData.birthday}
+									disabled={true} />
+							</div>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
+								<TwAddress ver={1}
+								onChange={this.changeFDValue}
+								setFDValue={this.setFDValue}
+								zip_value={fieldData.tw_zip_1} 
+								city_value={fieldData.tw_city_1} 
+								country_value={fieldData.tw_country_1}
+								address_value={fieldData.tw_address_1}
+								zip_field="tw_zip_1"
+								city_field="tw_city_1"
+								country_field="tw_country_1"
+								address_field="tw_address_1"
+								disabled={true}/>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">備用地址</label>
+								<TwAddress ver={1}
+								onChange={this.changeFDValue}
+								setFDValue={this.setFDValue}
+								zip_value={fieldData.tw_zip_2} 
+								city_value={fieldData.tw_city_2} 
+								country_value={fieldData.tw_country_2}
+								address_value={fieldData.tw_address_2}
+								zip_field="tw_zip_2"
+								city_field="tw_city_2"
+								country_field="tw_country_2"
+								address_field="tw_address_2"
+								disabled={true}/>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">生產備註</label>
+							<div className="col-xs-8">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.born_memo}
+								onChange={this.changeFDValue.bind(this,'born_memo')}
+								maxLength="256"
+								disabled/>
+							</div>
+						</div>
+
+						<div className="form-action">
+							{save_out_html} { }
+							<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectCustomerBorn}><i className="fa-arrow-left"></i> 回前頁</button>
+						</div>
+				</form>
+				<hr />
+				{/* ---是否結案按鈕start--- */}
+				<div className="row">
+					<div className="col-xs-6">
+						<div className="card">
+							<div className="card-header"><i className="fa-file-text-o"></i> 訂單狀態【{fieldData.is_close?<strong>已結案</strong>:<strong className="text-danger">未結案</strong>}】</div>
+							<div className="card-block">
+								{close_out_html}
+								<small className="text-muted">結案後，無法新增、修改及刪除產品明細</small>
+							</div>
+						</div>
+					</div>
+					<div className="col-xs-6">
+						<div className="card">
+							<div className="card-header"><i className="fa-dollar"></i> 帳務狀態【{fieldData.is_receipt?<strong>已轉應收帳款</strong>:<strong className="text-danger">未轉應收帳款</strong>}】</div>
+							<div className="card-block">
+								{receipt_out_html}
+								<small className="text-muted">未轉應收帳款前不可結案</small>
+							</div>
+						</div>
+					</div>
+				</div>
+				{/* ---是否結案按鈕end--- */}
+				<hr />
+				{/*---產品明細---*/}
+				{detail_out_html}
+
+			</div></ModalProductSelect>
+                
+            );
+        }
+
         outHtml = (
             <div>
+            {modify_html}
 				<h3 className="h3">{this.props.Caption}</h3>
 				<form onSubmit={this.handleSearch}>
 
@@ -3727,15 +3982,17 @@ var GridRowForMealSchedule = React.createClass({
             );
     }
 });
+//總覽紀錄_用餐排程
 var MealScheduleData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
         return {
             gridData: { rows: [], page: 1 },
             fieldData: {},
-            searchData: { title: null },
+            searchData: { title: null ,born_id:this.props.born_id},
             edit_type: 0,
-            checkAll: false
+            checkAll: false,
+            isShowCustomerEdit: false
         };
     },
     getDefaultProps: function () {
@@ -3751,6 +4008,7 @@ var MealScheduleData = React.createClass({
         //} else {//有帶id的話,直接進入修改頁面
         //    this.updateType(gb_main_id);
         //}
+        this.queryGridData(1);
     },
     shouldComponentUpdate: function (nextProps, nextState) {
         return true;
@@ -3837,7 +4095,7 @@ var MealScheduleData = React.createClass({
     updateType: function (id) {
         jqGet(this.props.apiPathName, { id: id })
         .done(function (data, textStatus, jqXHRdata) {
-            this.setState({ edit_type: 2, fieldData: data.data });
+            this.setState({ edit_type: 2, fieldData: data.data,isShowCustomerEdit: true });
         }.bind(this))
         .fail(function (jqXHR, textStatus, errorThrown) {
             showAjaxError(errorThrown);
@@ -3846,7 +4104,7 @@ var MealScheduleData = React.createClass({
     noneType: function () {
         this.gridData(0)
         .done(function (data, textStatus, jqXHRdata) {
-            this.setState({ edit_type: 0, gridData: data });
+            this.setState({ edit_type: 0, gridData: data ,isShowCustomerEdit: false});
         }.bind(this))
         .fail(function (jqXHR, textStatus, errorThrown) {
             showAjaxError(errorThrown);
@@ -3887,8 +4145,46 @@ var MealScheduleData = React.createClass({
     },
     render: function () {
         var searchData = this.state.searchData;
+        var fieldData=this.state.fieldData;
+        var modify_html=null;
+        var MdoaleditCustomerDtail=ReactBootstrap.Modal;
+
+        if(this.state.isShowCustomerEdit){
+            modify_html=(
+            <MdoaleditCustomerDtail bsSize="large" title="用餐排程資料" onRequestHide={this.noneType} >
+            <div>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
+
+                <form className="form form-sm" role="form">              
+                        <div className="form-group row">
+                            <label className="col-xs-1 form-control-label text-xs-right">用餐週期<br />說明</label>
+                            <div className="col-xs-8">
+                                <textarea col="30" row="2" className="form-control"
+                                value={fieldData.meal_memo}
+                                onChange={this.changeFDValue.bind(this,'meal_memo')}
+                                maxLength="256" disabled></textarea>
+                            </div>
+                        </div>
+                </form>
+
+            {/*---用餐排程---*/}
+            <MealCalendar ref="MealCalendar"
+            noneType={this.noneType}
+            product_record_id={fieldData.product_record_id}
+            record_deatil_id={fieldData.record_deatil_id}
+            customer_id={fieldData.customer_id}
+            born_id={fieldData.born_id}
+            day={new Date(moment(fieldData.meal_start).format('YYYY/MM/DD'))}  />
+
+
+            </div>
+            </MdoaleditCustomerDtail>
+            );
+        }
+
         outHtml = (
             <div>
+            {modify_html}
                 <h3 className="h3">{this.props.Caption}</h3>
 
                 <form onSubmit={this.handleSearch}>
@@ -3954,6 +4250,598 @@ var MealScheduleData = React.createClass({
         return outHtml;
     }
 });
+var MealCalendar = React.createClass({ 
+    mixins: [React.addons.LinkedStateMixin], 
+    getInitialState: function() {  
+        return {
+            ChangeRecord_list:[],
+            isHaveRecord:false,
+            RecordDetailData:{},
+            MealCount:{},
+            CalendarGrid:{indexYear:(this.props.day).getFullYear(),
+                          indexMonth:((this.props.day).getMonth()+1),
+                          nextYear:0,
+                          nextMonth:0,
+                          nextNextYear:0,
+                          nextNextMonth:0}
+        };  
+    },
+    componentWillMount:function(){
+        //在輸出前觸發，只執行一次如果您在這個方法中呼叫 setState() ，會發現雖然 render() 再次被觸發了但它還是只執行一次。
+        this.setCalendarGrid();
+    },
+    componentDidMount:function(){
+        this.queryChangeRecord();
+        this.queryRecordDetail();
+    },
+    shouldComponentUpdate:function(nextProps,nextState){
+        return true;
+    },
+    queryChangeRecord:function(){
+        jqGet(gb_approot + 'api/GetAction/GetChangeRecord',{record_deatil_id:this.props.record_deatil_id})
+        .done(function(data, textStatus, jqXHRdata) {
+            this.setState({ChangeRecord_list:data.Data,isHaveRecord:data.isHaveRecord});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });     
+    },
+    queryRecordDetail:function(){
+        jqGet(gb_approot + 'api/GetAction/GetRecordDetail',{record_deatil_id:this.props.record_deatil_id})
+        .done(function(data, textStatus, jqXHRdata) {
+            this.setState({RecordDetailData:data.record_detail,MealCount:data.meal_count});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });     
+    },
+    setCalendarGrid:function(){
+        var CalendarGrid=this.state.CalendarGrid;
+
+        if((CalendarGrid.indexMonth+1)>=13){
+            CalendarGrid.nextYear=CalendarGrid.indexYear+1;
+            CalendarGrid.nextMonth=1;
+        }else{
+            CalendarGrid.nextYear=CalendarGrid.indexYear;
+            CalendarGrid.nextMonth=CalendarGrid.indexMonth+1;
+        }
+        if((CalendarGrid.indexMonth+2)>=13){
+            CalendarGrid.nextNextYear=CalendarGrid.indexYear+1;
+            CalendarGrid.nextNextMonth=(CalendarGrid.indexMonth+2)-12;
+        }else{
+            CalendarGrid.nextNextYear=CalendarGrid.indexYear;
+            CalendarGrid.nextNextMonth=CalendarGrid.indexMonth+2;
+        }
+        // if((CalendarGrid.indexMonth-1)<=1){
+        //     CalendarGrid.prveYear=CalendarGrid.indexYear-1;
+        //     CalendarGrid.prveMonth=12;
+        // }else{
+        //     CalendarGrid.prveYear=CalendarGrid.indexYear;
+        //     CalendarGrid.prveMonth=CalendarGrid.indexMonth-1;
+        // }
+        this.setState({CalendarGrid:CalendarGrid});
+    },
+    setPrve3Month:function(){
+        var CalendarGrid=this.state.CalendarGrid;
+        var prve=1;
+        //上
+        if((CalendarGrid.indexMonth-prve)<=0){
+            CalendarGrid.indexYear=CalendarGrid.indexYear-1;
+            CalendarGrid.indexMonth=(CalendarGrid.indexMonth-prve)+12;
+        }else{
+            CalendarGrid.indexMonth=CalendarGrid.indexMonth-prve;
+        }
+        //中
+        if((CalendarGrid.nextMonth-prve)<=0){
+            CalendarGrid.nextYear=CalendarGrid.nextYear-1;
+            CalendarGrid.nextMonth=(CalendarGrid.nextMonth-prve)+12;
+        }else{
+            CalendarGrid.nextMonth=CalendarGrid.nextMonth-prve;
+        }
+        //下
+        if((CalendarGrid.nextNextMonth-prve)<=0){
+            CalendarGrid.nextNextYear=CalendarGrid.nextNextYear-1;
+            CalendarGrid.nextNextMonth=(CalendarGrid.nextNextMonth-prve)+12;
+        }else{
+            CalendarGrid.nextNextMonth=CalendarGrid.nextNextMonth-prve;
+        }
+        this.setState({CalendarGrid:CalendarGrid});
+    },
+    setNext3Month:function(){
+        var CalendarGrid=this.state.CalendarGrid;
+        var next=1;
+        //上
+        if((CalendarGrid.indexMonth+next)>=13){
+            CalendarGrid.indexYear=CalendarGrid.indexYear+1;
+            CalendarGrid.indexMonth=(CalendarGrid.indexMonth+next)-12;
+        }else{
+            CalendarGrid.indexMonth=CalendarGrid.indexMonth+next;
+        }
+        //中
+        if((CalendarGrid.nextMonth+next)>=13){
+            CalendarGrid.nextYear=CalendarGrid.nextYear+1;
+            CalendarGrid.nextMonth=(CalendarGrid.nextMonth+next)-12;
+        }else{
+            CalendarGrid.nextMonth=CalendarGrid.nextMonth+next;
+        }
+        //下
+        if((CalendarGrid.nextNextMonth+next)>=13){
+            CalendarGrid.nextNextYear=CalendarGrid.nextNextYear+1;
+            CalendarGrid.nextNextMonth=(CalendarGrid.nextNextMonth+next)-12;
+        }else{
+            CalendarGrid.nextNextMonth=CalendarGrid.nextNextMonth+next;
+        }
+        this.setState({CalendarGrid:CalendarGrid}); 
+    },
+    setProductRecord:function(){
+        //返回產品銷售
+        document.location.href = gb_approot + 'Active/Product/ProductRecord?product_record_id=' + this.props.product_record_id;
+    },  
+    render: function() {
+        var outHtml = null;
+        var change_record_html=null;
+        if(this.state.isHaveRecord){
+            change_record_html=(
+                <table className="table table-sm table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style={{"width":"20;"}}>異動時間</th>
+                            <th style={{"width":"15;"}}>用餐日期</th>
+                            <th style={{"width":"20;"}} className="text-xs-center">餐別</th>
+                            <th style={{"width":"20;"}} className="text-xs-center">停／增餐</th>
+                            <th style={{"width":"25;"}} className="text-xs-center">操作人員</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.state.ChangeRecord_list.map(function(itemData,i) {                                           
+                                var product_out_html = 
+                                    <tr key={itemData.change_record_id}>
+                                        <td>{moment(itemData.change_time).format('YYYY/MM/DD HH:mm:ss')}</td>
+                                        <td>{moment(itemData.meal_day).format('YYYY/MM/DD')}</td>
+                                        <td className="text-xs-center"><StateForGrid stateData={CommData.MealType} id={itemData.meal_type} /></td>
+                                        <td className="text-xs-center"><StateForGrid stateData={CommData.ChangeMealType} id={itemData.change_type} /></td>
+                                        <td className="text-xs-center">{itemData.user_name}</td>
+                                    </tr>;
+                                return product_out_html;
+                            }.bind(this))
+                        }
+                    </tbody>
+                </table>
+                );
+        }else{
+            change_record_html=(
+                <div className="alert alert-warning">
+                    <i className="fa-exclamation-triangle"></i> 目前暫無資料
+                </div>
+                );
+        }
+        var RecordDetailData=this.state.RecordDetailData;
+        var MealCount=this.state.MealCount;
+            outHtml =
+            (
+                <div>
+                {/*---用餐排程start---*/}
+                    <hr className="lg" />
+                    <h3 className="h3">用餐排程</h3>
+
+                    <div className="alert alert-warning">
+                        <p> 已停 <strong>{MealCount.pause_meal}</strong> 餐／
+                            已增 <strong>{MealCount.add_meal}</strong> 餐／
+                            應排 <strong>{MealCount.estimate_total}</strong> 餐／
+                            已排 <strong>{MealCount.real_total}</strong> 餐／
+                            已吃 <strong>{MealCount.already_eat}</strong> 餐／
+                            未吃 <strong>{MealCount.not_eat}</strong> 餐</p>
+                        <p><strong className="text-default">黑色：正常</strong>／<strong className="text-danger">紅色：停餐</strong>／<strong className="text-success">綠色：增餐</strong></p>
+                    </div>
+
+                    <p className="text-xs-center">
+                        <span className="btn-group">
+                            <button className="btn btn-sm btn-primary-outline" onClick={this.setPrve3Month.bind(this)}><i className="fa-arrow-left"></i> 前 1 個月</button>
+                            <button className="btn btn-sm btn-primary-outline" onClick={this.setNext3Month.bind(this)}>後 1 個月 <i className="fa-arrow-right"></i></button>
+                        </span>
+                    </p>
+
+                    {/*<Calendar ref="Calendar1"
+                    year={this.state.CalendarGrid.prveYear}
+                    month={this.state.CalendarGrid.prveMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />*/}
+
+                    <Calendar ref="Calendar1"
+                    year={this.state.CalendarGrid.indexYear}
+                    month={this.state.CalendarGrid.indexMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />
+
+                    <Calendar ref="Calendar2"
+                    year={this.state.CalendarGrid.nextYear}
+                    month={this.state.CalendarGrid.nextMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />
+
+                    <Calendar ref="Calendar3"
+                    year={this.state.CalendarGrid.nextNextYear}
+                    month={this.state.CalendarGrid.nextNextMonth}
+                    record_deatil_id={this.props.record_deatil_id}
+                    customer_id={this.props.customer_id}
+                    born_id={this.props.born_id}
+                    queryChangeRecord={this.queryChangeRecord}
+                    queryRecordDetail={this.queryRecordDetail} />
+
+                    <div className="clearfix">
+                        <p className="pull-xs-left"><strong>開始送餐後(含送餐當日) 請勿任意修改用餐排程，如有異動會留下紀錄！</strong></p>
+                        <p className="pull-xs-right text-xs-right">
+                            <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.props.noneType}><i className="fa-arrow-left"></i> 回列表</button> { }
+                            <button type="button" className="btn btn-sm btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
+                        </p>
+                    </div>
+                {/*---用餐排程end---*/}
+                {/*---異動紀錄start---*/}
+                    <hr className="lg" />
+
+                    <h3 className="h3">異動紀錄</h3>
+                        
+                            <ul className="nav nav-tabs" role="tablist">
+                                <li className="nav-item"><a className="nav-link active" href="#changeLog1" role="tab" data-toggle="tab">用餐排程異動紀錄</a></li>
+                                <li className="nav-item"><a className="nav-link" href="#changeLog2" role="tab" data-toggle="tab">訂餐日期及餐數異動紀錄</a></li>
+                            </ul>{/*---tab-nav---*/}
+                            <div className="tab-content">
+                                <div className="tab-pane active" id="changeLog1">
+                                    {change_record_html}
+                                </div>
+                                <div className="tab-pane" id="changeLog2">
+                                    <table className="table table-sm table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th style={{"width":"20%;"}}></th>
+                                                <th style={{"width":"30%;"}}>送餐起日</th>
+                                                <th style={{"width":"30%;"}}>送餐迄日</th>
+                                                <th style={{"width":"20%;"}}>餐數</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className="text-xs-right"><strong>原訂</strong></td>
+                                                <td>{moment(RecordDetailData.meal_start).format('YYYY/MM/DD')}</td>
+                                                <td>{moment(RecordDetailData.meal_end).format('YYYY/MM/DD')}</td>
+                                                <td>早 {RecordDetailData.estimate_breakfast}／
+                                                    午 {RecordDetailData.estimate_lunch}／
+                                                    晚 {RecordDetailData.estimate_dinner}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="text-xs-right"><strong>實訂</strong></td>
+                                                <td>{moment(RecordDetailData.real_estimate_meal_start).format('YYYY/MM/DD')}</td>
+                                                <td>{moment(RecordDetailData.real_estimate_meal_end).format('YYYY/MM/DD')}</td>
+                                                <td>早 {RecordDetailData.real_estimate_breakfast}／
+                                                    午 {RecordDetailData.real_estimate_lunch}／
+                                                    晚 {RecordDetailData.real_estimate_dinner}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="text-xs-right"><strong>實際</strong></td>
+                                                <td>{moment(RecordDetailData.real_meal_start).format('YYYY/MM/DD')}</td>
+                                                <td>{moment(RecordDetailData.real_meal_end).format('YYYY/MM/DD')}</td>
+                                                <td>早 {RecordDetailData.real_breakfast}／
+                                                    午 {RecordDetailData.real_lunch}／
+                                                    晚 {RecordDetailData.real_dinner}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>{/*table-content*/}
+                {/*---異動紀錄end---*/}            
+                </div>
+            );
+
+        return outHtml;
+    }
+});
+//每月日曆
+var Calendar = React.createClass({ 
+    mixins: [React.addons.LinkedStateMixin], 
+    getInitialState: function() {  
+        return {            
+            MonthObj:{weekInfo:[]},
+            Calendar_id:'calendar-'+this.props.month,
+            searchData:{record_deatil_id:this.props.record_deatil_id,month:this.props.month,year:this.props.year},
+            dailyMealData:{ record_deatil_id:this.props.record_deatil_id,
+                            customer_id:this.props.customer_id,
+                            born_id:this.props.born_id,
+                            meal_day:null}
+        };  
+    },
+    getDefaultProps:function(){
+        return{ 
+            year:null,
+            month:null
+        };
+    },
+    componentDidMount:function(){
+        this.queryMonthObj(this.props.year,this.props.month);
+    },
+    shouldComponentUpdate:function(nextProps,nextState){
+        return true;
+    },
+    componentWillReceiveProps:function(nextProps){
+        //當元件收到新的 props 時被執行，這個方法在初始化時並不會被執行。使用的時機是在我們使用 setState() 並且呼叫 render() 之前您可以比對 props，舊的值在 this.props，而新值就從 nextProps 來。
+        if(nextProps.month!=this.props.month){
+            this.queryMonthObj(nextProps.year,nextProps.month);
+        }
+    },
+    queryMonthObj:function(year,month){
+        var searchData=this.state.searchData;
+        searchData.month=month;
+        searchData.year=year;
+
+        jqGet(gb_approot + 'api/GetAction/GetMealCalendar',searchData)
+        .done(function(data, textStatus, jqXHRdata) {
+            this.setState({MonthObj:data,searchData:searchData});
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });     
+    },
+    addDailyMeal:function(meal_day,e){
+        var meal_day_f=new Date(moment(meal_day).format('YYYY/MM/DD'));//轉換日期格式
+        //正常判斷式先隱藏
+        // if(getNowDate()>=meal_day_f)
+        // {//今天 >= 用餐日期 不可編輯
+        //     return;
+        // }
+        if(!confirm('是否增加此天用餐排程?')){
+            return;
+        }
+        this.state.dailyMealData.meal_day=meal_day;
+
+        jqPost(gb_approot + 'api/GetAction/AddDailyMeal',this.state.dailyMealData)
+        .done(function(data, textStatus, jqXHRdata) {
+            if(data.result){
+                this.queryMonthObj(this.props.year,this.props.month);
+                this.props.queryRecordDetail();
+            }
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            //showAjaxError(errorThrown);
+        }); 
+    },
+    render: function() {
+        var outHtml = null;
+        var MonthObj=this.state.MonthObj;
+            outHtml =
+            (
+                <div className="card m-b-1">
+                   <div className="panel">
+                        <div className="card-header panel-heading bg-primary-light">
+                            <span className="panel-title">
+                                <a className="center-block text-xs-left text-secondary" data-toggle="collapse"  href={'#'+this.state.Calendar_id}>
+                                    <i className="fa-calendar"></i> { }
+                                    {MonthObj.year} 年 {MonthObj.month} 月
+                                </a>
+                            </span>
+                        </div>
+                        <div id={this.state.Calendar_id} className="panel-collapse collapse in">
+                            <div className="card-block panel-body">
+                                <table className="table table-sm table-bordered calendar">
+                                    <thead>
+                                        <tr>
+                                            <th className="text-xs-center">日</th>
+                                            <th className="text-xs-center">一</th>
+                                            <th className="text-xs-center">二</th>
+                                            <th className="text-xs-center">三</th>
+                                            <th className="text-xs-center">四</th>
+                                            <th className="text-xs-center">五</th>
+                                            <th className="text-xs-center">六</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            MonthObj.weekInfo.map(function(weekObj,i) {                                                    
+                                                var week_out_html = 
+                                                    <tr key={MonthObj.month+'-'+i}>
+                                                    {
+                                                        weekObj.dayInfo.map(function(dayObj,i) {
+                                                            var day_out_html=null;
+                                                            if(dayObj.isNowMonth && dayObj.isHaveMeal){                                                                                                                                    day_out_html = 
+                                                                day_out_html=
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')}> {/* 非當月的日期 class="disabled" */}
+                                                                    <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
+                                                                    <div className="c-inputs-stacked">
+                                                                        <MealCheckBox
+                                                                        meal_type={1}
+                                                                        meal_day={dayObj.meal_day}
+                                                                        meal_name={'早'}
+                                                                        meal_state={dayObj.breakfast}
+                                                                        daily_meal_id={dayObj.daily_meal_id}
+                                                                        record_deatil_id={dayObj.record_deatil_id}
+                                                                        isMealStart={MonthObj.isMealStart}
+                                                                        queryChangeRecord={this.props.queryChangeRecord}
+                                                                        queryRecordDetail={this.props.queryRecordDetail} />
+
+                                                                        <MealCheckBox
+                                                                        meal_type={2}
+                                                                        meal_day={dayObj.meal_day}
+                                                                        meal_name={'午'}
+                                                                        meal_state={dayObj.lunch}
+                                                                        daily_meal_id={dayObj.daily_meal_id}
+                                                                        record_deatil_id={dayObj.record_deatil_id}
+                                                                        isMealStart={MonthObj.isMealStart}
+                                                                        queryChangeRecord={this.props.queryChangeRecord}
+                                                                        queryRecordDetail={this.props.queryRecordDetail} />
+                                                                        
+                                                                        <MealCheckBox
+                                                                        meal_type={3}
+                                                                        meal_day={dayObj.meal_day}
+                                                                        meal_name={'晚'}
+                                                                        meal_state={dayObj.dinner}
+                                                                        daily_meal_id={dayObj.daily_meal_id}
+                                                                        record_deatil_id={dayObj.record_deatil_id}
+                                                                        isMealStart={MonthObj.isMealStart}
+                                                                        queryChangeRecord={this.props.queryChangeRecord}
+                                                                        queryRecordDetail={this.props.queryRecordDetail} />
+                                                                    </div>
+                                                                </td>;
+                                                            }else if(dayObj.isNowMonth){
+                                                                day_out_html=
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')} onClick={this.addDailyMeal.bind(this,dayObj.meal_day)}>
+                                                                    <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
+                                                                </td>;
+                                                            }else{//非當月日期
+                                                                day_out_html=                                                                                                               day_out_html=
+                                                                <td key={moment(dayObj.meal_day).format('MM-DD')} className="disabled">
+                                                                    <small className="text-muted">{moment(dayObj.meal_day).format('MM/DD')}</small>
+                                                                </td>;
+                                                            }                                    
+
+                                                            return day_out_html;
+                                                        }.bind(this))
+                                                    }
+      
+                                                    </tr>;
+                                                return week_out_html;
+                                            }.bind(this))
+                                        }
+                                        
+                                    </tbody>                                     
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+        return outHtml;
+    }
+});
+
+//用餐checkbox
+var MealCheckBox = React.createClass({ 
+    mixins: [React.addons.LinkedStateMixin], 
+    getInitialState: function() {  
+        return {            
+            MealData:{  daily_meal_id:this.props.daily_meal_id,
+                        record_deatil_id:this.props.record_deatil_id,
+                        meal_type:this.props.meal_type,
+                        meal_state:this.props.meal_state,
+                        isMealStart:this.props.isMealStart},
+            isMealFinished:false //此日期已經用餐完畢
+        };  
+    },
+    getDefaultProps:function(){
+        return{ 
+            today:getNowDate(),
+            Yesterday:addDate(getNowDate(),-1),
+            meal_day:null,
+            meal_state:0,
+            meal_type:0,//判斷 早餐:1 / 午餐:2 / 晚餐:3
+            meal_name:null,
+            daily_meal_id:0,
+            record_deatil_id:0,
+            isMealStart:false
+        };
+    },
+    componentDidMount:function(){
+    },
+    shouldComponentUpdate:function(nextProps,nextState){
+        return true;
+    },
+    changeMealValue:function(e){
+        var obj = this.state.MealData;
+        if(!this.props.isMealStart)
+        {//正式開始用餐前怎麼修改都不會出現異動紀錄
+            if(e.target.checked){
+                obj.meal_state=1;
+            }else{
+                obj.meal_state=-1;
+            }
+        }else{
+            if(!confirm('是否變更此天用餐排程?')){
+                return;
+            }
+            if(e.target.checked){
+                obj.meal_state=2;
+            }else{
+                obj.meal_state=-2;
+            }
+        }
+        jqPost(gb_approot + 'api/GetAction/PostDailyMealState',this.state.MealData)
+        .done(function(data, textStatus, jqXHRdata) {
+            if(data.result){
+                if(this.props.isMealStart){
+                    this.props.queryChangeRecord();
+                }
+                this.props.queryRecordDetail();
+            }
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            //showAjaxError(errorThrown);
+        }); 
+
+
+        this.setState({MealData:obj});
+    },
+    render: function() {
+        var outHtml = null;
+        var name_out_html=null;
+        var MealData=this.state.MealData;
+        var meal_day=new Date(moment(this.props.meal_day).format('YYYY/MM/DD'));
+
+        if(this.props.Yesterday>=meal_day && this.props.meal_state>0)
+        {
+            name_out_html=(<span className="disabled">{this.props.meal_name +'(已吃)'}</span>);
+        }
+        else if(MealData.meal_state==2)
+        {
+            name_out_html=(<span className="text-success">{this.props.meal_name +'(增)'}</span>);
+        }
+        else if(MealData.meal_state==-2)
+        {
+            name_out_html=(<span className="text-danger">{this.props.meal_name +'(停)'}</span>);
+        }
+        else
+        {
+            name_out_html=(<span>{this.props.meal_name}</span>);
+        }
+        if(this.props.Yesterday>=meal_day)
+        {//用餐日期 < 今天 不可編輯
+            this.state.isMealFinished=true;
+        }
+
+        var disabledOutHtml=null;//正常判斷式,日期已結束之排餐不可修改
+            disabledOutHtml =
+            (
+                <label className="c-input c-checkbox">
+                    <input type="checkbox"                             
+                        onChange={this.changeMealValue.bind(this)}
+                        checked={MealData.meal_state > 0}
+                        disabled={this.state.isMealFinished}  />
+                    <span className="c-indicator"></span>
+                    {name_out_html}
+                </label>
+            );
+
+            outHtml =
+            (
+                <label className="c-input c-checkbox">
+                    <input type="checkbox"                             
+                        onChange={this.changeMealValue.bind(this)}
+                        checked={MealData.meal_state > 0}  />
+                    <span className="c-indicator"></span>
+                    {name_out_html}
+                </label>
+            );
+        return outHtml;
+    }
+});
+//總覽紀錄_用餐紀錄
 var DiningDemandData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -4572,6 +5460,7 @@ var DiningDemandData = React.createClass({
         return outHtml;
     }
 });
+//總覽紀錄_電訪排程
 var TelScheduleData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -4853,7 +5742,6 @@ var insert_info_html=null;
 						</div>		
                 );
 			}else if(this.state.edit_type==2){
-                console.log(fieldData);
 				save_out_html=<strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
 				detail_out_html=(
                     <SubFormForTelSch ref="SubFormForTelSch" 
@@ -5066,17 +5954,256 @@ var GridRowForTelRecord = React.createClass({
 			);
     }
 });
+//明細檔編輯
+var SubFormForTelRec = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			gridSubData:[],
+			fieldSubData:{},
+			edit_sub_type:0,//預設皆為新增狀態
+			checkAll:false
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldSubData',
+			gdName:'searchData',
+			apiPathName:gb_approot+'api/DeatilTelRecord'
+		};
+	},
+	componentDidMount:function(){
+		this.queryGridData();
+		this.insertSubType();//一開始載入預設為新增狀態
+	},
+	shouldComponentUpdate:function(nextProps,nextState){
+		return true;
+	},
+	detailHandleSubmit: function(e) {
+		e.preventDefault();
+
+		if(this.state.edit_sub_type==1){
+			jqPost(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
+					//儲存後更新下分list
+					this.queryGridData();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		}		
+		else if(this.state.edit_sub_type==2){
+			jqPut(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
+					//儲存後更新下分list
+					this.queryGridData();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		};
+		return;
+	},
+	detailDeleteSubmit:function(id,e){
+
+		if(!confirm('確定是否刪除?')){
+			return;
+		}
+		jqDelete(this.props.apiPathName + '?ids=' +id ,{})			
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'刪除完成',1);
+				this.queryGridData();
+				this.insertSubType();
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	gridData:function(){
+		var parms = {
+			main_id:this.props.main_id
+		};
+		$.extend(parms, this.state.searchData);
+
+		return jqGet(this.props.apiPathName,parms);
+	},
+	queryGridData:function(){
+		this.gridData()
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({gridSubData:data});
+		}.bind(this))
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			showAjaxError(errorThrown);
+		});
+	},
+	insertSubType:function(){
+		$('textarea').val("");
+		this.setState({edit_sub_type:1,fieldSubData:{
+			schedule_detail_id:this.props.main_id,
+			tel_state:1
+		}});
+	},
+	updateSubType:function(id,e){
+		jqGet(this.props.apiPathName,{id:id})
+		.done(function(data, textStatus, jqXHRdata) {
+			data.data.tel_datetime=moment(data.data.tel_datetime).format('YYYY/MM/DD hh:mm:ss');
+			this.setState({edit_sub_type:2,fieldSubData:data.data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	changeFDValue:function(name,e){
+		this.setInputValue(this.props.fdName,name,e);
+	},
+	setInputValue:function(collentName,name,e){
+
+		var obj = this.state[collentName];
+		if(e.target.value=='true'){
+			obj[name] = true;
+		}else if(e.target.value=='false'){
+			obj[name] = false;
+		}else{
+			obj[name] = e.target.value;
+		}
+		this.setState({fieldSubData:obj});
+	},
+	render: function() {
+		var outHtml = null;
+		var fieldSubData = this.state.fieldSubData;//明細檔資料
+
+			outHtml =
+			(
+				<div>
+			{/*---產品明細編輯start---*/}
+					<h3 className="h3">電訪明細<small className="sub"><i className="fa-angle-double-right"></i> 新增電訪紀錄</small></h3>
+					<form className="form form-sm" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">電訪時間</label>
+							<div className="col-xs-4">
+								<input type="datetime" 							
+								className="form-control"	
+								value={fieldSubData.tel_datetime}
+								onChange={this.changeFDValue.bind(this,'tel_datetime')}
+								maxLength="30"
+								required disabled　/>
+							</div>
+							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 電訪狀態</label>
+							<div className="col-xs-4">
+								<select className="form-control" 
+								value={fieldSubData.tel_state}
+								onChange={this.changeFDValue.bind(this,'tel_state')}>
+								{
+									CommData.TelState.map(function(itemData,i) {
+										return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+									})
+								}
+								</select>
+							</div>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">電訪內容<br/>(備註)</label>
+							<div className="col-xs-8">
+								<textarea col="30" rows="5" className="form-control"
+								value={fieldSubData.memo}
+								onChange={this.changeFDValue.bind(this,'memo')}
+								maxLength="256"></textarea>
+							</div>
+						</div>
+						<div className="form-action">
+							<button className="btn btn-sm btn-primary col-xs-offset-1"
+							type="submit" form="form2">
+								<i className="fa-check"></i> 存檔確認
+							</button>
+						</div>
+					</form>
+				{/*---產品明細編輯end---*/}
+
+					<hr className="lg" />
+
+				{/*---產品明細列表start---*/}
+					<h3 className="h3">電訪紀錄</h3>
+					<table className="table table-sm table-bordered table-striped">
+						<thead>
+							<tr>
+								{/*<th className="col-xs-1 text-center">編輯</th>*/}
+								<th style={{"width":"20%;"}}>時間</th>
+								<th style={{"width":"20%;"}}>原因</th>
+								<th style={{"width":"20%;"}}>內容</th>
+								<th style={{"width":"20%;"}}>狀態</th>
+								<th style={{"width":"20%;"}}>人員</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								this.state.gridSubData.map(function(itemData,i) {
+									var sub_out_html = 
+										<tr key={itemData.deatil_tel_record_id}>
+											{/*<td className="text-center">
+												<button className="btn-link" type="button" onClick={this.updateSubType.bind(this,itemData.deatil_tel_record_id)}><i className="fa-pencil"></i></button>
+												<button className="btn-link text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.deatil_tel_record_id)}><i className="fa-trash"></i></button>
+											</td>*/}
+											<td><strong>{moment(itemData.tel_datetime).format('YYYY/MM/DD hh:mm:ss')}</strong></td>
+											<td><StateForGrid stateData={CommData.TelReasonByDetail} id={this.props.tel_reason} /></td>
+											<td>{itemData.memo}</td>
+											<td><StateForGrid stateData={CommData.TelState} id={itemData.tel_state} /></td>
+											<td>{itemData.user_name}</td>			
+										</tr>;
+										return sub_out_html;
+								}.bind(this))
+							}
+						</tbody>
+					</table>
+				{/*---產品明細列表end---*/}
+				</div>
+			);
+
+		return outHtml;
+	}
+});
+//總覽紀錄_電訪紀錄
 var TelRecordData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
         return {
             gridData: { rows: [], page: 1 },
             fieldData: {},
-            searchData: { title: null, start_date: moment(Date()).format('YYYY/MM/DD'), end_date: moment(Date()).format('YYYY/MM/DD') },
+            searchData: { title: null, 
+                start_date:null, 
+                end_date: null,
+                born_id:this.props.born_id },
             searchBornData: { word: null, is_close: null },
             edit_type: 0,
             checkAll: false,
             isShowCustomerBornSelect: false,
+            isShowCustomerSelect:false,
             born_list: []
         };
     },
@@ -5216,12 +6343,15 @@ var TelRecordData = React.createClass({
 		});
     },
     insertType: function () {
-        this.setState({ edit_type: 1, fieldData: { tel_reason: 1, is_detailInsert: true } });
+        this.setState({ edit_type: 1, fieldData: { tel_reason: 1,
+             is_detailInsert: true ,
+             born_id:this.props.born_id,
+            customer_id:this.props.mom_id},isShowCustomerSelect:true });
     },
     updateType: function (id) {
         jqGet(this.props.apiPathName, { id: id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 2, fieldData: data.data });
+		    this.setState({ edit_type: 2, fieldData: data.data,isShowCustomerSelect:true });
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -5276,10 +6406,10 @@ var TelRecordData = React.createClass({
     },
     showSelectCustomerBorn: function () {
         this.queryAllCustomerBorn();
-        this.setState({ isShowCustomerBornSelect: true });
+        this.setState({ isShowCustomerBornSelect: true,isShowCustomerSelect:true });
     },
     closeSelectCustomerBorn: function () {
-        this.setState({ isShowCustomerBornSelect: false });
+        this.setState({ isShowCustomerBornSelect: false,isShowCustomerSelect:false });
     },
     selectCustomerBorn: function (customer_id, born_id, meal_id) {
         jqGet(gb_approot + 'api/GetAction/GetCustomerAndBorn', { born_id: born_id, customer_id: customer_id })
@@ -5309,7 +6439,7 @@ var TelRecordData = React.createClass({
 		    fieldData.born_type = data.getBorn.born_type;
 		    fieldData.born_day = data.getBorn.born_day;
 
-		    this.setState({ isShowCustomerBornSelect: false, fieldData: fieldData });
+		    this.setState({ isShowCustomerBornSelect: false, fieldData: fieldData,isShowCustomerSelect:false });
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    //showAjaxError(errorThrown);
@@ -5323,11 +6453,316 @@ var TelRecordData = React.createClass({
     },
     render: function () {
         var searchData = this.state.searchData;
+        var fieldData=this.state.fieldData; 
+        var insert_html=null;
+        var MdoalCustomerBornSelect=ReactBootstrap.Modal;
+        var MdoalCustomerSelect=ReactBootstrap.Modal;
+        var save_out_html=null;
+			var detail_out_html=null;
+            var born_select_out_html=null;//存放選取用餐編號的視窗內容
+			if(this.state.isShowCustomerBornSelect){
+				born_select_out_html = 					
+					<MdoalCustomerBornSelect bsSize="large"  title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
+							<div className="modal-body">
+								<div className="table-header">
+							        <div className="table-filter">
+							            <div className="form-inline form-sm">
+								            <label className="text-sm">客戶名稱/餐編/媽媽姓名</label> { }
+								            <input type="text" className="form-control"
+									            value={searchBornData.word}
+									            onChange={this.changeGDBornValue.bind(this,'word')}
+									            placeholder="請擇一填寫" />
+								            <label className="text-sm">客戶分類</label> { }
+								            <select className="form-control" 
+									            value={searchBornData.customer_type}
+									            onChange={this.changeGDBornValue.bind(this,'customer_type')}>
+									            <option value="">全部</option>
+									            {
+									            	CommData.CustomerType.map(function(itemData,i) {
+									            		return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+									            	})
+									            }
+								            </select> { }							                
+								            <label className="text-sm">正在用餐</label> { }
+								            <select className="form-control"
+									            value={searchBornData.is_meal}
+									            onChange={this.changeGDBornValue.bind(this,'is_meal')}>
+									            <option value="">全部</option>
+									            <option value="true">是</option>
+									            <option value="false">否</option>
+								            </select>
+							            </div>
+							        </div>
+							    </div>
+								<table className="table table-sm table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style={{"width":"7%;"}} className="text-xs-center">選擇</th>
+											<th style={{"width":"18%;"}}>客戶姓名</th>
+											<th style={{"width":"10%;"}}>客戶類別</th>
+											<th style={{"width":"10%;"}}>用餐編號</th>
+											<th style={{"width":"17%;"}}>媽媽姓名</th>										
+											<th style={{"width":"13%;"}}>電話1</th>
+											<th style={{"width":"10%;"}}>預產期</th>
+											<th style={{"width":"15%;"}}>備註</th>
+										</tr>
+									</thead>
+									<tbody>
+										{
+											this.state.born_list.map(function(itemData,i) {
+												
+												var born_out_html = 
+													<tr key={itemData.born_id}>
+														<td className="text-xs-center">
+															<label className="c-input c-checkbox">
+										                        <input type="checkbox" onClick={this.selectCustomerBorn.bind(this,itemData.customer_id,itemData.born_id,itemData.meal_id)} />
+										                        <span className="c-indicator"></span>
+										                    </label>
+														</td>
+														<td>{itemData.customer_name}</td>
+														<td><StateForGrid stateData={CommData.CustomerType} id={itemData.customer_type} /></td>
+														<td>{itemData.meal_id}</td>
+														<td>{itemData.mom_name}</td>
+														<td>{itemData.tel_1}</td>
+														<td>{moment(itemData.expected_born_day).format('YYYY/MM/DD')}</td>
+														<td>{itemData.memo}</td>
+													</tr>;
+												return born_out_html;
+											}.bind(this))
+										}
+									</tbody>
+								</table>
+							</div>
+							<div className="modal-footer">
+								<button className="btn btn-sm btn-blue-grey" onClick={this.closeSelectCustomerBorn}><i className="fa-times"></i> 關閉</button>
+							</div>
+					</MdoalCustomerBornSelect>;
+			}
+			if(this.state.edit_type==1){
+				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
+			}else{
+				save_out_html=<strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
+				detail_out_html=
+				<SubFormForTelRec ref="SubFormForTelRec" 
+				main_id={fieldData.schedule_detail_id}
+				tel_reason={fieldData.tel_reason} />;
+			}
+        if(this.state.isShowCustomerSelect){
+            insert_html=(
+            <MdoalCustomerSelect bsSize="large" title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
+            <div>
+				{born_select_out_html}
+				<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
+
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
+						<div className="col-xs-3">
+							<div className="input-group input-group-sm">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.customer_name}
+								onChange={this.changeFDValue.bind(this,'customer_name')}
+								maxLength="64"
+								disabled />
+								<span className="input-group-btn">
+									<a className="btn btn-success"
+									onClick={this.showSelectCustomerBorn}
+									disabled={this.state.edit_type==2} ><i className="fa-plus"></i></a>
+								</span>
+							</div>
+						</div>
+						<small className="text-muted col-xs-6">請按 <i className="fa-plus"></i> 選取</small>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">電訪日期</label>
+						<div className="col-xs-3">
+							<InputDate id="tel_day" 
+								onChange={this.changeFDValue} 
+								field_name="tel_day" 
+								value={fieldData.tel_day}
+								required={true}
+								disabled={true} />
+						</div>
+						<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 電訪原因</label>
+						<div className="col-xs-3">
+			                <select className="form-control"
+			                value={fieldData.tel_reason}
+			                onChange={this.changeFDValue.bind(this,'tel_reason')}
+			                disabled={this.state.edit_type==2}>
+					            {
+									CommData.TelReasonByDetail.map(function(itemData,i) {
+									return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+									})
+								}
+			                </select>
+						</div>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">客戶類別</label>
+						<div className="col-xs-3">
+							<select className="form-control" 
+							value={fieldData.customer_type}
+							disabled
+							onChange={this.changeFDValue.bind(this,'customer_type')}>
+							{
+								CommData.CustomerType.map(function(itemData,i) {
+									return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+								})
+							}
+							</select>
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">客戶名稱</label>
+						<div className="col-xs-3">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.customer_name}
+							onChange={this.changeFDValue.bind(this,'customer_name')}
+							maxLength="64"
+							required 
+							disabled />
+						</div>				
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
+						<div className="col-xs-3">
+							<input type="text" 
+							className="form-control"	
+							value={fieldData.meal_id}
+							onChange={this.changeFDValue.bind(this,'meal_id')}
+							required
+							disabled />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
+						<div className="col-xs-3">
+							<input type="text" 							
+							className="form-control"	
+							value={fieldData.mom_name}
+							onChange={this.changeFDValue.bind(this,'mom_name')}
+							maxLength="64"
+							required 
+							disabled />
+						</div>	
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">生產方式</label>
+						<div className="col-xs-3">
+							<select className="form-control" 
+							value={fieldData.born_type}
+							onChange={this.changeFDValue.bind(this,'born_type')}
+							disabled>
+							{
+								CommData.BornType.map(function(itemData,i) {
+								return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+								})
+							}
+							</select>
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">生產日期</label>
+						<div className="col-xs-3">
+							<InputDate id="born_day" 
+								onChange={this.changeFDValue} 
+								field_name="born_day" 
+								value={fieldData.born_day}
+								required={true}
+								disabled={true} />
+						</div>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
+						<div className="col-xs-3">
+							<input type="tel" 
+							className="form-control"	
+							value={fieldData.tel_1}
+							onChange={this.changeFDValue.bind(this,'tel_1')}
+							maxLength="16"
+							disabled />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">連絡電話2</label>
+						<div className="col-xs-3">
+							<input type="tel" 
+							className="form-control"	
+							value={fieldData.tel_2}
+							onChange={this.changeFDValue.bind(this,'tel_2')}
+							maxLength="16"
+							disabled />
+						</div>
+					</div>						
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">身分證字號</label>
+						<div className="col-xs-3">
+							<input type="text" 
+							className="form-control"	
+							value={fieldData.sno}
+							onChange={this.changeFDValue.bind(this,'sno')}
+							maxLength="10"
+							disabled />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">生日</label>
+						<div className="col-xs-3">
+							<InputDate id="birthday" 
+								onChange={this.changeFDValue} 
+								field_name="birthday" 
+								value={fieldData.birthday}
+								disabled={true} />
+						</div>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
+							<TwAddress ver={1}
+							onChange={this.changeFDValue}
+							setFDValue={this.setFDValue}
+							zip_value={fieldData.tw_zip_1} 
+							city_value={fieldData.tw_city_1} 
+							country_value={fieldData.tw_country_1}
+							address_value={fieldData.tw_address_1}
+							zip_field="tw_zip_1"
+							city_field="tw_city_1"
+							country_field="tw_country_1"
+							address_field="tw_address_1"
+							disabled={true}/>
+					</div>
+
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">備用地址</label>
+							<TwAddress ver={1}
+							onChange={this.changeFDValue}
+							setFDValue={this.setFDValue}
+							zip_value={fieldData.tw_zip_2} 
+							city_value={fieldData.tw_city_2} 
+							country_value={fieldData.tw_country_2}
+							address_value={fieldData.tw_address_2}
+							zip_field="tw_zip_2"
+							city_field="tw_city_2"
+							country_field="tw_country_2"
+							address_field="tw_address_2"
+							disabled={true}/>
+					</div>
+					<div className="form-action">
+			            {save_out_html} { }
+			            <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectCustomerBorn}><i className="fa-times"></i> 回前頁</button>
+			        </div>
+				</form>
+
+				<hr className="lg" />
+
+				
+				{/*---產品明細---*/}
+				{detail_out_html}
+
+
+			</div></MdoalCustomerSelect>
+            );
+        }
         outHtml = (
             <div>
                  <h3 className="h3">{this.props.Caption}</h3>
 
 				<form onSubmit={this.handleSearch}>
+            {insert_html}
 
 						<div className="table-header">
 							<div className="table-filter">
@@ -5434,19 +6869,22 @@ var GridRowForGift = React.createClass({
 			);
     }
 });
+//總覽紀錄_禮品贈送
 var GiftRecordData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
         return {
             gridData: { rows: [], page: 1 },
             fieldData: {},
-            searchData: { title: null },
-            searchRecordData: { is_close: false },
+            searchData: { title: null,born_id:this.props.born_id },
+            searchRecordData: { is_close: false,born_id:this.props.born_id },
             edit_type: 0,
             checkAll: false,
             activity_list: [],
             isShowRecordSelect: false,
-            record_list: []
+            isShowInsertSelect:false,
+            record_list: [], 
+            searchBornData:{}
         };
     },
     getDefaultProps: function () {
@@ -5585,12 +7023,12 @@ var GiftRecordData = React.createClass({
     },
     insertType: function () {
         var defaultA = this.state.activity_list;
-        this.setState({ edit_type: 1, fieldData: { receive_state: 1, activity_id: defaultA[0].val, product_record_id: null } });
+        this.setState({edit_type:1,fieldData:{receive_state:1,activity_id:defaultA[0].val,product_record_id:null},isShowInsertSelect:true});
     },
     updateType: function (id) {
         jqGet(this.props.apiPathName, { id: id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 2, fieldData: data.data });
+		    this.setState({ edit_type: 2, fieldData: data.data ,isShowInsertSelect:true});
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -5652,10 +7090,10 @@ var GiftRecordData = React.createClass({
     },
     showSelectRecord: function () {
         this.queryAllRecord();
-        this.setState({ isShowRecordSelect: true });
+        this.setState({ isShowRecordSelect: true,isShowInsertSelect:true });
     },
     closeSelectRecord: function () {
-        this.setState({ isShowRecordSelect: false });
+        this.setState({ isShowRecordSelect: false,isShowInsertSelect:false });
     },
     selectRecord: function (product_record_id, customer_id, born_id) {
         var fieldData = this.state.fieldData;//選取後變更customer_id,born_id,mealid
@@ -5696,8 +7134,311 @@ var GiftRecordData = React.createClass({
     },
     render: function () {
         var searchData = this.state.searchData;
+        var fieldData = this.state.fieldData;
+        var searchBornData=this.state.searchBornData;
+        var searchRecordData =this.state.searchRecordData ;
+        var insert_html=null;
+        var MdoalCustomerSelect=ReactBootstrap.Modal;
+        var MdoalRecordSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
+        var record_select_out_html=null;//存放選取用餐編號的視窗內容
+        if(this.state.isShowRecordSelect){
+				record_select_out_html = 					
+					<MdoalRecordSelect bsSize="medium" title="請選擇產品銷售紀錄" onRequestHide={this.closeSelectRecord}>
+							<div className="modal-body">
+								<div className="alert alert-warning"><p>此列表僅列出<strong className="text-danger">未有過禮品贈送紀錄</strong>的客戶生產紀錄之銷售。</p></div>
+							    <div className="table-header">
+							        <div className="table-filter">
+							            <div className="form-inline form-sm">
+							                <div className="form-group">
+							                    <label className="text-sm">銷售單號/客戶名稱/媽媽姓名/身分證號</label> { }
+							                    <input type="text" className="form-control"
+							                    value={searchRecordData.word}
+												onChange={this.changeGDRecordValue.bind(this,'word')}
+										 		placeholder="請擇一填寫" />
+							                </div> { }
+							                <div className="form-group">
+							                    <label className="text-sm">是否結案</label> { }
+							                    <select className="form-control"
+							                    value={searchRecordData.is_close}
+												onChange={this.changeGDRecordValue.bind(this,'is_close')}>
+							                        <option value="">全部</option>
+							                        <option value="true">已結案</option>
+							                        <option value="false">未結案</option>
+							                    </select>
+							                </div> { }
+							                <div className="form-group">
+							                    <label className="text-sm">訂單日期</label> { }
+													<InputDate id="start_date" 
+													onChange={this.changeGDRecordValue} 
+													field_name="start_date" 
+													value={searchRecordData.start_date} /> { }
+												<label className="text-sm">~</label> { }
+													<InputDate id="end_date" 
+													onChange={this.changeGDRecordValue} 
+													field_name="end_date" 
+													value={searchRecordData.end_date} />
+							                </div> { }
+							                <button className="btn btn-secondary btn-sm" onClick={this.queryAllRecord.bind(this)}><i className="fa-search"></i> 搜尋</button>
+							            </div>
+							        </div>
+							    </div>
+								<table className="table table-sm table-bordered table-striped">
+									<thead>
+										<tr>
+											<th style={{"width":"10%;"}} className="text-xs-center">選擇</th>
+					            			<th style={{"width":"15%;"}}>銷售單號</th>
+					            			<th style={{"width":"15%;"}}>訂單日期</th>
+					            			<th style={{"width":"20%;"}}>客戶名稱</th>
+					            			<th style={{"width":"15%;"}}>媽媽姓名</th>
+					            			<th style={{"width":"15%;"}}>身分證號</th>
+					            			<th style={{"width":"10%;"}}>結案?</th>
+										</tr>
+									</thead>
+									<tbody>
+										{
+											this.state.record_list.map(function(itemData,i) {
+												
+												var born_out_html = 
+													<tr key={itemData.product_record_id}>
+														<td className="text-xs-center">
+															<label className="c-input c-checkbox">
+																<input type="checkbox" onClick={this.selectRecord.bind(this,itemData.product_record_id,itemData.customer_id,itemData.born_id)} />
+																<span className="c-indicator"></span>
+															</label>
+														</td>
+														<td>{itemData.record_sn}</td>
+														<td>{moment(itemData.record_day).format('YYYY/MM/DD')}</td>
+														<td>{itemData.customer_name}</td>
+														<td>{itemData.mom_name}</td>
+														<td>{itemData.sno}</td>
+														<td>{itemData.is_close? <span className="text-muted">結案</span>:<span className="text-danger">未結案</span>}</td>			
+													</tr>;
+												return born_out_html;
+											}.bind(this))
+										}
+									</tbody>
+								</table>
+							</div>
+							<div className="modal-footer">
+								<button className="btn btn-sm btn-blue-grey" onClick={this.closeSelectRecord}><i className="fa-times"></i> { } 關閉</button>
+							</div>
+					</MdoalRecordSelect>;
+			}
+        if(this.state.isShowInsertSelect){
+            insert_html=(
+                <MdoalCustomerSelect>
+                <div>
+				{record_select_out_html}
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
+
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 銷售單號</label>
+						<div className="col-xs-3">
+							<div className="input-group input-group-sm">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldData.record_sn}
+								onChange={this.changeFDValue.bind(this,'record_sn')}
+								maxLength="128"
+								required disabled />
+								<span className="input-group-btn">
+									<a className="btn btn-success" data-toggle="modal" onClick={this.showSelectRecord} disabled={this.state.edit_type==2} ><i className="fa-plus"></i></a>
+								</span>
+							</div>
+						</div>
+						<small className="text-muted col-xs-6">請按 <i className="fa-plus"></i> 選取</small>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">訂單日期</label>
+						<div className="col-xs-3">
+							<InputDate id="record_day" 
+								onChange={this.changeFDValue} 
+								field_name="record_day" 
+								value={fieldData.record_day}
+								disabled={true} />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">訂購總金額</label>
+						<div className="col-xs-4">
+							<div className="input-group input-group-sm">
+								<input type="number" 
+									className="form-control"	
+									value={fieldData.totle_price}
+									onChange={this.changeFDValue.bind(this,'totle_price')}
+									disabled />
+								<span className="input-group-addon">元</span>
+							</div>
+						</div>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">客戶姓名</label>
+						<div className="col-xs-3">
+							<input type="text" 
+							className="form-control"	
+							value={fieldData.customer_name}
+							onChange={this.changeFDValue.bind(this,'customer_name')}
+							maxLength="64"
+							disabled />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
+						<div className="col-xs-4">
+							<input type="text" 
+							className="form-control"	
+							value={fieldData.name}
+							onChange={this.changeFDValue.bind(this,'name')}
+							maxLength="64"
+							disabled />
+						</div>
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">聯絡電話1</label>
+						<div className="col-xs-3">
+							<input type="tel"
+                                   className="form-control"
+                                   value={fieldData.tel_1}
+                                   onChange={this.changeFDValue.bind(this,'tel_1')}
+                                   maxLength="16"
+                                   disabled />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">聯絡電話2</label>
+						<div className="col-xs-4">
+							<input type="tel"
+                                   className="form-control"
+                                   value={fieldData.tel_2}
+                                   onChange={this.changeFDValue.bind(this,'tel_2')}
+                                   maxLength="16"
+                                   disabled />
+						</div>
+					</div>
+
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">身分證號</label>
+						<div className="col-xs-3">
+							<input type="text"
+                                   className="form-control"
+                                   value={fieldData.sno}
+                                   onChange={this.changeFDValue.bind(this,'sno')}
+                                   maxLength="10"
+                                   disabled />
+						</div>
+						<label className="col-xs-1 form-control-label text-xs-right">生日</label>
+						<div className="col-xs-4">
+							<span className="has-feedback">
+								<InputDate id="birthday"
+                                           onChange={this.changeFDValue}
+                                           field_name="birthday"
+                                           value={fieldData.birthday}
+                                           disabled={true} />
+							</span>
+						</div>
+					</div>
+
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
+						<TwAddress ver={1}
+                                   onChange={this.changeFDValue}
+                                   setFDValue={this.setFDValue}
+                                   zip_value={fieldData.tw_zip_1}
+                                   city_value={fieldData.tw_city_1}
+                                   country_value={fieldData.tw_country_1}
+                                   address_value={fieldData.tw_address_1}
+                                   zip_field="tw_zip_1"
+                                   city_field="tw_city_1"
+                                   country_field="tw_country_1"
+                                   address_field="tw_address_1"
+                                   disabled={true} />
+					</div>
+
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">備用地址</label>
+						<TwAddress ver={1}
+                                   onChange={this.changeFDValue}
+                                   setFDValue={this.setFDValue}
+                                   zip_value={fieldData.tw_zip_2}
+                                   city_value={fieldData.tw_city_2}
+                                   country_value={fieldData.tw_country_2}
+                                   address_value={fieldData.tw_address_2}
+                                   zip_field="tw_zip_2"
+                                   city_field="tw_city_2"
+                                   country_field="tw_country_2"
+                                   address_field="tw_address_2"
+                                   disabled={true} />
+					</div>
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 參與活動</label>
+						<div className="col-xs-8">
+							<select className="form-control" 
+							value={fieldData.activity_id}
+							onChange={this.changeFDValue.bind(this,'activity_id')}>
+							{
+								this.state.activity_list.map(function(itemData,i) {
+									return <option key={itemData.val} value={itemData.val}>{itemData.Lname}</option>;
+								})
+							}
+							</select>
+						</div>
+					</div>
+
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 領取狀態</label>
+						<div className="col-xs-8">
+								<label className="c-input c-radio">
+									<input type="radio" 
+											name="receive_state"
+											value={1}
+											checked={fieldData.receive_state==1} 
+											onChange={this.changeFDValue.bind(this,'receive_state')}
+									/>
+									<span className="c-indicator"></span>
+									<span className="text-sm">未領取</span>
+								</label>
+								<label className="c-input c-radio">
+									<input type="radio" 
+											name="receive_state"
+											value={2}
+											checked={fieldData.receive_state==2} 
+											onChange={this.changeFDValue.bind(this,'receive_state')}
+											/>
+									<span className="c-indicator"></span>
+									<span className="text-sm">領取部分</span>
+								</label>
+								<label className="c-input c-radio">
+									<input type="radio" 
+											name="receive_state"
+											value={3}
+											checked={fieldData.receive_state==3} 
+											onChange={this.changeFDValue.bind(this,'receive_state')}
+											/>
+									<span className="c-indicator"></span>
+									<span className="text-sm">已領完</span>
+								</label>
+						</div>
+					</div>
+
+					<div className="form-group row">
+						<label className="col-xs-1 form-control-label text-xs-right">備註</label>
+						<div className="col-xs-8">
+							<textarea col="30" rows="3" className="form-control"
+							value={fieldData.memo}
+							onChange={this.changeFDValue.bind(this,'memo')}
+							maxLength="256"></textarea>
+						</div>
+					</div>
+
+					<div className="form-action">
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
+						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectRecord}><i className="fa-times"></i> 回前頁</button>
+					</div>
+
+				</form>
+			</div>
+                </MdoalCustomerSelect>
+            );
+        }
         outHtml = (
             <div>
+            {insert_html}
                  <h3 className="h3">{this.props.Caption}</h3>
 
 				<form onSubmit={this.handleSearch}>
@@ -5793,15 +7534,17 @@ var GiftRecordData = React.createClass({
 			);
     }
 });
+//總覽紀錄_帳務紀錄
 var AccountRecordData = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
         return {
             gridData: { rows: [], page: 1 },
             fieldData: {},
-            searchData: { title: null },
+            searchData: { title: null ,customer_id:this.props.mom_id},
             edit_type: 0,
-            checkAll: false
+            checkAll: false,
+            isShowCustomerEdit: false,
         };
     },
     getDefaultProps: function () {
@@ -5817,6 +7560,7 @@ var AccountRecordData = React.createClass({
         //} else {//有帶id的話,直接進入修改頁面
         //    this.updateType(gb_main_id);
         //}
+        this.queryGridData(1);
     },
     shouldComponentUpdate: function (nextProps, nextState) {
         return true;
@@ -5945,7 +7689,7 @@ var AccountRecordData = React.createClass({
     updateType: function (id) {
         jqGet(this.props.apiPathName, { id: id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 2, fieldData: data.data });
+		    this.setState({ edit_type: 2, fieldData: data.data ,isShowCustomerEdit: true});
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -5954,7 +7698,7 @@ var AccountRecordData = React.createClass({
     noneType: function () {
         this.gridData(0)
 		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ edit_type: 0, gridData: data });
+		    this.setState({ edit_type: 0, gridData: data ,isShowCustomerEdit: false});
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -5991,8 +7735,103 @@ var AccountRecordData = React.createClass({
     },
     render: function () {
         var searchData = this.state.searchData;
+        var fieldData=this.sat
+        var modify_html=null;
+        var MdoalCustomerSelect=ReactBootstrap.Modal;var fieldData = this.state.fieldData;
+
+			var detail_out_html=null;
+			if(this.state.edit_type==2){
+				detail_out_html=
+				<SubFormForAccountPay ref="SubFormForAccountPay" 
+				main_id={fieldData.accounts_payable_id}
+				customer_id={fieldData.customer_id}
+				product_record_id={fieldData.product_record_id}
+				noneType={this.noneType}
+				main_total={fieldData.estimate_payable} />;
+			}
+        if(this.state.isShowCustomerEdit){
+            modify_html=(
+                <MdoalCustomerSelect>
+                <div>
+				<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
+
+				<form className="form form-sm" role="form" onSubmit={this.handleSubmit}>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">客戶姓名</label>
+							<div className="col-xs-4">
+								<input type="text"
+                                className="form-control"
+                                value={fieldData.customer_name}
+                                onChange={this.changeFDValue.bind(this,'customer_name')}
+                                maxLength="64"
+                                disabled />
+							</div>
+							<label className="col-xs-2 form-control-label text-xs-right">來源銷售單號</label>
+							<div className="col-xs-4">
+								<input type="text"
+                                className="form-control"
+                                value={fieldData.record_sn}
+                                onChange={this.changeFDValue.bind(this,'record_sn')}
+                                maxLength="64"
+                                disabled />
+							</div>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
+							<div className="col-xs-4">
+								<input type="tel"
+                                className="form-control"
+                                value={fieldData.tel_1}
+                                onChange={this.changeFDValue.bind(this,'tel_1')}
+                                maxLength="16"
+                                disabled />
+							</div>
+							<label className="col-xs-2 form-control-label text-xs-right">連絡電話2</label>
+							<div className="col-xs-4">
+								<input type="tel"
+                                className="form-control"
+                                value={fieldData.tel_2}
+                                onChange={this.changeFDValue.bind(this,'tel_2')}
+                                maxLength="16"
+                                disabled />
+							</div>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">預計應收</label>
+							<div className="col-xs-4">
+								<div className="input-group input-group-sm">
+									<input type="number"
+	                                className="form-control"
+	                                value={fieldData.estimate_payable}
+	                                onChange={this.changeFDValue.bind(this,'estimate_payable')}
+	                                disabled />
+	                                <span className="input-group-addon">元</span>
+								</div>
+							</div>
+							<label className="col-xs-2 form-control-label text-xs-right">試算應收</label>
+							<div className="col-xs-4">
+                                <div className="input-group input-group-sm">
+									<input type="number"
+	                                className="form-control"
+	                                value={fieldData.trial_payable}
+	                                onChange={this.changeFDValue.bind(this,'trial_payable')}
+	                                disabled />
+	                                <span className="input-group-addon">元</span>
+								</div>
+							</div>
+						</div>
+				</form>
+				
+				{/*---應收帳款明細---*/}
+				{detail_out_html}
+
+
+			</div></MdoalCustomerSelect>
+            );
+        }
         outHtml = (
             <div>
+            {modify_html}
                 <h3 className="h3">{this.props.Caption}</h3>
 
 				<form onSubmit={this.handleSearch}>
@@ -6859,6 +8698,1306 @@ var GirdSubForm = React.createClass({
                     );
         return outHtml;
     }
+});
+var SubFormForSalesProduct = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			gridSubData:[],
+			fieldSubData:{},
+			searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
+			searchMealIDData:{keyword:'A'},
+			edit_sub_type:0,//預設皆為新增狀態
+			checkAll:false,
+			isShowProductSelect:false,//控制選取產品視窗顯示
+			product_list:[],
+			parm:{breakfast:0,lunch:0,dinner:0},//計算用
+			isShowMealidSelect:false,//控制選取用餐編號顯示
+			mealid_list:[],
+			tryout_array:[
+				{name:'breakfast',name_c:'早餐',value:false},
+				{name:'lunch',name_c:'午餐',value:false},
+				{name:'dinner',name_c:'晚餐',value:false}
+			]
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldSubData',
+			gdName:'searchData',
+			apiPathName:gb_approot+'api/RecordDetail',
+			initPathName:gb_approot+'Active/Product/aj_Init',
+			apiGridPathName:gb_approot+'api/GetAction/GetAllRecordDetail'
+		};
+	},
+	componentDidMount:function(){
+		this.queryGridData();
+		this.insertSubType();//一開始載入預設為新增狀態
+		//this.getAjaxInitData();//載入init資料
+	},
+	shouldComponentUpdate:function(nextProps,nextState){
+		return true;
+	},
+	getAjaxInitData:function(){
+		jqGet(this.props.initPathName)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({parm:{breakfast:data.breakfast,lunch:data.lunch,dinner:data.dinner}});
+			//載入用餐點數計算
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	detailHandleSubmit: function(e) {
+
+		e.preventDefault();
+		var fieldSubData=this.state.fieldSubData;
+
+		if(fieldSubData.product_id==null || fieldSubData.product_id==undefined){
+			tosMessage(gb_title_from_invalid,'未選擇產品!!',3);
+			return;
+		}
+		if(fieldSubData.product_type==1){
+			if(!this.state.tryout_array[0]['value'] && !this.state.tryout_array[1]['value'] && !this.state.tryout_array[2]['value']){
+				tosMessage(gb_title_from_invalid,'產品為試吃時,請選擇試吃的餐別!!',3);
+				return;
+			}
+			if(fieldSubData.tryout_mealtype.indexOf(',')!=-1){
+				tosMessage(gb_title_from_invalid,'試吃僅能選擇一項餐別!!',3);
+				return;
+			}
+		}
+
+		if(this.state.edit_sub_type==1){
+			jqPost(this.props.apiPathName,fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
+					//儲存後更新下分list
+					this.queryGridData();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		}		
+		else if(this.state.edit_sub_type==2){
+			jqPut(this.props.apiPathName,fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
+					//儲存後更新下分list
+					this.queryGridData();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+		};
+		return;
+	},
+	detailDeleteSubmit:function(id,e){
+
+		if(!confirm('確定是否刪除?')){
+			return;
+		}
+		jqDelete(this.props.apiPathName + '?ids=' +id ,{})			
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'刪除完成',1);
+				this.queryGridData();
+				this.insertSubType();
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	gridData:function(){
+		var parms = {
+			main_id:this.props.main_id
+		};
+		$.extend(parms, this.state.searchData);
+
+		return jqGet(this.props.apiGridPathName,parms);
+	},
+	queryGridData:function(){
+		this.gridData()
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({gridSubData:data});
+		}.bind(this))
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			showAjaxError(errorThrown);
+		});
+	},
+	insertSubType:function(){
+		$('textarea').val("");
+		var tryout_array=this.state.tryout_array;
+		tryout_array.forEach(function(object, i){object.value=false;})
+
+		this.setState({edit_sub_type:1,fieldSubData:{
+			product_record_id:this.props.main_id,
+			customer_id:this.props.customer_id,
+			born_id:this.props.born_id,
+			qty:1,
+			subtotal:0,
+			tryout_mealtype:null,
+			meal_select_state:0,
+			meal_id:null,
+			meal_start:null,
+			meal_end:null,
+			isDailyMealAdd:false,
+			set_start_meal:null,
+			set_end_meal:null,
+			diff_day:0
+		},
+		tryout_array:tryout_array
+	});
+	},
+	updateSubType:function(id,e){
+		jqGet(this.props.apiPathName,{id:id})
+		.done(function(data, textStatus, jqXHRdata) {
+			//計算天數
+			var diff_mealday=DiffDate(data.data.meal_start,data.data.meal_end);
+			data.data.diff_day=diff_mealday.diff_day;
+			//計算點數
+			data.data.estimate_count=MealCount(this.state.parm,data.data.estimate_breakfast,data.data.estimate_lunch,data.data.estimate_dinner);
+			data.data.real_count=MealCount(this.state.parm,data.data.real_breakfast,data.data.real_lunch,data.data.real_dinner);
+			//試吃餐別
+			var tryout_array=this.state.tryout_array;
+			tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
+			if(data.data.tryout_mealtype!=undefined){
+				var array=data.data.tryout_mealtype.split(",");
+				tryout_array.forEach(function(object, i){
+					array.forEach(function(a_obj,j){
+						if(object.name==a_obj){
+							object.value=true;
+						}
+					})
+	    		})
+			}
+			//console.log(data);
+			this.setState({edit_sub_type:2,fieldSubData:data.data,tryout_array:tryout_array});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	changeFDValue:function(name,e){
+		this.setInputValue(this.props.fdName,name,e);
+	},
+	setInputValue:function(collentName,name,e){
+
+		var obj = this.state[collentName];
+		if(e.target.value=='true'){
+			obj[name] = true;
+		}else if(e.target.value=='false'){
+			obj[name] = false;
+		}else{
+			obj[name] = e.target.value;
+		}
+		this.setState({fieldSubData:obj});
+	},
+	changeGDProductValue:function(name,e){
+		var obj = this.state.searchProductData;
+		obj[name] = e.target.value;
+		this.setState({searchProductData:obj});
+		this.queryAllProduct();
+	},
+	changeMealday:function(name,e){//計算日期天數
+		var obj = this.state.fieldSubData;
+		var parm=this.state.parm;
+		if(obj.isMealStart){
+			tosMessage(gb_title_from_invalid,'已開始正式用餐後,請勿變更預計用餐起日及迄日!!',3);
+		}else{
+			var old_val=obj[name];//修改前
+			obj[name] = e.target.value;//先變更修改後的日期在計算
+
+			var diff_mealday=DiffDate(obj.meal_start,obj.meal_end);
+			obj.diff_day=diff_mealday.diff_day;
+			if(diff_mealday.result==-1){
+				tosMessage(gb_title_from_invalid,'預計送餐起日不可大於預計送餐迄日!!',3);
+				obj[name]=old_val;
+			}else{
+				if(parm.breakfast>0){obj.estimate_breakfast=diff_mealday.diff_day;}else{obj.estimate_breakfast=0;}
+				if(parm.lunch>0){obj.estimate_lunch=diff_mealday.diff_day;}else{obj.estimate_lunch=0;}
+				if(parm.dinner>0){obj.estimate_dinner=diff_mealday.diff_day;}else{obj.estimate_dinner=0;}
+				
+				obj.qty=diff_mealday.diff_day;
+				obj.subtotal=obj.qty*obj.price;
+			}
+		}
+
+		this.setState({fieldSubData:obj});
+	},
+	changeMealDayCount:function(e){
+		var obj = this.state.fieldSubData;
+		var parm=this.state.parm;
+		if(obj.meal_start!=null & (e.target.value!=null & e.target.value!='')){
+			var tmp_date = new Date(obj.meal_start);
+			var end_date=addDate(tmp_date,parseInt(e.target.value)-1);
+
+			obj.meal_end=format_Date(end_date);
+			if(parm.breakfast>0){
+				obj.estimate_breakfast=parseInt(e.target.value);
+			}else{obj.estimate_breakfast=0;}
+			if(parm.lunch>0){
+				obj.estimate_lunch=parseInt(e.target.value);
+			}else{obj.estimate_lunch=0;}
+			if(parm.dinner>0){
+				obj.estimate_dinner=parseInt(e.target.value);
+			}else{obj.estimate_dinner=0;}
+			obj.qty=parseInt(e.target.value);
+			obj.subtotal=obj.qty*obj.price;
+		}
+
+		obj.diff_day=e.target.value;
+		this.setState({fieldSubData:obj});
+	},
+	changePriceCount:function(name,e){
+		var obj = this.state.fieldSubData;
+		obj[name] = e.target.value;
+		obj.subtotal=obj.qty*obj.price;
+		this.setState({fieldSubData:obj});
+	},
+	changeMealCount:function(name,e){
+		var obj = this.state.fieldSubData;
+		obj[name] = e.target.value;
+
+		obj.estimate_count=MealCount(this.state.parm,obj.estimate_breakfast,obj.estimate_lunch,obj.estimate_dinner);
+		obj.qty=obj.estimate_count;
+		obj.subtotal=obj.qty*obj.price;
+
+		this.setState({fieldSubData:obj});
+	},
+	queryAllProduct:function(){//選取產品編號-
+		jqGet(gb_approot + 'api/GetAction/GetAllProduct',this.state.searchProductData)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({product_list:data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+	showSelectProduct:function(){
+		this.queryAllProduct();
+		this.setState({isShowProductSelect:true});
+	},
+	closeSelectProduct:function(){
+		this.setState({isShowProductSelect:false});
+	},
+	selectProduct:function(product_id,e){
+		var fSD = this.state.fieldSubData;
+		var tryout_array=this.state.tryout_array;
+		var parm=this.state.parm;//用餐點數計算
+		tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
+
+		this.state.product_list.forEach(function(obj,i){
+			if(obj.product_id==product_id){
+				fSD.product_id=product_id;
+				fSD.product_type=obj.product_type;
+				fSD.product_name=obj.product_name;
+				fSD.price=obj.price;
+				fSD.standard=obj.standard;
+				fSD.subtotal=fSD.qty*obj.price;
+				if(obj.product_type==1 || obj.product_type==2){
+					//parm:{breakfast:0,lunch:0,dinner:0}
+					//依產品各餐別計算售價點數
+					parm.breakfast=roundX(obj.breakfast_price/obj.price,4);
+					parm.lunch=roundX(obj.lunch_price/obj.price,4);
+					parm.dinner=roundX(obj.dinner_price/obj.price,4);
+
+					fSD.tryout_mealtype=obj.meal_type;
+					//依產品選擇餐別帶出餐別
+					if(obj.meal_type!=undefined){
+						var array=obj.meal_type.split(",");
+						tryout_array.forEach(function(object, i){
+							array.forEach(function(a_obj,j){
+								if(object.name==a_obj){
+									object.value=true;
+								}
+							})
+			    		})
+					}
+				}
+			}
+		});
+		if(fSD.product_type==2){//如果產品為月子餐就儲存用餐編號
+			fSD.meal_id=this.props.meal_id;
+		}
+		this.setState({isShowProductSelect:false,fieldSubData:fSD,tryout_array:tryout_array,parm:parm});
+	},
+	setReleaseMealID:function(meal_id,record_deatil_id){
+		if(!confirm('確定釋放用餐編號?')){
+			return;
+		}
+		if(meal_id==null || meal_id==''){
+			tosMessage('操作錯誤提示','無用餐編號無法釋放!!',3);
+			return;
+		}
+		if(this.state.fieldSubData.is_release==true){
+			tosMessage('操作錯誤提示','用餐編號已釋放!!',3);
+			return;
+		}
+
+		jqPost(gb_approot + 'api/GetAction/releaseMealID',{record_deatil_id:record_deatil_id,meal_id:meal_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'完成用餐編號釋放',1);
+				var fieldSubData = this.state.fieldSubData;
+				fieldSubData.is_release=data.result;
+				this.props.meal_id=null;
+				this.setState({fieldSubData:fieldSubData});
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	setMealSchedule:function(record_deatil_id){
+		//設定用餐排程
+		document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
+	},
+	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
+		jqGet(gb_approot + 'api/GetAction/GetAllMealID',this.state.searchMealIDData)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({mealid_list:data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+	changeGDMealIDValue:function(name,e){
+		var obj = this.state.searchMealIDData;
+		obj[name] = e.target.value;
+		this.setState({searchMealIDData:obj});
+		this.queryAllMealID();
+	},
+	showSelectMealid:function(){
+		this.queryAllMealID();
+		this.setState({isShowMealidSelect:true});
+	},
+	closeSelectMealid:function(){
+		this.setState({isShowMealidSelect:false});
+	},
+	selectMealid:function(meal_id){
+		var fieldSubData = this.state.fieldSubData;//選取後變更mealid
+		// jqPost(gb_approot + 'api/GetAction/ChangeMealIDState',{old_id:fieldSubData.meal_id,new_id:meal_id})
+		// .done(function(data, textStatus, jqXHRdata) {
+		// 	if(!data.result){
+		// 		alert(data.message);
+		// 	}
+		// }.bind(this))
+		// .fail(function( jqXHR, textStatus, errorThrown ) {
+		// 	//showAjaxError(errorThrown);
+		// });
+
+		fieldSubData.meal_id=meal_id;
+		this.setState({isShowMealidSelect:false,fieldSubData:fieldSubData});
+	},
+	onMealChange:function(index,e){
+		var obj = this.state.fieldSubData;
+		var arrayObj=this.state.tryout_array;
+		var item = arrayObj[index];
+		item.value = !item.value;
+		
+		var array="";
+		if(obj.product_type==1){//如果為試吃,只能有一個餐別
+			array=item.name;
+			arrayObj.forEach(function(object, i){
+	        	if(item!=object){
+	  				object.value=false;
+	        	}
+    		})
+		}else{
+			arrayObj.forEach(function(object, i){
+	        	if(object.value){
+	        		if(array.length==0){
+						array=object.name;
+	        		}else{
+						array=array+","+object.name;
+	        		}	  				
+	        	}
+    		})
+		}
+		obj.tryout_mealtype=array;
+		this.setState({fieldSubData:obj,tryout_array:arrayObj});
+	},
+	render: function() {
+		var outHtml = null;
+		var fieldSubData = this.state.fieldSubData;//明細檔資料
+		var searchProductData=this.state.searchProductData;//
+
+		var ModalProductSelect=ReactBootstrap.Modal;//啟用產品選取的視窗內容
+		var product_select_out_html=null;
+		if(this.state.isShowProductSelect){
+			product_select_out_html=
+			<ModalProductSelect bsSize="medium" title="選擇產品" onRequestHide={this.closeSelectProduct}>
+						<div className="modal-body">
+						<div className="alert alert-warning">
+							一筆生產紀錄只能對應一筆試吃
+						</div>
+							<div className="table-header">
+			                    <div className="table-filter">
+			                        <div className="form-inline form-sm">
+			                            <div className="form-group">
+			                                <label className="text-sm">產品名稱</label> { }
+			                                <input type="text" className="form-control"
+			                            	value={searchProductData.name}
+											onChange={this.changeGDProductValue.bind(this,'name')} />
+			                            </div> { }
+			                            <div className="form-group">
+			                                <label className="text-sm">產品分類</label> { }
+			                                <select className="form-control"
+			                                	value={searchProductData.product_type}
+												onChange={this.changeGDProductValue.bind(this,'product_type')}>
+			                                    <option value="">全部</option>
+												{
+													CommData.ProductType.map(function(itemData,i) {
+														return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+													})
+												}
+			                                </select>
+			                            </div> { }
+			                            <button className="btn btn-secondary btn-sm" onClick={this.queryAllProduct}><i className="fa-search"></i> 搜尋</button>
+			                        </div>
+			                    </div>
+			                </div>
+			                <table className="table table-sm table-bordered table-striped">
+			                <tbody>
+				                    <tr>
+				                        <th style={{"width":"10%;"}} className="text-xs-center">選擇</th>
+				                        <th style={{"width":"30%;"}}>產品名稱</th>
+				                        <th style={{"width":"20%;"}}>產品分類</th>
+				                        <th style={{"width":"40%;"}}>售價</th>
+				                    </tr>
+				                    {
+										this.state.product_list.map(function(itemData,i) {
+											
+											var product_out_html = 
+												<tr key={itemData.product_id}>
+													<td className="text-xs-center">
+														<label className="c-input c-checkbox">
+				                                			<input type="checkbox" onClick={this.selectProduct.bind(this,itemData.product_id)} />
+				                                			<span className="c-indicator"></span>
+				                            			</label>
+				                            		</td>
+													<td>{itemData.product_name}</td>
+													<td><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
+													<td>{itemData.price}</td>
+												</tr>;
+											return product_out_html;
+										}.bind(this))
+									}
+			                    </tbody>                   
+			                </table>
+						</div>
+						<div className="modal-footer form-action">
+			                <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectProduct}><i className="fa-times"></i> 關閉</button>
+			            </div>
+				</ModalProductSelect>;
+		}
+
+		var MdoalMealidSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
+		var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
+		var searchMealIDData=this.state.searchMealIDData;
+		if(this.state.isShowMealidSelect){
+			mealid_select_out_html = 					
+				<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
+						<div className="modal-body">
+							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
+								<div className="table-header">
+							        <div className="table-filter">
+							            <div className="form-inline form-sm">
+							                <div className="form-group">
+							                    <label className="text-sm">用餐編號分類</label> { }
+							                    <select className="form-control"
+							                    value={searchMealIDData.keyword}
+												onChange={this.changeGDMealIDValue.bind(this,'keyword')}>
+							                        <option value="">全部</option>
+							                        <option value="A">A</option>
+							                        <option value="B">B</option>
+							                        <option value="C">C</option>
+							                        <option value="H">H</option>
+							                        <option value="N">N</option>
+							                        <option value="T">T</option>
+							                    </select> { }
+							                    <button type="button" className="btn btn-secondary btn-sm"><i className="fa-search"></i> 搜尋</button>
+							                </div>
+							            </div>
+							        </div>
+							    </div>							
+							<table className="table table-sm table-bordered table-striped">
+								<tbody>
+									<tr>
+										<th style={{"width":"20%;"}} className="text-xs-center">選擇</th>
+										<th style={{"width":"80%;"}}>用餐編號</th>
+									</tr>
+									{
+										this.state.mealid_list.map(function(itemData,i) {
+										
+											var mealid_out_html = 
+												<tr key={itemData.meal_id}>
+													<td className="text-xs-center">
+														<label className="c-input c-checkbox">
+															<input type="checkbox" onClick={this.selectMealid.bind(this,itemData.meal_id)} />	
+															<span className="c-indicator"></span>
+														</label>
+													</td>
+													<td>{itemData.meal_id}</td>
+												</tr>;
+											return mealid_out_html;
+										}.bind(this))
+									}
+								</tbody>
+							</table>
+						</div>
+						<div className="modal-footer form-action">
+							<button className="btn btn-sm btn-blue-grey" onClick={this.closeSelectMealid}><i className="fa-times"></i> 關閉</button>
+						</div>
+				</MdoalMealidSelect>;
+		}
+		//月子餐用的用餐編號
+		var meal_id_html=null;
+		if(fieldSubData.product_type==2){
+			meal_id_html=(
+				<div className="form-group row">
+					{mealid_select_out_html}
+					<label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
+					<div className="col-xs-4">
+						<div className="input-group input-group-sm">
+				            <input type="text" 
+							className="form-control"	
+							value={fieldSubData.meal_id}
+							onChange={this.changeFDValue.bind(this,'meal_id')}
+							required
+							disabled={true} />
+			            	<span className="input-group-btn">
+			         			<a className="btn btn-success"
+								onClick={this.showSelectMealid}>
+								{/*---disabled={this.state.edit_sub_type==2 & fieldSubData.meal_id!=null}---*/}
+									<i className="fa-plus"></i>
+								</a>
+			            	</span>
+			        	</div>
+			        	<small className="text-muted">請按 <i className="fa-plus"></i> 選取</small>
+					</div>
+					<button className="btn btn-indigo btn-sm" type="button" 
+					onClick={this.setReleaseMealID.bind(this,fieldSubData.meal_id,fieldSubData.record_deatil_id)}
+					disabled={this.state.edit_sub_type==1 || fieldSubData.meal_id==null}>
+						<i className="fa-check"></i> 釋放用餐編號
+					</button>
+				</div>
+				);
+		}
+
+		var total=0;
+
+			outHtml =
+			(
+				<div>
+					{product_select_out_html}
+				{/*---產品明細編輯start---*/}
+					<h3 className="h3">產品銷售明細 <small className="sub"><i className="fa-angle-double-right"></i> 新增</small></h3>
+					<form className="form form-sm" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
+						<h4 className="h4">1. 填寫產品資料</h4>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇產品</label>
+							<div className="col-xs-4">
+								<div className="input-group input-group-sm">
+									<input type="text" 							
+									className="form-control"	
+									value={fieldSubData.product_name}
+									onChange={this.changeFDValue.bind(this,'product_name')}
+									maxLength="64"
+									required disabled　/>
+									<span className="input-group-btn">
+										<a className="btn btn-success" onClick={this.showSelectProduct}
+										disabled={this.state.edit_sub_type==2} ><i className="fa-plus"></i></a>
+									</span>
+								</div>
+								<small className="text-muted">請按 <i className="fa-plus"></i> 選取</small>
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right">銷售日期</label>
+							<div className="col-xs-4">
+								<InputDate id="sell_day" 
+									onChange={this.changeFDValue} 
+									field_name="sell_day" 
+									value={fieldSubData.sell_day}
+									disabled={true}
+									placeholder="系統自動產生" />
+								<small className="text-muted">系統自動產生，無法修改</small>
+							</div>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">產品分類</label>
+							<div className="col-xs-4">
+								<select className="form-control" 
+								value={fieldSubData.product_type}
+								onChange={this.changeFDValue.bind(this,'product_type')}
+								disabled>
+								{
+									CommData.ProductType.map(function(itemData,i) {
+										return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+									})
+								}
+								</select>
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right">規格</label>
+							<div className="col-xs-4">
+								<input type="text" 							
+								className="form-control"	
+								value={fieldSubData.standard}
+								onChange={this.changeFDValue.bind(this,'standard')}
+								maxLength="64"
+								required disabled　/>
+							</div>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">售價</label>
+							<div className="col-xs-2">
+								<div className="input-group input-group-sm">
+									<input type="number" 
+									className="form-control"	
+									value={fieldSubData.price}
+									onChange={this.changePriceCount.bind(this,'price')} />
+									<span className="input-group-addon">元</span>
+								</div>
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 數量</label>
+							<div className="col-xs-1">
+								<input type="text"				
+								className="form-control"	
+								value={fieldSubData.qty}
+								onChange={this.changePriceCount.bind(this,'qty')}
+								required/>
+							</div>
+							<label className="col-xs-1 form-control-label text-xs-right">小計</label>
+							<div className="col-xs-4">
+								<div className="input-group input-group-sm">
+									<input type="number" 							
+									className="form-control"	
+									value={fieldSubData.subtotal}
+									onChange={this.changeFDValue.bind(this,'subtotal')}
+									required disabled　/>
+									<span className="input-group-addon">元</span>
+								</div>
+							</div>
+						</div>
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">備註</label>
+							<div className="col-xs-9">
+								<textarea col="30" row="2" className="form-control"
+								value={fieldSubData.memo}
+								onChange={this.changeFDValue.bind(this,'memo')}
+								maxLength="256"></textarea>
+							</div>
+						</div>
+						
+						<h4 className="h4 m-t-1">
+							2. 用餐排程 &amp; 試算
+							<small className="text-muted m-l-1">產品分類為【月子餐】才需填寫！</small>
+						</h4>
+						
+						{meal_id_html}
+						<div className="form-group row">
+							<label className="col-xs-1 form-control-label text-xs-right">預計<br/>送餐起日</label>
+							<div className="col-xs-4">
+								<InputDate id="meal_start" 
+									onChange={this.changeMealday} 
+									field_name="meal_start" 
+									value={fieldSubData.meal_start}
+									required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!='')|| fieldSubData.product_type==1}
+									disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
+								{/*---早開始、午開始、晚開始---*/}
+								<div>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_start_meal"
+												value={1}
+												checked={fieldSubData.set_start_meal==1} 
+												onChange={this.changeFDValue.bind(this,'set_start_meal')}
+										/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">早開始</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_start_meal"
+												value={2}
+												checked={fieldSubData.set_start_meal==2} 
+												onChange={this.changeFDValue.bind(this,'set_start_meal')}
+										/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">午開始</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_start_meal"
+												value={3}
+												checked={fieldSubData.set_start_meal==3} 
+												onChange={this.changeFDValue.bind(this,'set_start_meal')}
+										/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">晚開始</span>
+									</label>									
+								</div>
+								{/*---早開始、午開始、晚開始---*/}	
+							</div>					
+							<label className="col-xs-1 form-control-label text-xs-right">預計<br/>送餐迄日</label>
+							<div className="col-xs-4">
+								<InputDate id="meal_end" 
+									onChange={this.changeMealday} 
+									field_name="meal_end" 
+									value={fieldSubData.meal_end}
+									required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
+									disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
+							
+								{/*---早結束、午結束、晚結束---*/}
+								<div>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_end_meal"
+												value={1}
+												checked={fieldSubData.set_end_meal==1} 
+												onChange={this.changeFDValue.bind(this,'set_end_meal')}
+											/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">早結束</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_end_meal"
+												value={2}
+												checked={fieldSubData.set_end_meal==2} 
+												onChange={this.changeFDValue.bind(this,'set_end_meal')}
+											/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">午結束</span>
+									</label>
+									<label className="c-input c-radio">
+										<input type="radio" 
+												name="set_end_meal"
+												value={3}
+												checked={fieldSubData.set_end_meal==3} 
+												onChange={this.changeFDValue.bind(this,'set_end_meal')}
+												/>
+										<span className="c-indicator"></span>
+										<span className="text-sm">晚結束</span>
+									</label>											
+								</div>
+								{/*---早結束、午結束、晚結束---*/}
+							</div>																		
+						</div>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">預計天數</label>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.diff_day}
+										onChange={this.changeMealDayCount.bind(this)}
+										min="0"
+										disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}/>
+										<span className="input-group-addon">天</span>
+									</div>
+									<small className="text-muted">系統自動計算</small>
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">餐別</label>
+								<div className="col-xs-3">
+								{
+									this.state.tryout_array.map(function(itemData,i) {
+										var out_check = 							
+										<label className="c-input c-checkbox" key={i}>
+											<input  type="checkbox" 
+													checked={itemData.value}
+													onChange={this.onMealChange.bind(this,i)}
+												 />
+											<span className="c-indicator"></span>
+											<span className="text-sm">{itemData.name_c}</span>
+										</label>;
+										return out_check;
+
+									}.bind(this))
+								}
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">特殊排餐</label>
+								<div className="col-xs-2">
+									<select className="form-control" 
+									value={fieldSubData.meal_select_state}
+									onChange={this.changeFDValue.bind(this,'meal_select_state')}
+									disabled={fieldSubData.product_type!=2 || (this.state.edit_sub_type==2 & fieldSubData.isDailyMealAdd)}>
+									<option value="0">無</option>
+									<option value="1">奇數天排餐</option>
+									<option value="2">偶數天排餐</option>
+									</select>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">預計餐數</label>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<span className="input-group-addon" id="meal1-1">早</span>
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.estimate_breakfast}
+										onChange={this.changeMealCount.bind(this,'estimate_breakfast')}
+										required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
+										min="0"/>
+									</div>
+								</div>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<span className="input-group-addon" id="meal1-2">午</span>
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.estimate_lunch}
+										onChange={this.changeMealCount.bind(this,'estimate_lunch')}
+										required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
+										min="0"/>
+									</div>
+								</div>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<span className="input-group-addon" id="meal1-3">晚</span>
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.estimate_dinner}
+										onChange={this.changeMealCount.bind(this,'estimate_dinner')}
+										required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
+										min="0"/>
+									</div>
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">預計點數</label>
+								<div className="col-xs-2">
+									<input type="number" 							
+									className="form-control"	
+									value={fieldSubData.estimate_count}
+									onChange={this.changeFDValue.bind(this,'estimate_count')}
+									min="0" disabled/>
+									<small className="text-muted">系統自動計算</small>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">用餐週期<br />說明</label>
+								<div className="col-xs-9">
+									<textarea col="30" rows="3" className="form-control"
+									value={fieldSubData.meal_memo}
+									onChange={this.changeFDValue.bind(this,'meal_memo')}
+									maxLength="256"></textarea>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">實際餐數</label>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<span className="input-group-addon" id="meal2-1">早</span>
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.real_breakfast}
+										onChange={this.changeFDValue.bind(this,'real_breakfast')}
+										min="0" disabled/>
+									</div>
+								</div>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<span className="input-group-addon" id="meal2-2">午</span>
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.real_lunch}
+										onChange={this.changeFDValue.bind(this,'real_lunch')}
+										min="0" disabled/>
+									</div>
+								</div>
+								<div className="col-xs-2">
+									<div className="input-group input-group-sm">
+										<span className="input-group-addon" id="meal2-3">晚</span>
+										<input type="number" 							
+										className="form-control"	
+										value={fieldSubData.real_dinner}
+										onChange={this.changeFDValue.bind(this,'real_dinner')}
+										min="0" disabled/>
+									</div>
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">實際點數</label>
+								<div className="col-xs-2">
+									<input type="number" 							
+									className="form-control"	
+									value={fieldSubData.real_count}
+									onChange={this.changeFDValue.bind(this,'real_count')}
+									min="0" disabled/>
+								</div>
+							</div>
+						</form>
+						<div className="form-action">
+							<button className="btn btn-sm btn-primary col-xs-offset-1"
+							disabled={this.props.is_close}
+							type="submit" form="form2">
+								<i className="fa-check"></i> 存檔確認
+							</button> { }
+							<button className="btn btn-sm btn-blue-grey" type="button" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button>
+						</div>
+							
+
+		
+				{/*---產品明細編輯end---*/}
+
+					<hr />
+
+				{/*---產品明細列表start---*/}
+					<h3 className="h3">產品銷售明細<small className="sub"><i className="fa-angle-double-right"></i> 列表</small></h3>
+					<table className="table table-sm table-bordered table-striped">
+						<thead>
+							<tr>
+								<th style={{"width":"10%;"}} className="text-xs-center">編輯</th>
+								<th style={{"width":"10%;"}}>產品分類</th>
+								<th style={{"width":"20%;"}}>產品名稱</th>
+								<th style={{"width":"12%;"}}>單價</th>
+								<th style={{"width":"12%;"}}>數量</th>
+								<th style={{"width":"12%;"}}>小計</th>
+								<th style={{"width":"14%;"}} className="text-xs-center">用餐明細</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								this.state.gridSubData.map(function(itemData,i) {
+									var meal_detail_button=null;
+									if(itemData.product_type==2)//產品為月子餐才有用餐明細
+									{
+										meal_detail_button=<button className="btn btn-info btn-sm" onClick={this.setMealSchedule.bind(this,itemData.record_deatil_id)}><i className="fa-search"></i> 查看</button>;
+									}
+									total+=itemData.subtotal;
+									var sub_out_html = 
+										<tr key={itemData.record_deatil_id}>
+											<td className="text-xs-center">
+												<button className="btn btn-link btn-lg text-info" type="button" onClick={this.updateSubType.bind(this,itemData.record_deatil_id)}><i className="fa-pencil"></i></button> { }
+												<button className="btn btn-link btn-lg text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.record_deatil_id)} disabled={this.props.is_close}><i className="fa-trash"></i></button>
+											</td>
+											<td><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
+											<td>{itemData.product_name}</td>
+											<td>{itemData.price}</td>
+											<td>{itemData.qty}</td>
+											<td>{itemData.subtotal}</td>
+											<td className="text-xs-center">{meal_detail_button}</td>			
+										</tr>;
+										return sub_out_html;
+								}.bind(this))
+							}
+							<tr className="table-warning">
+								<th className="text-xs-center text-danger" colSpan={5}>總　計</th>
+								<th className="text-xs-danger" colSpan={2}><strong className="text-danger">{total}</strong></th>
+							</tr>
+						</tbody>
+					</table>
+				{/*---產品明細列表end---*/}
+				</div>
+			);
+
+		return outHtml;
+	}
+});
+//明細檔編輯
+var SubFormForAccountPay = React.createClass({
+	mixins: [React.addons.LinkedStateMixin], 
+	getInitialState: function() {  
+		return {
+			gridSubData:[],
+			fieldSubData:{},
+			searchData:{name:null,product_type:null},
+			Total_Money:0,
+			edit_sub_type:1
+		};  
+	},
+	getDefaultProps:function(){
+		return{	
+			fdName:'fieldSubData',
+			gdName:'searchData',
+			apiPathName:gb_approot+'api/AccountsPayableDetail'
+		};
+	},
+	componentDidMount:function(){
+		this.queryAccountsPayableDetail();
+		this.insertSubType();
+	},
+	shouldComponentUpdate:function(nextProps,nextState){
+		return true;
+	},
+	queryAccountsPayableDetail:function(){
+		jqGet(gb_approot + 'api/GetAction/GetAccountsPayableDetail',{main_id:this.props.main_id})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({gridSubData:data.items,Total_Money:data.total});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+	detailHandleSubmit:function(e){//新增 
+		e.preventDefault();
+	    if(this.state.edit_sub_type==1){
+			jqPost(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'新增完成'+data.message,1);
+					}else{
+						tosMessage(null,'新增完成',1);
+					}
+					this.queryAccountsPayableDetail();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+	    }else if(this.state.edit_sub_type==2){
+			jqPut(this.props.apiPathName,this.state.fieldSubData)
+			.done(function(data, textStatus, jqXHRdata) {
+				if(data.result){
+					if(data.message!=null){
+						tosMessage(null,'修改完成'+data.message,1);
+					}else{
+						tosMessage(null,'修改完成',1);
+					}
+					this.queryAccountsPayableDetail();
+					this.insertSubType();
+				}else{
+					tosMessage(null,data.message,3);
+				}
+			}.bind(this))
+			.fail(function( jqXHR, textStatus, errorThrown ) {
+				showAjaxError(errorThrown);
+			});
+	    }
+
+		return;
+	},
+	detailDeleteSubmit:function(id,e){
+
+		if(!confirm('確定是否刪除?')){
+			return;
+		}
+		jqDelete(this.props.apiPathName + '?ids=' +id ,{})			
+		.done(function(data, textStatus, jqXHRdata) {
+			if(data.result){
+				tosMessage(null,'刪除完成',1);
+				this.queryAccountsPayableDetail();
+				this.insertSubType();
+			}else{
+				tosMessage(null,data.message,3);
+			}
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	insertSubType:function(){
+		this.setState({
+			edit_sub_type:1,
+			fieldSubData:{
+			accounts_payable_id:this.props.main_id,
+			customer_id:this.props.customer_id,
+			meal_type:0,
+			receipt_day:format_Date(getNowDate()),
+			receipt_person:1,
+			receipt_item:1,
+			receipt_sn:null,
+			actual_receipt:0
+		}});
+	},
+	updateSubType:function(id,e){
+		jqGet(this.props.apiPathName,{id:id})
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({edit_sub_type:2,fieldSubData:data.data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});
+	},
+	changeFDValue:function(name,e){
+		var obj = this.state.fieldSubData;
+		obj[name] = e.target.value;
+
+		this.setState({fieldSubData:obj});
+	},
+	setProductRecord:function(){
+        //返回產品銷售
+        document.location.href = gb_approot + 'Active/Product/ProductRecord?product_record_id=' + this.props.product_record_id;
+    },  
+	render: function() {
+		var outHtml = null;
+		var fieldSubData=this.state.fieldSubData;
+		var editor_html=null;
+		var editor_colspan=4;
+		if(gb_roles=='Managers'){
+			editor_html=<th style={{"width":"10%;"}} className="text-xs-center">編輯</th>;
+			editor_colspan=5;
+		}
+			outHtml =
+			(
+				<div>
+				{/*---新增收款明細start---*/}
+					<hr className="lg" />
+					<h3 className="h3">新增收款明細</h3>
+
+					<form className="form form-sm" role="form" id="SubFormForAccountPayForm" onSubmit={this.detailHandleSubmit}>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">收款日期</label>
+								<div className="col-xs-5">
+					                <span className="has-feedback">
+										<InputDate id="receipt_day" 
+										onChange={this.changeFDValue} 
+										field_name="receipt_day" 
+										value={fieldSubData.receipt_day}
+										required={true} />
+									</span>
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">收款單號</label>
+								<div className="col-xs-4">
+									<input type="text"
+                                    className="form-control"
+                                    value={fieldSubData.receipt_sn}
+                                    onChange={this.changeFDValue.bind(this,'receipt_sn')}
+                                    maxLength="10"
+                                    required />
+								</div>
+							</div>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">收款餐別</label>
+								<div className="col-xs-2">
+				                    <select className="form-control"
+				                    value={fieldSubData.meal_type}
+				                    onChange={this.changeFDValue.bind(this,'meal_type')}>
+						                {
+											CommData.MealTypeByAccountsPayable.map(function(itemData,i) {
+											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+											})
+										}
+				                    </select>
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">項目</label>
+								<div className="col-xs-2">
+				                    <select className="form-control"
+				                    value={fieldSubData.receipt_item}
+				                    onChange={this.changeFDValue.bind(this,'receipt_item')}>
+						                {
+											CommData.ReceiptItemType.map(function(itemData,i) {
+											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+											})
+										}
+				                    </select>
+								</div>
+								<label className="col-xs-1 form-control-label text-xs-right">收款人員</label>
+								<div className="col-xs-4">
+				                    <select className="form-control"
+				                    value={fieldSubData.receipt_person}
+				                    onChange={this.changeFDValue.bind(this,'receipt_person')}>
+						                {
+											CommData.ReceiptPersonType.map(function(itemData,i) {
+											return <option key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+											})
+										}
+				                    </select>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label className="col-xs-1 form-control-label text-xs-right">本次實收</label>
+								<div className="col-xs-10">
+									<div className="input-group input-group-sm">
+										<input type="number"
+	                                    className="form-control"
+	                                    value={fieldSubData.actual_receipt}
+	                                    onChange={this.changeFDValue.bind(this,'actual_receipt')}
+	                                    required />
+	                                    <span className="input-group-addon">元</span>
+									</div>
+								</div>
+							</div>
+							<div className="form-action">
+								<button type="submit" form="SubFormForAccountPayForm" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button> { }
+								<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button> { }
+								<button type="button" className="btn btn-sm btn-blue-grey col-xs-offset-6" onClick={this.props.noneType}><i className="fa-arrow-left"></i> 回列表</button> { }
+                            	<button type="button" className="btn btn-sm btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
+							</div>
+					</form>
+				{/*---新增收款明細end---*/}
+					<hr className="lg" />
+				{/*---收款明細列表start---*/}
+					<h3 className="h3">收款明細</h3>
+					<div className="table-header">
+						【實收 <strong className="text-danger">${formatMoney(this.state.Total_Money,0)}</strong>】 { }
+						【未收 <strong className="text-danger">${formatMoney(this.props.main_total-this.state.Total_Money,0)}</strong>】
+					</div>
+					<table className="table table-sm table-bordered table-striped">
+								<thead>
+									<tr>
+										{editor_html}
+										<th style={{"width":"15%;"}}>收款日期</th>
+										<th style={{"width":"10%;"}} className="text-xs-center">收款餐別</th>
+										<th style={{"width":"15%;"}}>收款人員</th>
+										<th style={{"width":"10%;"}}>收款項目</th>
+										<th style={{"width":"20%;"}}>收款單號</th>
+										<th style={{"width":"20%;"}}>本次實收</th>
+									</tr>
+								</thead>
+								<tbody>
+									{
+										this.state.gridSubData.map(function(itemData,i) {
+											var button_html=null;
+											if(gb_roles=='Managers'){
+												button_html=(
+													<td className="text-xs-center">
+														<button className="btn btn-link btn-lg text-info" type="button" onClick={this.updateSubType.bind(this,itemData.accounts_payable_detail_id)}><i className="fa-pencil"></i></button> { }
+														<button className="btn btn-link btn-lg text-danger" onClick={this.detailDeleteSubmit.bind(this,itemData.accounts_payable_detail_id)} disabled={this.props.is_close}><i className="fa-trash"></i></button>
+													</td>
+													);
+											}								
+											var detail_out_html = 
+												<tr key={itemData.accounts_payable_detail_id}>
+													{button_html}												
+													<td>{moment(itemData.receipt_day).format('YYYY/MM/DD')}</td>
+													<td className="text-xs-center"><StateForGrid stateData={CommData.MealTypeByAccountsPayable} id={itemData.meal_type} /></td>
+													<td><StateForGrid stateData={CommData.ReceiptPersonType} id={itemData.receipt_person} /></td>
+													<td><StateForGrid stateData={CommData.ReceiptItemType} id={itemData.receipt_item} /></td>
+													<td>{itemData.receipt_sn}</td>
+													<td>${formatMoney(itemData.actual_receipt,0)}</td>
+												</tr>;
+											return detail_out_html;
+										}.bind(this))
+									}
+									<tr className="table-warning">
+										<th className="text-xs-center text-danger" colSpan={editor_colspan}>總計</th>
+										<th>未收：<span className="text-danger">${formatMoney(this.props.main_total-this.state.Total_Money,0)}</span></th>
+										<th>實收：<span className="text-danger">${formatMoney(this.state.Total_Money,0)}</span></th>
+									</tr>
+								</tbody>
+					</table>
+				{/*---收款明細列表end---*/}
+
+				</div>
+			);
+
+		return outHtml;
+	}
 });
 var dom = document.getElementById('page_content');
 React.render(<GirdForm />, dom);

@@ -76,6 +76,10 @@ namespace DotWeb.Api
                     qr = qr.Where(x => x.meal_start <= end && x.meal_end >= q.start_date);
                 }
 
+                if (q.born_id != null)
+                {
+                    qr = qr.Where(x => x.born_id == q.born_id);
+                }
                 var result = qr.Select(x => new m_RecordDetail()
                 {
                     record_deatil_id = x.record_deatil_id,
