@@ -1332,7 +1332,7 @@ var SubForm = React.createClass({
 				<MdoalMealidSelect bsSize="small" onRequestHide={this.closeSelectMealid}>
                     <div className="modal-header light">
 							<div className="pull-right">
-								<button onClick={this.closeEditDetail} type="button"><i className="fa-times"></i></button>
+								<button onClick={this.closeSelectMealid} type="button"><i className="fa-times"></i></button>
 							</div>
 							<h4 className="modal-title">選擇用餐編號</h4>
 						</div>
