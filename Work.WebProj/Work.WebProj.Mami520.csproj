@@ -248,6 +248,7 @@
     <Content Include="Areas\Active\Views\Home\fake.cshtml" />
     <Content Include="Areas\Active\Views\Food\MenuCopyTemplate.cshtml" />
     <Content Include="app_modules\comm-func\package.json" />
+    <Content Include="Areas\Active\Views\Home\Test.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
     <Compile Include="Areas\Base\Controllers\MenuController.cs" />
@@ -1045,6 +1046,7 @@
     <Content Include="Scripts\src\jsx-inc\c-Typeahead.jsx" />
     <Content Include="Scripts\src\jsx\m-MenuCopyTemplate.jsx" />
     <Content Include="Scripts\src\jsx\m-HomeRoute.jsx" />
+    <Content Include="Scripts\src\jsx\m-Test.jsx" />
     <None Include="Web.Amoz.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,28 @@
+﻿@{
+    Layout = "~/Views/Shared/Manage/RLayout.cshtml";
+}
+@section IncludeCSS{
+    <link rel="stylesheet" href="~/Content/css/vendor/bootstrap-datetimepicker-build.css" />
+}
+@section IncludeScript{
+    @Html.Partial("Manage/JSGlobalVar")
+    <script>
+        var gb_menuname = '@ViewBag.MenuName';
+        var gb_caption = '@ViewBag.Caption';
+        var gb_roles = '@ViewBag.RoleName';
+    </script>
+    <script src="~/Scripts/build/comminc.js"></script>
+    <script src="~/Scripts/app/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/build/func/m-Test.js"></script>
+    <script>
+        $(".nav-link").click(function (e) {
+            $(".nav-link").removeClass('active');
+            $(this).addClass('active');
+        });
+    </script>
+}
+@section sidebar{
+    @Html.Partial("Manage/vucMenu")
+}
+
+<div id="page_content"></div>
