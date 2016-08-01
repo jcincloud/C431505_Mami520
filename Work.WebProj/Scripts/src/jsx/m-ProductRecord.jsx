@@ -1329,7 +1329,14 @@ var SubForm = React.createClass({
 		var searchMealIDData=this.state.searchMealIDData;
 		if(this.state.isShowMealidSelect){
 			mealid_select_out_html = 					
-				<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
+				<MdoalMealidSelect bsSize="small" onRequestHide={this.closeSelectMealid}>
+                    <div className="modal-header light">
+							<div className="pull-right">
+								<button onClick={this.closeEditDetail} type="button"><i className="fa-times"></i></button>
+							</div>
+							<h4 className="modal-title">選擇用餐編號</h4>
+						</div>
+                    
 						<div className="modal-body">
 							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
 								<div className="table-header">
