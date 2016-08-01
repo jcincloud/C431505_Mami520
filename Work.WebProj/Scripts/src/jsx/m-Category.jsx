@@ -324,12 +324,12 @@ var GridSubForm = React.createClass({
 								
 
 
-				<div id={'myModal-'+this.props.MainId} className="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div id={'myModal-'+this.props.MainId} className="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     				<div className="modal-dialog">
       					<div className="modal-content">
         					<div className="modal-header">
           						<button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          						<h5 className="modal-title" id="myModalLabel">分類項目資料維護</h5>
+          						<h5 className="modal-title text-secondary" id="myModalLabel">分類項目資料維護</h5>
         					</div>
         					<form className="form form-sm" onSubmit={this.handleSubmit}>
         						<div className="modal-body">

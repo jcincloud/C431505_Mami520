@@ -382,8 +382,12 @@ var GirdForm = React.createClass({
 			var MdoalRecordSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
 			var record_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowRecordSelect){
-				record_select_out_html = 					
-					<MdoalRecordSelect bsSize="medium" title="請選擇產品銷售紀錄" onRequestHide={this.closeSelectRecord}>
+				record_select_out_html =
+					<MdoalRecordSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectRecord}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectRecord}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇產品銷售紀錄</h5>
+                        </div>
 							<div className="modal-body">
 								<div className="alert alert-warning"><p>此列表僅列出<strong className="text-danger">未有過禮品贈送紀錄</strong>的客戶生產紀錄之銷售。</p></div>
 							    <div className="table-header">

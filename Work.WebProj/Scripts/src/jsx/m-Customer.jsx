@@ -856,13 +856,11 @@ var GirdSubForm = React.createClass({
         var customer_born_out_html=null;//存放生產編輯的視窗內容
         if(this.state.isShowCustomerBornEdit){
             customer_born_out_html =                    
-                    <MdoaleditCustomerBorn bsSize="large" title="客戶生產紀錄 編輯" onRequestHide={this.closeEditDetail}>
-                        {/*<div className="modal-header light">
-                            <div className="pull-right">
-                                <button onClick={this.closeEditDetail} type="button"><i className="fa-times"></i></button>
-                            </div>
-                            <h4 className="modal-title">編輯 { } 生產紀錄</h4>
-                        </div>*/}
+                    <MdoaleditCustomerBorn bsSize="large" animation={false} onRequestHide={this.closeEditDetail}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeEditDetail}>&times;</button>
+                            <h5 className="modal-title text-secondary">客戶生產紀錄 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
+                        </div>
                         <form className="form form-sm"  onSubmit={this.detailHandleSubmit} id="form2">
                             <div className="modal-body">
                                 {error_out_html}
