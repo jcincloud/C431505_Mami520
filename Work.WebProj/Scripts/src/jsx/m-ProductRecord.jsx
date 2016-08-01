@@ -478,7 +478,11 @@ var GirdForm = React.createClass({
 			var born_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowCustomerBornSelect){
 				born_select_out_html = 					
-					<MdoalCustomerBornSelect bsSize="large"  title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
+					<MdoalCustomerBornSelect bsSize="large" animation={false} onRequestHide={this.closeSelectCustomerBorn}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectCustomerBorn}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇客戶</h5>
+                        </div>
 							<div className="modal-body">
 								<div className="table-header">
 							        <div className="table-filter">
@@ -1258,7 +1262,11 @@ var SubForm = React.createClass({
 		var product_select_out_html=null;
 		if(this.state.isShowProductSelect){
 			product_select_out_html=
-			<ModalProductSelect bsSize="medium" title="選擇產品" onRequestHide={this.closeSelectProduct}>
+			<ModalProductSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectProduct}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectProduct}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇產品</h5>
+                        </div>
 						<div className="modal-body">
 						<div className="alert alert-warning">
 							一筆生產紀錄只能對應一筆試吃
@@ -1329,14 +1337,11 @@ var SubForm = React.createClass({
 		var searchMealIDData=this.state.searchMealIDData;
 		if(this.state.isShowMealidSelect){
 			mealid_select_out_html = 					
-				<MdoalMealidSelect bsSize="small" onRequestHide={this.closeSelectMealid}>
-                    <div className="modal-header light">
-							<div className="pull-right">
-								<button onClick={this.closeSelectMealid} type="button"><i className="fa-times"></i></button>
-							</div>
-							<h4 className="modal-title">選擇用餐編號</h4>
-						</div>
-                    
+				<MdoalMealidSelect bsSize="small" animation={false} onRequestHide={this.closeSelectMealid}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectMealid}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇用餐編號</h5>
+                        </div>
 						<div className="modal-body">
 							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
 								<div className="table-header">

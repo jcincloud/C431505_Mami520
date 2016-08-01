@@ -385,11 +385,11 @@ var GirdForm = React.createClass({
 			var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowMealidSelect){
 				mealid_select_out_html = 					
-					<MdoalMealidSelect bsSize="xsmall" onRequestHide={this.closeSelectMealid}>
-							<div className="modal-header">
-								<button className="close" onClick={this.closeSelectMealid} type="button">&times;</button>
-								<h5 className="modal-title">請選擇用餐編號</h5>
-							</div>
+					<MdoalMealidSelect bsSize="xsmall" animation={false} onRequestHide={this.closeSelectMealid}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectMealid}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇產品</h5>
+                        </div>
 							<div className="modal-body">
 								<div className="alert alert-warning"><p>此列表僅列出<strong className="text-danger">未結案且無客戶需求</strong>的客戶生產紀錄。</p></div>
 								<table className="table table-sm table-bordered table-striped">
