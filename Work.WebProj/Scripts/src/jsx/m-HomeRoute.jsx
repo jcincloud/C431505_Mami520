@@ -3239,6 +3239,27 @@ var CustomerBornData = React.createClass({
 				</form>
                 {/*---生產紀錄版面---*/}
                 {GirdSubForm_html}
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
             </div>
             );
         return outHtml;
@@ -3626,7 +3647,7 @@ var SalesDetailData = React.createClass({
 			}
         if(this.state.isShowModifySelect){
             modify_html=(
-                <ModalProductSelect bsSize="medium" title="產品銷售資料" onRequestHide={this.closeSelectCustomerBorn}>
+                <ModalProductSelect bsSize="large" title="產品銷售資料" onRequestHide={this.closeSelectCustomerBorn}>
                 <div>
                 <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
 				<form className="form form-sm" onSubmit={this.handleSubmit}>
@@ -3924,6 +3945,27 @@ var SalesDetailData = React.createClass({
                                  InsertType={this.insertType}
                                  deleteSubmit={this.deleteSubmit} />
 				</form>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
             </div>
             );
         return outHtml;
@@ -4219,6 +4261,27 @@ var MealScheduleData = React.createClass({
                                  showAdd={false}
                                  showDelete={false} />
                 </form>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
             </div>
             );
         return outHtml;
@@ -6810,6 +6873,27 @@ var TelRecordData = React.createClass({
                                  InsertType={this.insertType}
                                  deleteSubmit={this.deleteSubmit} />
 				</form>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
             </div>
             );
         return outHtml;
@@ -7479,6 +7563,27 @@ var GiftRecordData = React.createClass({
                                  InsertType={this.insertType}
                                  deleteSubmit={this.deleteSubmit} />
 				</form>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
             </div>
             );
         return outHtml;
@@ -7860,6 +7965,27 @@ var AccountRecordData = React.createClass({
                                  showAdd={false}
                                  showDelete={false} />
 				</form>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
+                <div>&nbsp; </div>
             </div>
             );
         return outHtml;
