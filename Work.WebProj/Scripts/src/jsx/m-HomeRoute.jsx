@@ -30,6 +30,12 @@ var GirdForm = React.createClass({
         this.getmomName();
     },
     shouldComponentUpdate: function (nextProps, nextState) {
+        if(nextState.isShowCustomerAllDetail){
+          $(".a-tab").click(function (e) {
+            $(".a-tab").removeClass('active');
+            $(this).addClass('active');
+        });
+        }
         return true;
     },
     getMealID: function () {
@@ -115,39 +121,39 @@ var GirdForm = React.createClass({
         var fieldData=this.state.fieldData;
         if (this.state.isShowCustomerAllDetail) {
             all_detail_out_html =
-                       <MdoalCustomerDetailSelect bsSize="large" title="客戶資料總覽 - A001宋俊宏" onRequestHide={this.closeSelectCustomerBorn}>
+                       <MdoalCustomerDetailSelect bsSize="large" title="客戶資料總覽 - A001宋俊宏" onRequestHide={this.closeSelectCustomerBorn}> 
                             <div className="modal-body">
 
-                                    <ul className="nav nav-tabs" role="tablist">
+                                    <ul className="nav nav-tabs active" role="tablist">
                                         <li className="nav-item">
-                                            <a className="nav-link active" data-toggle="tab" href="#Profile" role="tab">基本資料</a>
+                                            <a className="nav-link a-tab active" data-toggle="tab" href="#Profile" role="tab">基本資料</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#Birth" role="tab">生產紀錄</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#Birth" role="tab">生產紀錄</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#Sell" role="tab">銷售紀錄</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#Sell" role="tab">銷售紀錄</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#MealSchedule" role="tab">用餐排程</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#MealSchedule" role="tab">用餐排程</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#Query" role="tab">用餐需求</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#Query" role="tab">用餐需求</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#CallSchedule" role="tab">電訪排程</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#CallSchedule" role="tab">電訪排程</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#CallRecord" role="tab">電訪紀錄</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#CallRecord" role="tab">電訪紀錄</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#Gift" role="tab">禮品紀錄</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#Gift" role="tab">禮品紀錄</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" data-toggle="tab" href="#Pay" role="tab">帳款紀錄</a>
+                                            <a className="nav-link a-tab " data-toggle="tab" href="#Pay" role="tab">帳款紀錄</a>
                                         </li>
                                     </ul>
-                                <div className="tab-content">
+                                <div className="tab-content active">
                                     <div className="tab-pane active" id="Profile" role="tabpanel">
                                         <BasicData closeAllEdit={this.closeSelectCustomerBorn} born_id={this.state.born_id} mom_id={this.state.customer_id} />
                                     </div>
@@ -187,17 +193,17 @@ var GirdForm = React.createClass({
                             <i className="fa-caret-right"></i>
                             首頁
                         </li>
-                        </ul>
+                        </ul> 
                         <h3 className="h3">首頁</h3>
-                         <ul className="nav nav-tabs" role="tablist">
+                         <ul className="nav nav-tabs active" role="tablist">
                             <li className="nav-item">
-                                <a className="nav-link active" data-toggle="tab" href="#Meal" role="tab"><i className="fa-spoon"></i> 用餐列表</a>
+                                <a className="nav-link b active" data-toggle="tab" href="#Meal" role="tab"><i className="fa-spoon"></i> 用餐列表</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" data-toggle="tab" href="#Call" role="tab"><i className="fa-phone"></i> 今日電訪</a>
+                                <a className="nav-link b" data-toggle="tab" href="#Call" role="tab"><i className="fa-phone"></i> 今日電訪</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" data-toggle="tab" href="#Search" role="tab"><i className="fa-search"></i> 快速搜尋</a>
+                                <a className="nav-link b" data-toggle="tab" href="#Search" role="tab"><i className="fa-search"></i> 快速搜尋</a>
                             </li>
                          </ul>
 
@@ -8392,37 +8398,10 @@ var GirdSubForm = React.createClass({
         if (this.state.isShowCustomerBornEdit) {
             customer_born_out_html =
 					<MdoaleditCustomerBorn bsSize="large" title="客戶生產紀錄編輯" onRequestHide={this.closeEditDetail}>
-					    {/*<div className="modal-header light">
-							<div className="pull-right">
-								<button onClick={this.closeEditDetail} type="button"><i className="fa-times"></i></button>
-							</div>
-							<h4 className="modal-title">編輯 { } 生產紀錄</h4>
-						</div>*/}
 						<form className="form form-sm" onSubmit={this.detailHandleSubmit} id="form2">
 							<div className="modal-body">
 							    {mealid_select_out_html}
 							    {error_out_html}
-							    {/*<div className="form-group">
-									<label className="col-xs-2 form-control-label text-xs-right">用餐編號</label>
-									<div className="col-xs-3">
-									    <div className="input-group">
-				            				<input type="text"
-											className="form-control"
-											value={fieldDetailData.meal_id}
-											onChange={this.changeFDDValue.bind(this,'meal_id')}
-											required
-											disabled={this.state.detail_edit_type==3 || true} />
-			            					<span className="input-group-btn">
-			            						<a className="btn"
-												onClick={this.showSelectMealid}
-												disabled={this.state.detail_edit_type==3 || (fieldDetailData.have_record && fieldDetailData.meal_id!=null)}>
-												<i className="fa-plus"></i>
-												</a>
-			            					</span>
-			            				</div>
-									</div>
-									<small className="help-inline col-xs-7">請按 <i className="fa-plus"></i> 選取</small>
-								</div>*/}
 								<div className="form-group row">
 									<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 媽媽姓名</label>
 									<div className="col-xs-3">
