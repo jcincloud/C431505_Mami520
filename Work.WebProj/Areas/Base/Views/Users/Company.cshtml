@@ -1,10 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/Manage/RLayout.cshtml";
 }
-@section breadCrumb {
-    <li><a href="~/Active/Need/DietaryNeed"><i class="fa-cogs"></i> @ViewBag.MenuName</a></li>
-    <li>@ViewBag.Caption</li>
-}
 @section IncludeCSS{
     <link rel="stylesheet" href="~/Content/css/vendor/bootstrap-datetimepicker-build.css" />
 }
@@ -23,3 +19,7 @@
 @section sidebar{
     @Html.Partial("Manage/vucMenu")
 }
+<ul class="breadcrumb">
+    <li><a href="~/Base/Company"><i class="fa-list-alt"></i> @ViewBag.MenuName</a></li>
+    <li>@ViewBag.Caption</li>
+</ul>

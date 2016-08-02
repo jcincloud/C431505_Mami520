@@ -262,11 +262,11 @@ var GirdForm = React.createClass({
 								<div className="form-inline form-sm">
 									<div className="form-group">
 
-										<label className="text-sm">組合菜單名稱</label> { }
+										<label className="text-sm">菜色名稱</label> { }
 										<input type="text" className="form-control" 
 										value={searchData.constitute_name}
 										onChange={this.changeGDValue.bind(this,'constitute_name')}
-										placeholder="組合菜單名稱..." /> { }
+										placeholder="菜色名稱..." /> { }
 
 										<label className="text-sm">分類</label> { }
 										<select className="form-control" 
@@ -307,7 +307,7 @@ var GirdForm = React.createClass({
 									</th>
 									<th style={{"width":"10%;"}} className="text-xs-center">修改</th>
 									<th style={{"width":"15%;"}}>分類</th>
-									<th style={{"width":"20%;"}}>組合菜單名稱</th>
+									<th style={{"width":"20%;"}}>菜色名稱</th>
 									<th style={{"width":"45%;"}}>狀態</th>
 								</tr>
 							</thead>
@@ -351,12 +351,12 @@ var GirdForm = React.createClass({
 				map_out_html=(
 					<div>
 						<hr className="condensed" />
-						<h4 className="title">組合菜單對應設定</h4>
+						<h4 className="title">菜色內容對應設定</h4>
 						<div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行設定。</div>
 					</div>
 					);
 			}
-
+            
 			outHtml=(
 			<div>
                 <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
@@ -438,12 +438,12 @@ var GirdForm = React.createClass({
 					</div>
 
 					<div className="form-action">
-						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
 						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
 					</div>
 
 				</form>
-			{/* 組合菜單對應的基礎元素 */}
+			{/* 菜色對應的食材 */}
 				{map_out_html}
 			</div>
 			);
@@ -583,7 +583,7 @@ var GirdCofE = React.createClass({
 		outHtml =(
 			<div>
 				<hr className="lg" />
-				<h3 className="h3">組合菜單對應設定</h3>
+				<h3 className="h3">菜色內容對應設定</h3>
 				<div className="row">
 					<div className="col-xs-6">
 						<div className="table-header">

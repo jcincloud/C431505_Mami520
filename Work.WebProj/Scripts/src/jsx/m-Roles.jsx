@@ -14,8 +14,8 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.Name}</td>
 				</tr>
 			);
@@ -210,39 +210,37 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
-				</ul>
-				<h3 className="title">
+				
+				<h3 className="h3">
 					{this.props.Caption}
 				</h3>
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
-										<label>角色名稱</label>
-										<input type="text" className="form-control input-sm" 
+										<label className="text-sm">角色名稱</label>
+										<input type="text" className="form-control" 
 										value={searchData.Name}
 										onChange={this.changeGDValue.bind(this,'Name')}
 										placeholder="請輸入關鍵字..." />
-										<button className="btn-primary btn-sm" type="submit"><i className="fa-search"></i> 搜尋</button>
+										<button className="btn btn-secondary btn-sm" type="submit"><i className="fa-search"></i> 搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table>
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-2">角色名稱</th>
+									<th className="text-xs-center">修改</th>
+									<th>角色名稱</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -280,11 +278,8 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-				<ul className="breadcrumb">
-					<li><i className="fa-list-alt"></i> {this.props.MenuName}</li>
-				</ul>
-				<h4 className="title">{this.props.Caption} 基本資料維護</h4>
-				<form className="form-horizontal" onSubmit={this.handleSubmit}>
+				<h4 className="h4">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 基本資料維護</small></h4>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
 					<div className="form-group">
 						<label className="col-xs-1 control-label">角色名稱</label>
 						<div className="col-xs-11">

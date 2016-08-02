@@ -519,7 +519,7 @@ var GirdDofC = React.createClass({
 						<div className="table-header">
 							<div className="form-inline form-sm">
 								<div className="form-group">
-									<input type="text" className="form-control" placeholder="搜尋菜單..."
+									<input type="text" className="form-control" placeholder="搜尋菜色..."
 									value={searchData.name} 
 									onChange={this.queryChangeConstituteParam.bind(this,'name')} /> { }
 									<select name="" id="" className="form-control input-sm"

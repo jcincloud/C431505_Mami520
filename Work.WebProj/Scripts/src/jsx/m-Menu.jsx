@@ -14,8 +14,8 @@
 		return (
 
 				<tr>
-					<td className="text-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-center"><GridButtonModify modify={this.modify}/></td>
+					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify}/></td>
 					<td>{this.props.itemData.menu_id}</td>
 					<td>{this.props.itemData.parent_menu_id}</td>
 					<td>{this.props.itemData.menu_name}</td>
@@ -262,23 +262,22 @@ var GirdForm = React.createClass({
 			outHtml =
 			(
 			<div>
-                <h3 className="title">{this.props.Caption} 列表</h3>
+                <h3 className="h3">{this.props.Caption} 列表</h3>
 
 				<form onSubmit={this.handleSearch}>
 					
 						<div className="table-header">
 							<div className="table-filter">
-								<div className="form-inline">
+								<div className="form-inline form-sm">
 									<div className="form-group">
 
-										<label>menu名稱</label> { }
-										<input type="text" className="form-control input-sm" 
+										<label className="text-sm">選單名稱</label> { }
+										<input type="text" className="form-control" 
 										value={searchData.word}
 										onChange={this.changeGDValue.bind(this,'word')}
-										placeholder="menu名稱..." /> { }
-
-										<label>狀態</label> { }
-										<select className="form-control input-sm" 
+										placeholder="搜尋選單..." /> { }
+										<label className="text-sm">狀態</label> { }
+										<select className="form-control" 
 												value={searchData.is_folder}
 												onChange={this.onHideChange}>
 											<option value="">全部</option>
@@ -286,32 +285,30 @@ var GirdForm = React.createClass({
 											<option value="false">子選單</option>
 
 										</select> { }
-
-
-										<button className="btn-primary" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn btn-sm btn-secondary" type="submit"><i className="fa-search"></i> 搜尋</button>
 									</div>
 								</div>
 							</div>
 						</div>
-						<table className="table-condensed">
+						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th className="col-xs-1 text-center">
-										<label className="cbox">
+									<th className="text-xs-center">
+										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
-											<i className="fa-check"></i>
+											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th className="col-xs-1 text-center">修改</th>
-									<th className="col-xs-1">編號</th>
-									<th className="col-xs-1">對應父選單</th>
-									<th className="col-xs-2">選單名稱</th>
-									<th className="col-xs-1">area</th>
-									<th className="col-xs-1">controller</th>
-									<th className="col-xs-1">action</th>
-									<th className="col-xs-1">icon_class</th>
-									<th className="col-xs-1">排序</th>
-									<th className="col-xs-1">選單狀態</th>
+									<th className="text-xs-center">修改</th>
+									<th>編號</th>
+									<th>對應父選單</th>
+									<th>選單名稱</th>
+									<th>area</th>
+									<th>controller</th>
+									<th>action</th>
+									<th>icon_class</th>
+									<th>排序</th>
+									<th>選單狀態</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -349,12 +346,11 @@ var GirdForm = React.createClass({
 
 			outHtml=(
 			<div>
-                <h3 className="title">{this.props.Caption} 編輯</h3>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
 
-				<form className="form-horizontal clearfix" onSubmit={this.handleSubmit}>
-				<div className="col-xs-9">
-					<div className="form-group">
-						<label className="col-xs-2 control-label">編號</label>
+				<form className="form form-sm" onSubmit={this.handleSubmit}>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">編號</label>
 						<div className="col-xs-4">
 							<input type="number" 							
 							className="form-control"	
@@ -364,8 +360,8 @@ var GirdForm = React.createClass({
                             disabled={true} />
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">選擇父選單</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇父選單</label>
 						<div className="col-xs-4">
 							<select className="form-control" 
 							value={fieldData.parent_menu_id}
@@ -378,10 +374,9 @@ var GirdForm = React.createClass({
 							}
 							</select>
 						</div>
-						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>					
-					<div className="form-group">
-						<label className="col-xs-2 control-label">選單名稱</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 選單名稱</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -390,10 +385,9 @@ var GirdForm = React.createClass({
 							maxLength="64"
 							required />
 						</div>
-						<small className="help-inline col-xs-6 text-danger">(必填)</small>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">area</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">area</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -402,8 +396,8 @@ var GirdForm = React.createClass({
 							maxLength="64" />
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">controller</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">controller</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -412,8 +406,8 @@ var GirdForm = React.createClass({
 							maxLength="16" />
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">action</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">action</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -422,8 +416,8 @@ var GirdForm = React.createClass({
 							maxLength="16" />
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">icon_class</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">icon_class</label>
 						<div className="col-xs-4">
 							<input type="text" 							
 							className="form-control"	
@@ -432,8 +426,8 @@ var GirdForm = React.createClass({
 							maxLength="16" />
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">排序</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 排序</label>
 						<div className="col-xs-4">
 							<input type="number" 
 							className="form-control"	
@@ -441,89 +435,83 @@ var GirdForm = React.createClass({
 							onChange={this.changeFDValue.bind(this,'sort')}
 							required />
 						</div>
-						<small className="col-xs-6 help-inline">數字愈大愈前面，未填寫視為 0<span className="text-danger">(必填)</span></small>
+						<small className="col-xs-6 text-muted">數字愈大愈前面，未填寫視為 0</small>
 					</div>				
-					<div className="form-group">
-						<label className="col-xs-2 control-label">選單狀態</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">選單狀態</label>
 						<div className="col-xs-4">
-							<div className="radio-inline">
-								<label>
+								<label className="c-input c-radio">
 									<input type="radio" 
 											name="is_folder"
 											value={true}
 											checked={fieldData.is_folder===true} 
 											onChange={this.changeFDValue.bind(this,'is_folder')}
 									/>
-									<span>父選單</span>
+									<span className="c-indicator"></span>
+									<span className="text-sm">父選單</span>
 								</label>
-							</div>
-							<div className="radio-inline">
-								<label>
+								<label className="c-input c-radio">
 									<input type="radio" 
 											name="is_folder"
 											value={false}
 											checked={fieldData.is_folder===false} 
 											onChange={this.changeFDValue.bind(this,'is_folder')}
 											/>
-									<span>子選單</span>
+									<span className="c-indicator"></span>
+									<span className="text-sm">子選單</span>
 								</label>
-							</div>
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">使用狀態</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">使用狀態</label>
 						<div className="col-xs-4">
-							<div className="radio-inline">
-								<label>
+								<label className="c-input c-radio">
 									<input type="radio" 
 											name="is_use"
 											value={true}
 											checked={fieldData.is_use===true} 
 											onChange={this.changeFDValue.bind(this,'is_use')}
 									/>
-									<span>使用中</span>
+									<span className="c-indicator"></span>
+									<span className="text-sm">使用中</span>
 								</label>
-							</div>
-							<div className="radio-inline">
-								<label>
+								<label className="c-input c-radio">
 									<input type="radio" 
 											name="is_use"
 											value={false}
 											checked={fieldData.is_use===false} 
 											onChange={this.changeFDValue.bind(this,'is_use')}
 											/>
-									<span>未使用</span>
+									<span className="c-indicator"></span>
+									<span className="text-sm">未使用</span>
 								</label>
-							</div>
 						</div>
 					</div>
-					<div className="form-group">
-						<label className="col-xs-2 control-label">可檢視角色</label>
+					<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">可檢視角色</label>
 						<div className="col-xs-10">
-						{
-							fieldData.role_array.map(function(itemData,i) {
-								var out_check = 							
-								<div className="checkbox" key={itemData.role_id}>
-									<label>
-										<input  type="checkbox" 
-												checked={itemData.role_use}
-												onChange={this.setRolesCheck.bind(this,i)}
-										 />
-										{itemData.role_name}
-									</label>
-								</div>;
-								return out_check;
+							{
+								fieldData.role_array.map(function(itemData,i) {
+									var out_check = 							
+									<label className="c-input c-checkbox" key={itemData.role_id}>
+											<input  type="checkbox" 
+													checked={itemData.role_use}
+													onChange={this.setRolesCheck.bind(this,i)}
+											 />
+											 <span className="c-indicator"></span>
+											<span className="text-sm">{itemData.role_name}</span>
+									</label>;
+									return out_check;
 
-							}.bind(this))
-						}
+								}.bind(this))
+							}
 						</div>
 					</div>					
 
-					<div className="form-action text-right">
-						<button type="submit" className="btn-primary" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
-						<button type="button" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
+					<div className="form-action">
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-2" name="btn-1"><i className="fa-check"></i> 儲存</button> { }
+						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.noneType}><i className="fa-times"></i> 回前頁</button>
 					</div>
-				</div>
 				</form>
 			</div>
 			);

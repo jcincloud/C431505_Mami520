@@ -20,3 +20,8 @@
 @section sidebar{
     @Html.Partial("Manage/vucMenu")
 }
+
+<ul className="breadcrumb">
+    <li><a href="~/Base/Roles"><i class="fa-list-alt"></i> @ViewBag.MenuName</a></li>
+    <li>@ViewBag.Caption</li>
+</ul>
