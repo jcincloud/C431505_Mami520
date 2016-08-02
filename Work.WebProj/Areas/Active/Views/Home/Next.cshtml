@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@Resources.Res.System_Name</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="~/Content/css/sys.css" rel="stylesheet" />
+    <link href="~/Content/css/vendor/fontAwesome/font-awesome.css" rel="stylesheet" />
+    <link href="~/_Code/CSS/css/toastr.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/vendor/bootstrap-datetimepicker-build.css" />
+</head>
+<body>
+
+    <div id="page_content">
+
+        @Html.Partial("Manage/JSGlobalVar")
+        <script>
+            var gb_menuname = '@ViewBag.MenuName';
+            var gb_caption = '@ViewBag.Caption';
+            var gb_roles = '@ViewBag.RoleName';
+            var gb_approot = '@Url.Content("~")'; 
+            var gb_born_id=@Request.QueryString["born_id"];
+            var gb_customer_id=@Request.QueryString["customer_id"];
+        </script>
+        <script src="~/Scripts/build/comminc.js"></script>
+        <script src="~/Scripts/app/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+        <script src="~/Scripts/build/func/m-HomeNext.js"></script>
+        @*<script src="~/Scripts/build/app/vendors.js?v=@CommWebSetup.CacheVer"></script>
+            <script src="~/Scripts/build/app/m-HomeRoute.js?v=@CommWebSetup.CacheVer"></script>*@
+        <script>
+            $(".a-tab").click(function (e) {
+                $(".a-tab").removeClass('active');
+                $(this).addClass('active');
+            });
+        </script>
+    </div>
+
+</body>
+</html>

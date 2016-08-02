@@ -303,8 +303,7 @@ var GirdForm = React.createClass({
 									       <option value="">全部</option>
 									        {
 										        CommData.CustomerType.map(function (itemData, i) {
-										            return
-										            <option key={itemData.id} value={itemData.id }>{itemData.label}</option>;
+										            return(<option key={itemData.id} value={itemData.id }>{itemData.label}</option>);
 										        })
 									        }
 									    </select>
@@ -317,8 +316,7 @@ var GirdForm = React.createClass({
 										    <option value="">全部縣市</option>
 									        {
 										        CommData.twDistrict.map(function (itemData, i) {
-										            return
-										            <option key={itemData.city} value={itemData.city }>{itemData.city}</option>;
+										            return(<option key={itemData.city} value={itemData.city }>{itemData.city}</option>);
 										        })
 									        }
 									    </select> { }
@@ -328,8 +326,7 @@ var GirdForm = React.createClass({
 										    <option value="">全部鄉鎮市區</option>
 									        {
 										        this.state.country_list.map(function (itemData, i) {
-										            return
-										            <option key={itemData.county} value={itemData.county }>{itemData.county}</option>;
+										            return(<option key={itemData.county} value={itemData.county }>{itemData.county}</option>);
 										        })
 									        }
 									    </select>

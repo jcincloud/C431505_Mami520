@@ -249,6 +249,7 @@
     <Content Include="Areas\Active\Views\Food\MenuCopyTemplate.cshtml" />
     <Content Include="app_modules\comm-func\package.json" />
     <Content Include="Areas\Active\Views\Home\Test.cshtml" />
+    <Content Include="Areas\Active\Views\Home\Next.cshtml" />
     <None Include="Areas\Base\Controllers\ReportChartController.cs" />
     <Compile Include="Areas\Base\Controllers\RolesController.cs" />
     <Compile Include="Areas\Base\Controllers\MenuController.cs" />
@@ -753,6 +754,8 @@
     <Content Include="Scripts\build\func\m-ElementFood.js" />
     <Content Include="Scripts\build\func\m-GiftRecord.js" />
     <Content Include="Scripts\build\func\m-Home.js" />
+    <Content Include="Scripts\build\func\m-HomeNext.js" />
+    <Content Include="Scripts\build\func\m-HomeRoute.js" />
     <Content Include="Scripts\build\func\m-login.js" />
     <Content Include="Scripts\build\func\m-MealID.js" />
     <Content Include="Scripts\build\func\m-MealSchedule.js" />
@@ -1047,6 +1050,7 @@
     <Content Include="Scripts\src\jsx\m-MenuCopyTemplate.jsx" />
     <Content Include="Scripts\src\jsx\m-HomeRoute.jsx" />
     <Content Include="Scripts\src\jsx\m-Test.jsx" />
+    <Content Include="Scripts\src\jsx\m-HomeNext.jsx" />
     <None Include="Web.Amoz.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
