@@ -30,7 +30,7 @@ var GirdForm = React.createClass({
         var outHtml = null;
         outHtml = (
 <div>
-      <h3 className="h3">首頁</h3>
+      <h3 className="h3">首頁gggggggggggggg</h3>
                     <ul className="nav nav-tabs" role="tablist">
                         <li className="nav-item">
                             <a className="nav-link active" data-toggle="tab" href="#Meal" role="tab"><i className="fa-spoon"></i> 用餐列表</a>
