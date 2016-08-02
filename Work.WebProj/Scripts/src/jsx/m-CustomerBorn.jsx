@@ -789,7 +789,11 @@ var GirdSubForm = React.createClass({
 		var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowMealidSelect){
 				mealid_select_out_html = 					
-					<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
+					<MdoalMealidSelect bsSize="small" animation={false} onRequestHide={this.closeSelectMealid}>
+						<div className="modal-header">
+                            <button className="close" onClick={this.closeSelectMealid}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇用餐編號</h5>
+                        </div>
 							<div className="modal-body">
 								<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
 								<table>
