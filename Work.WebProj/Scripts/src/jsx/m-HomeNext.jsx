@@ -821,7 +821,8 @@ var BasicData = React.createClass({
                      tel_reason={fieldData.tel_reason} />;
         }
         outHtml = (
-			<div title="基本資料編輯">
+			<div>
+                <h3 className="h3">基本資料</h3>
     				<form className="form form-sm" onSubmit={this.handleSubmit}>
     					<div className="form-group row">
     						<label className="col-xs-1 form-control-label text-xs-right">客戶編號</label>
@@ -966,7 +967,7 @@ var BasicData = React.createClass({
     					</div>
     				 </form>{/*---生產紀錄版面---*/}
                  <div>
-                 {customer_born_out_html}
+                 {/*{customer_born_out_html}
                     <hr className="lg" />
                     <h4 className="h4">
                         客戶生產紀錄 明細檔 { }
@@ -980,7 +981,7 @@ var BasicData = React.createClass({
                                 <th>用餐編號</th>
                                 <th>媽媽姓名</th>
                                 <th>寶寶性別</th>
-                                <th>生產方式</th>{/*<th className="col-1">是否結案</th>*/}
+                                <th>生產方式</th>
                                 <th>備註</th>
                             </tr>
                         </thead>
@@ -1007,14 +1008,14 @@ var BasicData = React.createClass({
                                             <td>{itemData.meal_id}</td>
                                             <td>{itemData.mom_name}</td>
                                             <td><StateForGrid stateData={CommData.SexType} id={itemData.baby_sex} /></td>
-                                            <td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>{/*<td>{itemData.is_close? <span className="label label-success">結案</span>:<span className="label label-danger">未結案</span>}</td>*/}
+                                            <td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>
                                             <td>{itemData.memo}</td>
                                         </tr>;
                                 return out_sub_html;
                             }.bind(this))
                         }
                         </tbody>
-                    </table>
+                    </table>*/}
                  </div>
 			</div>
  );
@@ -1283,7 +1284,7 @@ var CustomerBornData = React.createClass({
         }
         outHtml = (
             <div>
-				<form className="form form-sm" onSubmit={this.handleSubmit} id="form1">
+				{/*<form className="form form-sm" onSubmit={this.handleSubmit} id="form1">
 					<div className="form-group row">
 						<label className="col-xs-1 form-control-label text-xs-right">客戶編號</label>
 						<div className="col-xs-2">
@@ -1321,7 +1322,7 @@ var CustomerBornData = React.createClass({
 							</select>
 						</div>
 					</div>
-				</form>
+				</form>*/}
                 {/*---生產紀錄版面---*/}
                 {GirdSubForm_html}
             </div>
@@ -1349,10 +1350,10 @@ var GridRowForSales = React.createClass({
 					<td className="text-xs-center"><GridButtonModify modify={this.modify} /></td>
 					<td>{this.props.itemData.record_sn}</td>
 					<td>{moment(this.props.itemData.record_day).format('YYYY/MM/DD')}</td>
-					<td><StateForGrid stateData={CommData.CustomerType} id={this.props.itemData.customer_type} /></td>
+					{/*<td><StateForGrid stateData={CommData.CustomerType} id={this.props.itemData.customer_type} /></td>
 					<td>{this.props.itemData.meal_id}</td>
 					<td>{this.props.itemData.name}</td>
-					<td>{this.props.itemData.tel_1}</td>
+					<td>{this.props.itemData.tel_1}</td>*/}
 					<td>{this.props.itemData.is_receipt?<span className="text-muted">已轉單</span>:<span className="text-indigo">未轉單</span>}</td>
 					<td>{this.props.itemData.is_close?<span className="text-muted">結案</span>:<span className="text-danger">未結案</span>}</td>
 				</tr>
@@ -1687,9 +1688,9 @@ var SalesDetailData = React.createClass({
 		var detail_out_html=null;//明細檔
         var fieldData=this.state.fieldData;
         if(this.state.edit_type==1){
-				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
+				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-2"><i className="fa-check"></i> 存檔確認</button>;
 			}else{
-				save_out_html=<strong className="text-danger col-xs-offset-1">主檔資料不可修改！</strong>;
+				save_out_html=<strong className="text-danger col-xs-offset-2">主檔資料不可修改！</strong>;
 				detail_out_html=
 				<SubFormForSalesProduct ref="SubFormForSalesProduct" 
 				main_id={fieldData.product_record_id}
@@ -1720,7 +1721,7 @@ var SalesDetailData = React.createClass({
                     <h3 className="h3"><small className="sub"><i className="fa-angle-double-right"></i> 產品銷售主檔</small></h3>
 				    <form className="form form-sm" onSubmit={this.handleSubmit}>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">銷售單號</label>
+							<label className="col-xs-2 form-control-label text-xs-right">銷售單號</label>
 							<div className="col-xs-3">
 								<input type="text" 							
 								className="form-control"	
@@ -1733,7 +1734,7 @@ var SalesDetailData = React.createClass({
 							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">訂單日期</label>
+							<label className="col-xs-2 form-control-label text-xs-right">訂單日期</label>
 							<div className="col-xs-3">
 								<InputDate id="record_day" 
 									onChange={this.changeFDValue} 
@@ -1745,20 +1746,18 @@ var SalesDetailData = React.createClass({
 							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
+							<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
 							<div className="col-xs-3">
-								<div className="input-group input-group-sm">
-									<input type="text" 							
-									className="form-control"	
-									value={fieldData.customer_name}
-									onChange={this.changeFDValue.bind(this,'customer_name')}
-									maxLength="64"
-									disabled />
-								</div>
+								<input type="text"                          
+                                    className="form-control"    
+                                    value={fieldData.customer_name}
+                                    onChange={this.changeFDValue.bind(this,'customer_name')}
+                                    maxLength="64"
+                                    disabled />
 							</div>
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">客戶類別</label>
+							<label className="col-xs-2 form-control-label text-xs-right">客戶類別</label>
 							<div className="col-xs-3">
 								<select className="form-control" 
 								value={fieldData.customer_type}
@@ -1783,7 +1782,7 @@ var SalesDetailData = React.createClass({
 							</div>				
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
+							<label className="col-xs-2 form-control-label text-xs-right">用餐編號</label>
 							<div className="col-xs-3">
 								<input type="text" 
 								className="form-control"	
@@ -1804,7 +1803,7 @@ var SalesDetailData = React.createClass({
 							</div>	
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">連絡電話1</label>
+							<label className="col-xs-2 form-control-label text-xs-right">連絡電話1</label>
 							<div className="col-xs-3">
 								<input type="tel" 
 								className="form-control"	
@@ -1824,7 +1823,7 @@ var SalesDetailData = React.createClass({
 							</div>
 						</div>						
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">身分證字號</label>
+							<label className="col-xs-2 form-control-label text-xs-right">身分證字號</label>
 							<div className="col-xs-3">
 								<input type="text" 
 								className="form-control"	
@@ -1843,7 +1842,7 @@ var SalesDetailData = React.createClass({
 							</div>
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
+							<label className="col-xs-2 form-control-label text-xs-right">送餐地址</label>
 								<TwAddress ver={1}
 								onChange={this.changeFDValue}
 								setFDValue={this.setFDValue}
@@ -1858,7 +1857,7 @@ var SalesDetailData = React.createClass({
 								disabled={true}/>
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">備用地址</label>
+							<label className="col-xs-2 form-control-label text-xs-right">備用地址</label>
 								<TwAddress ver={1}
 								onChange={this.changeFDValue}
 								setFDValue={this.setFDValue}
@@ -1873,7 +1872,7 @@ var SalesDetailData = React.createClass({
 								disabled={true}/>
 						</div>
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">生產備註</label>
+							<label className="col-xs-2 form-control-label text-xs-right">生產備註</label>
 							<div className="col-xs-8">
 								<input type="text" 							
 								className="form-control"	
@@ -1924,7 +1923,7 @@ var SalesDetailData = React.createClass({
         outHtml = (
             <div>
             {modify_html}
-				<h3 className="h3">{this.props.Caption}</h3>
+            <h3 className="h3">銷售紀錄</h3>
 				<form onSubmit={this.handleSearch}>
 
 						<div className="table-header">
@@ -1967,21 +1966,21 @@ var SalesDetailData = React.createClass({
 						<table className="table table-sm table-bordered table-striped">
 							<thead>
 								<tr>
-									<th style={{"width":"5%;"}} className="text-xs-center">
+									<th style={{"width":"10%;"}} className="text-xs-center">
 										<label className="c-input c-checkbox">
 											<input type="checkbox" checked={this.state.checkAll} onChange={this.checkAll} />
 											<span className="c-indicator"></span>
 										</label>
 									</th>
-									<th style={{"width":"5%;"}} className="text-xs-center">修改</th>
-									<th style={{"width":"12%;"}}>銷售單號</th>
-									<th style={{"width":"12%;"}}>訂購時間</th>
-									<th style={{"width":"10%;"}}>客戶分類</th>
+									<th style={{"width":"10%;"}} className="text-xs-center">修改</th>
+									<th style={{"width":"20%;"}}>銷售單號</th>
+									<th style={{"width":"20%;"}}>訂購時間</th>
+									{/*<th style={{"width":"10%;"}}>客戶分類</th>
 									<th style={{"width":"10%;"}}>用餐編號</th>
 									<th style={{"width":"14%;"}}>媽媽姓名</th>
-									<th style={{"width":"12%;"}}>電話1</th>
-									<th style={{"width":"10%;"}}>是否轉單</th>
-									<th style={{"width":"10%;"}}>是否結案</th>
+									<th style={{"width":"12%;"}}>電話1</th>*/}
+									<th style={{"width":"20%;"}}>是否轉單</th>
+									<th style={{"width":"20%;"}}>是否結案</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -2208,18 +2207,16 @@ var MealScheduleData = React.createClass({
 
         if(this.state.isShowCustomerEdit){
             modify_html=(
-            <MdoaleditCustomerDtail bsSize="large" animation={false} title="" onRequestHide={this.noneType} >
+            <MdoaleditCustomerDtail bsSize="large" animation={false}  onRequestHide={this.noneType} >
                     <div className="modal-header">
                         <button className="close" onClick={this.noneType}>&times;</button>
                         <h5 className="modal-title text-secondary">用餐排程資料 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
                     </div>
             <div className="modal-body">
-                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
-
                 <form className="form form-sm" role="form">              
                         <div className="form-group row">
                             <label className="col-xs-1 form-control-label text-xs-right">用餐週期<br />說明</label>
-                            <div className="col-xs-8">
+                            <div className="col-xs-11">
                                 <textarea col="30" row="2" className="form-control"
                                 value={fieldData.meal_memo}
                                 onChange={this.changeFDValue.bind(this,'meal_memo')}
@@ -2246,7 +2243,7 @@ var MealScheduleData = React.createClass({
         outHtml = (
             <div>
             {modify_html}
-                <h3 className="h3">{this.props.Caption}</h3>
+                <h4 className="h4">{this.props.Caption}</h4>
 
                 <form onSubmit={this.handleSearch}>
 
@@ -3424,7 +3421,7 @@ var DiningDemandData = React.createClass({
         if(this.state.edit_type==1) {
             outHtml = (
                 <div>
-                    <div className="alert alert-warning">此生產紀錄暫無用餐需求。</div>
+                    <div className="alert alert-warning">這位媽媽還沒有用餐需求喔……</div>
                     <form onSubmit={this.handleSubmit}>
                         <button type="submit" className="btn btn-lg btn-success" name="btn-1"><i className="fa-plus-circle"></i> 新增用餐需求</button>
                     </form>
@@ -3434,7 +3431,7 @@ var DiningDemandData = React.createClass({
             outHtml = (
                 <div>
                     <form className="form form-sm" onSubmit={this.handleSubmit}>
-                        <div className="form-group row">
+                        {/*<div className="form-group row">
                             <label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 用餐編號</label>
                             <div className="col-xs-3">
                                 <div className="input-group input-group-sm">
@@ -3498,19 +3495,18 @@ var DiningDemandData = React.createClass({
                                        country_field="tw_country_1"
                                        address_field="tw_address_1"
                                        disabled={true} />
-                        </div>
+                        </div>*/}
                         <div className="form-group row">
-                            <label className="col-xs-1 form-control-label text-xs-right">備註</label>
-                            <div className="col-xs-8">
+                            <label className="col-xs-1 form-control-label text-xs-right">需求備註</label>
+                            <div className="col-xs-10">
                                 <textarea col="30" row="2" className="form-control"
                                           value={fieldData.memo}
                                           onChange={this.changeFDValue.bind(this,'memo')}
                                           maxLength="256"></textarea>
                             </div>
-                        </div>
-                        <div className="form-action">
-                            <button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
-                            <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.props.closeAllEdit}><i className="fa-times"></i> 回前頁</button>
+                            <div className="col-xs-1">
+                                <button type="submit" className="btn btn-sm btn-primary" name="btn-1"><i className="fa-check"></i> 存檔確認</button>
+                            </div>
                         </div>
                     </form>
                     {map_out_html}
@@ -3816,20 +3812,18 @@ var insert_info_html=null;
                  
         outHtml = (
             <div>
-                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
+                {/*<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
                 {insert_info_html}
 				<form className="form form-sm" onSubmit={this.handleSubmit}>
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
 							<div className="col-xs-3">
-								<div className="input-group input-group-sm">
-									<input type="text"
+								<input type="text"
                                            className="form-control"
                                            value={fieldData.customer_name}
                                            onChange={this.changeFDValue.bind(this,'customer_name')}
                                            maxLength="64"
                                            disabled />
-								</div>
 							</div>
 						</div>
 						<div className="form-group row">
@@ -3980,7 +3974,7 @@ var insert_info_html=null;
 
 				</form>
 
-				<hr className="lg" />
+				<hr className="lg" />*/}
                 {detail_out_html}
             </div>
             );
@@ -4523,7 +4517,7 @@ var TelRecordData = React.createClass({
             var born_select_out_html=null;//存放選取用餐編號的視窗內容
 			if(this.state.isShowCustomerBornSelect){
 				born_select_out_html = 					
-					<MdoalCustomerBornSelect bsSize="large" animation={false} title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
+					<MdoalCustomerBornSelect bsSize="large" animation={false} onRequestHide={this.closeSelectCustomerBorn}>
                         <div className="modal-header">
                             <button className="close" onClick={this.closeSelectCustomerBorn}>&times;</button>
                             <h5 className="modal-title text-secondary">選擇客戶</h5>
@@ -4627,14 +4621,12 @@ var TelRecordData = React.createClass({
 					<div className="form-group row">
 						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
 						<div className="col-xs-3">
-							<div className="input-group input-group-sm">
-								<input type="text" 							
-								className="form-control"	
-								value={fieldData.customer_name}
-								onChange={this.changeFDValue.bind(this,'customer_name')}
-								maxLength="64"
-								disabled />
-							</div>
+							<input type="text"                           
+                                className="form-control"    
+                                value={fieldData.customer_name}
+                                onChange={this.changeFDValue.bind(this,'customer_name')}
+                                maxLength="64"
+                                disabled />
 						</div>
 					</div>
 					<div className="form-group row">
@@ -4822,8 +4814,6 @@ var TelRecordData = React.createClass({
         }
         outHtml = (
             <div>
-                 <h3 className="h3">{this.props.Caption}</h3>
-
 				<form onSubmit={this.handleSearch}>
             {insert_html}
 
@@ -4873,7 +4863,7 @@ var TelRecordData = React.createClass({
 					                <th style={{"width":"20%;"}}>媽媽姓名</th>
 					                <th style={{"width":"15%;"}}>電話1</th>
 					                <th style={{"width":"15%;"}}>電話2</th>
-					                <th style={{"width":"10%;"}}>電訪原因</th>
+					                <th style={{"width":"16%;"}}>電訪原因</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -5206,7 +5196,11 @@ var GiftRecordData = React.createClass({
         var record_select_out_html=null;//存放選取用餐編號的視窗內容
         if(this.state.isShowRecordSelect){
 				record_select_out_html = 					
-					<MdoalRecordSelect bsSize="medium" title="請選擇產品銷售紀錄" onRequestHide={this.closeSelectRecord}>
+					<MdoalRecordSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectRecord}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectRecord}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇產品銷售紀錄</h5>
+                        </div>
 							<div className="modal-body">
 								<div className="alert alert-warning"><p>此列表僅列出<strong className="text-danger">未有過禮品贈送紀錄</strong>的客戶生產紀錄之銷售。</p></div>
 							    <div className="table-header">
@@ -5289,16 +5283,19 @@ var GiftRecordData = React.createClass({
 			}
         if(this.state.isShowInsertSelect){
             insert_html=(
-                <MdoalCustomerSelect>
-                <div>
+                <MdoalCustomerSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectRecord}>
+                <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectRecord}>&times;</button>
+                            <h5 className="modal-title text-secondary">禮品紀錄 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
+                        </div>
+                <div className="modal-body">
 				{record_select_out_html}
-                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 編輯</small></h3>
 
 				<form className="form form-sm" onSubmit={this.handleSubmit}>
 
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 銷售單號</label>
-						<div className="col-xs-3">
+						<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 銷售單號</label>
+						<div className="col-xs-4">
 							<div className="input-group input-group-sm">
 								<input type="text" 							
 								className="form-control"	
@@ -5314,15 +5311,15 @@ var GiftRecordData = React.createClass({
 						<small className="text-muted col-xs-6">請按 <i className="fa-plus"></i> 選取</small>
 					</div>
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">訂單日期</label>
-						<div className="col-xs-3">
+						<label className="col-xs-2 form-control-label text-xs-right">訂單日期</label>
+						<div className="col-xs-4">
 							<InputDate id="record_day" 
 								onChange={this.changeFDValue} 
 								field_name="record_day" 
 								value={fieldData.record_day}
 								disabled={true} />
 						</div>
-						<label className="col-xs-1 form-control-label text-xs-right">訂購總金額</label>
+						<label className="col-xs-2 form-control-label text-xs-right">訂購總金額</label>
 						<div className="col-xs-4">
 							<div className="input-group input-group-sm">
 								<input type="number" 
@@ -5334,9 +5331,9 @@ var GiftRecordData = React.createClass({
 							</div>
 						</div>
 					</div>
-					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">客戶姓名</label>
-						<div className="col-xs-3">
+					{/*<div className="form-group row">
+						<label className="col-xs-2 form-control-label text-xs-right">客戶姓名</label>
+						<div className="col-xs-4">
 							<input type="text" 
 							className="form-control"	
 							value={fieldData.customer_name}
@@ -5344,7 +5341,7 @@ var GiftRecordData = React.createClass({
 							maxLength="64"
 							disabled />
 						</div>
-						<label className="col-xs-1 form-control-label text-xs-right">媽媽姓名</label>
+						<label className="col-xs-2 form-control-label text-xs-right">媽媽姓名</label>
 						<div className="col-xs-4">
 							<input type="text" 
 							className="form-control"	
@@ -5355,8 +5352,8 @@ var GiftRecordData = React.createClass({
 						</div>
 					</div>
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">聯絡電話1</label>
-						<div className="col-xs-3">
+						<label className="col-xs-2 form-control-label text-xs-right">聯絡電話1</label>
+						<div className="col-xs-4">
 							<input type="tel"
                                    className="form-control"
                                    value={fieldData.tel_1}
@@ -5364,7 +5361,7 @@ var GiftRecordData = React.createClass({
                                    maxLength="16"
                                    disabled />
 						</div>
-						<label className="col-xs-1 form-control-label text-xs-right">聯絡電話2</label>
+						<label className="col-xs-2 form-control-label text-xs-right">聯絡電話2</label>
 						<div className="col-xs-4">
 							<input type="tel"
                                    className="form-control"
@@ -5376,8 +5373,8 @@ var GiftRecordData = React.createClass({
 					</div>
 
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">身分證號</label>
-						<div className="col-xs-3">
+						<label className="col-xs-2 form-control-label text-xs-right">身分證號</label>
+						<div className="col-xs-4">
 							<input type="text"
                                    className="form-control"
                                    value={fieldData.sno}
@@ -5385,20 +5382,18 @@ var GiftRecordData = React.createClass({
                                    maxLength="10"
                                    disabled />
 						</div>
-						<label className="col-xs-1 form-control-label text-xs-right">生日</label>
+						<label className="col-xs-2 form-control-label text-xs-right">生日</label>
 						<div className="col-xs-4">
-							<span className="has-feedback">
 								<InputDate id="birthday"
                                            onChange={this.changeFDValue}
                                            field_name="birthday"
                                            value={fieldData.birthday}
                                            disabled={true} />
-							</span>
 						</div>
 					</div>
 
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">送餐地址</label>
+						<label className="col-xs-2 form-control-label text-xs-right">送餐地址</label>
 						<TwAddress ver={1}
                                    onChange={this.changeFDValue}
                                    setFDValue={this.setFDValue}
@@ -5414,7 +5409,7 @@ var GiftRecordData = React.createClass({
 					</div>
 
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">備用地址</label>
+						<label className="col-xs-2 form-control-label text-xs-right">備用地址</label>
 						<TwAddress ver={1}
                                    onChange={this.changeFDValue}
                                    setFDValue={this.setFDValue}
@@ -5427,10 +5422,10 @@ var GiftRecordData = React.createClass({
                                    country_field="tw_country_2"
                                    address_field="tw_address_2"
                                    disabled={true} />
-					</div>
+					</div>*/}
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 參與活動</label>
-						<div className="col-xs-8">
+						<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 參與活動</label>
+						<div className="col-xs-10">
 							<select className="form-control" 
 							value={fieldData.activity_id}
 							onChange={this.changeFDValue.bind(this,'activity_id')}>
@@ -5444,8 +5439,8 @@ var GiftRecordData = React.createClass({
 					</div>
 
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 領取狀態</label>
-						<div className="col-xs-8">
+						<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 領取狀態</label>
+						<div className="col-xs-10">
 								<label className="c-input c-radio">
 									<input type="radio" 
 											name="receive_state"
@@ -5480,8 +5475,8 @@ var GiftRecordData = React.createClass({
 					</div>
 
 					<div className="form-group row">
-						<label className="col-xs-1 form-control-label text-xs-right">備註</label>
-						<div className="col-xs-8">
+						<label className="col-xs-2 form-control-label text-xs-right">備註</label>
+						<div className="col-xs-10">
 							<textarea col="30" rows="3" className="form-control"
 							value={fieldData.memo}
 							onChange={this.changeFDValue.bind(this,'memo')}
@@ -5490,7 +5485,7 @@ var GiftRecordData = React.createClass({
 					</div>
 
 					<div className="form-action">
-						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
+						<button type="submit" className="btn btn-sm btn-primary col-xs-offset-2" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
 						<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectRecord}><i className="fa-times"></i> 回前頁</button>
 					</div>
 
@@ -5502,7 +5497,7 @@ var GiftRecordData = React.createClass({
         outHtml = (
             <div>
             {insert_html}
-                 <h3 className="h3">{this.props.Caption}</h3>
+                 <h3 className="h3">禮品紀錄</h3>
 
 				<form onSubmit={this.handleSearch}>
 
@@ -5590,9 +5585,9 @@ var GiftRecordData = React.createClass({
 				<tr>
 					<td className="text-xs-center"><GridButtonModify modify={this.modify} /></td>
 					<td>{this.props.itemData.record_sn}</td>
-					<td>{this.props.itemData.customer_name}</td>
+					{/*<td>{this.props.itemData.customer_name}</td>
 					<td>{this.props.itemData.sno}</td>
-					<td>{this.props.itemData.tel_1}</td>
+					<td>{this.props.itemData.tel_1}</td>*/}
 				</tr>
 			);
     }
@@ -5814,9 +5809,12 @@ var AccountRecordData = React.createClass({
 			}
         if(this.state.isShowCustomerEdit){
             modify_html=(
-                <MdoalCustomerSelect>
-                <div>
-				<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
+                <MdoalCustomerSelect bsSize="large" animation={false}>
+                <div className="modal-header">
+                            <button className="close">&times;</button>
+                            <h5 className="modal-title text-secondary">帳款紀錄 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
+                        </div>
+                <div className="modal-body">
 
 				<form className="form form-sm" role="form" onSubmit={this.handleSubmit}>
 						<div className="form-group row">
@@ -5895,7 +5893,7 @@ var AccountRecordData = React.createClass({
         outHtml = (
             <div>
             {modify_html}
-                <h3 className="h3">{this.props.Caption}</h3>
+                <h3 className="h3">帳款紀錄</h3>
 
 				<form onSubmit={this.handleSearch}>
 
@@ -5907,9 +5905,9 @@ var AccountRecordData = React.createClass({
 										<input type="text" className="form-control input-sm"
                                                value={searchData.word}
                                                onChange={this.changeGDValue.bind(this,'word')}
-                                               placeholder="請擇一填寫..." /> { }
+                                               placeholder="搜尋來源銷售單號..." /> { }
 
-										<button className="btn btn-secondary btn-sm" type="submit"><i className="fa-search"></i>{ }搜尋</button>
+										<button className="btn btn-secondary btn-sm" type="submit"><i className="fa-search"></i> 搜尋</button>
 									</div>
 								</div>
 							</div>
@@ -5918,10 +5916,10 @@ var AccountRecordData = React.createClass({
 							<thead>
 								<tr>
 									<th style={{"width":"10%;"}} className="text-xs-center">修改</th>
-					                <th style={{"width":"20%;"}}>銷售單號</th>
-					                <th style={{"width":"25%;"}}>客戶名稱</th>
+					                <th style={{"width":"90%;"}}>銷售單號</th>
+					                {/*<th style={{"width":"25%;"}}>客戶名稱</th>
 					                <th style={{"width":"25%;"}}>身分證號</th>
-					                <th style={{"width":"20%;"}}>電話1</th>
+					                <th style={{"width":"20%;"}}>電話1</th>*/}
 								</tr>
 							</thead>
 							<tbody>
@@ -6451,7 +6449,11 @@ var GirdSubForm = React.createClass({
         var mealid_select_out_html = null;//存放選取用餐編號的視窗內容
         if (this.state.isShowMealidSelect) {
             mealid_select_out_html =
-					<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
+					<MdoalMealidSelect bsSize="small" animation={false} onRequestHide={this.closeSelectMealid}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectMealid}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇用餐編號</h5>
+                        </div>
 							<div className="modal-body">
 								<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
 								<table>
@@ -6684,11 +6686,8 @@ var GirdSubForm = React.createClass({
         outHtml = (
 				<div>
 				    {customer_born_out_html}
-                            <hr className="lg" />
-                            <h4 className="h4">
-                                客戶生產紀錄 明細檔
-                                <button type="button" onClick={this.addDetail} className="btn btn-sm btn-success m-l-1"><i className="fa-plus-circle"></i> 新增生產紀錄</button>
-                            </h4>
+                    <h3 className="h3">生產紀錄</h3>
+                            <button type="button" onClick={this.addDetail} className="btn btn-success m-b-1"><i className="fa-plus-circle"></i> 新增生產紀錄</button>
                             <table className="table table-sm table-bordered">
                                 <thead>
                                     <tr>
@@ -7190,7 +7189,11 @@ var SubFormForSalesProduct = React.createClass({
 		var product_select_out_html=null;
 		if(this.state.isShowProductSelect){
 			product_select_out_html=
-			<ModalProductSelect bsSize="medium" title="選擇產品" onRequestHide={this.closeSelectProduct}>
+			<ModalProductSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectProduct}>
+                <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectProduct}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇產品</h5>
+                        </div>
 						<div className="modal-body">
 						<div className="alert alert-warning">
 							一筆生產紀錄只能對應一筆試吃
@@ -7261,7 +7264,11 @@ var SubFormForSalesProduct = React.createClass({
 		var searchMealIDData=this.state.searchMealIDData;
 		if(this.state.isShowMealidSelect){
 			mealid_select_out_html = 					
-				<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
+				<MdoalMealidSelect bsSize="small" animation={false} onRequestHide={this.closeSelectMealid}>
+                    <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectMealid}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇用餐編號</h5>
+                        </div>
 						<div className="modal-body">
 							<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
 								<div className="table-header">
@@ -7354,6 +7361,7 @@ var SubFormForSalesProduct = React.createClass({
 			outHtml =
 			(
 				<div>
+                <h3 className="h3">銷售紀錄</h3>
 					{product_select_out_html}
 				{/*---產品明細編輯start---*/}
 					<h3 className="h3"> <small className="sub"><i className="fa-angle-double-right"></i> 新增產品銷售明細</small></h3>
@@ -7459,7 +7467,7 @@ var SubFormForSalesProduct = React.createClass({
 						
 						{meal_id_html}
 						<div className="form-group row">
-							<label className="col-xs-1 form-control-label text-xs-right">預計<br/>送餐起日</label>
+							<label className="col-xs-1 form-control-label text-xs-right">預計送餐起日</label>
 							<div className="col-xs-4">
 								<InputDate id="meal_start" 
 									onChange={this.changeMealday} 
@@ -7467,42 +7475,44 @@ var SubFormForSalesProduct = React.createClass({
 									value={fieldSubData.meal_start}
 									required={(fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!='')|| fieldSubData.product_type==1}
 									disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
-								{/*---早開始、午開始、晚開始---*/}
-								<div>
-									<label className="c-input c-radio">
-										<input type="radio" 
-												name="set_start_meal"
-												value={1}
-												checked={fieldSubData.set_start_meal==1} 
-												onChange={this.changeFDValue.bind(this,'set_start_meal')}
-										/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">早開始</span>
-									</label>
-									<label className="c-input c-radio">
-										<input type="radio" 
-												name="set_start_meal"
-												value={2}
-												checked={fieldSubData.set_start_meal==2} 
-												onChange={this.changeFDValue.bind(this,'set_start_meal')}
-										/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">午開始</span>
-									</label>
-									<label className="c-input c-radio">
-										<input type="radio" 
-												name="set_start_meal"
-												value={3}
-												checked={fieldSubData.set_start_meal==3} 
-												onChange={this.changeFDValue.bind(this,'set_start_meal')}
-										/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">晚開始</span>
-									</label>									
-								</div>
-								{/*---早開始、午開始、晚開始---*/}	
-							</div>					
-							<label className="col-xs-1 form-control-label text-xs-right">預計<br/>送餐迄日</label>
+							</div>
+                            {/*---早開始、午開始、晚開始---*/}
+                                <div className="col-xs-4">
+                                    <label className="c-input c-radio">
+                                        <input type="radio" 
+                                                name="set_start_meal"
+                                                value={1}
+                                                checked={fieldSubData.set_start_meal==1} 
+                                                onChange={this.changeFDValue.bind(this,'set_start_meal')}
+                                        />
+                                        <span className="c-indicator"></span>
+                                        <span className="text-sm">早開始</span>
+                                    </label>
+                                    <label className="c-input c-radio">
+                                        <input type="radio" 
+                                                name="set_start_meal"
+                                                value={2}
+                                                checked={fieldSubData.set_start_meal==2} 
+                                                onChange={this.changeFDValue.bind(this,'set_start_meal')}
+                                        />
+                                        <span className="c-indicator"></span>
+                                        <span className="text-sm">午開始</span>
+                                    </label>
+                                    <label className="c-input c-radio">
+                                        <input type="radio" 
+                                                name="set_start_meal"
+                                                value={3}
+                                                checked={fieldSubData.set_start_meal==3} 
+                                                onChange={this.changeFDValue.bind(this,'set_start_meal')}
+                                        />
+                                        <span className="c-indicator"></span>
+                                        <span className="text-sm">晚開始</span>
+                                    </label>                                    
+                                </div>
+                                {/*---早開始、午開始、晚開始---*/} 
+                        </div>
+                        <div className="form-group row">					
+							<label className="col-xs-1 form-control-label text-xs-right">預計送餐迄日</label>
 							<div className="col-xs-4">
 								<InputDate id="meal_end" 
 									onChange={this.changeMealday} 
@@ -7510,42 +7520,41 @@ var SubFormForSalesProduct = React.createClass({
 									value={fieldSubData.meal_end}
 									required={fieldSubData.product_type==2 & fieldSubData.meal_id!=null & fieldSubData.meal_id!=undefined & fieldSubData.meal_id!=''}
 									disabled={(fieldSubData.product_type==2 & fieldSubData.isDailyMealAdd) & this.state.edit_sub_type==2} />
-							
-								{/*---早結束、午結束、晚結束---*/}
-								<div>
-									<label className="c-input c-radio">
-										<input type="radio" 
-												name="set_end_meal"
-												value={1}
-												checked={fieldSubData.set_end_meal==1} 
-												onChange={this.changeFDValue.bind(this,'set_end_meal')}
-											/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">早結束</span>
-									</label>
-									<label className="c-input c-radio">
-										<input type="radio" 
-												name="set_end_meal"
-												value={2}
-												checked={fieldSubData.set_end_meal==2} 
-												onChange={this.changeFDValue.bind(this,'set_end_meal')}
-											/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">午結束</span>
-									</label>
-									<label className="c-input c-radio">
-										<input type="radio" 
-												name="set_end_meal"
-												value={3}
-												checked={fieldSubData.set_end_meal==3} 
-												onChange={this.changeFDValue.bind(this,'set_end_meal')}
-												/>
-										<span className="c-indicator"></span>
-										<span className="text-sm">晚結束</span>
-									</label>											
-								</div>
-								{/*---早結束、午結束、晚結束---*/}
-							</div>																		
+							</div>
+                            {/*---早結束、午結束、晚結束---*/}
+                                <div className="col-xs-4">
+                                    <label className="c-input c-radio">
+                                        <input type="radio" 
+                                                name="set_end_meal"
+                                                value={1}
+                                                checked={fieldSubData.set_end_meal==1} 
+                                                onChange={this.changeFDValue.bind(this,'set_end_meal')}
+                                            />
+                                        <span className="c-indicator"></span>
+                                        <span className="text-sm">早結束</span>
+                                    </label>
+                                    <label className="c-input c-radio">
+                                        <input type="radio" 
+                                                name="set_end_meal"
+                                                value={2}
+                                                checked={fieldSubData.set_end_meal==2} 
+                                                onChange={this.changeFDValue.bind(this,'set_end_meal')}
+                                            />
+                                        <span className="c-indicator"></span>
+                                        <span className="text-sm">午結束</span>
+                                    </label>
+                                    <label className="c-input c-radio">
+                                        <input type="radio" 
+                                                name="set_end_meal"
+                                                value={3}
+                                                checked={fieldSubData.set_end_meal==3} 
+                                                onChange={this.changeFDValue.bind(this,'set_end_meal')}
+                                                />
+                                        <span className="c-indicator"></span>
+                                        <span className="text-sm">晚結束</span>
+                                    </label>                                            
+                                </div>
+                                {/*---早結束、午結束、晚結束---*/}
 						</div>
 							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">預計天數</label>
@@ -7638,7 +7647,7 @@ var SubFormForSalesProduct = React.createClass({
 							</div>
 							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">用餐週期<br />說明</label>
-								<div className="col-xs-10">
+								<div className="col-xs-9">
 									<textarea col="30" rows="3" className="form-control"
 									value={fieldSubData.meal_memo}
 									onChange={this.changeFDValue.bind(this,'meal_memo')}
@@ -7897,7 +7906,7 @@ var SubFormForAccountPay = React.createClass({
 				<div>
 				{/*---新增收款明細start---*/}
 					<hr className="lg" />
-					<h3 className="h3">新增收款明細</h3>
+					<h4 className="h4">新增收款明細</h4>
 
 					<form className="form form-sm" role="form" id="SubFormForAccountPayForm" onSubmit={this.detailHandleSubmit}>
 							<div className="form-group row">
@@ -7975,14 +7984,14 @@ var SubFormForAccountPay = React.createClass({
 							<div className="form-action">
 								<button type="submit" form="SubFormForAccountPayForm" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button> { }
 								<button type="button" className="btn btn-sm btn-blue-grey" onClick={this.insertSubType}><i className="fa-times"></i> 取消</button> { }
-								<button type="button" className="btn btn-sm btn-blue-grey col-xs-offset-6" onClick={this.props.noneType}><i className="fa-arrow-left"></i> 回列表</button> { }
+								<button type="button" className="btn btn-sm btn-blue-grey col-xs-offset-5" onClick={this.props.noneType}><i className="fa-arrow-left"></i> 回列表</button> { }
                             	<button type="button" className="btn btn-sm btn-info" onClick={this.setProductRecord.bind(this)}><i className="fa-undo"></i> 回產品銷售</button>
 							</div>
 					</form>
 				{/*---新增收款明細end---*/}
 					<hr className="lg" />
 				{/*---收款明細列表start---*/}
-					<h3 className="h3">收款明細</h3>
+					<h4 className="h4">收款明細</h4>
 					<div className="table-header">
 						【實收 <strong className="text-danger">${formatMoney(this.state.Total_Money,0)}</strong>】 { }
 						【未收 <strong className="text-danger">${formatMoney(this.props.main_total-this.state.Total_Money,0)}</strong>】
