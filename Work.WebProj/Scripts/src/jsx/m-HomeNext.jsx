@@ -1373,7 +1373,10 @@ var SalesDetailData = React.createClass({
             checkAll: false,
             isShowCustomerBornSelect: false,
             isShowModifySelect:false,
-            born_list: []
+            born_list: [],
+            searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
+            isShowProductSelect:false,//控制選取產品視窗顯示
+			product_list:[],
         };
     },
     getDefaultProps: function () {
@@ -1681,12 +1684,152 @@ var SalesDetailData = React.createClass({
         //檢視 應收帳款
         document.location.href = gb_approot + 'Active/AccountsPayable?product_record_id=' + this.state.fieldData.product_record_id;
     },
+    changeGDProductValue:function(name,e){
+		var obj = this.state.searchProductData;
+		obj[name] = e.target.value;
+		this.setState({searchProductData:obj});
+		this.queryAllProduct();
+	},
+    queryAllProduct:function(){//選取產品編號-
+		jqGet(gb_approot + 'api/GetAction/GetAllProduct',this.state.searchProductData)
+		.done(function(data, textStatus, jqXHRdata) {
+			this.setState({product_list:data});
+		}.bind(this))
+		.fail(function( jqXHR, textStatus, errorThrown ) {
+			showAjaxError(errorThrown);
+		});		
+	},
+    showSelectProduct:function(){
+		this.queryAllProduct();
+		this.setState({isShowProductSelect:true});
+	},
+	closeSelectProduct:function(){
+		this.setState({isShowProductSelect:false});
+	},
+    selectProduct:function(product_id,e){
+		 var fSD = this.refs["SubFormForSalesProduct"].state.fieldSubData;
+		 var tryout_array=this.refs["SubFormForSalesProduct"].state.tryout_array;
+		 var parm=this.refs["SubFormForSalesProduct"].state.parm;//用餐點數計算
+		 tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
+
+		this.state.product_list.forEach(function(obj,i){
+			if(obj.product_id==product_id){
+				fSD.product_id=product_id;
+				fSD.product_type=obj.product_type;
+				fSD.product_name=obj.product_name;
+				fSD.price=obj.price;
+				fSD.standard=obj.standard;
+				fSD.subtotal=fSD.qty*obj.price;
+				if(obj.product_type==1 || obj.product_type==2){
+					//parm:{breakfast:0,lunch:0,dinner:0}
+					//依產品各餐別計算售價點數
+					parm.breakfast=roundX(obj.breakfast_price/obj.price,4);
+					parm.lunch=roundX(obj.lunch_price/obj.price,4);
+					parm.dinner=roundX(obj.dinner_price/obj.price,4);
+
+					fSD.tryout_mealtype=obj.meal_type;
+					//依產品選擇餐別帶出餐別
+					if(obj.meal_type!=undefined){
+						var array=obj.meal_type.split(",");
+						tryout_array.forEach(function(object, i){
+							array.forEach(function(a_obj,j){
+								if(object.name==a_obj){
+									object.value=true;
+								}
+							})
+			    		})
+					}
+				}
+			}
+		});
+		if(fSD.product_type==2){//如果產品為月子餐就儲存用餐編號
+			fSD.meal_id=this.props.meal_id;
+		}
+		this.refs["SubFormForSalesProduct"].updateSelectProduct(fSD,tryout_array,parm);
+		this.setState({isShowProductSelect:false});
+	},
     render: function () {
         var searchData = this.state.searchData;
         var modify_html=null;
         var ModalProductSelect=ReactBootstrap.Modal;
 		var detail_out_html=null;//明細檔
         var fieldData=this.state.fieldData;
+        //產品選取視窗
+        var searchProductData=this.state.searchProductData;
+	var ModalProductSelect=ReactBootstrap.Modal;//啟用產品選取的視窗內容
+		var product_select_out_html=null;
+		if(this.state.isShowProductSelect){
+			product_select_out_html=
+			<ModalProductSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectProduct}>
+                <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectProduct}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇產品</h5>
+                        </div>
+						<div className="modal-body">
+						<div className="alert alert-warning">
+							一筆生產紀錄只能對應一筆試吃
+						</div>
+							<div className="table-header">
+			                    <div className="table-filter">
+			                        <div className="form-inline form-sm">
+			                            <div className="form-group">
+			                                <label className="text-sm">產品名稱</label> { }
+			                                <input type="text" className="form-control"
+			                            	value={searchProductData.name}
+											onChange={this.changeGDProductValue.bind(this,'name')} />
+			                            </div> { }
+			                            <div className="form-group">
+			                                <label className="text-sm">產品分類</label> { }
+			                                <select className="form-control"
+			                                	value={searchProductData.product_type}
+												onChange={this.changeGDProductValue.bind(this,'product_type')}>
+			                                    <option value="">全部</option>
+												{
+													CommData.ProductType.map(function(itemData,i) {
+														return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
+													})
+												}
+			                                </select>
+			                            </div> { }
+			                            <button className="btn btn-secondary btn-sm" onClick={this.queryAllProduct}><i className="fa-search"></i> 搜尋</button>
+			                        </div>
+			                    </div>
+			                </div>
+			                <table className="table table-sm table-bordered table-striped">
+			                <tbody>
+				                    <tr>
+				                        <th style={{"width":"10%;"}} className="text-xs-center">選擇</th>
+				                        <th style={{"width":"30%;"}}>產品名稱</th>
+				                        <th style={{"width":"20%;"}}>產品分類</th>
+				                        <th style={{"width":"40%;"}}>售價</th>
+				                    </tr>
+				                    {
+										this.state.product_list.map(function(itemData,i) {
+											
+											var product_out_html = 
+												<tr key={itemData.product_id}>
+													<td className="text-xs-center">
+														<label className="c-input c-checkbox">
+				                                			<input type="checkbox" onClick={this.selectProduct.bind(this,itemData.product_id)} />
+				                                			<span className="c-indicator"></span>
+				                            			</label>
+				                            		</td>
+													<td>{itemData.product_name}</td>
+													<td><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
+													<td>{itemData.price}</td>
+												</tr>;
+											return product_out_html;
+										}.bind(this))
+									}
+			                    </tbody>                   
+			                </table>
+						</div>
+						<div className="modal-footer form-action">
+			                <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectProduct}><i className="fa-times"></i> 關閉</button>
+			            </div>
+				</ModalProductSelect>;
+        }
+//產品選取視窗
         if(this.state.edit_type==1){
 				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-2"><i className="fa-check"></i> 存檔確認</button>;
 			}else{
@@ -1697,7 +1840,8 @@ var SalesDetailData = React.createClass({
 				customer_id={fieldData.customer_id}
 				born_id={fieldData.born_id} 
 				meal_id={fieldData.meal_id}
-				is_close={fieldData.is_close} />;
+				is_close={fieldData.is_close}
+                showSelectProduct={this.showSelectProduct} />;
 				if(!fieldData.is_close){
 					close_out_html=<button className="btn btn-success btn-block" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
 				}
@@ -1923,6 +2067,7 @@ var SalesDetailData = React.createClass({
         outHtml = (
             <div>
             {modify_html}
+            {product_select_out_html}
             <h3 className="h3">銷售紀錄</h3>
 				<form onSubmit={this.handleSearch}>
 
@@ -6743,13 +6888,10 @@ var SubFormForSalesProduct = React.createClass({
 	getInitialState: function() {  
 		return {
 			gridSubData:[],
-			fieldSubData:{},
-			searchProductData:{name:null,product_type:null,born_id:this.props.born_id},
+			fieldSubData:{},			
 			searchMealIDData:{keyword:'A'},
 			edit_sub_type:0,//預設皆為新增狀態
 			checkAll:false,
-			isShowProductSelect:false,//控制選取產品視窗顯示
-			product_list:[],
 			parm:{breakfast:0,lunch:0,dinner:0},//計算用
 			isShowMealidSelect:false,//控制選取用餐編號顯示
 			mealid_list:[],
@@ -6953,12 +7095,6 @@ var SubFormForSalesProduct = React.createClass({
 		}
 		this.setState({fieldSubData:obj});
 	},
-	changeGDProductValue:function(name,e){
-		var obj = this.state.searchProductData;
-		obj[name] = e.target.value;
-		this.setState({searchProductData:obj});
-		this.queryAllProduct();
-	},
 	changeMealday:function(name,e){//計算日期天數
 		var obj = this.state.fieldSubData;
 		var parm=this.state.parm;
@@ -7024,63 +7160,6 @@ var SubFormForSalesProduct = React.createClass({
 		obj.subtotal=obj.qty*obj.price;
 
 		this.setState({fieldSubData:obj});
-	},
-	queryAllProduct:function(){//選取產品編號-
-		jqGet(gb_approot + 'api/GetAction/GetAllProduct',this.state.searchProductData)
-		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({product_list:data});
-		}.bind(this))
-		.fail(function( jqXHR, textStatus, errorThrown ) {
-			showAjaxError(errorThrown);
-		});		
-	},
-	showSelectProduct:function(){
-		this.queryAllProduct();
-		this.setState({isShowProductSelect:true});
-	},
-	closeSelectProduct:function(){
-		this.setState({isShowProductSelect:false});
-	},
-	selectProduct:function(product_id,e){
-		var fSD = this.state.fieldSubData;
-		var tryout_array=this.state.tryout_array;
-		var parm=this.state.parm;//用餐點數計算
-		tryout_array.forEach(function(object, i){object.value=false;})//選之前先清空
-
-		this.state.product_list.forEach(function(obj,i){
-			if(obj.product_id==product_id){
-				fSD.product_id=product_id;
-				fSD.product_type=obj.product_type;
-				fSD.product_name=obj.product_name;
-				fSD.price=obj.price;
-				fSD.standard=obj.standard;
-				fSD.subtotal=fSD.qty*obj.price;
-				if(obj.product_type==1 || obj.product_type==2){
-					//parm:{breakfast:0,lunch:0,dinner:0}
-					//依產品各餐別計算售價點數
-					parm.breakfast=roundX(obj.breakfast_price/obj.price,4);
-					parm.lunch=roundX(obj.lunch_price/obj.price,4);
-					parm.dinner=roundX(obj.dinner_price/obj.price,4);
-
-					fSD.tryout_mealtype=obj.meal_type;
-					//依產品選擇餐別帶出餐別
-					if(obj.meal_type!=undefined){
-						var array=obj.meal_type.split(",");
-						tryout_array.forEach(function(object, i){
-							array.forEach(function(a_obj,j){
-								if(object.name==a_obj){
-									object.value=true;
-								}
-							})
-			    		})
-					}
-				}
-			}
-		});
-		if(fSD.product_type==2){//如果產品為月子餐就儲存用餐編號
-			fSD.meal_id=this.props.meal_id;
-		}
-		this.setState({isShowProductSelect:false,fieldSubData:fSD,tryout_array:tryout_array,parm:parm});
 	},
 	setReleaseMealID:function(meal_id,record_deatil_id){
 		if(!confirm('確定釋放用餐編號?')){
@@ -7180,84 +7259,13 @@ var SubFormForSalesProduct = React.createClass({
 		obj.tryout_mealtype=array;
 		this.setState({fieldSubData:obj,tryout_array:arrayObj});
 	},
+    updateSelectProduct:function(fSD,tryout_array,parm){
+        this.setState({fieldSubData:fSD,tryout_array:tryout_array,parm:parm});
+    },
 	render: function() {
 		var outHtml = null;
 		var fieldSubData = this.state.fieldSubData;//明細檔資料
 		var searchProductData=this.state.searchProductData;//
-
-		var ModalProductSelect=ReactBootstrap.Modal;//啟用產品選取的視窗內容
-		var product_select_out_html=null;
-		if(this.state.isShowProductSelect){
-			product_select_out_html=
-			<ModalProductSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectProduct}>
-                <div className="modal-header">
-                            <button className="close" onClick={this.closeSelectProduct}>&times;</button>
-                            <h5 className="modal-title text-secondary">選擇產品</h5>
-                        </div>
-						<div className="modal-body">
-						<div className="alert alert-warning">
-							一筆生產紀錄只能對應一筆試吃
-						</div>
-							<div className="table-header">
-			                    <div className="table-filter">
-			                        <div className="form-inline form-sm">
-			                            <div className="form-group">
-			                                <label className="text-sm">產品名稱</label> { }
-			                                <input type="text" className="form-control"
-			                            	value={searchProductData.name}
-											onChange={this.changeGDProductValue.bind(this,'name')} />
-			                            </div> { }
-			                            <div className="form-group">
-			                                <label className="text-sm">產品分類</label> { }
-			                                <select className="form-control"
-			                                	value={searchProductData.product_type}
-												onChange={this.changeGDProductValue.bind(this,'product_type')}>
-			                                    <option value="">全部</option>
-												{
-													CommData.ProductType.map(function(itemData,i) {
-														return <option  key={itemData.id} value={itemData.id}>{itemData.label}</option>;
-													})
-												}
-			                                </select>
-			                            </div> { }
-			                            <button className="btn btn-secondary btn-sm" onClick={this.queryAllProduct}><i className="fa-search"></i> 搜尋</button>
-			                        </div>
-			                    </div>
-			                </div>
-			                <table className="table table-sm table-bordered table-striped">
-			                <tbody>
-				                    <tr>
-				                        <th style={{"width":"10%;"}} className="text-xs-center">選擇</th>
-				                        <th style={{"width":"30%;"}}>產品名稱</th>
-				                        <th style={{"width":"20%;"}}>產品分類</th>
-				                        <th style={{"width":"40%;"}}>售價</th>
-				                    </tr>
-				                    {
-										this.state.product_list.map(function(itemData,i) {
-											
-											var product_out_html = 
-												<tr key={itemData.product_id}>
-													<td className="text-xs-center">
-														<label className="c-input c-checkbox">
-				                                			<input type="checkbox" onClick={this.selectProduct.bind(this,itemData.product_id)} />
-				                                			<span className="c-indicator"></span>
-				                            			</label>
-				                            		</td>
-													<td>{itemData.product_name}</td>
-													<td><StateForGrid stateData={CommData.ProductType} id={itemData.product_type} /></td>
-													<td>{itemData.price}</td>
-												</tr>;
-											return product_out_html;
-										}.bind(this))
-									}
-			                    </tbody>                   
-			                </table>
-						</div>
-						<div className="modal-footer form-action">
-			                <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.closeSelectProduct}><i className="fa-times"></i> 關閉</button>
-			            </div>
-				</ModalProductSelect>;
-		}
 
 		var MdoalMealidSelect=ReactBootstrap.Modal;//啟用選取用餐編號的視窗內容
 		var mealid_select_out_html=null;//存放選取用餐編號的視窗內容
@@ -7362,7 +7370,6 @@ var SubFormForSalesProduct = React.createClass({
 			(
 				<div>
                 <h3 className="h3">銷售紀錄</h3>
-					{product_select_out_html}
 				{/*---產品明細編輯start---*/}
 					<h3 className="h3"> <small className="sub"><i className="fa-angle-double-right"></i> 新增產品銷售明細</small></h3>
 					<form className="form form-sm" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
@@ -7378,7 +7385,7 @@ var SubFormForSalesProduct = React.createClass({
 									maxLength="64"
 									required disabled　/>
 									<span className="input-group-btn">
-										<a className="btn btn-success" onClick={this.showSelectProduct}
+										<a className="btn btn-success" onClick={this.props.showSelectProduct}
 										disabled={this.state.edit_sub_type==2} ><i className="fa-plus"></i></a>
 									</span>
 								</div>
