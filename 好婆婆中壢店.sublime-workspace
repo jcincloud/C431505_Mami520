@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"modal",
+				"modal-body"
+			],
+			[
 				"trans",
 				"translate"
 			],
@@ -279,6 +283,22 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "Work.WebProj/Areas/Active/Views/Home/Next.cshtml",
+			"settings":
+			{
+				"buffer_size": 1673,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Work.WebProj/Scripts/src/jsx/m-HomeNext.jsx",
+			"settings":
+			{
+				"buffer_size": 335548,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -287,10 +307,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 58.0,
-		"last_filter": "",
+		"height": 219.0,
+		"last_filter": "Package Control: re",
 		"selected_items":
 		[
+			[
+				"Package Control: re",
+				"Package Control: Remove Package"
+			],
 			[
 				"Package Control: list",
 				"Package Control: List Packages"
@@ -306,10 +330,6 @@
 			[
 				"Package Control: in",
 				"Package Control: Install Package"
-			],
-			[
-				"Package Control: re",
-				"Package Control: Remove Package"
 			],
 			[
 				"ins",
@@ -352,7 +372,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 400.0
+		"width": 392.0
 	},
 	"console":
 	{
@@ -373,6 +393,14 @@
 	},
 	"expanded_folders":
 	[
+		"/D/Github/C431505_Mami520/Work.WebProj",
+		"/D/Github/C431505_Mami520/Work.WebProj/Areas",
+		"/D/Github/C431505_Mami520/Work.WebProj/Areas/Active",
+		"/D/Github/C431505_Mami520/Work.WebProj/Areas/Active/Views",
+		"/D/Github/C431505_Mami520/Work.WebProj/Areas/Active/Views/Home",
+		"/D/Github/C431505_Mami520/Work.WebProj/Scripts",
+		"/D/Github/C431505_Mami520/Work.WebProj/Scripts/src",
+		"/D/Github/C431505_Mami520/Work.WebProj/Scripts/src/jsx"
 	],
 	"file_history":
 	[
@@ -529,6 +557,37 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"新增生產",
+			"系統自動產生，無法修改",
+			"禮品紀錄",
+			"帳款紀錄",
+			"GridRowForTelRecord",
+			"電訪日期",
+			"銷售單號",
+			"用餐週期",
+			"modal",
+			"帳款紀錄",
+			"帳款明細",
+			"來源銷售單號",
+			"GridRowForAccount",
+			"來源銷售單號",
+			"參與活動",
+			"電訪原因",
+			"主檔",
+			"新增電訪排程",
+			"送餐起日",
+			">\n",
+			"新增生產",
+			"GirdSubForm_html",
+			"客戶名稱",
+			"客戶生產紀錄 明細檔",
+			"customer_born_out_html",
+			"}\n",
+			"客戶生產紀錄 明細檔",
+			"選擇客戶",
+			"銷售單號",
+			"媽媽姓名",
+			"銷售單號",
 			"client",
 			"富利源",
 			"NAKATOMI",
@@ -625,38 +684,7 @@
 			"navbar",
 			"<!--[if gte IE 11]><!--><link rel=\"stylesheet\" href=\"../../_Code/css/css/page.css\"><!--<![endif]-->\n	<!--[if lte IE 11]><link rel=\"stylesheet\" href=\"../../_Code/css/css/ie-page.css\"><![endif]-->",
 			"table",
-			"機台編號",
-			"radio",
-			"form-inline",
-			"file",
-			"form-control-static\"",
-			"fa-search",
-			"modal",
-			"just for test",
-			"儲存",
-			"table",
-			"padding",
-			"form",
-			"input",
-			"ie8",
-			"table-footer",
-			".modal",
-			"background:hsla(0,0,0,0.5)",
-			"danger",
-			"水泥磨",
-			"<label class=\"col-xs-3 text-right",
-			"<label class=\"col-xs-5 text-right",
-			"<label class=\"col-xs-4 text-right",
-			"<label class=\"col-xs-1 text-right",
-			"<label class=\"col-xs-3 text-right",
-			"<label class=\"col-xs-2 text-right",
-			"<label class=\"col-xs-1 text-right",
-			"<label class=\"col-xs-3 text-right",
-			"<label class=\"col-xs-2 text-right",
-			"label",
-			"<label class=\"col-xs-3 text-right",
-			"<label class=\"col-xs-2 text-right",
-			"#main"
+			"機台編號"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -802,8 +830,71 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "Work.WebProj/Areas/Active/Views/Home/Next.cshtml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1673,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								521,
+								521
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"syntax": "Packages/Razor/Razor.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "Work.WebProj/Scripts/src/jsx/m-HomeNext.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 335548,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								82134,
+								82134
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"syntax": "Packages/JSX/JSX.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 36458.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -866,7 +957,7 @@
 		[
 			[
 				"",
-				"D:\\Github\\__sublime-project\\GoldenBell.sublime-project"
+				"D:\\Github\\__sublime-project\\BuyNow.sublime-project"
 			]
 		],
 		"width": 380.0
