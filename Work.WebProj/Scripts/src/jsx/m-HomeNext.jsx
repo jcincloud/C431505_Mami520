@@ -1589,7 +1589,8 @@ var SalesDetailData = React.createClass({
         this.setState({ isShowCustomerBornSelect: true,isShowModifySelect:true });
     },
     closeSelectCustomerBorn: function () {
-        this.setState({ isShowCustomerBornSelect: false,isShowModifySelect:false });
+        this.queryGridData(0);
+        this.setState({ isShowCustomerBornSelect: false,isShowModifySelect:false});
     },
     selectCustomerBorn: function (customer_id, born_id, meal_id) {
         jqGet(gb_approot + 'api/GetAction/GetCustomerAndBorn', { born_id: born_id, customer_id: customer_id })
@@ -1601,7 +1602,7 @@ var SalesDetailData = React.createClass({
 
 		    //客戶編號改變下方帶入的資料要一起變更
 		    fieldData.customer_type = data.getCustomer.customer_type;
-		    fieldData.customer_name = data.getCustomer.customer_name;
+		    fieldData.customer_name = data.getCustomer.customer_name; 
 
 		    fieldData.name = data.getBorn.mom_name;
 		    fieldData.sno = data.getBorn.sno;
@@ -4609,6 +4610,7 @@ var TelRecordData = React.createClass({
         this.setState({ isShowCustomerBornSelect: true,isShowCustomerSelect:true });
     },
     closeSelectCustomerBorn: function () {
+        this.queryGridData(0);
         this.setState({ isShowCustomerBornSelect: false,isShowCustomerSelect:false });
     },
     selectCustomerBorn: function (customer_id, born_id, meal_id) {
@@ -5291,6 +5293,7 @@ var GiftRecordData = React.createClass({
         this.setState({ isShowRecordSelect: true,isShowInsertSelect:true });
     },
     closeSelectRecord: function () {
+        this.queryGridData(0);
         this.setState({ isShowRecordSelect: false,isShowInsertSelect:false });
     },
     selectRecord: function (product_record_id, customer_id, born_id) {
