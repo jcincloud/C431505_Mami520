@@ -295,7 +295,15 @@
 			"file": "Work.WebProj/Scripts/src/jsx/m-HomeNext.jsx",
 			"settings":
 			{
-				"buffer_size": 335548,
+				"buffer_size": 336013,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Work.WebProj/Content/sass/_admin/_module.scss",
+			"settings":
+			{
+				"buffer_size": 3806,
 				"line_ending": "Windows"
 			}
 		}
@@ -397,7 +405,9 @@
 		"/D/Github/C431505_Mami520/Work.WebProj/Areas",
 		"/D/Github/C431505_Mami520/Work.WebProj/Areas/Active",
 		"/D/Github/C431505_Mami520/Work.WebProj/Areas/Active/Views",
-		"/D/Github/C431505_Mami520/Work.WebProj/Areas/Active/Views/Home",
+		"/D/Github/C431505_Mami520/Work.WebProj/Content",
+		"/D/Github/C431505_Mami520/Work.WebProj/Content/sass",
+		"/D/Github/C431505_Mami520/Work.WebProj/Content/sass/_admin",
 		"/D/Github/C431505_Mami520/Work.WebProj/Scripts",
 		"/D/Github/C431505_Mami520/Work.WebProj/Scripts/src",
 		"/D/Github/C431505_Mami520/Work.WebProj/Scripts/src/jsx"
@@ -830,7 +840,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -861,7 +871,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -870,15 +880,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 335548,
+						"buffer_size": 336013,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								82134,
-								82134
+								83355,
+								83355
 							]
 						],
 						"settings":
@@ -890,6 +900,38 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 36458.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Work.WebProj/Content/sass/_admin/_module.scss",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3806,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3714,
+								3714
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "ASCII",
+							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3316.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,

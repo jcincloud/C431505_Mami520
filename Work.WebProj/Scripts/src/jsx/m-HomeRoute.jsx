@@ -511,7 +511,11 @@ var TelRecord = React.createClass({
 
         if (this.state.isShowCustomerBornSelect) {
             born_select_out_html =
-                <MdoalCustomerBornSelect bsSize="large" title="選擇客戶" onRequestHide={this.closeSelectCustomerBorn}>
+                <MdoalCustomerBornSelect bsSize="large" animation={false} onRequestHide={this.closeSelectCustomerBorn}>
+                    <div className="modal-header">
+                        <button className="close" onClick={this.closeSelectCustomerBorn}>&times;</button>
+                        <h5 className="modal-title text-secondary">選擇客戶</h5>
+                    </div>
                         <div className="modal-body">
                             <div className="table-header">
                                 <div className="table-filter">
@@ -600,7 +604,11 @@ var TelRecord = React.createClass({
         if (this.state.isShowCustomerBornEdit) {
 
             customer_born_out_html =
-			<MdoaleditCustomerBorn bsSize="medium" title="電訪紀錄 編輯" onRequestHide={this.closeEditDetail}>
+			<MdoaleditCustomerBorn bsSize="medium" animation={false} onRequestHide={this.closeEditDetail}>
+                <div className="modal-header">
+                    <button className="close" onClick={this.closeEditDetail}>&times;</button>
+                    <h5 className="modal-title text-secondary">電訪紀錄 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
+                </div>
 				<div className="modal-body">
 				    <form className="form form-sm" onSubmit={this.handleSubmit}>
 						<div className="form-group row">
@@ -1497,13 +1505,11 @@ var QuickSearch = React.createClass({
         //二次視窗
         if (this.state.isShowCustomerBornEdit) {
             customer_born_out_html =
-                    <MdoaleditCustomerBorn bsSize="large" title="客戶生產紀錄 編輯" onRequestHide={this.closeEditDetail}>
-                        {/*<div className="modal-header light">
-                            <div className="pull-right">
-                                <button onClick={this.closeEditDetail} type="button"><i className="fa-times"></i></button>
-                            </div>
-                            <h4 className="modal-title">編輯 { } 生產紀錄</h4>
-                        </div>*/}
+                    <MdoaleditCustomerBorn bsSize="large" animation={false} onRequestHide={this.closeEditDetail}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeEditDetail}>&times;</button>
+                            <h5 className="modal-title text-secondary">客戶生產紀錄 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
+                        </div>
                         <form className="form form-sm" onSubmit={this.detailHandleSubmit} id="form2">
                             <div className="modal-body">
                                 <div className="form-group row">
@@ -1702,7 +1708,11 @@ var QuickSearch = React.createClass({
         //一次視窗
         if (this.state.isShowCustomerEdit) {
             customer_detail_out_html =
-                <MdoaleditCustomerDtail bsSize="large" title="基本資料編輯" onRequestHide={this.closeEditDetail}>
+                <MdoaleditCustomerDtail bsSize="large" animation={false} onRequestHide={this.closeEditDetail}>
+                <div className="modal-header">
+                    <button className="close" onClick={this.closeEditDetail}>&times;</button>
+                    <h5 className="modal-title text-secondary">基本資料 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
+                </div>
                 <div className="modal-body">
                     {customer_born_out_html}
     				<form className="form form-sm" onSubmit={this.handleSubmit}>
@@ -2331,7 +2341,11 @@ var GirdSubForm = React.createClass({
         var mealid_select_out_html = null;//存放選取用餐編號的視窗內容
         if (this.state.isShowMealidSelect) {
             mealid_select_out_html =
-					<MdoalMealidSelect bsSize="small" title="選擇用餐編號" onRequestHide={this.closeSelectMealid}>
+					<MdoalMealidSelect bsSize="small" animation={false} onRequestHide={this.closeSelectMealid}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeSelectMealid}>&times;</button>
+                            <h5 className="modal-title text-secondary">選擇用餐編號</h5>
+                        </div>
 							<div className="modal-body">
 								<div className="alert alert-warning">僅列出尚未使用的用餐編號</div>
 								<table>
@@ -2366,7 +2380,11 @@ var GirdSubForm = React.createClass({
         }
         if (this.state.isShowCustomerBornEdit) {
             customer_born_out_html =
-					<MdoaleditCustomerBorn bsSize="large" title="客戶生產紀錄編輯" onRequestHide={this.closeEditDetail}>
+					<MdoaleditCustomerBorn bsSize="large" animation={false} onRequestHide={this.closeEditDetail}>
+                        <div className="modal-header">
+                            <button className="close" onClick={this.closeEditDetail}>&times;</button>
+                            <h5 className="modal-title text-secondary">客戶生產紀錄 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
+                        </div>
 						<form className="form form-sm" onSubmit={this.detailHandleSubmit} id="form2">
 							<div className="modal-body">
 							    {mealid_select_out_html}
