@@ -17,6 +17,7 @@ using System.Transactions;
 using System.Web;
 using System.Web.Http;
 using LinqKit;
+using ProcCore.Business;
 
 namespace DotWeb.Api
 {
@@ -2616,13 +2617,13 @@ namespace DotWeb.Api
             try
             {
                 db0 = getDB0();
-                var result =db0.ContactSchedule
+                var result = db0.ContactSchedule
                     .Where(x => x.company_id == this.companyId & x.born_id == born_id)
                     .Select(x => new m_ContactSchedule
                     {
-                        schedule_id=x.schedule_id,
+                        schedule_id = x.schedule_id,
                         customer_id = x.customer_id,
-                        customer_name =x.CustomerBorn.Customer.customer_name,
+                        customer_name = x.CustomerBorn.Customer.customer_name,
                         born_id = x.born_id,
                         meal_id = x.meal_id,
                         mom_name = x.CustomerBorn.mom_name,
@@ -2775,6 +2776,78 @@ namespace DotWeb.Api
                 db0.Dispose();
             }
         }
+
+        //[HttpGet]
+        //public async Task<IHttpActionResult> test1(int menu_copy_template_id)
+        //{
+        //    ResultInfo r = new ResultInfo();
+
+        //    try
+        //    {
+        //        #region working a
+        //        db0 = getDB0();
+
+        //        int tmep_index = menu_copy_template_id - 2;
+
+        //        var copy = db0.MenuCopy.OrderBy(x => x.menu_copy_id).Skip(21 * tmep_index).Take(21).ToList();
+
+        //        List<MenuCopy> itemAs = new List<MenuCopy>();
+        //        List<MenuCopyOfConstitute> itemBs = new List<MenuCopyOfConstitute>();
+        //        //1-7
+        //        foreach (var i in copy)
+        //        {
+        //            MenuCopy itemA = new MenuCopy()
+        //            {
+        //                menu_copy_id = GetNewId(CodeTable.MenuCopy),
+        //                menu_copy_template_id = menu_copy_template_id,
+        //                day = i.day - (7 * tmep_index),
+        //                meal_type = i.meal_type,
+        //                i_Hide = false,
+        //                i_InsertDateTime = DateTime.Now,
+        //                i_InsertDeptID = this.departmentId,
+        //                i_InsertUserID = this.UserId,
+        //                i_Lang = "zh-TW",
+        //                company_id = this.companyId
+        //            };
+        //            var get_constitute = i.MenuCopyOfConstitute.ToList();
+        //            foreach (var j in get_constitute)
+        //            {
+        //                MenuCopyOfConstitute itemB = new MenuCopyOfConstitute()
+        //                {
+        //                    constitute_id = j.constitute_id,
+        //                    menu_copy_id = itemA.menu_copy_id,
+        //                    i_Hide = false,
+        //                    i_InsertDateTime = DateTime.Now,
+        //                    i_InsertDeptID = this.departmentId,
+        //                    i_InsertUserID = this.UserId,
+        //                    i_Lang = "zh-TW",
+        //                    company_id = this.companyId
+        //                };
+        //                itemBs.Add(itemB);
+        //            }
+        //            itemAs.Add(itemA);
+
+        //        }
+        //        db0.MenuCopy.AddRange(itemAs);
+        //        db0.MenuCopyOfConstitute.AddRange(itemBs);
+        //        await db0.SaveChangesAsync();
+
+        //        r.result = true;
+        //        r.id = 0;
+        //        return Ok(r);
+        //        #endregion
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        r.result = false;
+        //        r.message = ex.Message;
+        //        return Ok(r);
+        //    }
+        //    finally
+        //    {
+        //        db0.Dispose();
+        //    }
+        //}
     }
     #region Parm
     public class GetAllMealIDParm
