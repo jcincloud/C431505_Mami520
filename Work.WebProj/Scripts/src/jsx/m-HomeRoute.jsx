@@ -35,7 +35,6 @@ var GirdForm = React.createClass({
         jqGet(gb_approot + 'api/GetAction/GetMealID', {})
         .done(function (data, textStatus, jqXHRdata) {
             this.setState({ data: data });
-            console.log(data);
         }.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
@@ -45,7 +44,6 @@ var GirdForm = React.createClass({
         jqGet(gb_approot + 'api/GetAction/GetMomName', {})
        .done(function (data, textStatus, jqXHRdata) {
            this.setState({ name: data });
-           console.log(data);
        }.bind(this))
        .fail(function (jqXHR, textStatus, errorThrown) {
            showAjaxError(errorThrown);
@@ -260,7 +258,6 @@ var TelRecord = React.createClass({
     queryGridData: function (page) {
         this.gridData(page)
 		.done(function (data, textStatus, jqXHRdata) {
-		    console.log(data);
 		    this.setState({ gridData: data });
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
@@ -589,6 +586,10 @@ var TelRecord = React.createClass({
                 </MdoalCustomerBornSelect>;
         }
         //二次視窗
+        var save_out_html=null;
+        if(this.state.edit_type==1){
+				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
+			}
         var detail_out_html = null;
         if (this.state.edit_type == 2) {
             detail_out_html =
@@ -665,6 +666,7 @@ var TelRecord = React.createClass({
                                     }
                                 </select>
                             </div>
+                            {save_out_html}
                         </div>
 				    </form>
 				</div>
@@ -1036,8 +1038,8 @@ var GridRowForQuick = React.createClass({
 
 //快速搜尋
 var QuickSearch = React.createClass({
-    mixins: [React.addons.LinkedStateMixin],
-    getInitialState: function () {
+    mixins: [React.addons.LinkedStateMixin],    
+   getInitialState: function () {
         return {
             gridData: { rows: [], page: 1 },
             fieldData: { customer_sn: null },
@@ -1061,21 +1063,147 @@ var QuickSearch = React.createClass({
             apiSubPathName: gb_approot + 'api/CustomerBorn',
             fddName: 'fieldDetailData'
         };
+    },    
+    componentDidMount: function () {
+        this.queryGridData(1);
     },
-    changeGDValue: function (name, e) {
-        this.setInputValue(this.props.gdName, name, e);
+    shouldComponentUpdate: function (nextProps, nextState) {
+        return true;
     },
-    gridData: function () {
-        var parms = {
-            main_id: this.props.main_id
+    handleSubmit: function (e) {
+
+        e.preventDefault();
+
+        //檢查電話格式
+        var check_tel_1 = checkTelReg(this.state.fieldData['tel_1']);
+        var check_tel_2 = checkTelReg(this.state.fieldData['tel_2']);
+        if (!check_tel_1.result) {
+            tosMessage(gb_title_from_invalid, '連絡電話1-' + check_tel_1.errMsg, 3);
+            return;
+        }
+        if (!check_tel_2.result) {
+            tosMessage(gb_title_from_invalid, '連絡電話2-' + check_tel_2.errMsg, 3);
+            return;
+        }
+
+        //檢查身分證字號
+        if (!checkTwID(this.state.fieldData['sno'])) {
+            tosMessage(gb_title_from_invalid, '身分證字號格式錯誤!!', 3);
+            return;
+        }
+        //檢查地址
+        if (
+            this.state.fieldData['tw_city_1'] == undefined || this.state.fieldData['tw_city_1'] == '' ||
+            this.state.fieldData['tw_country_1'] == undefined || this.state.fieldData['tw_country_1'] == '' ||
+            this.state.fieldData['tw_address_1'] == undefined || this.state.fieldData['tw_address_1'] == ''
+            ) {
+
+            tosMessage(gb_title_from_invalid, '送餐地址需填寫完整', 3);
+            return;
+        }
+
+
+        if (this.state.edit_type == 1) {
+            jqPost(this.props.apiPathName, this.state.fieldData)
+			.done(function (data, textStatus, jqXHRdata) {
+			    if (data.result) {
+			        if (data.message != null) {
+			            tosMessage(null, '新增完成' + data.message, 1);
+			        } else {
+			            tosMessage(null, '新增完成', 1);
+			        }
+			        this.updateType(data.id);
+			    } else {
+			        tosMessage(null, data.message, 3);
+			    }
+			}.bind(this))
+			.fail(function (jqXHR, textStatus, errorThrown) {
+			    showAjaxError(errorThrown);
+			});
+        }
+        else if (this.state.edit_type == 2) {
+            jqPut(this.props.apiPathName, this.state.fieldData)
+			.done(function (data, textStatus, jqXHRdata) {
+			    if (data.result) {
+			        if (data.message != null) {
+			            tosMessage(null, '修改完成' + data.message, 1);
+			        } else {
+			            tosMessage(null, '修改完成', 1);
+			        }
+			    } else {
+			        tosMessage(null, data.message, 3);
+			    }
+			}.bind(this))
+			.fail(function (jqXHR, textStatus, errorThrown) {
+			    showAjaxError(errorThrown);
+			});
         };
+        return;
+    },
+    deleteSubmit: function (e) {
+
+        if (!confirm('確定是否刪除?')) {
+            return;
+        }
+
+        var ids = [];
+        for (var i in this.state.gridData.rows) {
+            if (this.state.gridData.rows[i].check_del) {
+                ids.push('ids=' + this.state.gridData.rows[i].customer_id);
+            }
+        }
+
+        if (ids.length == 0) {
+            tosMessage(null, '未選擇刪除項', 2);
+            return;
+        }
+
+        jqDelete(this.props.apiPathName + '?' + ids.join('&'), {})
+		.done(function (data, textStatus, jqXHRdata) {
+		    if (data.result) {
+		        tosMessage(null, '刪除完成', 1);
+		        this.queryGridData(0);
+		    } else {
+		        tosMessage(null, data.message, 3);
+		    }
+		}.bind(this))
+		.fail(function (jqXHR, textStatus, errorThrown) {
+		    showAjaxError(errorThrown);
+		});
+    },
+    handleSearch: function (e) {
+        e.preventDefault();
+        this.queryGridData(0);
+        return;
+    },
+    delCheck: function (i, chd) {
+
+        var newState = this.state;
+        this.state.gridData.rows[i].check_del = !chd;
+        this.setState(newState);
+    },
+    checkAll: function () {
+
+        var newState = this.state;
+        newState.checkAll = !newState.checkAll;
+        for (var prop in this.state.gridData.rows) {
+            this.state.gridData.rows[prop].check_del = newState.checkAll;
+        }
+        this.setState(newState);
+    },
+    gridData: function (page) {
+        var parms = {
+            main_id: this.props.main_id,
+            page:0
+        };
+        if(page==0){
+			parms.page=this.state.gridData.page;
+		}else{
+			parms.page=page;
+		}
         $.extend(parms, this.state.searchData);
 
         return jqGet(this.props.apiPathName, parms);
-    },
-    componentDidMount: function () {
-        this.queryGridData(1);
-        this.queryGridDetailData(1);
     },
     queryGridData: function (page) {
         this.gridData(page)
@@ -1095,111 +1223,6 @@ var QuickSearch = React.createClass({
             showAjaxError(errorThrown);
         });
     },
-    deleteDetail: function (detail_id, e) {
-
-        if (!confirm('確定是否刪除?')) {
-            return;
-        }
-
-        jqDelete(this.props.apiSubPathName + '?ids=' + detail_id, {})
-        .done(function (data, textStatus, jqXHRdata) {
-            if (data.result) {
-                tosMessage(null, '刪除完成', 1);
-                this.queryGridDetailData(this.state.fieldData.customer_id);
-            } else {
-                tosMessage(null, data.message, 3);
-            }
-        }.bind(this))
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            showAjaxError(errorThrown);
-        });
-    },
-    closeEditDetail: function () {
-        //關閉生產紀錄視窗並更新list
-        this.gridDetailData(0)
-        .done(function (data, textStatus, jqXHRdata) {
-            this.setState({ isShowCustomerEdit: false, detail_edit_type: 0, gridDetailData: data });
-            this.setState({ isShowCustomerBornEdit: false, detail_edit_type: 0, gridDetailData: data });
-        }.bind(this))
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            showAjaxError(errorThrown);
-        });
-        //檢查mealID
-        //var fDData = this.state.fieldDetailData;
-        //jqPost(gb_approot + 'api/GetAction/CheckMealID', { born_id: fDData.born_id, meal_id: fDData.meal_id })
-        //.done(function (data, textStatus, jqXHRdata) {
-        //}.bind(this));
-
-    },
-    insertDetailType: function () {//新增明細檔
-        var fieldData = this.state.fieldData;
-        console.log(fieldData);
-        //新增要自動帶資料
-        this.setState({
-            detail_edit_type: 1,
-            fieldDetailData: {
-                born_id: null,
-                meal_id: null,
-                customer_id: fieldData.customer_id,
-                mom_name: fieldData.customer_name,
-                sno: fieldData.sno,
-                birthday: fieldData.birthday,
-                tel_1: fieldData.tel_1,
-                tel_2: fieldData.tel_2,
-                tw_zip_1: fieldData.tw_zip_1,
-                tw_zip_2: fieldData.tw_zip_2,
-                tw_city_1: fieldData.tw_city_1,
-                tw_city_2: fieldData.tw_city_2,
-                tw_country_1: fieldData.tw_country_1,
-                tw_country_2: fieldData.tw_country_2,
-                tw_address_1: fieldData.tw_address_1,
-                tw_address_2: fieldData.tw_address_2,
-                born_type: 1
-            }
-        });
-    },
-    handleSearch: function (e) {
-        e.preventDefault();
-        this.queryGridData(0);
-        return;
-    },
-    shouldComponentUpdate: function (nextProps, nextState) {
-        return true;
-    },
-    selectCustomerBorn: function (customer_id, born_id, meal_id) {
-        jqGet(gb_approot + 'api/GetAction/GetCustomerAndBorn', { born_id: born_id, customer_id: customer_id })
-		.done(function (data, textStatus, jqXHRdata) {
-		    var fieldData = this.state.fieldData;//選取後變更customer_id,born_id,mealid
-		    fieldData.customer_id = customer_id;
-		    fieldData.born_id = born_id;
-		    fieldData.meal_id = meal_id;
-
-		    //客戶編號改變下方帶入的資料要一起變更
-		    fieldData.customer_type = data.getCustomer.customer_type;
-		    fieldData.customer_name = data.getCustomer.customer_name;
-
-		    fieldData.mom_name = data.getBorn.mom_name;
-		    fieldData.sno = data.getBorn.sno;
-		    fieldData.birthday = data.getBorn.birthday;
-		    fieldData.tel_1 = data.getBorn.tel_1;
-		    fieldData.tel_2 = data.getBorn.tel_2;
-		    fieldData.tw_zip_1 = data.getBorn.tw_zip_1;
-		    fieldData.tw_city_1 = data.getBorn.tw_city_1;
-		    fieldData.tw_country_1 = data.getBorn.tw_country_1;
-		    fieldData.tw_address_1 = data.getBorn.tw_address_1;
-		    fieldData.tw_zip_2 = data.getBorn.tw_zip_2;
-		    fieldData.tw_city_2 = data.getBorn.tw_city_2;
-		    fieldData.tw_country_2 = data.getBorn.tw_country_2;
-		    fieldData.tw_address_2 = data.getBorn.tw_address_2;
-		    fieldData.born_type = data.getBorn.born_type;
-		    fieldData.born_day = data.getBorn.born_day;
-
-		    this.setState({ isShowCustomerBornSelect: false, fieldData: fieldData });
-		}.bind(this))
-		.fail(function (jqXHR, textStatus, errorThrown) {
-		    //showAjaxError(errorThrown);
-		});
-    },
     insertType: function () {
         this.setState({
             edit_type: 1,
@@ -1208,7 +1231,7 @@ var QuickSearch = React.createClass({
             searchData: { tel_reason: 1, is_detailInsert: true, customer_type: 1 },
         });
     },
-    updateType: function (id) {
+   updateType: function (id) {
         jqGet(this.props.apiPathName, { id: id })
 		.done(function (data, textStatus, jqXHRdata) {
 		    this.queryGridDetailData(data.data.customer_id);
@@ -1218,22 +1241,26 @@ var QuickSearch = React.createClass({
 		    showAjaxError(errorThrown);
 		});
     },
-    addDetail: function (e) {
-        //新增生產紀錄
-        this.insertDetailType();
-        this.setState({ isShowCustomerBornEdit: true });
+    noneType: function () {
+        this.gridData(0)
+		.done(function (data, textStatus, jqXHRdata) {
+		    this.setState({ edit_type: 0, gridData: data });
+		}.bind(this))
+		.fail(function (jqXHR, textStatus, errorThrown) {
+		    showAjaxError(errorThrown);
+		});
     },
-    editDetail: function (detail_id, e) {
-        //修改生產紀錄
-        this.updateDetailType(detail_id);
-        this.setState({ isShowCustomerEdit: true });
-        this.setState({ isShowCustomerBornEdit: true });
+    changeFDValue: function (name, e) {
+        this.setInputValue(this.props.fdName, name, e);
     },
-    viewDetail: function (detail_id, e) {
-        //修改生產紀錄
-        this.viewDetailType(detail_id);
-        this.setState({ isShowCustomerEdit: true });
-        this.setState({ isShowCustomerBornEdit: true });
+    changeGDValue: function (name, e) {
+        this.setInputValue(this.props.gdName, name, e);
+    },
+    setFDValue: function (fieldName, value) {
+        //此function提供給次元件調用，所以要以屬性往下傳。
+        var obj = this.state[this.props.fdName];
+        obj[fieldName] = value;
+        this.setState({ fieldData: obj });
     },
     setInputValue: function (collentName, name, e) {
 
@@ -1276,93 +1303,56 @@ var QuickSearch = React.createClass({
         this.setState({ searchData: obj });
         this.queryGridData(0);
     },
-    deleteSubmit: function (e) {
-
-        if (!confirm('確定是否刪除?')) {
-            return;
-        }
-
-        var ids = [];
-        for (var i in this.state.gridData.rows) {
-            if (this.state.gridData.rows[i].check_del) {
-                ids.push('ids=' + this.state.gridData.rows[i].customer_id);
-            }
-        }
-
-        if (ids.length == 0) {
-            tosMessage(null, '未選擇刪除項', 2);
-            return;
-        }
-
-        jqDelete(this.props.apiPathName + '?' + ids.join('&'), {})
+    selectCustomerBorn: function (customer_id, born_id, meal_id) {
+        jqGet(gb_approot + 'api/GetAction/GetCustomerAndBorn', { born_id: born_id, customer_id: customer_id })
 		.done(function (data, textStatus, jqXHRdata) {
-		    if (data.result) {
-		        tosMessage(null, '刪除完成', 1);
-		        this.queryGridData(0);
-		    } else {
-		        tosMessage(null, data.message, 3);
-		    }
+		    var fieldData = this.state.fieldData;//選取後變更customer_id,born_id,mealid
+		    fieldData.customer_id = customer_id;
+		    fieldData.born_id = born_id;
+		    fieldData.meal_id = meal_id;
+
+		    //客戶編號改變下方帶入的資料要一起變更
+		    fieldData.customer_type = data.getCustomer.customer_type;
+		    fieldData.customer_name = data.getCustomer.customer_name;
+
+		    fieldData.mom_name = data.getBorn.mom_name;
+		    fieldData.sno = data.getBorn.sno;
+		    fieldData.birthday = data.getBorn.birthday;
+		    fieldData.tel_1 = data.getBorn.tel_1;
+		    fieldData.tel_2 = data.getBorn.tel_2;
+		    fieldData.tw_zip_1 = data.getBorn.tw_zip_1;
+		    fieldData.tw_city_1 = data.getBorn.tw_city_1;
+		    fieldData.tw_country_1 = data.getBorn.tw_country_1;
+		    fieldData.tw_address_1 = data.getBorn.tw_address_1;
+		    fieldData.tw_zip_2 = data.getBorn.tw_zip_2;
+		    fieldData.tw_city_2 = data.getBorn.tw_city_2;
+		    fieldData.tw_country_2 = data.getBorn.tw_country_2;
+		    fieldData.tw_address_2 = data.getBorn.tw_address_2;
+		    fieldData.born_type = data.getBorn.born_type;
+		    fieldData.born_day = data.getBorn.born_day;
+
+		    this.setState({ isShowCustomerBornSelect: false, fieldData: fieldData });
 		}.bind(this))
 		.fail(function (jqXHR, textStatus, errorThrown) {
-		    showAjaxError(errorThrown);
+		    //showAjaxError(errorThrown);
 		});
     },
-    delCheck: function (i, chd) {
-        var newState = this.state;
-        this.state.gridData.rows[i].check_del = !chd;
-        this.setState(newState);
+    addDetail: function (e) {
+        //新增生產紀錄
+        this.insertDetailType();
+        this.setState({ isShowCustomerBornEdit: true });
     },
-    handleSubmit: function (e) {
-
-        e.preventDefault();
-
-        if (this.state.fieldData.customer_id == null || this.state.fieldData.customer_id == undefined) {
-            tosMessage(gb_title_from_invalid, '未選擇客戶無法新增電訪名單資料!!', 3);
-            return;
-        }
-
-        if (this.state.edit_type == 1) {
-            jqPost(this.props.apiPathName, this.state.fieldData)
-			.done(function (data, textStatus, jqXHRdata) {
-			    if (data.result) {
-			        if (data.message != null) {
-			            tosMessage(null, '新增完成' + data.message, 1);
-			        } else {
-			            tosMessage(null, '新增完成', 1);
-			        }
-			        this.updateType(data.id);
-			    } else {
-			        tosMessage(null, data.message, 3);
-			    }
-			}.bind(this))
-			.fail(function (jqXHR, textStatus, errorThrown) {
-			    showAjaxError(errorThrown);
-			});
-        }
-        else if (this.state.edit_type == 2) {
-            jqPut(this.props.apiPathName, this.state.fieldData)
-			.done(function (data, textStatus, jqXHRdata) {
-			    if (data.result) {
-			        if (data.message != null) {
-			            tosMessage(null, '修改完成' + data.message, 1);
-			        } else {
-			            tosMessage(null, '修改完成', 1);
-			        }
-			    } else {
-			        tosMessage(null, data.message, 3);
-			    }
-			}.bind(this))
-			.fail(function (jqXHR, textStatus, errorThrown) {
-			    showAjaxError(errorThrown);
-			});
-        };
-        return;
+    editDetail: function (detail_id, e) {
+        //修改生產紀錄
+        this.updateDetailType(detail_id);
+        this.setState({ isShowCustomerEdit: true });
+        this.setState({ isShowCustomerBornEdit: true });
     },
-    changeFDValue: function (name, e) {
-        var obj = this.state.searchData;
-        obj[name] = e.target.value;
-        this.setState({ searchData: obj });
-        this.queryAllCustomer();
+    viewDetail: function (detail_id, e) {
+        //修改生產紀錄
+        this.viewDetailType(detail_id);
+        this.setState({ isShowCustomerEdit: true });
+        this.setState({ isShowCustomerBornEdit: true });
     },
     queryAllCustomer: function () {//選取用餐編號-取得全部客戶生產資料(已結/未結)list
         jqGet(gb_approot + 'api/Customer', this.state.searchData)
@@ -1473,16 +1463,76 @@ var QuickSearch = React.createClass({
             showAjaxError(errorThrown);
         });
     },
-    setFDValue: function (fieldName, value) {
-        //此function提供給次元件調用，所以要以屬性往下傳。
-        var obj = this.state[this.props.fddName];
-        obj[fieldName] = value;
-        this.setState({ fieldDetailData: obj });
-    },
     closeQuickSearchForAllEdit: function(born_id,customer_id){
         //此function為按下修改內姓名按鈕後，關閉修改視窗，開啟總覽視窗
         this.props.openAllEdit(born_id,customer_id);
         this.setState({ isShowCustomerEdit: false });
+    },
+    closeEditDetail: function () {
+        //關閉生產紀錄視窗並更新list 
+        this.gridDetailData(this.state.fieldData.customer_id)
+        .done(function (data, textStatus, jqXHRdata) {
+            this.setState({isShowCustomerBornEdit: false ,detail_edit_type: 0, gridDetailData: data});
+        }.bind(this))
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            showAjaxError(errorThrown);
+        });
+    },
+    closeDetail: function () {     
+        //關閉基本資料視窗
+        this.queryGridData(0);
+        this.gridDetailData(0)
+        .done(function (data, textStatus, jqXHRdata) {
+            this.setState({ isShowCustomerEdit: false, detail_edit_type: 0, gridDetailData: data});
+        }.bind(this))
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            showAjaxError(errorThrown);
+        });
+    },
+    insertDetailType: function () {//新增明細檔
+        var fieldData = this.state.fieldData;
+        //新增要自動帶資料
+        this.setState({
+            detail_edit_type: 1,
+            fieldDetailData: {
+                born_id: null,
+                meal_id: null,
+                customer_id: fieldData.customer_id,
+                mom_name: fieldData.customer_name,
+                sno: fieldData.sno,
+                birthday: fieldData.birthday,
+                tel_1: fieldData.tel_1,
+                tel_2: fieldData.tel_2,
+                tw_zip_1: fieldData.tw_zip_1,
+                tw_zip_2: fieldData.tw_zip_2,
+                tw_city_1: fieldData.tw_city_1,
+                tw_city_2: fieldData.tw_city_2,
+                tw_country_1: fieldData.tw_country_1,
+                tw_country_2: fieldData.tw_country_2,
+                tw_address_1: fieldData.tw_address_1,
+                tw_address_2: fieldData.tw_address_2,
+                born_type: 1
+            }
+        });
+    },
+    deleteDetail:function(detail_id,e){
+
+        if(!confirm('確定是否刪除?')){
+            return;
+        }
+
+        jqDelete(this.props.apiSubPathName + '?ids=' + detail_id,{})            
+        .done(function(data, textStatus, jqXHRdata) {
+            if(data.result){
+                tosMessage(null,'刪除完成',1);
+                this.queryGridDetailData(0);
+            }else{
+                tosMessage(null,data.message,3);
+            }
+        }.bind(this))
+        .fail(function( jqXHR, textStatus, errorThrown ) {
+            showAjaxError(errorThrown);
+        });
     },
     render: function () {
         var outHtml = null;
@@ -1692,19 +1742,74 @@ var QuickSearch = React.createClass({
         }
         //二次視窗
 
-        var detail_out_html = null;
+
+        var new_detail_out_html = null;
         if (this.state.edit_type == 2) {
-            detail_out_html =
-            <SubForm ref="SubForm"
-                     main_id={fieldData.schedule_detail_id}
-                     tel_reason={fieldData.tel_reason} />;
+new_detail_out_html=<div>
+<hr className="lg" />
+                    <h3 className="h3">
+                        客戶生產紀錄 明細檔
+                        <button type="button" onClick={this.addDetail} className="btn btn-success btn-sm m-l-1"><i className="fa-plus-circle"></i> 新增生產紀錄</button>
+                    </h3>
+                    <table className="table table-sm table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th className="text-xs-center">編輯</th>
+                                <th>生產日期</th>
+                                <th>用餐編號</th>
+                                <th>媽媽姓名</th>
+                                <th>寶寶性別</th>
+                                <th>生產方式</th>{/*<th className="col-1">是否結案</th>*/}
+                                <th>備註</th>
+                                <th className="text-xs-center">查看</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                            this.state.gridDetailData.map(function (itemData, i) {
+                                var out_sub_button = null;
+                                if (itemData.is_close) {//結案後僅能檢視生產紀錄
+                                    out_sub_button =
+                                            <td className="text-xs-center">
+                                                <button className="btn btn-link btn-lg text-info" type="button" onClick={this.viewDetail.bind(this,itemData.born_id)}><i className="fa-search-plus"></i></button>
+                                            </td>;
+                                } else {
+                                    out_sub_button =
+                                            <td className="text-xs-center">
+                                                <button className="btn btn-link btn-lg text-info" type="button" onClick={this.editDetail.bind(this,itemData.born_id)}><i className="fa-pencil"></i></button> { }
+                                                <button className="btn btn-link btn-lg text-danger" type="button" onClick={this.deleteDetail.bind(this,itemData.born_id)}><i className="fa-trash-o"></i></button>
+                                            </td>;
+                                }
+                                var out_sub_html =
+                                        <tr key={i}>
+                                            {out_sub_button}
+                                            <td>{moment(itemData.born_day).format('YYYY/MM/DD')}</td>
+                                            <td>{itemData.meal_id}</td>
+                                            <td><button type="button" className="btn btn-link btn-sm" onClick={this.closeQuickSearchForAllEdit.bind(this,itemData.born_id,itemData.customer_id)}>{itemData.mom_name}</button></td>
+                                            <td><StateForGrid stateData={CommData.SexType} id={itemData.baby_sex} /></td>
+                                            <td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>{/*<td>{itemData.is_close? <span className="label label-success">結案</span>:<span className="label label-danger">未結案</span>}</td>*/}
+                                            <td>{itemData.memo}</td>
+                                            <td className="text-xs-center"><button type="button" className="btn btn-link btn-sm text-info" onClick={this.closeQuickSearchForAllEdit.bind(this,itemData.born_id,itemData.customer_id)}><i className="fa-search"></i></button></td>
+                                        </tr>;
+                                return out_sub_html;
+                            }.bind(this))
+                        }
+                        </tbody>
+                    </table></div>;
+        }else{
+                            new_detail_out_html=(
+                    <div>
+                        <hr className="lg" />
+                        <h3 className="h3">客戶生產紀錄 明細檔</h3>
+                        <div className="alert alert-warning">請先按上方的 <strong>存檔確認</strong>，再進行「客戶生產紀錄」新增。</div>
+                    </div>
+                    );
         }
         //一次視窗
         if (this.state.isShowCustomerEdit) {
             customer_detail_out_html =
-                <MdoaleditCustomerDtail bsSize="large" title="基本資料編輯" onRequestHide={this.closeEditDetail}>
+                <MdoaleditCustomerDtail bsSize="large" title="基本資料編輯" onRequestHide={this.closeDetail}>
                 <div className="modal-body">
-                    {customer_born_out_html}
     				<form className="form form-sm" onSubmit={this.handleSubmit}>
     					<div className="form-group row">
     						<label className="col-xs-1 form-control-label text-xs-right">客戶編號</label>
@@ -1845,57 +1950,10 @@ var QuickSearch = React.createClass({
     					</div>
     					<div className="form-action">
     						<button type="submit" className="btn btn-primary btn-sm col-xs-offset-1" name="btn-1"><i className="fa-check"></i> 存檔確認</button> { }
-    						<button type="button" className="btn btn-blue-grey btn-sm" onClick={this.closeEditDetail}><i className="fa-times"></i> 回列表</button>
+    						<button type="button" className="btn btn-blue-grey btn-sm" onClick={this.closeDetail}><i className="fa-times"></i> 回列表</button>
     					</div>
     				</form>
-                    <hr className="lg" />
-                    <h3 className="h3">
-                        客戶生產紀錄 明細檔
-                        <button type="button" onClick={this.addDetail} className="btn btn-success btn-sm m-l-1"><i className="fa-plus-circle"></i> 新增生產紀錄</button>
-                    </h3>
-                    <table className="table table-sm table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th className="text-xs-center">編輯</th>
-                                <th>生產日期</th>
-                                <th>用餐編號</th>
-                                <th>媽媽姓名</th>
-                                <th>寶寶性別</th>
-                                <th>生產方式</th>{/*<th className="col-1">是否結案</th>*/}
-                                <th>備註</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                            this.state.gridDetailData.map(function (itemData, i) {
-                                var out_sub_button = null;
-                                if (itemData.is_close) {//結案後僅能檢視生產紀錄
-                                    out_sub_button =
-                                            <td className="text-xs-center">
-                                                <button className="btn btn-link btn-lg text-info" type="button" onClick={this.viewDetail.bind(this,itemData.born_id)}><i className="fa-search-plus"></i></button>
-                                            </td>;
-                                } else {
-                                    out_sub_button =
-                                            <td className="text-xs-center">
-                                                <button className="btn btn-link btn-lg text-info" type="button" onClick={this.editDetail.bind(this,itemData.born_id)}><i className="fa-pencil"></i></button> { }
-                                                <button className="btn btn-link btn-lg text-danger" type="button" onClick={this.deleteDetail.bind(this,itemData.born_id)}><i className="fa-trash-o"></i></button>
-                                            </td>;
-                                }
-                                var out_sub_html =
-                                        <tr key={i}>
-                                            {out_sub_button}
-                                            <td>{moment(itemData.born_day).format('YYYY/MM/DD')}</td>
-                                            <td>{itemData.meal_id}</td>
-                                            <td><button type="button" className="btn btn-link btn-sm" onClick={this.closeQuickSearchForAllEdit.bind(this,itemData.born_id,itemData.customer_id)}>{itemData.mom_name}</button></td>
-                                            <td><StateForGrid stateData={CommData.SexType} id={itemData.baby_sex} /></td>
-                                            <td><StateForGrid stateData={CommData.BornType} id={itemData.born_type} /></td>{/*<td>{itemData.is_close? <span className="label label-success">結案</span>:<span className="label label-danger">未結案</span>}</td>*/}
-                                            <td>{itemData.memo}</td>
-                                        </tr>;
-                                return out_sub_html;
-                            }.bind(this))
-                        }
-                        </tbody>
-                    </table>
+                    {new_detail_out_html}
                 </div>
                 </MdoaleditCustomerDtail>;
         }
@@ -1904,6 +1962,7 @@ var QuickSearch = React.createClass({
         (
         <div>
             {customer_detail_out_html}
+                    {customer_born_out_html}
 				<h3 className="h3">{this.props.Caption}</h3>
 				<form onSubmit={this.handleSearch}>
 						<div className="table-header">
@@ -1988,15 +2047,15 @@ var QuickSearch = React.createClass({
 							    }
 							</tbody>
                         </table>
-					   <GridNavPage StartCount={this.state.gridData.startcount}
-                                 EndCount={this.state.gridData.endcount}
-                                 RecordCount={this.state.gridData.records}
-                                 TotalPage={this.state.gridData.total}
-                                 NowPage={this.state.gridData.page}
-                                 onQueryGridData={this.queryGridData}
-                                 InsertType={this.insertType}
-                                 deleteSubmit={this.deleteSubmit}
-                                 showAdd={false} />
+					   <GridNavPage   ref="QuickSearch"
+                                      StartCount={this.state.gridData.startcount}
+                                      EndCount={this.state.gridData.endcount}
+                                      RecordCount={this.state.gridData.records}
+                                      TotalPage={this.state.gridData.total}
+                                      NowPage={this.state.gridData.page}
+                                      onQueryGridData={this.queryGridData}
+                                      InsertType={this.insertType}
+                                      deleteSubmit={this.deleteSubmit}/>
 				</form>
         </div>
 			);
@@ -2021,9 +2080,9 @@ var GirdSubForm = React.createClass({
     },
     getDefaultProps: function () {
         return {
-            fddName: 'fieldDetailData',
+            fdName: 'fieldData',
             gdName: 'searchData',
-            apiSubPathName: gb_approot + 'api/CustomerBorn'
+            apiPathName: gb_approot + 'api/Customer'
         };
     },
     componentDidMount: function () {
@@ -2162,14 +2221,14 @@ var GirdSubForm = React.createClass({
 
         return jqGet(this.props.apiSubPathName, parms);
     },
-    queryGridDetailData: function (mom_id) {
+   queryGridDetailData: function (mom_id) {
         this.gridDetailData(mom_id)
-		.done(function (data, textStatus, jqXHRdata) {
-		    this.setState({ gridDetailData: data });
-		}.bind(this))
-		.fail(function (jqXHR, textStatus, errorThrown) {
-		    showAjaxError(errorThrown);
-		});
+        .done(function (data, textStatus, jqXHRdata) {
+            this.setState({ gridDetailData: data });
+        }.bind(this))
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            showAjaxError(errorThrown);
+        });
     },
     insertDetailType: function () {//新增明細檔
         var fiedlData = this.props.fiedlData;
@@ -2185,7 +2244,7 @@ var GirdSubForm = React.createClass({
                 birthday: fiedlData.birthday,
                 tel_1: fiedlData.tel_1,
                 tel_2: fiedlData.tel_2,
-                tw_zip_1: fiedlData.tw_zip_1,
+                tw_zip_1: fiedlData.tw_zip_1, 
                 tw_zip_2: fiedlData.tw_zip_2,
                 tw_city_1: fiedlData.tw_city_1,
                 tw_city_2: fiedlData.tw_city_2,
@@ -2282,11 +2341,6 @@ var GirdSubForm = React.createClass({
 		.fail(function (jqXHR, textStatus, errorThrown) {
 		    showAjaxError(errorThrown);
 		});
-        //檢查mealID
-        var fDData = this.state.fieldDetailData;
-        jqPost(gb_approot + 'api/GetAction/CheckMealID', { born_id: fDData.born_id, meal_id: fDData.meal_id })
-		.done(function (data, textStatus, jqXHRdata) {
-		}.bind(this));
 
     },
     queryAllMealID: function () {//選取用餐編號-取得未使用的用餐編號List
