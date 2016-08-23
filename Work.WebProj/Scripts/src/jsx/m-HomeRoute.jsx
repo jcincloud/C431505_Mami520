@@ -367,6 +367,7 @@ var TelRecord = React.createClass({
         this.setState({ isShowCustomerBornEdit: true });
     },
     closeEditDetail: function () {
+        this.queryGridData(0);
         this.setState({ isShowCustomerBornEdit: false })
 
     },
