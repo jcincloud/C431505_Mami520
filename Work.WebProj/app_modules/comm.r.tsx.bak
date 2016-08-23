@@ -1,0 +1,87 @@
+﻿
+class GridButtonModify extends React.Component<{ modify(): void }, {}> {
+
+    render() {
+        return <div></div>
+    }
+}
+class GridCheckDel extends React.Component<
+    { delCheck(p1: any, p2: any): void, iKey: number, chd: boolean, showAdd?: boolean, }, any> {
+    render() {
+        return <div></div>
+    }
+}
+
+class InputDate extends React.Component<{
+    id: string,
+    value: Date,
+    onChange(p1: string, e: React.SyntheticEvent): void,
+    field_name: string,
+    required: boolean,
+    disabled: boolean,
+    ver: number
+}, any>{
+
+    render() {
+        return <div></div>
+    }
+}
+
+interface GridNavPageProps {
+    onQueryGridData(p1: number): void,
+    InsertType(): void,
+    deleteSubmit(): void,
+    nowPage: number,
+    totalPage: number,
+    startCount: number,
+    endCount: number,
+    recordCount: number,
+    showAdd?: boolean,
+    showDelete?: boolean
+}
+class GridNavPage extends React.Component<GridNavPageProps, any> {
+
+    render() {
+        return <div></div>
+    }
+}
+
+interface ModalSalesProps {
+    isShow: boolean,
+    fieldSalesNo: string,
+    fieldSalesName: string,
+    setValue?(): void,
+    close(): void
+    updateView(sales_no: string, sales_name: string): void,
+}
+interface ModalSalesState {
+    modalData?: Array<server.Sales>;
+    keyword?: string;
+}
+class ModalSales extends React.Component<ModalSalesProps, ModalSalesState>{
+    render() {
+        return <div></div>
+    }
+}
+class Tips extends React.Component<{ comment: string, children?: any }, any>{
+    render() {
+        return <div></div>
+    }
+}
+
+interface FileUpProps {
+    url_upload?: string,
+    url_list?: string,
+    url_delete?: string,
+    url_download?: string,
+    url_sort?: string,
+    FileKind?: string,
+    MainId: number | string,
+    ParentEditType?: number
+}
+class MasterImageUpload extends React.Component<FileUpProps, any>{
+
+    render() {
+        return <div></div>
+    }
+}
