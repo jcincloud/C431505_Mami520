@@ -1533,7 +1533,7 @@ var QuickSearch = React.createClass({
         .done(function(data, textStatus, jqXHRdata) {
             if(data.result){
                 tosMessage(null,'刪除完成',1);
-                this.queryGridDetailData(0);
+                this.queryGridDetailData(this.state.fieldData.customer_id);
             }else{
                 tosMessage(null,data.message,3);
             }
@@ -1743,7 +1743,6 @@ var QuickSearch = React.createClass({
                                </div>
                            </div>
                         </form>
-                        {detail_out_html}
                     </MdoaleditCustomerBorn>;
         }
         //二次視窗
@@ -1814,9 +1813,9 @@ new_detail_out_html=<div>
         //一次視窗
         if (this.state.isShowCustomerEdit) {
             customer_detail_out_html =
-                <MdoaleditCustomerDtail bsSize="large" animation={false} onRequestHide={this.closeEditDetail}>
+                <MdoaleditCustomerDtail bsSize="large" animation={false} onRequestHide={this.closeDetail}>
                 <div className="modal-header">
-                    <button className="close" onClick={this.closeEditDetail}>&times;</button>
+                    <button className="close" onClick={this.closeDetail}>&times;</button>
                     <h5 className="modal-title text-secondary">基本資料 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
                 </div>
                 <div className="modal-body">
