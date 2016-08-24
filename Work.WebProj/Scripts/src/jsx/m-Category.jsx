@@ -48,7 +48,7 @@ var GridSubRow = React.createClass({
 				<tr>
 					<td className="text-xs-center"><i className="fa-bars text-muted draggable"></i></td>
 					<td className="text-xs-center"><GridCheckDel iKey={this.props.ikey} chd={this.props.itemData.check_del} delCheck={this.delCheck} /></td>
-					<td className="text-xs-center"><GridButtonPopupWindow modify={this.modify} MainId={this.props.MainId}/></td>
+					<td className="text-xs-center"><GridButtonModify modify={this.modify} /></td>
 					<td>{this.props.itemData.l2_name}</td>
 					<td>{this.props.itemData.sort}</td>
 					{/*<td>{this.props.itemData.i_Hide?<span className="label label-default">隱藏</span>:<span className="label label-primary">顯示</span>}</td>*/}
@@ -68,7 +68,8 @@ var GridSubForm = React.createClass({
 			checkAll:false,
 			refreshFileList:false,
 			gridSubTbody:[],
-			updateSortVal:[]
+			updateSortVal: [],
+            isShowEdit:false
 		};  
 	},
 	getDefaultProps:function(){
@@ -196,12 +197,13 @@ var GridSubForm = React.createClass({
 		});
 	},
 	insertType:function(){
-		this.setState({edit_type:1,fieldData:{all_category_l1_id:this.props.MainId}});
+	    this.setState({ edit_type: 1, fieldData: { all_category_l1_id: this.props.MainId }, isShowEdit:true});
 	},
-	updateType:function(id){
+	updateType: function (id) {
+	    console.log('update',id);
 		jqGet(this.props.apiSubPathName,{id:id})
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:2,fieldData:data.data});
+		    this.setState({ edit_type: 2, fieldData: data.data, isShowEdit:true});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
 			showAjaxError(errorThrown);
@@ -210,7 +212,7 @@ var GridSubForm = React.createClass({
 	noneType:function(){
 		this.gridData(0)
 		.done(function(data, textStatus, jqXHRdata) {
-			this.setState({edit_type:0,gridData:data,});
+		    this.setState({ edit_type: 0, gridData: data, isShowEdit:false});
 		}.bind(this))
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			showAjaxError(errorThrown);
@@ -269,6 +271,73 @@ var GridSubForm = React.createClass({
 	render:function(){
 		var fieldData = this.state.fieldData;
 
+		var ModalEdit = ReactBootstrap.Modal;
+		var edit_html = null;
+		if (this.state.isShowEdit) {
+		    edit_html = <ModalEdit bsSize="xs" animation={false} onRequestHide={this.noneType}>
+                 <div className="modal-header">
+                      <button className="close" onClick={this.noneType}>&times;</button>
+                      <h5 className="modal-title text-secondary">分類項目資料維護</h5>
+                 </div>
+                <div className="modal-body">
+                    <form className="form form-sm" onSubmit={this.handleSubmit}>
+					          		<div className="form-group row">
+										<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 項目名稱</label>
+										<div className="col-xs-6">
+											<input type="text"
+                                                   className="form-control"
+                                                   value={fieldData.l2_name}
+                                                   onChange={this.changeFDValue.bind(this,'l2_name')}
+                                                   maxLength="64"
+                                                   required />
+										</div>
+										<small className="col-xs-4 text-muted">最多64字</small>
+					          		</div>
+          							<div className="form-group row">
+										<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 排序</label>
+										<div className="col-xs-6">
+											<input type="number"
+                                                   className="form-control"
+                                                   value={fieldData.sort}
+                                                   onChange={this.changeFDValue.bind(this,'sort')}
+                                                   maxLength="64"
+                                                   required />
+										</div>
+										<small className="col-xs-4 text-muted">數字越大越前面</small>
+          							</div>{/*<div className="form-group">
+										<label className="col-xs-1 form-control-label text-xs-right">狀態</label>
+										<div className="col-xs-3">
+											<div className="radio-inline">
+												<label>
+													<input 	type="radio"
+															name="i_Hide"
+															value={true}
+															checked={fieldData.i_Hide===true}
+															onChange={this.changeFDValue.bind(this,'i_Hide')} />
+													<span>隱藏</span>
+												</label>
+											</div>
+											<div className="radio-inline">
+												<label>
+													<input type="radio"
+															name="i_Hide"
+															value={false}
+															checked={fieldData.i_Hide===false}
+															onChange={this.changeFDValue.bind(this,'i_Hide')}/>
+													<span>顯示</span>
+												</label>
+											</div>
+										</div>
+									</div>*/}
+                    </form>
+                </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-sm btn-primary" onClick={this.handleSubmit}><i className="fa-check"></i> 存檔確認</button>
+		        			<button className="btn btn-sm btn-blue-grey" type="button" onClick={this.noneType} data-dismiss="modal"><i className="fa-times"></i> 關閉</button>
+                        </div>
+            </ModalEdit>;
+		}
+
 		return (
                 <tr className="table-warning">
                     <td className="text-xs-center text-warning">
@@ -324,77 +393,8 @@ var GridSubForm = React.createClass({
 								
 
 
-				<div id={'myModal-'+this.props.MainId} className="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    				<div className="modal-dialog">
-      					<div className="modal-content">
-        					<div className="modal-header">
-          						<button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          						<h5 className="modal-title text-secondary" id="myModalLabel">分類項目資料維護</h5>
-        					</div>
-        					<form className="form form-sm" onSubmit={this.handleSubmit}>
-        						<div className="modal-body">
-					          		<div className="form-group row">
-										<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 項目名稱</label>
-										<div className="col-xs-6">
-											<input type="text" 
-												className="form-control"	
-												value={fieldData.l2_name}
-												onChange={this.changeFDValue.bind(this,'l2_name')}
-												maxLength="64"
-												required />						
-										</div>
-										<small className="col-xs-4 text-muted">最多64字</small>
-									</div>
-          							<div className="form-group row">
-										<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 排序</label>
-										<div className="col-xs-6">
-											<input type="number" 
-												className="form-control"	
-												value={fieldData.sort}
-												onChange={this.changeFDValue.bind(this,'sort')}
-												maxLength="64"
-												required />						
-										</div>
-										<small className="col-xs-4 text-muted">數字越大越前面</small>
-									</div>
-									
-									{/*<div className="form-group">
-										<label className="col-xs-1 form-control-label text-xs-right">狀態</label>
-										<div className="col-xs-3">
-											<div className="radio-inline">
-												<label>
-													<input 	type="radio" 
-															name="i_Hide"
-															value={true}
-															checked={fieldData.i_Hide===true} 
-															onChange={this.changeFDValue.bind(this,'i_Hide')} />
-													<span>隱藏</span>
-												</label>
-											</div>
-											<div className="radio-inline">
-												<label>
-													<input type="radio" 
-															name="i_Hide"
-															value={false}
-															checked={fieldData.i_Hide===false} 
-															onChange={this.changeFDValue.bind(this,'i_Hide')}/>
-													<span>顯示</span>
-												</label>
-											</div>
-										</div>				
-									</div>*/}
 
-        						</div>
-	        					<div className="modal-footer">
-		        					<button type="button" className="btn btn-sm btn-primary" onClick={this.handleSubmit}><i className="fa-check"></i> 存檔確認</button>
-		        					<button className="btn btn-sm btn-blue-grey" type="button" onClick={this.noneType} data-dismiss="modal"><i className="fa-times"></i> 關閉</button>
-	        					</div>
-	        				</form>
-      					</div>
-   					</div>
-				</div>
-
-
+                                {edit_html}
                             </div>
                         </div>
                     </td>
