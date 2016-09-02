@@ -857,10 +857,18 @@ var SubForm = React.createClass({
 		    showAjaxError(errorThrown);
 		});
     },
-    gridData: function () {
+    gridData: function (page) {
         var parms = {
-            main_id: this.props.main_id
-        };
+            main_id: this.props.main_id,
+            page:0
+        }; 
+
+        if (page == 0) {
+            parms.page = this.state.gridData.page;
+        } else {
+            parms.page = page;
+        }
+
         $.extend(parms, this.state.searchData);
 
         return jqGet(this.props.apiPathName, parms);
@@ -2037,10 +2045,10 @@ new_detail_out_html=<div>
                         			<th style={{"width":"5%"}} className="text-xs-center">修改</th>
                         			<th style={{"width":"10%"}}>客戶名稱</th>
                         			<th style={{"width":"10%"}}>客戶分類</th>
-                        			<th style={{"width":"5%"}}>身分證號</th>
+                        			<th style={{"width":"8%"}}>身分證號</th>
                                     <th style={{"width":"10%"}}>電話1</th>
                         			<th style={{"width":"10%"}}>電話2</th>
-                        			<th style={{"width":"35%"}}>送餐地址</th>
+                        			<th style={{"width":"32%"}}>送餐地址</th>
                                     <th style={{"width":"15%"}}>備註</th>
                                 </tr>
                             </thead>
