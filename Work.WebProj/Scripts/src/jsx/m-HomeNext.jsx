@@ -1759,6 +1759,8 @@ var SalesDetailData = React.createClass({
         var searchProductData=this.state.searchProductData;
 	var ModalProductSelect=ReactBootstrap.Modal;//啟用產品選取的視窗內容
 		var product_select_out_html=null;
+        var accounts_receivable_out_html=null;
+
 		if(this.state.isShowProductSelect){
 			product_select_out_html=
 			<ModalProductSelect bsSize="medium" animation={false} onRequestHide={this.closeSelectProduct}>
@@ -1855,6 +1857,29 @@ var SalesDetailData = React.createClass({
 					receipt_out_html=<button className="btn btn-success btn-block" type="button" onClick={this.insertAccountsPayable.bind(this)}><i className="fa-check"></i>轉 應收帳款</button>;
 				}
 			}
+    if(this.state.isShowModifySelect){
+            accounts_receivable_out_html=(
+                <div className="form-group row">
+                <div className="col-xs-6">
+						<div className="card">
+							<div className="card-header"><i className="fa-file-text-o"></i> 訂單狀態【{fieldData.is_close?<strong>已結案</strong>:<strong className="text-danger">未結案</strong>}】</div>
+							<div className="card-block">
+								{close_out_html}
+								<small className="text-muted">結案後，無法新增、修改及刪除產品明細</small>
+							</div>
+						</div>
+					</div>
+					<div className="col-xs-6">
+						<div className="card">
+							<div className="card-header"><i className="fa-dollar"></i> 帳務狀態【{fieldData.is_receipt?<strong>已轉應收帳款</strong>:<strong className="text-danger">未轉應收帳款</strong>}】</div>
+							<div className="card-block">
+								{receipt_out_html}
+								<small className="text-muted">未轉應收帳款前不可結案</small>
+							</div>
+						</div>
+					</div>
+                    </div>);
+        }
         if(this.state.isShowModifySelect){
             modify_html=(
                 <ModalProductSelect bsSize="large" animation={false} onRequestHide={this.closeSelectCustomerBorn}>
@@ -1866,8 +1891,8 @@ var SalesDetailData = React.createClass({
                     <h3 className="h3"><small className="sub"><i className="fa-angle-double-right"></i> 產品銷售主檔</small></h3>
 				    <form className="form form-sm" onSubmit={this.handleSubmit}>
 						<div className="form-group row">
-							<label className="col-xs-2 form-control-label text-xs-right">銷售單號</label>
-							<div className="col-xs-3">
+							<label className="col-xs-1 form-control-label text-xs-right">銷售單號</label>
+							<div className="col-xs-2">
 								<input type="text" 							
 								className="form-control"	
 								value={fieldData.record_sn}
@@ -1876,10 +1901,8 @@ var SalesDetailData = React.createClass({
 								disabled
 								placeholder="系統自動產生" />
 							</div>
-							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
-						</div>
-						<div className="form-group row">
-							<label className="col-xs-2 form-control-label text-xs-right">訂單日期</label>
+							{/*<small className="text-muted col-xs-6">系統自動產生，無法修改</small>*/}
+							<label className="col-xs-1 form-control-label text-xs-right">訂單日期</label>
 							<div className="col-xs-3">
 								<InputDate id="record_day" 
 									onChange={this.changeFDValue} 
@@ -1888,11 +1911,9 @@ var SalesDetailData = React.createClass({
 									disabled={true}
 									placeholder="系統自動產生" />
 							</div>
-							<small className="text-muted col-xs-6">系統自動產生，無法修改</small>
-						</div>
-						<div className="form-group row">
-							<label className="col-xs-2 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
-							<div className="col-xs-3">
+							{/*<small className="text-muted col-xs-6">系統自動產生，無法修改</small>*/}
+							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
+							<div className="col-xs-2">
 								<input type="text"                          
                                     className="form-control"    
                                     value={fieldData.customer_name}
@@ -1901,7 +1922,7 @@ var SalesDetailData = React.createClass({
                                     disabled />
 							</div>
 						</div>
-						<div className="form-group row">
+						{/*<div className="form-group row">
 							<label className="col-xs-2 form-control-label text-xs-right">客戶類別</label>
 							<div className="col-xs-3">
 								<select className="form-control" 
@@ -2026,7 +2047,7 @@ var SalesDetailData = React.createClass({
 								maxLength="256"
 								disabled/>
 							</div>
-						</div>
+						</div>*/}
 
 						<div className="form-action">
 							{save_out_html} { }
@@ -2034,31 +2055,12 @@ var SalesDetailData = React.createClass({
 						</div>
 				</form>
 				<hr />
-				{/* ---是否結案按鈕start--- */}
-				<div className="row">
-					<div className="col-xs-6">
-						<div className="card">
-							<div className="card-header"><i className="fa-file-text-o"></i> 訂單狀態【{fieldData.is_close?<strong>已結案</strong>:<strong className="text-danger">未結案</strong>}】</div>
-							<div className="card-block">
-								{close_out_html}
-								<small className="text-muted">結案後，無法新增、修改及刪除產品明細</small>
-							</div>
-						</div>
-					</div>
-					<div className="col-xs-6">
-						<div className="card">
-							<div className="card-header"><i className="fa-dollar"></i> 帳務狀態【{fieldData.is_receipt?<strong>已轉應收帳款</strong>:<strong className="text-danger">未轉應收帳款</strong>}】</div>
-							<div className="card-block">
-								{receipt_out_html}
-								<small className="text-muted">未轉應收帳款前不可結案</small>
-							</div>
-						</div>
-					</div>
-				</div>
-				{/* ---是否結案按鈕end--- */}
-				<hr />
 				{/*---產品明細---*/}
 				{detail_out_html}
+				{/* ---是否結案按鈕start--- */}
+				<hr />
+                {accounts_receivable_out_html}
+				{/* ---是否結案按鈕end--- */}
 
 			</div></ModalProductSelect>
                 
@@ -5939,6 +5941,10 @@ var AccountRecordData = React.createClass({
         obj[name] = e.target.value;
         this.setState({ searchData: obj });
     },
+    closeSelectRecord: function () {
+        this.queryGridData(0);
+        this.setState({ isShowCustomerEdit: false});
+    },
     render: function () {
         var searchData = this.state.searchData;
         var fieldData=this.sat
@@ -5957,9 +5963,9 @@ var AccountRecordData = React.createClass({
 			}
         if(this.state.isShowCustomerEdit){
             modify_html=(
-                <MdoalCustomerSelect bsSize="large" animation={false}>
+                <MdoalCustomerSelect bsSize="large" animation={false} onRequestHide={this.closeSelectRecord}>
                 <div className="modal-header">
-                            <button className="close">&times;</button>
+                            <button className="close" onClick={this.closeSelectRecord}>&times;</button>
                             <h5 className="modal-title text-secondary">帳款紀錄 <small><i className="fa-angle-double-right"></i> 編輯</small></h5>
                         </div>
                 <div className="modal-body">
@@ -7610,7 +7616,7 @@ var SubFormForSalesProduct = React.createClass({
 									</select>
 								</div>
 							</div>
-							<div className="form-group row">
+							{/*<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">預計餐數</label>
 								<div className="col-xs-2">
 									<div className="input-group input-group-sm">
@@ -7654,7 +7660,7 @@ var SubFormForSalesProduct = React.createClass({
 									min="0" disabled/>
 									<small className="text-muted">系統自動計算</small>
 								</div>
-							</div>
+							</div>*/}
 							<div className="form-group row">
 								<label className="col-xs-1 form-control-label text-xs-right">用餐週期<br />說明</label>
 								<div className="col-xs-9">

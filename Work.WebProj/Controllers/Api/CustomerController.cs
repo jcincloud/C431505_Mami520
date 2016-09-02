@@ -39,7 +39,8 @@ namespace DotWeb.Api
                     qr = qr.Where(x => x.customer_name.Contains(q.word)
                                         || x.tel_1.Contains(q.word)
                                         || x.tel_2.Contains(q.word)
-                                        || x.sno.Contains(q.word));
+                                        || x.sno.Contains(q.word)
+                                        || x.memo.Contains(q.word));
                 }
                 if (q.word_born != null)
                 {
@@ -86,7 +87,8 @@ namespace DotWeb.Api
                     tw_address_1 = x.tw_address_1,
                     tel_1 = x.tel_1,
                     tel_2 = x.tel_2,
-                    born_times = 0
+                    born_times = 0,
+                    memo=x.memo
                 });
 
                 int page = (q.page == null ? 1 : (int)q.page);

@@ -1040,6 +1040,7 @@ var GridRowForQuick = React.createClass({
                     <td>{this.props.itemData.tel_1}</td>
 					<td>{this.props.itemData.tel_2}</td>
 					<td>{this.props.itemData.tw_city_1 + this.props.itemData.tw_country_1 + this.props.itemData.tw_address_1}</td>
+                    <td>{this.props.itemData.memo}</td>
 				</tr>
 			);
     }
@@ -1979,7 +1980,7 @@ new_detail_out_html=<div>
                             <div className="table-filter">
                                 <div className="form-inline form-sm">
                                     <div className="form-group">
-                                        <label className="text-sm">客戶名稱/身分證號/電話</label> { }
+                                        <label className="text-sm">客戶名稱/身分證號/電話/備註</label> { }
                                         <input type="text" className="form-control"
                                                value={searchData.word}
                                                onChange={this.changeGDValue.bind(this,'word')}
@@ -2036,10 +2037,11 @@ new_detail_out_html=<div>
                         			<th style={{"width":"5%"}} className="text-xs-center">修改</th>
                         			<th style={{"width":"10%"}}>客戶名稱</th>
                         			<th style={{"width":"10%"}}>客戶分類</th>
-                        			<th style={{"width":"15%"}}>身分證號</th>
+                        			<th style={{"width":"5%"}}>身分證號</th>
                                     <th style={{"width":"10%"}}>電話1</th>
                         			<th style={{"width":"10%"}}>電話2</th>
                         			<th style={{"width":"35%"}}>送餐地址</th>
+                                    <th style={{"width":"15%"}}>備註</th>
                                 </tr>
                             </thead>
 							<tbody>
