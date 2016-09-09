@@ -3937,8 +3937,11 @@ var TelScheduleData = React.createClass({
         var detail_out_html = null;
         var save_out_html = null;
         var insert_inpnt_button=null;
+        var insert_out_html =null;
+        var insert_info_html=null;
+console.log('edit',this.state.edit_type);
 
-var insert_info_html=null;
+
 			if(this.state.edit_type==1){
 				save_out_html=<button type="submit" className="btn btn-sm btn-primary col-xs-offset-1"><i className="fa-check"></i> 存檔確認</button>;
                           insert_info_html=(
@@ -3960,23 +3963,21 @@ var insert_info_html=null;
                  
         outHtml = (
             <div>
-                {/*<h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
+                <h3 className="h3">{this.props.Caption}<small className="sub"><i className="fa-angle-double-right"></i> 主檔</small></h3>
                 {insert_info_html}
 				<form className="form form-sm" onSubmit={this.handleSubmit}>
 						<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right"><span className="text-danger">*</span> 選擇客戶</label>
-							<div className="col-xs-3">
+							<div className="col-xs-2">
 								<input type="text"
                                            className="form-control"
                                            value={fieldData.customer_name}
                                            onChange={this.changeFDValue.bind(this,'customer_name')}
                                            maxLength="64"
                                            disabled />
-							</div>
-						</div>
-						<div className="form-group row">
+    						</div>
 							<label className="col-xs-1 form-control-label text-xs-right">客戶類別</label>
-							<div className="col-xs-3">
+							<div className="col-xs-2">
 								<select className="form-control"
                                         value={fieldData.customer_type}
                                         disabled
@@ -3990,7 +3991,7 @@ var insert_info_html=null;
 								</select>
 							</div>
 							<label className="col-xs-1 form-control-label text-xs-right">客戶名稱</label>
-							<div className="col-xs-4">
+							<div className="col-xs-3">
 								<input type="text"
                                        className="form-control"
                                        value={fieldData.customer_name}
@@ -4000,7 +4001,7 @@ var insert_info_html=null;
                                        disabled />
 							</div>
 						</div>
-						<div className="form-group row">
+						{/*<div className="form-group row">
 							<label className="col-xs-1 form-control-label text-xs-right">用餐編號</label>
 							<div className="col-xs-3">
 								<input type="text"
@@ -4114,7 +4115,7 @@ var insert_info_html=null;
                                        country_field="tw_country_2"
                                        address_field="tw_address_2"
                                        disabled={true} />
-					</div>
+					</div>*/}
 					<div className="form-action">
 					    {save_out_html} { }
 			            <button type="button" className="btn btn-sm btn-blue-grey" onClick={this.props.closeAllEdit}><i className="fa-arrow-left"></i> 回前頁</button>
@@ -4122,7 +4123,7 @@ var insert_info_html=null;
 
 				</form>
 
-				<hr className="lg" />*/}
+				<hr className="lg" />
                 {detail_out_html}
             </div>
             );
