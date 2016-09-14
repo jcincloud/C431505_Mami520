@@ -1844,7 +1844,8 @@ var SalesDetailData = React.createClass({
 				born_id={fieldData.born_id} 
 				meal_id={fieldData.meal_id}
 				is_close={fieldData.is_close}
-                showSelectProduct={this.showSelectProduct} />;
+                showSelectProduct={this.showSelectProduct}
+                close={this.closeSelectCustomerBorn} />;
 				if(!fieldData.is_close){
 					close_out_html=<button className="btn btn-success btn-block" type="button" onClick={this.closeRecord}><i className="fa-check"></i> 設為 已結案</button>;
 				}
@@ -2380,7 +2381,8 @@ var MealScheduleData = React.createClass({
             record_deatil_id={fieldData.record_deatil_id}
             customer_id={fieldData.customer_id}
             born_id={fieldData.born_id}
-            day={new Date(moment(fieldData.meal_start).format('YYYY/MM/DD'))}  />
+            day={new Date(moment(fieldData.meal_start).format('YYYY/MM/DD'))}
+            close={this.noneType}  />
 
 
             </div>
@@ -2584,6 +2586,7 @@ var MealCalendar = React.createClass({
        $('.nav-tabs a[href="#Sell"]').tab('show');
        $(".a-tab").removeClass('active');
         $(".a-tab:eq(2)").addClass('active');
+        this.props.noneType();
     },  
     render: function() {
         var outHtml = null;
@@ -5962,7 +5965,8 @@ var AccountRecordData = React.createClass({
 				customer_id={fieldData.customer_id}
 				product_record_id={fieldData.product_record_id}
 				noneType={this.noneType}
-				main_total={fieldData.estimate_payable} />;
+				main_total={fieldData.estimate_payable} 
+                close={this.closeSelectRecord}/>;
 			}
         if(this.state.isShowCustomerEdit){
             modify_html=(
@@ -7205,10 +7209,10 @@ var SubFormForSalesProduct = React.createClass({
 	setMealSchedule:function(record_deatil_id){
 		//設定用餐排程
 		//document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
-
         $('.nav-tabs a[href="#MealSchedule"]').tab('show');
        $(".a-tab").removeClass('active');
         $(".a-tab:eq(3)").addClass('active');
+        this.props.close();
 	},
 	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
 		jqGet(gb_approot + 'api/GetAction/GetAllMealID',this.state.searchMealIDData)
@@ -7917,6 +7921,7 @@ var SubFormForAccountPay = React.createClass({
         $('.nav-tabs a[href="#Sell"]').tab('show');
        $(".a-tab").removeClass('active');
         $(".a-tab:eq(2)").addClass('active');
+        this.props.close();
     },  
 	render: function() {
 		var outHtml = null;
