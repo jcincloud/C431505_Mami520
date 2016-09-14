@@ -2581,7 +2581,10 @@ var MealCalendar = React.createClass({
     },
     setProductRecord:function(){
         //返回產品銷售
-        document.location.href = gb_approot + 'Active/Product/ProductRecord?product_record_id=' + this.props.product_record_id;
+        //document.location.href = "#SalesDetailData";
+       $('.nav-tabs a[href="#Sell"]').tab('show');
+       $(".a-tab").removeClass('active');
+        $(".a-tab:eq(2)").addClass('active');
     },  
     render: function() {
         var outHtml = null;
@@ -7907,7 +7910,10 @@ var SubFormForAccountPay = React.createClass({
 	},
 	setProductRecord:function(){
         //返回產品銷售
-        document.location.href = gb_approot + 'Active/Product/ProductRecord?product_record_id=' + this.props.product_record_id;
+        //document.location.href = gb_approot + 'Active/Product/ProductRecord?product_record_id=' + this.props.product_record_id;
+        $('.nav-tabs a[href="#Sell"]').tab('show');
+       $(".a-tab").removeClass('active');
+        $(".a-tab:eq(2)").addClass('active');
     },  
 	render: function() {
 		var outHtml = null;
