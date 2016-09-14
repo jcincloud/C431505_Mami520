@@ -2581,7 +2581,6 @@ var MealCalendar = React.createClass({
     },
     setProductRecord:function(){
         //返回產品銷售
-        //document.location.href = "#SalesDetailData";
        $('.nav-tabs a[href="#Sell"]').tab('show');
        $(".a-tab").removeClass('active');
         $(".a-tab:eq(2)").addClass('active');
@@ -7205,7 +7204,11 @@ var SubFormForSalesProduct = React.createClass({
 	},
 	setMealSchedule:function(record_deatil_id){
 		//設定用餐排程
-		document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
+		//document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
+
+        $('.nav-tabs a[href="#MealSchedule"]').tab('show');
+       $(".a-tab").removeClass('active');
+        $(".a-tab:eq(3)").addClass('active');
 	},
 	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
 		jqGet(gb_approot + 'api/GetAction/GetAllMealID',this.state.searchMealIDData)
@@ -7751,9 +7754,9 @@ var SubFormForSalesProduct = React.createClass({
 									var meal_detail_button=null;
 									if(itemData.product_type==2)//產品為月子餐才有用餐明細
 									{
-										meal_detail_button=<button className="btn btn-info btn-sm" onClick={this.setMealSchedule.bind(this,itemData.record_deatil_id)}><i className="fa-search"></i> 查看</button>;
+										meal_detail_button=<button className="btn btn-info btn-sm" onClick={this.setMealSchedule.bind(this)}><i className="fa-search"></i> 查看</button>;
 									}
-									total+=itemData.subtotal;
+									total+=itemData.subtotal; 
 									var sub_out_html = 
 										<tr key={itemData.record_deatil_id}>
 											<td className="text-xs-center">
