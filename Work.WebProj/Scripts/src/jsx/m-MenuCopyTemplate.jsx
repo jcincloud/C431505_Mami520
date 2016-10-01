@@ -228,7 +228,8 @@ var GirdForm = React.createClass({
 			obj.copy_start=e.target.value;
 			var tmp_date = new Date(obj.copy_start);
 			if(obj.range_day!=null){
-				var end_date=addDate(tmp_date,parseInt(obj.range_day)-1);
+			    var range_day=parseInt(obj.range_day)==0?0:parseInt(obj.range_day)-1;
+				var end_date=addDate(tmp_date,range_day);
 				obj.copy_end=format_Date(end_date);
 			}else{
 				obj.copy_end=e.target.value;

@@ -1766,22 +1766,27 @@ namespace DotWeb.Api
                 var items = db0.MenuCopy.Where(x => x.company_id == this.companyId & x.menu_copy_template_id == main_id)
                     .OrderBy(x => new { x.day, x.meal_type }).AsQueryable();
                 //算目前最搭天數為
-                int maxVal = items.Max(x => x.day);
+                int maxVal = 0;
                 List<CopyErrList> err = new List<CopyErrList>();
-                for (int i = 1; i <= maxVal; i++)
-                {//檢查有沒有缺天缺餐
-                    List<int> meals = new List<int>() { 1, 2, 3 };
-                    List<int> get_meal = items.Where(x => x.day == i).Select(x => x.meal_type).ToList();
-                    if (get_meal.Count() < 3)
-                    {//有缺餐才計算
-                        List<int> lack_meal = meals.Where(x => !get_meal.Contains(x)).ToList();
-                        foreach (var meal in lack_meal)
-                        {
-                            err.Add(new CopyErrList() { day = i, meal_type = meal });
+                if (items.Count() > 0)
+                {
+                    maxVal = items.Max(x => x.day);
+                    for (int i = 1; i <= maxVal; i++)
+                    {//檢查有沒有缺天缺餐
+                        List<int> meals = new List<int>() { 1, 2, 3 };
+                        List<int> get_meal = items.Where(x => x.day == i).Select(x => x.meal_type).ToList();
+                        if (get_meal.Count() < 3)
+                        {//有缺餐才計算
+                            List<int> lack_meal = meals.Where(x => !get_meal.Contains(x)).ToList();
+                            foreach (var meal in lack_meal)
+                            {
+                                err.Add(new CopyErrList() { day = i, meal_type = meal });
+                            }
                         }
-                    }
 
+                    }
                 }
+
 
                 return Ok(new { range_day = maxVal, list = err });
             }
