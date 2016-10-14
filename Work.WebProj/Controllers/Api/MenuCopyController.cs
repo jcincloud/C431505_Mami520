@@ -162,15 +162,19 @@ namespace DotWeb.Api
 
                 foreach (var id in ids)
                 {
-                    bool check = db0.MenuCopyOfConstitute.Any(x => x.menu_copy_id == id);
-                    if (check)
-                    {
-                        r.result = false;
-                        r.message = Resources.Res.Log_Err_Delete_DetailExist;
-                        return Ok(r);
-                    }
-                    item = new MenuCopy() { menu_copy_id = id };
-                    db0.MenuCopy.Attach(item);
+                    item = db0.MenuCopy.Find(id);
+
+
+                    //bool check = db0.MenuCopyOfConstitute.Any(x => x.menu_copy_id == id);
+                    //if (check)
+                    //{
+                    //    r.result = false;
+                    //    r.message = Resources.Res.Log_Err_Delete_DetailExist;
+                    //    return Ok(r);
+                    //}
+                    //item = new MenuCopy() { menu_copy_id = id };
+                    //db0.MenuCopy.Attach(item);
+                    db0.MenuCopyOfConstitute.RemoveRange(item.MenuCopyOfConstitute);
                     db0.MenuCopy.Remove(item);
                 }
 

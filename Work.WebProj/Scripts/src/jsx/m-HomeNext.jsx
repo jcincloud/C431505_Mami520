@@ -34,7 +34,6 @@ var GirdForm = React.createClass({
         jqGet(gb_approot + 'api/GetAction/GetMomName', {})
        .done(function (data, textStatus, jqXHRdata) {
            this.setState({ name: data });
-           console.log(data);
        }.bind(this))
        .fail(function (jqXHR, textStatus, errorThrown) {
            showAjaxError(errorThrown);
@@ -92,6 +91,10 @@ var GirdForm = React.createClass({
 		    //showAjaxError(errorThrown);
 		});
     },
+    openMealModal:function(id){
+        var open=this.refs['refMealScheduleData'];
+        open.updateType(id);
+    },
     render: function () {
         var outHtml = null;
         var fieldData=this.state.fieldData; 
@@ -139,13 +142,13 @@ var GirdForm = React.createClass({
                                         <BasicData closeAllEdit={this.closeSelectCustomerBorn} born_id={gb_born_id} mom_id={gb_customer_id} />
                                     </div>
                                     <div className="tab-pane" id="Birth" role="tabpanel">
-                                        <CustomerBornData closeAllEdit={this.closeSelectCustomerBorn} born_id={gb_born_id} mom_id={gb_customer_id} />
+                                        <CustomerBornData closeAllEdit={this.closeSelectCustomerBorn}  born_id={gb_born_id} mom_id={gb_customer_id} />
                                     </div>
                                     <div className="tab-pane" id="Sell" role="tabpanel">
-                                        <SalesDetailData born_id={gb_born_id} mom_id={gb_customer_id} />
+                                        <SalesDetailData born_id={gb_born_id} mom_id={gb_customer_id} open={this.openMealModal}/>
                                     </div>
                                     <div className="tab-pane" id="MealSchedule" role="tabpanel">
-                                        <MealScheduleData born_id={gb_born_id} mom_id={gb_customer_id}/>
+                                        <MealScheduleData born_id={gb_born_id} mom_id={gb_customer_id} ref="refMealScheduleData"/> 
                                     </div>
                                     <div className="tab-pane" id="Query" role="tabpanel">
                                         <DiningDemandData closeAllEdit={this.closeSelectCustomerBorn} born_id={gb_born_id} mom_id={gb_customer_id}/>
@@ -266,7 +269,6 @@ var BasicData = React.createClass({
     },
     insertDetailType: function () {//新增明細檔
         var fieldData = this.state.fieldData;
-        console.log(fieldData);
         //新增要自動帶資料
         this.setState({
             detail_edit_type: 1,
@@ -1280,7 +1282,8 @@ var CustomerBornData = React.createClass({
         if(fieldData.customer_id!=undefined){
             GirdSubForm_html=( <GirdSubForm main_id={fieldData.customer_id}
                                             customer_type={fieldData.customer_type}
-                                            fiedlData={fieldData} />);
+                                            fiedlData={fieldData} 
+                                            ref="open"/>);
         }
         outHtml = (
             <div>
@@ -1839,6 +1842,7 @@ var SalesDetailData = React.createClass({
 				save_out_html=<strong className="text-danger col-xs-offset-2">主檔資料不可修改！</strong>;
 				detail_out_html=
 				<SubFormForSalesProduct ref="SubFormForSalesProduct" 
+                openmeal={this.props.open}
 				main_id={fieldData.product_record_id}
 				customer_id={fieldData.customer_id}
 				born_id={fieldData.born_id} 
@@ -2068,8 +2072,9 @@ var SalesDetailData = React.createClass({
             );
         }
 
-        outHtml = (
-            <div>
+        outHtml = ( 
+            <div>            
+            {/*<button type="button" onClick={this.props.open.bind(this,239)}>aaa</button>*/} 
             {modify_html}
             {product_select_out_html}
             <h3 className="h3">銷售紀錄</h3>
@@ -3944,7 +3949,6 @@ var TelScheduleData = React.createClass({
         var insert_inpnt_button=null;
         var insert_out_html =null;
         var insert_info_html=null;
-console.log('edit',this.state.edit_type);
 
 
 			if(this.state.edit_type==1){
@@ -7089,7 +7093,6 @@ var SubFormForSalesProduct = React.createClass({
 					})
 	    		})
 			}
-			//console.log(data);
 			this.setState({edit_sub_type:2,fieldSubData:data.data,tryout_array:tryout_array});
 		}.bind(this))
 		.fail(function( jqXHR, textStatus, errorThrown ) {
@@ -7209,10 +7212,12 @@ var SubFormForSalesProduct = React.createClass({
 	setMealSchedule:function(record_deatil_id){
 		//設定用餐排程
 		//document.location.href = gb_approot + 'Active/MealSchedule?record_deatil_id=' + record_deatil_id;
+        //console.log(record_deatil_id); 
         $('.nav-tabs a[href="#MealSchedule"]').tab('show');
-       $(".a-tab").removeClass('active');
+       $(".a-tab").removeClass('active'); 
         $(".a-tab:eq(3)").addClass('active');
         this.props.close();
+        //this.props.openmeal(record_deatil_id);
 	},
 	queryAllMealID:function(){//選取用餐編號-取得未使用的用餐編號List
 		jqGet(gb_approot + 'api/GetAction/GetAllMealID',this.state.searchMealIDData)
@@ -7385,11 +7390,12 @@ var SubFormForSalesProduct = React.createClass({
 		}
 
 		var total=0;
-
+            
 			outHtml =
 			(
 				<div>
                 <h3 className="h3">銷售紀錄</h3>
+                {/*<button type="button" onClick={this.props.openmeal.bind(this,239)}>aaa</button>*/}
 				{/*---產品明細編輯start---*/}
 					<h3 className="h3"> <small className="sub"><i className="fa-angle-double-right"></i> 新增產品銷售明細</small></h3>
 					<form className="form form-sm" role="form" id="form2" onSubmit={this.detailHandleSubmit}>
