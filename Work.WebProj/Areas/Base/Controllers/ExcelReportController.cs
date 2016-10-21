@@ -788,6 +788,9 @@ namespace DotWeb.Areas.Base.Controllers
 
                     detail_row++;
                 }
+                sheet.Cells[detail_row , 7].Value = "[合計]";
+                sheet.Cells[detail_row , 8].Value = getPrintVal.Sum(x=>x.subtotal);
+                setFontColor_blue(sheet,detail_row,7,7);
                 #endregion
 
                 #region excel排版
